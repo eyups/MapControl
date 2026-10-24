@@ -95,25 +95,6 @@ public final class ComfortCommands {
                 ? INVALID_TEMP_C : OutsideTemperature.fromRaw(combined);
     }
 
-    /** Motor suyu sıcaklığı °C; okunamazsa {@link #INVALID_TEMP_C}. Çağrı ana thread'de yapılmamalı. */
-    public static float readWaterTempC() {
-        int[] raw = CarInfoProxy.getInstance().getItemValues(
-                VDEventCarInfo.MODULE_READONLY_INFO, ReadOnlyID.ID_WATER_TEMPERATURE);
-        if (raw == null || raw.length == 0) {
-            return INVALID_TEMP_C;
-        }
-        int combined = raw.length == 1 ? raw[0] : 0;
-        if (raw.length > 1) {
-            for (int value : raw) {
-                combined = (combined << 8) | (value & 0xFF);
-            }
-        }
-        if (combined == Integer.MIN_VALUE || combined <= 0) {
-            return INVALID_TEMP_C;
-        }
-        return combined > 200 ? combined / 10f : combined;
-    }
-
     /** CAR_SETTING koltuk kimliği: 0 kapalı, 1-3 seviye (OEM kodundan). */
     public static int readSeatLevel(int seatCommandId) {
         return read(VDEventCarInfo.MODULE_CAR_SETTING, seatCommandId);

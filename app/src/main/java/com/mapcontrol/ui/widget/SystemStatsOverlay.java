@@ -2,14 +2,12 @@ package com.mapcontrol.ui.widget;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.os.BatteryManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -18,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mapcontrol.R;
-import com.mapcontrol.vehicle.ComfortCommands;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,12 +30,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Tüm MapControl ekranlarının üstünde duran küçük sistem HUD'ı.
+ * MapControl'un tüm ekranlarının üstünde duran, yazılımın sistem üzerindeki etkisini
+ * izleyen küçük HUD.
  *
- * <p>CPU ve RAM Android/Linux arayüzlerinden okunur. GPU yüzdesi yalnızca cihazda
- * Qualcomm kgsl veya benzeri bir sysfs düğümü varsa gösterilir; yoksa "—" yazılır.
- * Sıcaklıklar thermal sysfs, batarya sticky intent'i ve araç VDBus değerlerinden gelir.
- * Okumalar tek bir arka plan thread'inde yapılır; ana thread yalnızca TextView günceller.</p>
+ * <p>CPU: /proc/stat (yoksa load-average), APP: MapControl sürecinin CPU kullanımı,
+ * GPU: varsa kgsl/sysfs busy yüzdesi, RAM: ActivityManager. CPU/GPU sıcaklıkları
+ * thermal sysfs'ten, termal durum Android PowerManager'dan okunur. Araç aküsü, motor
+ * suyu ve dış ortam sıcaklığı bu HUD'ın kapsamı dışındadır.</p>
  */
 public final class SystemStatsOverlay extends LinearLayout {
 
@@ -52,6 +50,7 @@ public final class SystemStatsOverlay extends LinearLayout {
     private final ScheduledExecutorService executor;
     private final TextView valuesLine;
     private final TextView temperaturesLine;
+    private final TextView peaksLine;
 
     private volatile boolean enabled;
     private volatile boolean active;
@@ -60,8 +59,10 @@ public final class SystemStatsOverlay extends LinearLayout {
     private long lastCpuIdle = -1L;
     private long lastProcessCpuMs = -1L;
     private long lastProcessWallMs = -1L;
+    private float peakCpu = -1f;
+    private float peakApp = -1f;
+    private float peakGpu = -1f;
     private volatile boolean thermalUnavailable;
-    private volatile boolean batteryUnavailable;
 
     public SystemStatsOverlay(Context context) {
         super(context);
@@ -95,6 +96,17 @@ public final class SystemStatsOverlay extends LinearLayout {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         tempLp.topMargin = dp(2);
         addView(temperaturesLine, tempLp);
+
+        peaksLine = new TextView(context);
+        peaksLine.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+        peaksLine.setTypeface(Typeface.MONOSPACE);
+        peaksLine.setTextColor(0xFF8FA1B6);
+        peaksLine.setSingleLine(true);
+        LinearLayout.LayoutParams peakLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        peakLp.topMargin = dp(1);
+        addView(peaksLine, peakLp);
 
         setVisibility(View.GONE);
 
@@ -159,6 +171,9 @@ public final class SystemStatsOverlay extends LinearLayout {
         lastCpuIdle = -1L;
         lastProcessCpuMs = -1L;
         lastProcessWallMs = -1L;
+        peakCpu = -1f;
+        peakApp = -1f;
+        peakGpu = -1f;
         scheduled = executor.scheduleWithFixedDelay(this::sample, 0L, REFRESH_MS, TimeUnit.MILLISECONDS);
     }
 
@@ -174,23 +189,35 @@ public final class SystemStatsOverlay extends LinearLayout {
             return;
         }
         try {
-            Float cpu = readCpuPercent();
+            Float cpu = readSystemCpuPercent();
+            Float app = readAppCpuPercent();
             Float gpu = readGpuPercent();
             Float ram = readRamPercent();
             Float cpuTemp = readThermalTemp(false);
             Float gpuTemp = readThermalTemp(true);
-            Float batteryTemp = readBatteryTemp();
-            Float waterTemp = readWaterTemp();
-            Float outsideTemp = readOutsideTemp();
+            String thermal = readThermalStatus();
+
+            if (cpu != null) {
+                peakCpu = Math.max(peakCpu, cpu);
+            }
+            if (app != null) {
+                peakApp = Math.max(peakApp, app);
+            }
+            if (gpu != null) {
+                peakGpu = Math.max(peakGpu, gpu);
+            }
 
             String values = context.getString(R.string.system_stats_cpu) + " " + pct(cpu)
+                    + "   " + context.getString(R.string.system_stats_app) + " " + pct(app)
                     + "   " + context.getString(R.string.system_stats_gpu) + " " + pct(gpu)
                     + "   " + context.getString(R.string.system_stats_ram) + " " + pct(ram);
             String temperatures = context.getString(R.string.system_stats_cpu) + " " + temp(cpuTemp)
                     + "   " + context.getString(R.string.system_stats_gpu) + " " + temp(gpuTemp)
-                    + "   " + context.getString(R.string.system_stats_battery) + " " + temp(batteryTemp)
-                    + "   " + context.getString(R.string.system_stats_engine) + " " + temp(waterTemp)
-                    + "   " + context.getString(R.string.system_stats_outside) + " " + temp(outsideTemp);
+                    + "   " + context.getString(R.string.system_stats_thermal) + " " + thermal;
+            String peaks = context.getString(R.string.system_stats_peak) + " "
+                    + context.getString(R.string.system_stats_cpu) + " " + pct(peakCpu)
+                    + "   " + context.getString(R.string.system_stats_app) + " " + pct(peakApp)
+                    + "   " + context.getString(R.string.system_stats_gpu) + " " + pct(peakGpu);
 
             uiHandler.post(() -> {
                 if (!enabled || !active) {
@@ -198,17 +225,18 @@ public final class SystemStatsOverlay extends LinearLayout {
                 }
                 valuesLine.setText(values);
                 temperaturesLine.setText(temperatures);
+                peaksLine.setText(peaks);
             });
         } catch (Throwable ignored) {
             // HUD asla ana uygulamayı durdurmamalı.
         }
     }
 
-    private Float readCpuPercent() {
+    private Float readSystemCpuPercent() {
         try (BufferedReader reader = new BufferedReader(new FileReader("/proc/stat"))) {
             String line = reader.readLine();
             if (line == null || !line.startsWith("cpu ")) {
-                return null;
+                return readCpuLoadPercent();
             }
             String[] parts = line.trim().split("\\s+");
             long total = 0L;
@@ -228,32 +256,9 @@ public final class SystemStatsOverlay extends LinearLayout {
             }
             lastCpuTotal = total;
             lastCpuIdle = idle;
-            return readCpuFallback();
-        } catch (Throwable ignored) {
-            return readCpuFallback();
-        }
-    }
-
-    private Float readCpuFallback() {
-        Float load = readCpuLoadPercent();
-        return load != null ? load : readAppCpuPercent();
-    }
-
-    private Float readAppCpuPercent() {
-        try {
-            long cpuMs = android.os.Process.getElapsedCpuTime();
-            long wallMs = SystemClock.elapsedRealtime();
-            if (lastProcessCpuMs >= 0 && wallMs > lastProcessWallMs) {
-                long cpuDelta = Math.max(0L, cpuMs - lastProcessCpuMs);
-                long wallDelta = wallMs - lastProcessWallMs;
-                int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
-                return clampPercent(cpuDelta * 100f / wallDelta / cores);
-            }
-            lastProcessCpuMs = cpuMs;
-            lastProcessWallMs = wallMs;
             return readCpuLoadPercent();
         } catch (Throwable ignored) {
-            return null;
+            return readCpuLoadPercent();
         }
     }
 
@@ -270,6 +275,25 @@ public final class SystemStatsOverlay extends LinearLayout {
             float load = Float.parseFloat(parts[0]);
             int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
             return clampPercent(load * 100f / cores);
+        } catch (Throwable ignored) {
+            return null;
+        }
+    }
+
+    /** Yalnızca MapControl sürecinin CPU kullanımı; sistem CPU'sundan ayrıdır. */
+    private Float readAppCpuPercent() {
+        try {
+            long cpuMs = android.os.Process.getElapsedCpuTime();
+            long wallMs = SystemClock.elapsedRealtime();
+            if (lastProcessCpuMs >= 0 && wallMs > lastProcessWallMs) {
+                long cpuDelta = Math.max(0L, cpuMs - lastProcessCpuMs);
+                long wallDelta = wallMs - lastProcessWallMs;
+                int cores = Math.max(1, Runtime.getRuntime().availableProcessors());
+                return clampPercent(cpuDelta * 100f / wallDelta / cores);
+            }
+            lastProcessCpuMs = cpuMs;
+            lastProcessWallMs = wallMs;
+            return null;
         } catch (Throwable ignored) {
             return null;
         }
@@ -342,51 +366,33 @@ public final class SystemStatsOverlay extends LinearLayout {
         return null;
     }
 
-    private Float readBatteryTemp() {
-        if (batteryUnavailable) {
-            return null;
-        }
+    private String readThermalStatus() {
         try {
-            Intent intent = context.registerReceiver(
-                    null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-            if (intent == null
-                    || intent.getIntExtra(BatteryManager.EXTRA_PRESENT, 1) == 0) {
-                batteryUnavailable = true;
-                return null;
+            PowerManager manager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            if (manager == null) {
+                return "—";
             }
-            int tenths = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, Integer.MIN_VALUE);
-            if (tenths == Integer.MIN_VALUE) {
-                batteryUnavailable = true;
-                return null;
+            int status = manager.getCurrentThermalStatus();
+            switch (status) {
+                case PowerManager.THERMAL_STATUS_NONE:
+                    return "OK";
+                case PowerManager.THERMAL_STATUS_LIGHT:
+                    return "LOW";
+                case PowerManager.THERMAL_STATUS_MODERATE:
+                    return "MED";
+                case PowerManager.THERMAL_STATUS_SEVERE:
+                    return "HIGH";
+                case PowerManager.THERMAL_STATUS_CRITICAL:
+                    return "CRIT";
+                case PowerManager.THERMAL_STATUS_EMERGENCY:
+                    return "EMERG";
+                case PowerManager.THERMAL_STATUS_SHUTDOWN:
+                    return "SHUT";
+                default:
+                    return String.valueOf(status);
             }
-            return tenths / 10f;
         } catch (Throwable ignored) {
-            batteryUnavailable = true;
-            return null;
-        }
-    }
-
-    private Float readWaterTemp() {
-        try {
-            if (!ComfortCommands.isConnected()) {
-                return null;
-            }
-            float value = ComfortCommands.readWaterTempC();
-            return Float.isNaN(value) ? null : value;
-        } catch (Throwable ignored) {
-            return null;
-        }
-    }
-
-    private Float readOutsideTemp() {
-        try {
-            if (!ComfortCommands.isConnected()) {
-                return null;
-            }
-            float value = ComfortCommands.readOutsideTempC();
-            return Float.isNaN(value) ? null : value;
-        } catch (Throwable ignored) {
-            return null;
+            return "—";
         }
     }
 
@@ -422,7 +428,8 @@ public final class SystemStatsOverlay extends LinearLayout {
     }
 
     private String pct(Float value) {
-        return value == null ? "—" : String.format(Locale.US, "%.0f%%", value);
+        return value == null || value < 0f
+                ? "—" : String.format(Locale.US, "%.0f%%", value);
     }
 
     private String temp(Float value) {

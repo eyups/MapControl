@@ -1017,13 +1017,13 @@
 <string name="vehicle_info_light_night">Gece</string>
     <string name="climate_auto_rear_section">Arka koltuklar</string>
     <string name="settings_system_stats_title">Sistem izleme</string>
-    <string name="settings_system_stats_desc">CPU, GPU, RAM ve önemli sıcaklıkları tüm ekranların üzerinde gösterir.</string>
+    <string name="settings_system_stats_desc">CPU, GPU, RAM, MapControl CPU kullanımı ve termal durumu tüm ekranların üzerinde gösterir.</string>
     <string name="settings_system_stats_help_on">Her MapControl ekranının üstünde görünür</string>
     <string name="settings_system_stats_help_off">Gösterge gizli</string>
     <string name="system_stats_cpu">CPU</string>
     <string name="system_stats_gpu">GPU</string>
     <string name="system_stats_ram">RAM</string>
-    <string name="system_stats_battery">AKÜ</string>
-    <string name="system_stats_engine">MOT</string>
-    <string name="system_stats_outside">DIŞ</string>
+    <string name="system_stats_app">APP</string>
+    <string name="system_stats_peak">ZİRVE</string>
+    <string name="system_stats_thermal">TERM</string>
 </resources>
