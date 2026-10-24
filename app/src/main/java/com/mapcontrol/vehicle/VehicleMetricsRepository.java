@@ -16,10 +16,13 @@ import com.desaysv.ivi.vdb.client.VDBus;
 import com.desaysv.ivi.vdb.event.VDEvent;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 /**
  * CarInfoProxy + VDBus üzerinden araç metriklerini paylaşımlı olarak sunar.
@@ -78,6 +81,7 @@ public final class VehicleMetricsRepository {
     };
 
     private final Context appContext;
+    private final Consumer<String> eventLogger;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private HandlerThread vdbusThread;
     private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
@@ -86,6 +90,7 @@ public final class VehicleMetricsRepository {
 
     private volatile boolean callbacksRegistered;
     private volatile boolean started;
+    private volatile boolean monitoring;
 
     private final IVDBusNotify.Stub carInfoNotifyStub = new IVDBusNotify.Stub() {
         @Override
@@ -104,7 +109,21 @@ public final class VehicleMetricsRepository {
             if (values == null || values.length == 0) {
                 return;
             }
+            int previousDriveMode = cache.getCombined(MODULE_NEW_ENERGY, NewEnergyID.ID_DRIVE_MODE);
             if (cache.update(module, itemId, values)) {
+                if (module == MODULE_NEW_ENERGY && itemId == NewEnergyID.ID_DRIVE_MODE) {
+                    int currentDriveMode = cache.getCombined(module, itemId);
+                    String previousLabel = previousDriveMode == VehicleMetricsCache.INVALID
+                            ? "unknown" : describeDriveMode(previousDriveMode);
+                    String currentLabel = describeDriveMode(currentDriveMode);
+                    String message = "Drive mode signal: MODULE_NEW_ENERGY("
+                            + MODULE_NEW_ENERGY + "), ID_DRIVE_MODE("
+                            + NewEnergyID.ID_DRIVE_MODE + "), previous="
+                            + previousLabel + " (" + previousDriveMode + "), new="
+                            + currentLabel + " (" + currentDriveMode + "), raw="
+                            + Arrays.toString(values);
+                    mainHandler.post(() -> eventLogger.accept(message));
+                }
                 notifyListeners();
             }
         }
@@ -113,7 +132,12 @@ public final class VehicleMetricsRepository {
     private static volatile VehicleMetricsRepository backgroundInstance;
 
     public VehicleMetricsRepository(Context context) {
+        this(context, message -> { });
+    }
+
+    public VehicleMetricsRepository(Context context, Consumer<String> eventLogger) {
         this.appContext = context.getApplicationContext();
+        this.eventLogger = Objects.requireNonNull(eventLogger, "eventLogger");
     }
 
     /** Shared repository for service-owned background consumers (trip/valet). */
@@ -145,6 +169,20 @@ public final class VehicleMetricsRepository {
             return;
         }
         listeners.remove(listener);
+        if (listeners.isEmpty() && !monitoring) {
+            stop();
+        }
+    }
+
+    public void startMonitoring() {
+        monitoring = true;
+        if (!started) {
+            start();
+        }
+    }
+
+    public void stopMonitoring() {
+        monitoring = false;
         if (listeners.isEmpty()) {
             stop();
         }
@@ -255,6 +293,11 @@ public final class VehicleMetricsRepository {
 
     private boolean isCarInfoConnected() {
         return CarInfoProxy.getInstance().isServiceConnnected();
+    }
+
+    private String describeDriveMode(int mode) {
+        String label = DriveModeStyle.shortLabel(mode);
+        return label != null ? label : "unknown";
     }
 
     private void registerCallbacksIfNeeded() {

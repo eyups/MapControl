@@ -42,3 +42,6 @@ car_apks/
 tmp/
 mapcontrol.ab
 tts_probe/out/
+# Python
+__pycache__/
+*.pyc

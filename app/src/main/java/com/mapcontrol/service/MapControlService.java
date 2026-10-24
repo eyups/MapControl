@@ -55,6 +55,8 @@ import com.mapcontrol.vehicle.ComfortCommands;
 import com.mapcontrol.vehicle.RecirculationAutomation;
 import com.mapcontrol.vehicle.TemperatureAutomation;
 import com.mapcontrol.R;
+import com.mapcontrol.vehicle.ClimateAutomationEngine;
+import android.content.pm.PackageManager;
 
 public class MapControlService extends Service {
     private static final String CHANNEL_ID = "MapControlServiceChannel";
@@ -117,7 +119,18 @@ public class MapControlService extends Service {
         scheduleEqualizerKeeper();
 
         // Power mode kontrolünü başlat
+        com.mapcontrol.dvr.DvrController.get(this).start();
         startPowerModeMonitor();
+        ClimateAutomationEngine.getInstance(this).start();
+        if (DmsFaceRecognitionManager.isEnabled(this)
+                && checkSelfPermission(android.Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            try {
+                DmsFaceRecognitionManager.start(this);
+            } catch (RuntimeException e) {
+                log("Yuz tanima arka planda yeniden baslatilamadi: " + e.getMessage());
+            }
+        }
         MapControlVDBusKeyBridge.acquire(this);
         scheduler.scheduleAtFixedRate(
                 () -> MapControlVDBusKeyBridge.refreshSubscription(false, false),
@@ -289,6 +302,8 @@ public class MapControlService extends Service {
             drivingSessionRecorder = null;
         }
         ValetMonitor.get(this).stop();
+        ClimateAutomationEngine.getInstance(this).stop();
+        DmsFaceRecognitionManager.stop(this);
         super.onDestroy();
         if (scheduler != null) {
             scheduler.shutdown();
@@ -368,6 +383,8 @@ public class MapControlService extends Service {
                     if (lastPowerMode != currentPowerMode) {
                         int previousPowerMode = lastPowerMode;
                         lastPowerMode = currentPowerMode;
+                        com.mapcontrol.dvr.DvrController.get(MapControlService.this)
+                                .onPowerMode(currentPowerMode);
                         
                         // Power mode 2 = Araç çalışıyor (ON)
                         // Power mode 1 = Araç power aldı (STANDBY)

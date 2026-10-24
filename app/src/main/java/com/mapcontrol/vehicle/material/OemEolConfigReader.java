@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 /**
  * OEM {@code EolConfig} / {@code CarConfigUtil} verisinin MapControl için sadeleştirilmiş okuyucusu.
  */
-final class OemEolConfigReader {
+public final class OemEolConfigReader {
 
     private static final String TAG = "OemEolConfig";
     private static final long CACHE_TTL_MS = 5 * 60 * 1000L;
@@ -180,6 +180,111 @@ final class OemEolConfigReader {
         return getModelCode() != 0 || getCountryOrRegion() != 0;
     }
 
+    /** OEM {@code Constants.ID_CAR_CONFIG_SEAT_REAR_VIEW_MIRROR_MEMORY}. */
+    public static final int ID_CAR_CONFIG_SEAT_REAR_VIEW_MIRROR_MEMORY = 127;
+
+    /**
+     * OEM araç ayarlarındaki sürücü koltuk hafızası anahtarı.
+     * {@code VehicleComfortFragment} / {@code VehicleSettingFragment} koltuk düğmesini yalnızca
+     * {@code CarConfigUtil.getDefault().getConfig(127) == 1} iken gösterir.
+     * {@code EolConfig} case 127: {@code configs5} bayt 1, bit 1.
+     *
+     * @return {@code null} when {@code configs5} cannot be read yet
+     */
+    public static Boolean readDriverSeatMemory(Context context) {
+        int[] config5 = readCarConfig5Bytes(context);
+        if (config5 == null || config5.length < 8) {
+            return null;
+        }
+        boolean enabled = seatMirrorMemoryFromConfig5(config5);
+        Log.i(TAG, "config127(seat mirror memory)=" + (enabled ? 1 : 0)
+                + " configs5[1]=0x" + Integer.toHexString(config5[1] & 255));
+        return enabled;
+    }
+
+    /**
+     * @deprecated Araçta {@code getprop} çoğu uygulama için kapalıdır; {@link #readDriverSeatMemory(Context)} kullanın.
+     */
+    @Deprecated
+    public static Boolean readDriverSeatMemory() {
+        int[] config5 = hexStringToBytes(readSystemProperty(ReserveKeys.CAR_CONFIG_5));
+        if (config5 == null || config5.length < 8) {
+            return null;
+        }
+        return seatMirrorMemoryFromConfig5(config5);
+    }
+
+    static boolean seatMirrorMemoryFromConfig5(int[] config5) {
+        return ((config5[1] >> 1) & 1) == 1;
+    }
+
+    /**
+     * Ana iş parçacığını bekletmeden configs4/configs5 okur.
+     * Dizi yoksa {@code null}.
+     */
+    public static int[] readConfig4Bytes() {
+        return readPersistConfig(ReserveKeys.CAR_CONFIG_4);
+    }
+
+    public static int[] readConfig5Bytes() {
+        return readPersistConfig(ReserveKeys.CAR_CONFIG_5);
+    }
+
+    /** {@code null} when the config block is missing. */
+    public static Boolean configBit(int[] config, int byteIndex, int bit) {
+        if (config == null || byteIndex < 0 || config.length <= byteIndex || bit < 0 || bit > 7) {
+            return null;
+        }
+        return ((config[byteIndex] >> bit) & 1) == 1;
+    }
+
+    private static int[] readPersistConfig(String key) {
+        int[] fromVdbus = null;
+        try {
+            VDBus vdbus = VDBus.getDefault();
+            if (vdbus.isServiceConnected(VDServiceDef.ServiceType.VEHICLE_DEVICE)) {
+                fromVdbus = readHexConfig(vdbus, key);
+            }
+        } catch (RuntimeException e) {
+            Log.w(TAG, "config VDBus okunamadı: " + key, e);
+        }
+        if (fromVdbus != null && fromVdbus.length >= 8) {
+            return fromVdbus;
+        }
+        int[] fromProp = hexStringToBytes(readSystemProperty(key));
+        if (fromProp != null && fromProp.length >= 8) {
+            return fromProp;
+        }
+        return null;
+    }
+
+    /**
+     * OEM {@code EolConfig.loadConfig()} ile aynı kaynak: VDBus {@code PROJECT_RESERVE_CONFIGS},
+     * sonra (erişilebilirse) persist property.
+     */
+    static int[] readCarConfig5Bytes(Context context) {
+        int[] fromVdbus = null;
+        if (context != null) {
+            try {
+                VDBus vdbus = VDBus.getDefault();
+                vdbus.init(context.getApplicationContext());
+                if (vdbus.isServiceConnected(VDServiceDef.ServiceType.VEHICLE_DEVICE)) {
+                    fromVdbus = readHexConfig(vdbus, ReserveKeys.CAR_CONFIG_5);
+                }
+            } catch (RuntimeException e) {
+                Log.w(TAG, "configs5 VDBus okunamadı", e);
+            }
+        }
+        if (fromVdbus != null && fromVdbus.length >= 8) {
+            return fromVdbus;
+        }
+        int[] fromProp = hexStringToBytes(readSystemProperty(ReserveKeys.CAR_CONFIG_5));
+        if (fromProp != null && fromProp.length >= 8) {
+            return fromProp;
+        }
+        return fromVdbus != null ? fromVdbus : fromProp;
+    }
+
     String resolveCarDrawableBaseName() {
         final String base = "img_car_energy_conservation";
         if (isT19flInt()) {
@@ -240,6 +345,7 @@ final class OemEolConfigReader {
 
     private static final class ReserveKeys {
         static final String CAR_CONFIG_3 = "vehicle.persist.project.ext.configs3";
+        static final String CAR_CONFIG_4 = "vehicle.persist.project.ext.configs4";
         static final String CAR_CONFIG_5 = "vehicle.persist.project.ext.configs5";
         static final String COMBO_CONFIG = "vehicle.persist.combo.config";
 
