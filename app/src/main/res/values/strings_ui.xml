@@ -997,4 +997,14 @@
 <string name="vehicle_info_light_day">Daylight</string>
 <string name="vehicle_info_light_night">Night</string>
     <string name="climate_auto_rear_section">Rear seats</string>
+    <string name="settings_system_stats_title">System monitor</string>
+    <string name="settings_system_stats_desc">Shows CPU, GPU, RAM, and important temperatures above all screens.</string>
+    <string name="settings_system_stats_help_on">Visible above every MapControl screen</string>
+    <string name="settings_system_stats_help_off">Monitor is hidden</string>
+    <string name="system_stats_cpu">CPU</string>
+    <string name="system_stats_gpu">GPU</string>
+    <string name="system_stats_ram">RAM</string>
+    <string name="system_stats_battery">BAT</string>
+    <string name="system_stats_engine">MOT</string>
+    <string name="system_stats_outside">OUT</string>
 </resources>

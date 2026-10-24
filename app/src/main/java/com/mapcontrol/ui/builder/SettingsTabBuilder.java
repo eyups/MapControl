@@ -31,6 +31,7 @@ import com.mapcontrol.driving.DrivingTripStore;
 import com.mapcontrol.tts.MapControlSpeech;
 import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
+import com.mapcontrol.ui.widget.SystemStatsOverlay;
 import com.mapcontrol.manager.FloatingBackButtonManager;
 import com.mapcontrol.service.BootReceiver;
 import com.mapcontrol.util.AdbSettings;
@@ -50,6 +51,8 @@ public class SettingsTabBuilder {
         void onLocaleChanged();
 
         void onThemeChanged();
+
+        void onSystemStatsChanged(boolean enabled);
     }
 
     private final Context context;
@@ -122,6 +125,7 @@ public class SettingsTabBuilder {
             createBootAutostartSection(left);
 
             createAdbSection(right);
+            createSystemStatsSection(right);
             createPermissionsSection(right);
             createFloatingBackButtonSection(right);
             createLauncherModeSection(right);
@@ -141,6 +145,7 @@ public class SettingsTabBuilder {
         createAppInfoSection(card);
         createBootAutostartSection(card);
         createAdbSection(card);
+        createSystemStatsSection(card);
         createPermissionsSection(card);
         createFloatingBackButtonSection(card);
         createLauncherModeSection(card);
@@ -615,6 +620,40 @@ public class SettingsTabBuilder {
             }
         });
         parentContainer.addView(toggle, toggleLp);
+    }
+
+    private void createSystemStatsSection(LinearLayout parentContainer) {
+        TextView title = new TextView(context);
+        title.setText(R.string.settings_system_stats_title);
+        title.setTextSize(18);
+        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        title.setPadding(16, 24, 16, 8);
+        parentContainer.addView(title, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView desc = new TextView(context);
+        desc.setText(R.string.settings_system_stats_desc);
+        desc.setTextSize(13);
+        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+        desc.setPadding(16, 0, 16, 12);
+        parentContainer.addView(desc, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        boolean enabled = prefs.getBoolean(SystemStatsOverlay.PREF_ENABLED, false);
+        UiStyles.addBinarySegmentedControl(context, parentContainer,
+                null,
+                context.getString(R.string.common_on), context.getString(R.string.common_off),
+                context.getString(R.string.settings_system_stats_help_on),
+                context.getString(R.string.settings_system_stats_help_off),
+                enabled,
+                isEnabled -> {
+                    prefs.edit().putBoolean(SystemStatsOverlay.PREF_ENABLED, isEnabled).apply();
+                    callback.onSystemStatsChanged(isEnabled);
+                    callback.log("Sistem izleme: " + (isEnabled ? "Açık" : "Kapalı"));
+                });
     }
 
     private void createFloatingBackButtonSection(LinearLayout parentContainer) {

@@ -113,6 +113,7 @@ import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.widget.CyberScanlineView;
 import com.mapcontrol.ui.widget.MaxWidthFrameLayout;
+import com.mapcontrol.ui.widget.SystemStatsOverlay;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView profileScrollView; // Profil tab ScrollView
     private ProfileApiService profileApiService; // API servisi
     private FrameLayout mainRootContainer;
+    private SystemStatsOverlay systemStatsOverlay;
     /** Gece/gündüz uiMode — Activity recreate etmeden soft tema yenilemek için. */
     private int lastNightModeUiBits = -1;
     /** Son uygulanan yön; configChanges orientation activity'yi yeniden kurmaz. */
@@ -921,6 +923,13 @@ public class MainActivity extends AppCompatActivity {
                         getIntent().putExtra(EXTRA_OPEN_SETTINGS_AFTER_THEME, true);
                         MainActivity.this.recreate();
                     }
+
+                    @Override
+                    public void onSystemStatsChanged(boolean enabled) {
+                        if (systemStatsOverlay != null) {
+                            systemStatsOverlay.setEnabled(enabled);
+                        }
+                    }
                 });
         settingsScrollView = settingsTabBuilder.getScrollView();
         settingsTabContent = settingsTabBuilder.getSettingsTabContent();
@@ -1015,6 +1024,29 @@ public class MainActivity extends AppCompatActivity {
                             android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                             android.view.ViewGroup.LayoutParams.MATCH_PARENT));
         }
+        attachSystemStatsOverlay();
+    }
+
+    /** Tüm sekmelerin üzerinde duran sistem HUD'ını kök FrameLayout'a ekler. */
+    private void attachSystemStatsOverlay() {
+        if (mainRootContainer == null) {
+            return;
+        }
+        if (systemStatsOverlay != null
+                && systemStatsOverlay.getParent() instanceof android.view.ViewGroup) {
+            ((android.view.ViewGroup) systemStatsOverlay.getParent()).removeView(systemStatsOverlay);
+        }
+        systemStatsOverlay = new SystemStatsOverlay(this);
+        int margin = Math.round(16 * getResources().getDisplayMetrics().density);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                android.view.Gravity.BOTTOM | android.view.Gravity.END);
+        lp.setMargins(margin, margin, margin, margin);
+        mainRootContainer.addView(systemStatsOverlay, lp);
+        systemStatsOverlay.setEnabled(getSharedPreferences("MapControlPrefs", MODE_PRIVATE)
+                .getBoolean(SystemStatsOverlay.PREF_ENABLED, false));
+        systemStatsOverlay.bringToFront();
     }
 
     /**
@@ -2074,10 +2106,16 @@ public class MainActivity extends AppCompatActivity {
         if (currentTab == TAB_DRIVING_HISTORY && drivingHistoryTabBuilder != null) {
             drivingHistoryTabBuilder.onTabVisible();
         }
+        if (systemStatsOverlay != null) {
+            systemStatsOverlay.setActive(true);
+        }
     }
 
     @Override
     protected void onPause() {
+        if (systemStatsOverlay != null) {
+            systemStatsOverlay.setActive(false);
+        }
         if (drivingHistoryTabBuilder != null) {
             drivingHistoryTabBuilder.onTabHidden();
         }
@@ -2235,6 +2273,10 @@ public class MainActivity extends AppCompatActivity {
         }
         if (vehicleInfoTabBuilder != null) {
             vehicleInfoTabBuilder.release();
+        }
+        if (systemStatsOverlay != null) {
+            systemStatsOverlay.release();
+            systemStatsOverlay = null;
         }
         if (vehicleMetricsRepository != null) {
             vehicleMetricsRepository.release();
