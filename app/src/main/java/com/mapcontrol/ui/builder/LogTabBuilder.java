@@ -24,6 +24,7 @@ import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.activity.CameraActivity;
 import com.mapcontrol.ui.activity.DmsFaceProfileActivity;
 import com.mapcontrol.ui.activity.ClusterVDBusTestActivity;
+import com.mapcontrol.ui.activity.AdasProbeActivity;
 import com.mapcontrol.ui.activity.IdDiscoveryActivity;
 import com.mapcontrol.vehicle.DriveFollowLogger;
 import com.mapcontrol.vehicle.VehicleValueWatcher;
@@ -269,6 +270,15 @@ public class LogTabBuilder {
             }
         });
 
+        Button btnAdasProbe = new Button(context);
+        btnAdasProbe.setText(R.string.log_adas_probe);
+        btnAdasProbe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        btnAdasProbe.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.styleOemButton(btnAdasProbe, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnAdasProbe.setPadding(16, 12, 16, 12);
+        btnAdasProbe.setOnClickListener(v ->
+                context.startActivity(new Intent(context, AdasProbeActivity.class)));
+
         Button btnIdDiscovery = new Button(context);
         btnIdDiscovery.setText(R.string.log_id_discovery);
         btnIdDiscovery.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -289,6 +299,7 @@ public class LogTabBuilder {
         upperColumn.addView(btnClusterVDBusTest, benchBtnLp);
         upperColumn.addView(btnValueWatcher, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(btnDriveFollow, new LinearLayout.LayoutParams(benchBtnLp));
+        upperColumn.addView(btnAdasProbe, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(btnIdDiscovery, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(ttsCard, ttsCardParams);
         upperScroll.addView(upperColumn, new LinearLayout.LayoutParams(
@@ -296,7 +307,7 @@ public class LogTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayout.LayoutParams upperParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                0, 0.34f);
+                0, 0.42f);
         glassShell.addView(upperScroll, upperParams);
 
         LinearLayout terminalContainer = new LinearLayout(context);

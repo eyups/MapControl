@@ -1007,4 +1007,20 @@
     <string name="system_stats_app">APP</string>
     <string name="system_stats_peak">PEAK</string>
     <string name="system_stats_thermal">TERM</string>
+    <string name="log_adas_probe">ADAS DIAGNOSTICS</string>
+    <string name="adas_probe_title">ADAS diagnostics</string>
+    <string name="adas_probe_subtitle">Reads EOL config 112/147 and listens to ADAS event ranges. No root or automatic logging.</string>
+    <string name="adas_probe_loading">Reading EOL config…</string>
+    <string name="adas_probe_config_missing">EOL config could not be read.</string>
+    <string name="adas_probe_config_format">config112=%1$s  config147=%2$s
+config4[5]=%3$s  config5[3]=%4$s
+IDCU=%5$s   5GTBox=%6$s</string>
+    <string name="adas_probe_start">Start scan</string>
+    <string name="adas_probe_stop">Stop</string>
+    <string name="adas_probe_clear">Clear</string>
+    <string name="adas_probe_status_idle">Idle</string>
+    <string name="adas_probe_status_running">Scanning: %1$d events</string>
+    <string name="adas_probe_scan_start">Scan started</string>
+    <string name="adas_probe_scan_stop">Scan stopped</string>
+    <string name="adas_probe_subscribed">Subscribed: %1$d, failed: %2$d</string>
 </resources>

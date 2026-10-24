@@ -161,6 +161,13 @@
 
         
         <activity
+            android:name=".ui.activity.AdasProbeActivity"
+            android:label="ADAS diagnostics"
+            android:exported="true"
+            android:theme="@style/Theme.MapControl"
+            android:screenOrientation="landscape" />
+
+        <activity
             android:name=".ui.activity.ClusterVDBusTestActivity"
             android:label="Cluster / VDBus bench"
             android:screenOrientation="landscape" />
