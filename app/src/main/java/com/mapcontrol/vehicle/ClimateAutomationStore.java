@@ -11,6 +11,8 @@ public final class ClimateAutomationStore {
     public static final String PASSENGER_HEAT = "passenger_heat";
     public static final String DRIVER_VENT = "driver_vent";
     public static final String PASSENGER_VENT = "passenger_vent";
+    public static final String REAR_LEFT_HEAT = "rear_left_heat";
+    public static final String REAR_RIGHT_HEAT = "rear_right_heat";
     public static final String STEER_HEAT = "steer_heat";
     public static final String WINDSHIELD = "windshield";
     public static final String REAR_DEFROST = "rear_defrost";
@@ -18,6 +20,7 @@ public final class ClimateAutomationStore {
 
     public static final String[] ALL_IDS = {
             DRIVER_HEAT, PASSENGER_HEAT, DRIVER_VENT, PASSENGER_VENT,
+            REAR_LEFT_HEAT, REAR_RIGHT_HEAT,
             STEER_HEAT, WINDSHIELD, REAR_DEFROST, CLIMATE
     };
 
@@ -57,7 +60,9 @@ public final class ClimateAutomationStore {
         return DRIVER_HEAT.equals(id)
                 || PASSENGER_HEAT.equals(id)
                 || DRIVER_VENT.equals(id)
-                || PASSENGER_VENT.equals(id);
+                || PASSENGER_VENT.equals(id)
+                || REAR_LEFT_HEAT.equals(id)
+                || REAR_RIGHT_HEAT.equals(id);
     }
 
     /**
@@ -198,6 +203,10 @@ public final class ClimateAutomationStore {
         } else if (PASSENGER_VENT.equals(id)) {
             rule.compare = CMP_GT;
             rule.tempC = 5;
+        } else if (REAR_LEFT_HEAT.equals(id) || REAR_RIGHT_HEAT.equals(id)) {
+            rule.delayMinutes = 0;
+            rule.tempC = 15;
+            rule.level = 1;
         } else if (STEER_HEAT.equals(id) || WINDSHIELD.equals(id) || REAR_DEFROST.equals(id)) {
             rule.tempC = 0;
         } else if (CLIMATE.equals(id)) {

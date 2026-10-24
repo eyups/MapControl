@@ -53,7 +53,6 @@ import com.mapcontrol.manager.MapControlVDBusKeyBridge;
 import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.vehicle.ComfortCommands;
 import com.mapcontrol.vehicle.RecirculationAutomation;
-import com.mapcontrol.vehicle.TemperatureAutomation;
 import com.mapcontrol.R;
 import com.mapcontrol.vehicle.ClimateAutomationEngine;
 import android.content.pm.PackageManager;
@@ -91,7 +90,6 @@ public class MapControlService extends Service {
     private long nextUiLaunchAt;
     private CarSystemGestureController carSystemGestureController;
     private RecirculationAutomation recirculationAutomation;
-    private TemperatureAutomation temperatureAutomation;
     private DrivingSessionRecorder drivingSessionRecorder;
     private SharedPreferences.OnSharedPreferenceChangeListener gesturePrefListener;
     
@@ -346,7 +344,6 @@ public class MapControlService extends Service {
             log("❌ CarInfoProxy init hatası: " + e.getMessage());
         }
         recirculationAutomation = new RecirculationAutomation(this, this::log);
-        temperatureAutomation = new TemperatureAutomation(this, this::log);
 
         // Her 2 saniyede bir power mode kontrol et
         scheduler.scheduleAtFixedRate(() -> {
@@ -372,11 +369,6 @@ public class MapControlService extends Service {
                         recirculationAutomation.tick(currentPowerMode);
                     } catch (Throwable t) {
                         Log.w(TAG, "recirculation tick failed", t);
-                    }
-                    try {
-                        temperatureAutomation.tick(currentPowerMode);
-                    } catch (Throwable t) {
-                        Log.w(TAG, "temperature tick failed", t);
                     }
                     
                     // Power mode değişti mi kontrol et

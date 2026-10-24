@@ -219,6 +219,8 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
                 ClimateAutomationStore.PASSENGER_VENT, R.string.climate_auto_passenger_vent, R.drawable.ic_climate_seat_cooling,
                 density, compactLayout));
 
+        root.addView(buildRearSeatCard(density, compactLayout));
+
         // SECTION 3: OTHER CONTROLS (CAM & DİREKSİYON) - Direksiyon, Ön Cam, Arka Cam
         root.addView(buildOtherControlsCard(density, compactLayout));
 
@@ -293,6 +295,54 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         p2.leftMargin = dp(6, density);
         row.addView(ventCard, p2);
+
+        outerCard.addView(row);
+        return outerCard;
+    }
+
+    /** Arka koltuk ısıtma kuralları; sürücü/yolcu grubundan ayrı tutulur. */
+    private LinearLayout buildRearSeatCard(float density, boolean compactLayout) {
+        LinearLayout outerCard = new LinearLayout(context);
+        outerCard.setOrientation(LinearLayout.VERTICAL);
+        outerCard.setPadding(dp(16, density), dp(16, density), dp(16, density), dp(16, density));
+
+        GradientDrawable outerBg = new GradientDrawable();
+        outerBg.setColor(UiStyles.color(context, R.color.automationPanel));
+        outerBg.setCornerRadius(dp(22, density));
+        outerBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+        outerCard.setBackground(outerBg);
+        outerCard.setElevation(dp(2, density));
+
+        LinearLayout.LayoutParams outerLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        outerLp.topMargin = dp(16, density);
+        outerCard.setLayoutParams(outerLp);
+
+        TextView sectionTitle = new TextView(context);
+        sectionTitle.setText(R.string.climate_auto_rear_section);
+        sectionTitle.setTextSize(17);
+        sectionTitle.setTypeface(null, Typeface.BOLD);
+        sectionTitle.setTextColor(UiStyles.color(context, R.color.automationText));
+        sectionTitle.setPadding(dp(4, density), 0, dp(4, density), dp(12, density));
+        outerCard.addView(sectionTitle);
+
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+
+        FrameLayout left = buildRuleCard(ClimateAutomationStore.REAR_LEFT_HEAT,
+                R.string.automation_rule_rear_left_heat, R.drawable.ic_climate_seat_heat, density, compactLayout);
+        FrameLayout right = buildRuleCard(ClimateAutomationStore.REAR_RIGHT_HEAT,
+                R.string.automation_rule_rear_right_heat, R.drawable.ic_climate_seat_heat, density, compactLayout);
+
+        LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        leftLp.rightMargin = dp(6, density);
+        row.addView(left, leftLp);
+
+        LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        rightLp.leftMargin = dp(6, density);
+        row.addView(right, rightLp);
 
         outerCard.addView(row);
         return outerCard;
@@ -824,7 +874,11 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
     private int accentFor(String id) {
         if (ClimateAutomationStore.DRIVER_HEAT.equals(id)
                 || ClimateAutomationStore.PASSENGER_HEAT.equals(id)
-                || ClimateAutomationStore.STEER_HEAT.equals(id)) {
+                || ClimateAutomationStore.REAR_LEFT_HEAT.equals(id)
+                || ClimateAutomationStore.REAR_RIGHT_HEAT.equals(id)
+                || ClimateAutomationStore.STEER_HEAT.equals(id)
+                || ClimateAutomationStore.WINDSHIELD.equals(id)
+                || ClimateAutomationStore.REAR_DEFROST.equals(id)) {
             return 0xFFEF4444; // Modern canlı kırmızı
         }
         if (ClimateAutomationStore.DRIVER_VENT.equals(id)

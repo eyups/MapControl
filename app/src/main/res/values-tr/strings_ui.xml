@@ -1015,4 +1015,5 @@
 <string name="vehicle_info_light_raw">Ham sinyal</string>
 <string name="vehicle_info_light_day">Gündüz</string>
 <string name="vehicle_info_light_night">Gece</string>
+    <string name="climate_auto_rear_section">Arka koltuklar</string>
 </resources>

@@ -45,7 +45,6 @@ public class SideRailBuilder {
     private static final int TAB_WELCOME_SOUND = 8;
     private static final int TAB_VEHICLE_INFO = 9;
     private static final int TAB_EQUALIZER = 11;
-    private static final int TAB_AUTOMATION = 12;
     private static final int TAB_DRIVER_PROFILES = 13;
     private static final int TAB_DRIVING_HISTORY = 14;
     private static final int TAB_COMFORT = 15;
@@ -69,7 +68,6 @@ public class SideRailBuilder {
     private LinearLayout menuCamera360;
     private LinearLayout menuWelcomeSound;
     private LinearLayout menuEqualizer;
-    private LinearLayout menuAutomation;
     private LinearLayout menuDriverProfiles;
     private LinearLayout menuClimateAutomation;
     private LinearLayout menuFaceRecognition;
@@ -154,8 +152,6 @@ public class SideRailBuilder {
         // Temporarily hidden: Profile rail item (uncomment addView and onClick below to restore).
         menuProfile = createRailMenuItemView(R.drawable.ic_mdi_account, t(R.string.side_rail_profile));
         menuDriveMode = createRailMenuItemView(R.drawable.ic_mdi_car, t(R.string.side_rail_drive_mode));
-        menuAutomation = createRailMenuItemView(R.drawable.ic_mdi_thermometer,
-                t(R.string.side_rail_automation));
         menuComfort = createRailMenuItemView(R.drawable.ic_mdi_car_seat,
                 t(R.string.side_rail_comfort));
         menuValet = createRailMenuItemView(R.drawable.ic_mdi_shield_car,
@@ -188,7 +184,6 @@ public class SideRailBuilder {
         menuContainer.addView(sectionHeader(R.string.nav_section_vehicle));
         menuContainer.addView(menuDriveMode);
         menuContainer.addView(menuDriverProfiles);
-        menuContainer.addView(menuAutomation);
         menuContainer.addView(menuComfort);
         menuContainer.addView(menuValet);
         menuContainer.addView(menuVehicleInfo);
@@ -243,8 +238,6 @@ public class SideRailBuilder {
         menuFileUpload = createPortraitRailItem(R.drawable.ic_mdi_web, t(R.string.side_rail_web));
         menuProfile = createPortraitRailItem(R.drawable.ic_mdi_account, t(R.string.side_rail_profile));
         menuDriveMode = createPortraitRailItem(R.drawable.ic_mdi_car, t(R.string.side_rail_drive_mode));
-        menuAutomation = createPortraitRailItem(R.drawable.ic_mdi_thermometer,
-                t(R.string.side_rail_automation));
         menuComfort = createPortraitRailItem(R.drawable.ic_mdi_car_seat,
                 t(R.string.side_rail_comfort));
         menuValet = createPortraitRailItem(R.drawable.ic_mdi_shield_car,
@@ -274,7 +267,6 @@ public class SideRailBuilder {
         menuContainer.addView(menuFileUpload);
         menuContainer.addView(menuDriveMode);
         menuContainer.addView(menuDriverProfiles);
-        menuContainer.addView(menuAutomation);
         menuContainer.addView(menuComfort);
         menuContainer.addView(menuValet);
         menuContainer.addView(menuWelcomeSound);
@@ -361,11 +353,6 @@ public class SideRailBuilder {
         menuEqualizer.setOnClickListener(v -> {
             callback.onTabSelected(TAB_EQUALIZER, t(R.string.side_rail_equalizer));
             updateMenuSelection(menuEqualizer, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        });
-
-        menuAutomation.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_AUTOMATION, t(R.string.side_rail_automation));
-            updateMenuSelection(menuAutomation);
         });
 
         menuComfort.setOnClickListener(v -> {
@@ -488,9 +475,6 @@ public class SideRailBuilder {
                 break;
             case 11:
                 updateMenuSelection(menuEqualizer, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case TAB_AUTOMATION:
-                updateMenuSelection(menuAutomation);
                 break;
             case TAB_DRIVER_PROFILES:
                 updateMenuSelection(menuDriverProfiles);
@@ -727,7 +711,7 @@ public class SideRailBuilder {
         return new LinearLayout[]{
                 menuHome, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo,
                 menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound, menuEqualizer,
-                menuAutomation, menuComfort, menuValet, menuDriverProfiles, menuDrivingHistory,
+                menuComfort, menuValet, menuDriverProfiles, menuDrivingHistory,
                 menuClimateAutomation, menuFaceRecognition, menuCamera360
         };
     }

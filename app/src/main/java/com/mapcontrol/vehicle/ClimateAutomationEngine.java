@@ -84,6 +84,8 @@ public final class ClimateAutomationEngine {
             CarSettingID.ID_CAR_COPILOT_SEAT_HEAT,
             CarSettingID.ID_CAR_DRIVER_SEAT_VENTILATION,
             CarSettingID.ID_CAR_COPILOT_SEAT_VENTILATION,
+            CarSettingID.ID_CAR_RL_SEAT_HEAT_STATUS,
+            CarSettingID.ID_CAR_RR_VR_SEAT_HEAT_STATUS,
             CarSettingID.ID_CAR_STEER_WHEEL_HEAT,
             CarSettingID.ID_CAR_REAR_WINDOW_HEAT
     };
@@ -418,6 +420,12 @@ public final class ClimateAutomationEngine {
             if (itemId == CarSettingID.ID_CAR_COPILOT_SEAT_VENTILATION) {
                 return ClimateAutomationStore.PASSENGER_VENT;
             }
+            if (itemId == CarSettingID.ID_CAR_RL_SEAT_HEAT_STATUS) {
+                return ClimateAutomationStore.REAR_LEFT_HEAT;
+            }
+            if (itemId == CarSettingID.ID_CAR_RR_VR_SEAT_HEAT_STATUS) {
+                return ClimateAutomationStore.REAR_RIGHT_HEAT;
+            }
             if (itemId == CarSettingID.ID_CAR_STEER_WHEEL_HEAT) {
                 return ClimateAutomationStore.STEER_HEAT;
             }
@@ -638,6 +646,10 @@ public final class ClimateAutomationEngine {
                 return seatFeedbackMatches(id, CarSettingID.ID_CAR_DRIVER_SEAT_VENTILATION, rule.level);
             case ClimateAutomationStore.PASSENGER_VENT:
                 return seatFeedbackMatches(id, CarSettingID.ID_CAR_COPILOT_SEAT_VENTILATION, rule.level);
+            case ClimateAutomationStore.REAR_LEFT_HEAT:
+                return seatFeedbackMatches(id, CarSettingID.ID_CAR_RL_SEAT_HEAT_STATUS, rule.level);
+            case ClimateAutomationStore.REAR_RIGHT_HEAT:
+                return seatFeedbackMatches(id, CarSettingID.ID_CAR_RR_VR_SEAT_HEAT_STATUS, rule.level);
             case ClimateAutomationStore.STEER_HEAT:
                 return feedbackMatches(id, MODULE_SETTING, CarSettingID.ID_CAR_STEER_WHEEL_HEAT, 1);
             case ClimateAutomationStore.WINDSHIELD:
@@ -755,6 +767,12 @@ public final class ClimateAutomationEngine {
                 case ClimateAutomationStore.PASSENGER_VENT:
                     proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_COPILOT_SEAT_VENTILATION, wireSeatLevel(rule.level));
                     break;
+                case ClimateAutomationStore.REAR_LEFT_HEAT:
+                    proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_RL_SEAT_HEAT_STATUS, wireSeatLevel(rule.level));
+                    break;
+                case ClimateAutomationStore.REAR_RIGHT_HEAT:
+                    proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_RR_VR_SEAT_HEAT_STATUS, wireSeatLevel(rule.level));
+                    break;
                 case ClimateAutomationStore.STEER_HEAT:
                     proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_STEER_WHEEL_HEAT, 1);
                     break;
@@ -848,6 +866,12 @@ public final class ClimateAutomationEngine {
                     break;
                 case ClimateAutomationStore.PASSENGER_VENT:
                     proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_COPILOT_SEAT_VENTILATION, 1);
+                    break;
+                case ClimateAutomationStore.REAR_LEFT_HEAT:
+                    proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_RL_SEAT_HEAT_STATUS, 1);
+                    break;
+                case ClimateAutomationStore.REAR_RIGHT_HEAT:
+                    proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_RR_VR_SEAT_HEAT_STATUS, 1);
                     break;
                 case ClimateAutomationStore.STEER_HEAT:
                     proxy.sendItemValue(MODULE_SETTING, CarSettingID.ID_CAR_STEER_WHEEL_HEAT, 0);

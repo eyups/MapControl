@@ -84,7 +84,6 @@ import com.mapcontrol.ui.builder.EqualizerTabBuilder;
 import com.mapcontrol.ui.builder.FileUploadTabBuilder;
 import com.mapcontrol.ui.builder.HomeTabBuilder;
 import com.mapcontrol.ui.builder.LauncherTabBuilder;
-import com.mapcontrol.ui.builder.AutomationTabBuilder;
 import com.mapcontrol.ui.builder.DriverProfilesTabBuilder;
 import com.mapcontrol.ui.builder.ComfortTabBuilder;
 import com.mapcontrol.ui.builder.DrivingHistoryTabBuilder;
@@ -123,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
     /** Araç Launcher Modu "Ana Ekran" karşılama sekmesinin {@code switchTab} indeksi. */
     private static final int TAB_LAUNCHER = 10;
     private static final int TAB_EQUALIZER = 11;
-    private static final int TAB_AUTOMATION = 12;
     private static final int TAB_DRIVER_PROFILES = 13;
     private static final int TAB_DRIVING_HISTORY = 14;
     private static final int TAB_COMFORT = 15;
@@ -178,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
     private EqualizerTabBuilder equalizerTabBuilder;
-    private AutomationTabBuilder automationTabBuilder;
     private DriverProfilesTabBuilder driverProfilesTabBuilder;
     private VehicleInfoTabBuilder vehicleInfoTabBuilder;
     private DrivingHistoryTabBuilder drivingHistoryTabBuilder;
@@ -782,7 +779,6 @@ public class MainActivity extends AppCompatActivity {
 
         welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
         equalizerTabBuilder = new EqualizerTabBuilder(this);
-        automationTabBuilder = new AutomationTabBuilder(this, prefs, msg -> MainActivity.this.log(msg));
         comfortTabBuilder = new ComfortTabBuilder(this, prefs, msg -> MainActivity.this.log(msg));
         valetTabBuilder = new ValetTabBuilder(this, msg -> MainActivity.this.log(msg),
                 this::onValetStateChanged);
@@ -1286,8 +1282,6 @@ public class MainActivity extends AppCompatActivity {
             addTabChild(parent, vehicleInfoScrollView, matchParent);
         } else if (tabIndex == TAB_EQUALIZER) {
             addTabChild(parent, equalizerTabBuilder.getScrollView(), matchParent);
-        } else if (tabIndex == TAB_AUTOMATION) {
-            addTabChild(parent, automationTabBuilder.getScrollView(), matchParent);
         } else if (tabIndex == TAB_DRIVER_PROFILES) {
             addTabChild(parent, driverProfilesTabBuilder.getScrollView(), matchParent);
         } else if (tabIndex == TAB_COMFORT) {
@@ -1377,10 +1371,6 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_EQUALIZER) {
             if (topBarTitle != null) {
                 topBarTitle.setText(getString(R.string.equalizer_title));
-            }
-        } else if (tabIndex == TAB_AUTOMATION) {
-            if (topBarTitle != null) {
-                topBarTitle.setText(getString(R.string.side_rail_automation));
             }
         } else if (tabIndex == TAB_DRIVER_PROFILES) {
             if (topBarTitle != null) {
@@ -1976,9 +1966,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (equalizerTabBuilder != null) {
             equalizerTabBuilder.rebuild();
-        }
-        if (automationTabBuilder != null) {
-            automationTabBuilder.rebuild();
         }
         if (driverProfilesTabBuilder != null) {
             driverProfilesTabBuilder.rebuild();
