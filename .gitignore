@@ -24,3 +24,21 @@ captures/
 # OS
 .DS_Store
 Thumbs.db
+
+adbauth.key
+svtasklist.flag
+
+
+*.md
+# Araçtan çekilen ham dökümler ve OEM APK/jadx çıktıları (büyük, telifli)
+/car_info/
+/car_apks/
+.vscode/
+# Local reverse-engineering / test data (large, not source)
+jadx_all/
+logs/
+car_info/
+car_apks/
+tmp/
+mapcontrol.ab
+tts_probe/out/

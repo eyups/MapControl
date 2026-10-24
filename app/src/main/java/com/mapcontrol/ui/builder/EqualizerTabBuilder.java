@@ -74,27 +74,69 @@ public class EqualizerTabBuilder {
         outer.setOrientation(LinearLayout.VERTICAL);
         int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
         outer.setPadding(margin, margin, margin, margin);
+        scrollView.addView(outer, new ScrollView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        if (!state.supported) {
+            LinearLayout card = createCard();
+            addSectionTitle(card, R.string.equalizer_title);
+            addSectionDesc(card, R.string.equalizer_desc);
+            addSectionDesc(card, R.string.equalizer_unsupported);
+            outer.addView(card, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            return scrollView;
+        }
+
+        boolean wide = context.getResources().getConfiguration().screenWidthDp >= 1000;
+        if (wide) {
+            LinearLayout columns = new LinearLayout(context);
+            columns.setOrientation(LinearLayout.HORIZONTAL);
+            columns.setBaselineAligned(false);
+            LinearLayout left = createCard();
+            LinearLayout right = createCard();
+            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            leftLp.setMarginEnd(gutter / 2);
+            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            rightLp.setMarginStart(gutter / 2);
+            columns.addView(left, leftLp);
+            columns.addView(right, rightLp);
+
+            addSettingsPanel(left);
+            addSectionTitle(right, R.string.equalizer_bands_title);
+            addBandRows(right);
+
+            outer.addView(columns, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+        } else {
+            LinearLayout card = createCard();
+            addSettingsPanel(card);
+            addSectionTitle(card, R.string.equalizer_bands_title);
+            addBandRows(card);
+            outer.addView(card, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+        return scrollView;
+    }
+
+    private LinearLayout createCard() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
         int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
         card.setPadding(inner, inner, inner, inner);
         UiStyles.setGlassCardBackground(card);
+        return card;
+    }
 
-        outer.addView(card, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        scrollView.addView(outer, new ScrollView.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
+    private void addSettingsPanel(LinearLayout card) {
         addSectionTitle(card, R.string.equalizer_title);
         addSectionDesc(card, R.string.equalizer_desc);
-
-        if (!state.supported) {
-            addSectionDesc(card, R.string.equalizer_unsupported);
-            return scrollView;
-        }
 
         UiStyles.addBinarySegmentedControl(context, card,
                 null,
@@ -107,33 +149,30 @@ public class EqualizerTabBuilder {
 
         addSectionTitle(card, R.string.equalizer_gain_title);
         gainValue = addValueLabel(card, formatDb(gainMb, false));
-        gainBar = addSeekBar(card, AudioEqualizerController.MAX_GAIN_MB, gainMb, new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (!fromUser || updatingSliders) {
-                    return;
-                }
-                gainMb = progress;
-                gainValue.setText(formatDb(gainMb, false));
-                AudioEqualizerController.preview(context, gainMb, bandLevels);
-            }
+        gainBar = addSeekBar(card, AudioEqualizerController.MAX_GAIN_MB, gainMb,
+                new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        if (!fromUser || updatingSliders) {
+                            return;
+                        }
+                        gainMb = progress;
+                        gainValue.setText(formatDb(gainMb, false));
+                        AudioEqualizerController.preview(context, gainMb, bandLevels);
+                    }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+                    }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                commit(preset);
-            }
-        });
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+                        commit(preset);
+                    }
+                });
 
         addSectionTitle(card, R.string.equalizer_presets_title);
         addPresetRow(card);
-
-        addSectionTitle(card, R.string.equalizer_bands_title);
-        addBandRows(card);
-        return scrollView;
     }
 
     private void onEnabledChanged(boolean nowEnabled) {

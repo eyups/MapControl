@@ -2,6 +2,7 @@ package com.mapcontrol.ui.builder;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.TypedValue;
@@ -16,7 +17,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
+import com.mapcontrol.valet.ValetModeManager;
 
 public class TopBarBuilder {
     public interface TopBarCallback {
@@ -53,15 +56,15 @@ public class TopBarBuilder {
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setBackgroundColor(Color.TRANSPARENT);
         row.setPadding(
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, context.getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, context.getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 20, context.getResources().getDisplayMetrics()),
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, context.getResources().getDisplayMetrics()),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, context.getResources().getDisplayMetrics()),
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, context.getResources().getDisplayMetrics()));
+                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, context.getResources().getDisplayMetrics()));
         row.setGravity(Gravity.CENTER_VERTICAL);
 
         float density = context.getResources().getDisplayMetrics().density;
-        int backBtnSize = (int) (72 * density);
-        int iconPad = (int) (18 * density);
+        int backBtnSize = (int) (56 * density);
+        int iconPad = (int) (12 * density);
 
         launcherBackButton = new AppCompatImageButton(context);
         launcherBackButton.setVisibility(View.GONE);
@@ -81,7 +84,8 @@ public class TopBarBuilder {
 
         titleView = new TextView(context);
         titleView.setText(R.string.topbar_wifi_management);
-        titleView.setTextSize(18);
+        titleView.setTextSize(17);
+        titleView.setLetterSpacing(0.01f);
         titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
         titleView.setTypeface(null, android.graphics.Typeface.BOLD);
         titleView.setClickable(true);
@@ -89,6 +93,43 @@ public class TopBarBuilder {
         LinearLayout.LayoutParams titleParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         row.addView(titleView, titleParams);
+
+        if (ValetModeManager.isActive(context)) {
+            TextView valetBadge = new TextView(context);
+            valetBadge.setText("VALE MODU AKTİF");
+            valetBadge.setTextSize(11);
+            valetBadge.setTypeface(null, android.graphics.Typeface.BOLD);
+            valetBadge.setTextColor(0xFFFFFFFF);
+            GradientDrawable badgeBackground = new GradientDrawable();
+            badgeBackground.setColor(0xFFC62828);
+            badgeBackground.setCornerRadius(8 * density);
+            valetBadge.setBackground(badgeBackground);
+            valetBadge.setPadding((int) (8 * density), (int) (4 * density),
+                    (int) (8 * density), (int) (4 * density));
+            LinearLayout.LayoutParams valetParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            valetParams.setMarginEnd((int) (8 * density));
+            row.addView(valetBadge, valetParams);
+        }
+
+        if (ThemeManager.isCyber(context)) {
+            TextView cyberBadge = new TextView(context);
+            cyberBadge.setText("[CYBER]");
+            cyberBadge.setTextSize(11);
+            cyberBadge.setTypeface(android.graphics.Typeface.MONOSPACE,
+                    android.graphics.Typeface.BOLD);
+            cyberBadge.setTextColor(UiStyles.color(context, R.color.textPrimary));
+            cyberBadge.setBackground(ThemeManager.cyberBadgeBackground(context));
+            int h = (int) (8 * density);
+            int v = (int) (4 * density);
+            cyberBadge.setPadding(h, v, h, v);
+            LinearLayout.LayoutParams badgeParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            badgeParams.setMarginEnd((int) (12 * density));
+            row.addView(cyberBadge, badgeParams);
+        }
 
         buttonsContainer = new LinearLayout(context);
         buttonsContainer.setOrientation(LinearLayout.HORIZONTAL);

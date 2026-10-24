@@ -107,7 +107,7 @@ public final class WelcomeScreenPresenter {
         try {
             wm.addView(host, params);
         } catch (RuntimeException e) {
-            Log.w(TAG, "Hoşgeldin ekranı açılamadı", e);
+            Log.w(TAG, "Hoş geldin ekranı açılamadı", e);
             return;
         }
         overlayView = host;

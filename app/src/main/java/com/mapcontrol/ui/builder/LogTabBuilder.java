@@ -23,6 +23,9 @@ import com.mapcontrol.R;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.activity.CameraActivity;
 import com.mapcontrol.ui.activity.ClusterVDBusTestActivity;
+import com.mapcontrol.ui.activity.IdDiscoveryActivity;
+import com.mapcontrol.vehicle.DriveFollowLogger;
+import com.mapcontrol.vehicle.VehicleValueWatcher;
 
 public class LogTabBuilder {
     public interface LogCallback {
@@ -36,6 +39,8 @@ public class LogTabBuilder {
 
     private final Context context;
     private final LogCallback callback;
+    private final VehicleValueWatcher valueWatcher = new VehicleValueWatcher();
+    private final DriveFollowLogger driveFollowLogger;
 
     private LinearLayout tabContent;
     private TextView logsTextView;
@@ -45,6 +50,7 @@ public class LogTabBuilder {
     public LogTabBuilder(Context context, LogCallback callback) {
         this.context = context;
         this.callback = callback;
+        this.driveFollowLogger = new DriveFollowLogger(context);
         build();
     }
 
@@ -216,6 +222,47 @@ public class LogTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         benchBtnLp.setMargins(0, 10, 0, 0);
 
+        Button btnValueWatcher = new Button(context);
+        btnValueWatcher.setText(R.string.log_value_watcher_start);
+        btnValueWatcher.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        btnValueWatcher.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.styleOemButton(btnValueWatcher, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnValueWatcher.setPadding(16, 12, 16, 12);
+        btnValueWatcher.setOnClickListener(v -> {
+            if (valueWatcher.isRunning()) {
+                valueWatcher.stop(callback::log);
+                btnValueWatcher.setText(R.string.log_value_watcher_start);
+            } else {
+                valueWatcher.start(callback::log);
+                btnValueWatcher.setText(R.string.log_value_watcher_stop);
+            }
+        });
+
+        Button btnDriveFollow = new Button(context);
+        btnDriveFollow.setText(R.string.log_drive_follow_start);
+        btnDriveFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        btnDriveFollow.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.styleOemButton(btnDriveFollow, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnDriveFollow.setPadding(16, 12, 16, 12);
+        btnDriveFollow.setOnClickListener(v -> {
+            if (driveFollowLogger.isRunning()) {
+                driveFollowLogger.stop(callback::log);
+                btnDriveFollow.setText(R.string.log_drive_follow_start);
+            } else {
+                driveFollowLogger.start(callback::log);
+                btnDriveFollow.setText(R.string.log_drive_follow_stop);
+            }
+        });
+
+        Button btnIdDiscovery = new Button(context);
+        btnIdDiscovery.setText(R.string.log_id_discovery);
+        btnIdDiscovery.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        btnIdDiscovery.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.styleOemButton(btnIdDiscovery, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnIdDiscovery.setPadding(16, 12, 16, 12);
+        btnIdDiscovery.setOnClickListener(v ->
+                context.startActivity(new Intent(context, IdDiscoveryActivity.class)));
+
         ScrollView upperScroll = new ScrollView(context);
         upperScroll.setFillViewport(true);
         LinearLayout upperColumn = new LinearLayout(context);
@@ -225,6 +272,9 @@ public class LogTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         upperColumn.addView(btnClusterVDBusTest, benchBtnLp);
+        upperColumn.addView(btnValueWatcher, new LinearLayout.LayoutParams(benchBtnLp));
+        upperColumn.addView(btnDriveFollow, new LinearLayout.LayoutParams(benchBtnLp));
+        upperColumn.addView(btnIdDiscovery, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(ttsCard, ttsCardParams);
         upperScroll.addView(upperColumn, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,

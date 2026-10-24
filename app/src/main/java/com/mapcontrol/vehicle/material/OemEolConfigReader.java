@@ -18,14 +18,22 @@ import java.lang.reflect.Method;
 final class OemEolConfigReader {
 
     private static final String TAG = "OemEolConfig";
-    private static final int VDB_BIND_WAIT_MS = 2500;
-    private static final int VDB_BIND_STEP_MS = 100;
+    private static final long CACHE_TTL_MS = 5 * 60 * 1000L;
+    private static final long INCOMPLETE_CACHE_TTL_MS = 30 * 1000L;
+    private static volatile OemEolConfigReader cached;
+    private static volatile long cachedAtMs;
 
     private int[] carConfig3;
     private int[] carConfig5;
     private int[] comboConfig;
 
     void load(Context context) {
+        OemEolConfigReader cache = cached;
+        long age = System.currentTimeMillis() - cachedAtMs;
+        if (cache != null && age >= 0 && age < cacheTtlMs(cache)) {
+            copyFrom(cache);
+            return;
+        }
         Context app = context.getApplicationContext();
         VDBus vdbus = VDBus.getDefault();
         vdbus.init(app);
@@ -51,6 +59,8 @@ final class OemEolConfigReader {
                 + " net=" + getTboxNetworkType()
                 + " combo=" + (comboConfig != null ? comboConfig.length : 0)
                 + " cfg5=" + (carConfig5 != null ? carConfig5.length : 0));
+        cached = this;
+        cachedAtMs = System.currentTimeMillis();
     }
 
     private static void ensureVehicleDeviceConnected(VDBus vdbus) {
@@ -58,21 +68,25 @@ final class OemEolConfigReader {
         if (vdbus.isServiceConnected(type)) {
             return;
         }
-        vdbus.bindService(type);
-        long deadline = System.currentTimeMillis() + VDB_BIND_WAIT_MS;
-        while (System.currentTimeMillis() < deadline) {
-            if (vdbus.isServiceConnected(type)) {
-                Log.i(TAG, "VDBus VEHICLE_DEVICE bağlandı");
-                return;
-            }
-            try {
-                Thread.sleep(VDB_BIND_STEP_MS);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
+        // Never block the main thread waiting for an OEM bind; properties below are
+        // the safe fallback and the next settings refresh can retry.
+        try {
+            vdbus.bindService(type);
+            Log.d(TAG, "VDBus VEHICLE_DEVICE bind istendi (asenkron)");
+        } catch (Exception e) {
+            Log.w(TAG, "VDBus VEHICLE_DEVICE bind hatası: " + e.getMessage());
         }
-        Log.w(TAG, "VDBus VEHICLE_DEVICE bağlantısı zaman aşımı");
+    }
+
+    private static long cacheTtlMs(OemEolConfigReader value) {
+        return value.comboConfig != null || value.carConfig5 != null || value.carConfig3 != null
+                ? CACHE_TTL_MS : INCOMPLETE_CACHE_TTL_MS;
+    }
+
+    private void copyFrom(OemEolConfigReader other) {
+        carConfig3 = other.carConfig3 != null ? other.carConfig3.clone() : null;
+        carConfig5 = other.carConfig5 != null ? other.carConfig5.clone() : null;
+        comboConfig = other.comboConfig != null ? other.comboConfig.clone() : null;
     }
 
     int getModelCode() {

@@ -1,8 +1,11 @@
 package com.mapcontrol.ui.builder;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.wifi.ScanResult;
+import android.provider.Settings;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -56,26 +59,84 @@ public class WifiTabBuilder {
         int outerPad = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
         wifiTabContent.setPadding(outerPad, outerPad, outerPad, outerPad);
 
+        if (context.getResources().getConfiguration().screenWidthDp >= 1000) {
+            LinearLayout columns = new LinearLayout(context);
+            columns.setOrientation(LinearLayout.HORIZONTAL);
+            columns.setBaselineAligned(false);
+
+            LinearLayout left = createCard();
+            addPanelTitle(left, R.string.topbar_wifi_management);
+            addStatusAndControls(left);
+
+            LinearLayout right = createCard();
+            addPanelTitle(right, R.string.wifi_networks_title);
+            right.addView(createNetworkList(), new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, Math.round(220 * context.getResources().getDisplayMetrics().density)));
+
+            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            leftLp.setMarginEnd(gutter / 2);
+            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            rightLp.setMarginStart(gutter / 2);
+            columns.addView(left, leftLp);
+            columns.addView(right, rightLp);
+            wifiTabContent.addView(columns, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+        } else {
+            LinearLayout card = createCard();
+            addPanelTitle(card, R.string.topbar_wifi_management);
+            addStatusAndControls(card);
+            card.addView(createNetworkList(), new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    Math.round(220 * context.getResources().getDisplayMetrics().density)));
+            wifiTabContent.addView(card, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+
+        updateWifiStatus();
+        return wifiTabContent;
+    }
+
+    private LinearLayout createCard() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
         UiStyles.setGlassCardBackground(card);
         int innerPad = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
         card.setPadding(innerPad, innerPad, innerPad, innerPad);
+        return card;
+    }
 
+    private void addPanelTitle(LinearLayout card, int titleRes) {
+        TextView title = new TextView(context);
+        title.setText(titleRes);
+        title.setTextSize(18);
+        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        title.setPadding(16, 8, 16, 12);
+        card.addView(title, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void addStatusAndControls(LinearLayout card) {
         wifiStatusLine = new TextView(context);
         wifiStatusLine.setText(R.string.wifi_not_connected);
-        wifiStatusLine.setTextSize(12);
+        wifiStatusLine.setTextSize(13);
         wifiStatusLine.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-        wifiStatusLine.setPadding(0, 0, 0, UiStyles.dimenPx(context, R.dimen.spacing_small));
+        wifiStatusLine.setPadding(16, 0, 16, UiStyles.dimenPx(context, R.dimen.spacing_small));
         wifiStatusLine.setBackgroundColor(UiStyles.color(context, R.color.transparent));
-        LinearLayout.LayoutParams statusLineParams = new LinearLayout.LayoutParams(
+        card.addView(wifiStatusLine, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        card.addView(wifiStatusLine, statusLineParams);
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         LinearLayout controlButtonsRow = new LinearLayout(context);
         controlButtonsRow.setOrientation(LinearLayout.HORIZONTAL);
-        controlButtonsRow.setPadding(0, UiStyles.dimenPx(context, R.dimen.spacing_small), 0, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+        controlButtonsRow.setPadding(16, UiStyles.dimenPx(context, R.dimen.spacing_small),
+                16, UiStyles.dimenPx(context, R.dimen.spacing_medium));
         controlButtonsRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
         controlButtonsRow.setBackgroundColor(UiStyles.color(context, R.color.transparent));
 
@@ -98,6 +159,9 @@ public class WifiTabBuilder {
         btnScanWifi.setTextColor(UiStyles.color(context, R.color.textPrimary));
         btnScanWifi.setTypeface(null, android.graphics.Typeface.BOLD);
         UiStyles.styleOemButton(btnScanWifi, UiStyles.color(context, R.color.oemAccent));
+        if (com.mapcontrol.ui.theme.ThemeManager.isCyber(context)) {
+            btnScanWifi.setTextColor(android.graphics.Color.BLACK);
+        }
         btnScanWifi.setPadding(24, 12, 24, 12);
         btnScanWifi.setOnClickListener(v -> scanWifiNetworks());
         LinearLayout.LayoutParams scanParams = new LinearLayout.LayoutParams(
@@ -107,7 +171,9 @@ public class WifiTabBuilder {
         card.addView(controlButtonsRow, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
 
+    private ScrollView createNetworkList() {
         ScrollView wifiListScrollView = new ScrollView(context);
         wifiListScrollView.setBackgroundColor(UiStyles.color(context, R.color.transparent));
         wifiListScrollView.setPadding(0, 0, 0, 0);
@@ -115,19 +181,7 @@ public class WifiTabBuilder {
         wifiListContainer = new LinearLayout(context);
         wifiListContainer.setOrientation(LinearLayout.VERTICAL);
         wifiListScrollView.addView(wifiListContainer);
-
-        LinearLayout.LayoutParams listParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0, 1f);
-        card.addView(wifiListScrollView, listParams);
-
-        LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0, 1f);
-        wifiTabContent.addView(card, cardLp);
-
-        updateWifiStatus();
-        return wifiTabContent;
+        return wifiListScrollView;
     }
 
     public LinearLayout getTabContent() {
@@ -227,6 +281,12 @@ public class WifiTabBuilder {
 
             boolean result = wifiManager.setWifiEnabled(newState);
             callback.log("setWifiEnabled(" + newState + ") sonucu: " + result);
+            if (!result) {
+                callback.log("Wi-Fi sistem tarafından reddedildi (SoftAp/Settings kısıtı)");
+                updateWifiStatus();
+                showWifiRestrictedDialog();
+                return;
+            }
 
             handler.postDelayed(() -> {
                 updateWifiStatus();
@@ -246,6 +306,42 @@ public class WifiTabBuilder {
             }, 1000);
         } catch (Exception e) {
             callback.log("Wi-Fi toggle hatası: " + e.getMessage());
+        }
+    }
+
+    private void showWifiRestrictedDialog() {
+        if (context instanceof Activity && ((Activity) context).isFinishing()) {
+            return;
+        }
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.wifi_restricted_title)
+                .setMessage(R.string.wifi_restricted_message)
+                .setPositiveButton(R.string.wifi_restricted_open_settings,
+                        (dialog, which) -> openWifiSettings())
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void openWifiSettings() {
+        try {
+            // OEM Settings owns the only allowed Wi-Fi toggle while SoftAp is active.
+            // This service action shows the floating Wi-Fi dialog each time it is invoked.
+            Intent intent = new Intent("com.desaysv.setting.WIFI_SETTING_DIALOG");
+            intent.setPackage("com.desaysv.setting");
+            context.startForegroundService(intent);
+            return;
+        } catch (Exception ignored) {
+        }
+        try {
+            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+            if (!(context instanceof Activity)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context,
+                    context.getString(R.string.common_error_prefix, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 

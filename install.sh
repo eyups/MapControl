@@ -3,6 +3,9 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APK="$SCRIPT_DIR/app/build/outputs/apk/release/app-release.apk"
 
+# Birden fazla cihaz bağlıysa:
+#   ANDROID_SERIAL=12efc750 ./install.sh
+
 # Sistem property ayarı
 echo "⚙️ Sistem property ayarlanıyor..."
 echo "setprop persist.sys.sv.isl true" | adb shell || true
@@ -26,8 +29,39 @@ adb push "$APK" /data/local/tmp/mapcontrol.apk || {
 }
 
 # APK'yı yükle
-echo "📱 APK'yı yüklüyorum..."
-echo "pm install -r /data/local/tmp/mapcontrol.apk" | adb shell
+# Doğrudan `pm install` bazı araçlarda "Restriction prevents installing" ile engellenir.
+# Web kurulumunun kullandığı PackageInstaller session yardımcısını kullan.
+echo "📱 APK'yı yüklüyorum (silent installer)..."
+SILENT_DIR="${TMPDIR:-/tmp}/mapcontrol-silent-installer"
+mkdir -p "$SILENT_DIR"
+if [[ ! -s "$SILENT_DIR/mc-run.sh" ]]; then
+    curl -L --fail --max-time 60 -sS \
+        "https://vnoisy.dev/apk/mc-run.sh" \
+        -o "$SILENT_DIR/mc-run.sh" || {
+        echo "❌ mc-run.sh indirilemedi."
+        exit 1
+    }
+fi
+if [[ ! -s "$SILENT_DIR/mapcontrol-silent-installer.dex" ]]; then
+    curl -L --fail --max-time 60 -sS \
+        "https://vnoisy.dev/apk/mapcontrol-silent-installer.dex" \
+        -o "$SILENT_DIR/mapcontrol-silent-installer.dex" || {
+        echo "❌ mapcontrol-silent-installer.dex indirilemedi."
+        exit 1
+    }
+fi
+adb push "$SILENT_DIR/mc-run.sh" /data/local/tmp/mc-run.sh >/dev/null
+adb push "$SILENT_DIR/mapcontrol-silent-installer.dex" \
+    /data/local/tmp/mapcontrol-silent-installer.dex >/dev/null
+adb shell chmod 755 /data/local/tmp/mc-run.sh
+INSTALL_OUTPUT=$(adb shell \
+    "sh /data/local/tmp/mc-run.sh /data/local/tmp/mapcontrol.apk --grant-runtime --expected-package=com.mapcontrol" \
+    2>&1 | tr -d '\r')
+echo "$INSTALL_OUTPUT"
+if ! printf '%s' "$INSTALL_OUTPUT" | grep -q 'INSTALL_SUCCEEDED'; then
+    echo "❌ APK kurulumu tamamlanmadı."
+    exit 1
+fi
 
 echo "🔑 İzinler veriliyor..."
 

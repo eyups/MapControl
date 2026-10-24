@@ -216,10 +216,10 @@ public class WebServerManager {
                 String lineEnding = "\r\n\r\n";
                 String currentEnding = "";
                 
-                // Header'ı oku (boş satıra kadar)
+                // Header'ı oku (boş satıra kadar) — bounded to avoid memory abuse.
                 while (true) {
                     int read = input.read(buffer);
-                    if (read == -1) {
+                    if (read == -1 || headerBuilder.length() > 16_384) {
                         clientSocket.close();
                         return;
                     }

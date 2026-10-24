@@ -37,9 +37,27 @@
     <string name="floating_hub_icon_legend_title">Yüzen çubuktaki simgeler</string>
     <string name="floating_hub_icon_legend_body">Sol ok — Sistem geri (kısa dokunuş); menü açıkken sol ok üzerinde uzun bas — menüyü kapat\nKutu — Harita yansıtması için hedef uygulama seç\nHarita — Küme ekranını aç (yansıt)\nÇarpı — Yansıtmayı durdur\nŞimşek — Hızlı işlemler menüsünü göster / genişlet\nÇift sol ok — Hızlı işlemleri daralt\nTelefon — 1. ekranda önde olan uygulamalar\nMonitör — 2. ekranda önde olan uygulamalar</string>
 
-    <string name="welcome_sound_title">Hoşgeldin Ekranı</string>
+    <string name="welcome_sound_title">Karşılama Ekranı</string>
     <string name="welcome_sound_back">Geri</string>
     <string name="welcome_sound_steps">1. Telefonda bir ses dosyası indirin (mp3, wav, m4a, ogg, flac, aac, wma, amr).\n2. USB belleği araca takın. Dosya bu ekranda görünür; adına dokunun.\n3. USB yoksa Web ekranından İndirilenler’e gönderin, sonra Ses seç ile bulun.</string>
+
+    <string name="welcome_tts_title">TTS ile karşılama sesi</string>
+    <string name="welcome_tts_desc">Mesajı yaz, seçili TTS motoruyla sesi oluştur ve hafızada sakla.</string>
+    <string name="welcome_tts_default">Hoş geldin, iyi yolculuklar!</string>
+    <string name="welcome_tts_hint">Hoş geldin mesajı</string>
+
+    <string name="welcome_tts_tags_label">Duygu / ton etiketleri</string>
+    <string name="welcome_tts_tags_help">Etiketler ElevenLabs v3 tarafından yorumlanır. Sherpa-ONNX bunları ayıklayıp düz metin okur.</string>
+
+    <string name="welcome_tts_generate">TTS ile oluştur</string>
+    <string name="welcome_tts_generating">Ses oluşturuluyor…</string>
+    <string name="welcome_tts_saved">Ses oluşturuldu ve kaydedildi</string>
+    <string name="welcome_tts_error">Ses oluşturulamadı: %1$s</string>
+    <string name="welcome_tts_empty">Mesaj boş</string>
+
+    <string name="welcome_sound_subtitle">Ses, açılış davranışı ve giriş tasarımı</string>
+    <string name="welcome_sound_source_title">Ses kaynağı</string>
+    <string name="welcome_sound_source_desc">Seçili karşılama sesi ve USB dosyaları.</string>
     <string name="welcome_sound_usb_title">USB’deki sesler</string>
     <string name="welcome_sound_usb_absent">USB takılı değil.</string>
     <string name="welcome_sound_usb_empty">USB’de ses dosyası yok.</string>
@@ -67,7 +85,11 @@
     <string name="welcome_sound_folder_error">İndirilenler klasörüne erişilemedi</string>
     <string name="welcome_sound_pick_first">Önce bir ses dosyası seçin</string>
     <string name="welcome_sound_stopped">Durduruldu</string>
-    <string name="side_rail_welcome_sound">Hoşgeldin Ekranı</string>
+    <string name="nav_section_connect">BAĞLANTI</string>
+    <string name="nav_section_vehicle">ARAÇ</string>
+    <string name="nav_section_media">MEDYA</string>
+    <string name="nav_section_system">SİSTEM</string>
+    <string name="side_rail_welcome_sound">Karşılama Ekranı</string>
     <string name="welcome_design_section_title">Giriş tasarımı</string>
     <string name="welcome_design_section_desc">Araç açıldığında ana ekranda gösterilir.</string>
     <string name="welcome_design_off">Kapalı</string>
@@ -78,6 +100,10 @@
     <string name="welcome_design_winter_help">Pembe gece, çiçek, kelebek ve yazdığınız satır.</string>
     <string name="welcome_design_hike">Dağ Yürüyüşü</string>
     <string name="welcome_design_hike_help">Gün batımı, dağ silüeti ve yazdığınız satır.</string>
+    <string name="welcome_design_cyber">Cyber Terminal</string>
+    <string name="welcome_design_cyber_help">Siyah terminal, fosfor yeşili büyük harfler, daktilo efekti, yanıp sönen imleç ve glitch.</string>
+    <string name="welcome_cyber_fallback">SİSTEM HAZIR</string>
+    <string name="welcome_turkish_chars_label">Türkçe karakterler</string>
     <string name="welcome_custom_text_label">Karşılama yazısı</string>
     <string name="welcome_custom_text_hint">Ad soyad</string>
     <string name="welcome_custom_text_help">Boş bırakırsanız isim satırı görünmez.</string>

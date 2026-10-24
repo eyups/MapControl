@@ -35,6 +35,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import com.mapcontrol.api.ProfileApiService;
 import com.mapcontrol.audio.AudioEqualizerController;
+import com.mapcontrol.driving.DrivingSessionRecorder;
+import com.mapcontrol.valet.ValetMonitor;
 import com.mapcontrol.ui.activity.MainActivity;
 import com.mapcontrol.util.AppLaunchHelper;
 import com.mapcontrol.util.BootSession;
@@ -48,6 +50,10 @@ import com.mapcontrol.manager.CarSystemGestureController;
 import com.mapcontrol.manager.ClusterDisplayManager;
 import com.mapcontrol.manager.FloatingBackButtonManager;
 import com.mapcontrol.manager.MapControlVDBusKeyBridge;
+import com.mapcontrol.profile.DriverProfileApplier;
+import com.mapcontrol.vehicle.ComfortCommands;
+import com.mapcontrol.vehicle.RecirculationAutomation;
+import com.mapcontrol.vehicle.TemperatureAutomation;
 import com.mapcontrol.R;
 
 public class MapControlService extends Service {
@@ -76,12 +82,15 @@ public class MapControlService extends Service {
     /** Yansıtma paneli / yüzen kontroller / power modu ile aynı cluster VDBus ve taşıma mantığı ({@link ClusterDisplayManager}). */
     private ClusterDisplayManager clusterDisplayHelper;
     private int lastPowerMode = -1;
-    /** Hoşgeldin: ekran güç alınca bir kez. 1→2 geçişinde tekrar açılmaz. */
+    /** Hoş geldin: ekran güç alınca bir kez. 1→2 geçişinde tekrar açılmaz. */
     private int lastWelcomePowerMode = -1;
     private int lastAppliedDriveMode = -1; // Son uygulanan sürüş modu (tekrar uygulamayı önlemek için)
     private int uiLaunchAttempts;
     private long nextUiLaunchAt;
     private CarSystemGestureController carSystemGestureController;
+    private RecirculationAutomation recirculationAutomation;
+    private TemperatureAutomation temperatureAutomation;
+    private DrivingSessionRecorder drivingSessionRecorder;
     private SharedPreferences.OnSharedPreferenceChangeListener gesturePrefListener;
     
     /**
@@ -133,6 +142,9 @@ public class MapControlService extends Service {
         };
         TargetPackageStore.prefs(this).registerOnSharedPreferenceChangeListener(gesturePrefListener);
         carSystemGestureController.syncRegistration();
+        drivingSessionRecorder = DrivingSessionRecorder.get(this);
+        drivingSessionRecorder.start();
+        ValetMonitor.get(this).startIfActive();
     }
 
     /**
@@ -272,6 +284,11 @@ public class MapControlService extends Service {
             carSystemGestureController = null;
         }
         AudioEqualizerController.release();
+        if (drivingSessionRecorder != null) {
+            drivingSessionRecorder.stop();
+            drivingSessionRecorder = null;
+        }
+        ValetMonitor.get(this).stop();
         super.onDestroy();
         if (scheduler != null) {
             scheduler.shutdown();
@@ -313,6 +330,8 @@ public class MapControlService extends Service {
         } catch (Exception e) {
             log("❌ CarInfoProxy init hatası: " + e.getMessage());
         }
+        recirculationAutomation = new RecirculationAutomation(this, this::log);
+        temperatureAutomation = new TemperatureAutomation(this, this::log);
 
         // Her 2 saniyede bir power mode kontrol et
         scheduler.scheduleAtFixedRate(() -> {
@@ -334,6 +353,16 @@ public class MapControlService extends Service {
 
                 if (pwrItems != null && pwrItems.length > 0) {
                     int currentPowerMode = pwrItems[0];
+                    try {
+                        recirculationAutomation.tick(currentPowerMode);
+                    } catch (Throwable t) {
+                        Log.w(TAG, "recirculation tick failed", t);
+                    }
+                    try {
+                        temperatureAutomation.tick(currentPowerMode);
+                    } catch (Throwable t) {
+                        Log.w(TAG, "temperature tick failed", t);
+                    }
                     
                     // Power mode değişti mi kontrol et
                     if (lastPowerMode != currentPowerMode) {
@@ -359,13 +388,16 @@ public class MapControlService extends Service {
                                 log("⚠️ Araç power aldı ama ayar farklı, açılmıyor. PowerMode: " + currentPowerMode);
                             }
                             
-                            // Hoşgeldin ekranı ve ses, ekran güç alır almaz ayrı izleyicide açılır.
+                            // Hoş geldin ekranı ve ses, ekran güç alır almaz ayrı izleyicide açılır.
                             
                             // Sürüş modu otomatik ayarlama (Spor, Eco, Normal hariç)
                             // Powermode 2 olduğunda her zaman kayıtlı modu uygula
                             // CarInfoProxy bağlantısını kontrol et
                             if (CarInfoProxy.getInstance().isServiceConnnected()) {
                                 // Sıralı ayarlamaları Handler.postDelayed ile yap (Thread.sleep yerine)
+                                scheduler.schedule(this::applyComfortMemoryIfNeeded, 4, TimeUnit.SECONDS);
+                                scheduler.schedule(() -> DriverProfileApplier.applyOnIgnition(this, this::log),
+                                        6, TimeUnit.SECONDS);
                                 applyDriveModeIfNeeded();
                                 handler.postDelayed(() -> {
                                     applyIssIfNeeded();
@@ -438,7 +470,7 @@ public class MapControlService extends Service {
                 log("❌ Power mode kontrol hatası: " + e.getMessage());
             }
         }, 0, 2, TimeUnit.SECONDS);
-        scheduler.scheduleAtFixedRate(this::pollWelcomeScreen, 0, 250, TimeUnit.MILLISECONDS);
+        scheduler.scheduleAtFixedRate(this::pollWelcomeScreen, 0, 500, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -449,10 +481,7 @@ public class MapControlService extends Service {
     private void pollWelcomeScreen() {
         try {
             if (!CarInfoProxy.getInstance().isServiceConnnected()) {
-                try {
-                    CarInfoProxy.getInstance().init(getApplicationContext());
-                } catch (Exception ignored) {
-                }
+                // The 2 s power monitor owns reconnection; do not rebind every poll.
                 return;
             }
             int[] pwrItems = CarInfoProxy.getInstance().getItemValues(
@@ -490,7 +519,7 @@ public class MapControlService extends Service {
                 maybeLaunchHome();
             }
         } catch (Exception e) {
-            log("❌ Hoşgeldin ekranı kontrol hatası: " + e.getMessage());
+            log("❌ Hoş geldin ekranı kontrol hatası: " + e.getMessage());
         }
     }
 
@@ -570,9 +599,13 @@ public class MapControlService extends Service {
                 return;
             }
             
-            // Powermode 2 olduğunda her zaman kayıtlı modu uygula
-            // lastAppliedDriveMode kontrolü kaldırıldı - her powermode 2'de tekrar uygula
-            
+            // Apply the saved drive mode once per power-on. Repeated identical writes
+            // are unnecessary and can upset the OEM bus.
+            if (driveModeSetting == lastAppliedDriveMode) {
+                log("ℹ️ Sürüş modu zaten uygulanmış: " + driveModeSetting);
+                return;
+            }
+
             // CarInfoProxy bağlantısını kontrol et
             if (!CarInfoProxy.getInstance().isServiceConnnected()) {
                 log("🔌 CarInfoProxy bağlı değil, bağlantı kuruluyor...");
@@ -1002,6 +1035,62 @@ public class MapControlService extends Service {
         }
     }
 
+    private static final long SUNSHADE_OPEN_WAIT_MS = 15_000L;
+
+    /**
+     * Powermode 2 olunca kayıtlı cam tavan ve güneşlik konumunu uygula; yalnızca araç dururken.
+     * Yağmur sensörü kontrol edilmez.
+     */
+    private void applyComfortMemoryIfNeeded() {
+        try {
+            SharedPreferences prefs = getSharedPreferences("MapControlPrefs", MODE_PRIVATE);
+            int roof = prefs.getInt(ComfortCommands.PREF_SUNROOF, -1);
+            int shade = prefs.getInt(ComfortCommands.PREF_SUNSHADE, -1);
+            if (roof < 0 && shade < 0) {
+                return;
+            }
+            if (!ComfortCommands.isConnected()) {
+                log("🔌 CarInfoProxy bağlı değil, cam tavan/güneşlik ayarlanamadı");
+                return;
+            }
+            int speed = ComfortCommands.readSpeedKmh();
+            if (speed != 0) {
+                log("ℹ️ Araç hareketli veya hız okunamadı (" + speed + "), cam tavan/güneşlik uygulanmadı");
+                return;
+            }
+            boolean shadeSent = false;
+            if (shade == ComfortCommands.SUNSHADE_OPEN || shade == ComfortCommands.SUNSHADE_CLOSE) {
+                ComfortCommands.sendSunshade(shade);
+                shadeSent = true;
+                log("✅ Güneşlik komutu gönderildi: " + (shade == ComfortCommands.SUNSHADE_OPEN ? "Açık" : "Kapalı"));
+            }
+            if (roof > 0) {
+                // Güneşlik tam açılmadan cam tavan komutu OEM tarafından yok sayılıyor; açılış ~15 sn sürüyor.
+                long delayMs = !shadeSent ? 0
+                        : (shade == ComfortCommands.SUNSHADE_OPEN ? SUNSHADE_OPEN_WAIT_MS : 1500);
+                if (delayMs >= SUNSHADE_OPEN_WAIT_MS) {
+                    log("ℹ️ Güneşlik açılıyor, cam tavan komutu " + (delayMs / 1000) + " sn sonra gönderilecek");
+                }
+                scheduler.schedule(() -> sendSunroofMemory(roof), delayMs, TimeUnit.MILLISECONDS);
+            }
+        } catch (Exception e) {
+            log("❌ applyComfortMemoryIfNeeded hatası: " + e.getMessage());
+        }
+    }
+
+    private void sendSunroofMemory(int position) {
+        try {
+            if (ComfortCommands.readSunroofPosition() == position) {
+                log("ℹ️ Cam tavan zaten istenen konumda: " + position);
+                return;
+            }
+            ComfortCommands.sendSunroofPosition(position);
+            log("✅ Cam tavan konum komutu gönderildi: " + position);
+        } catch (Exception e) {
+            log("❌ Cam tavan komutu hatası: " + e.getMessage());
+        }
+    }
+
     /**
      * Ana ekrandaki Yansıtma sekmesiyle aynı uygulama: {@link ClusterDisplayManager#openClusterDisplay()}.
      */
@@ -1146,7 +1235,7 @@ public class MapControlService extends Service {
     }
 
     /**
-     * Hoşgeldin ses dosyasını çal. Ekran güç alınca (mod 1 veya 2) bir kez.
+     * Hoş geldin ses dosyasını çal. Ekran güç alınca (mod 1 veya 2) bir kez.
      */
     private void playWelcomeAudio() {
         try {
@@ -1164,7 +1253,7 @@ public class MapControlService extends Service {
             
             File audioFile = new File(filePath);
             if (!audioFile.exists()) {
-                log("⚠️ Hoşgeldin ses dosyası bulunamadı: " + filePath);
+                log("⚠️ Hoş geldin ses dosyası bulunamadı: " + filePath);
                 return;
             }
             
@@ -1179,26 +1268,26 @@ public class MapControlService extends Service {
                     // Çalma bitince temizle
                     mediaPlayer.setOnCompletionListener(mp -> {
                         mp.release();
-                        log("✅ Hoşgeldin ses dosyası çalındı");
+                        log("✅ Hoş geldin ses dosyası çalındı");
                     });
                     
                     // Hata durumunda
                     mediaPlayer.setOnErrorListener((mp, what, extra) -> {
-                        log("❌ Hoşgeldin ses çalma hatası: " + what);
+                        log("❌ Hoş geldin ses çalma hatası: " + what);
                         mp.release();
                         return true;
                     });
                     
-                    log("🔊 Hoşgeldin ses dosyası çalınıyor: " + audioFile.getName());
+                    log("🔊 Hoş geldin ses dosyası çalınıyor: " + audioFile.getName());
                 } catch (IOException e) {
-                    log("❌ Hoşgeldin ses dosyası açılamadı: " + e.getMessage());
+                    log("❌ Hoş geldin ses dosyası açılamadı: " + e.getMessage());
                 } catch (Exception e) {
-                    log("❌ Hoşgeldin ses hatası: " + e.getMessage());
+                    log("❌ Hoş geldin ses hatası: " + e.getMessage());
                 }
             }).start();
             
         } catch (Exception e) {
-            log("❌ Hoşgeldin ses kontrol hatası: " + e.getMessage());
+            log("❌ Hoş geldin ses kontrol hatası: " + e.getMessage());
         }
     }
     

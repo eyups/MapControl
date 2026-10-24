@@ -68,11 +68,18 @@ public final class UiStyles {
 
     @ColorInt
     public static int color(Context context, @ColorRes int colorRes) {
+        if (ThemeManager.isCyber(context)) {
+            return ThemeManager.cyberColor(context, colorRes);
+        }
         return ContextCompat.getColor(uiModeContext(context), colorRes);
     }
 
     @Nullable
     public static Drawable drawable(Context context, @DrawableRes int drawableRes) {
+        Drawable cyber = ThemeManager.cyberDrawable(context, drawableRes);
+        if (cyber != null) {
+            return cyber;
+        }
         Drawable d = ContextCompat.getDrawable(uiModeContext(context), drawableRes);
         return d != null ? d.mutate() : null;
     }
@@ -100,7 +107,15 @@ public final class UiStyles {
     public static void applySolidRoundedBackground(View view, int colorArgb) {
         android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
         d.setColor(colorArgb);
-        d.setCornerRadius(view.getResources().getDimension(R.dimen.oem_button_radius));
+        if (ThemeManager.isCyber(view.getContext())) {
+            d.setCornerRadius(0f);
+            if (android.graphics.Color.alpha(colorArgb) != 0) {
+                d.setStroke(Math.max(1, Math.round(view.getResources().getDisplayMetrics().density)),
+                        ThemeManager.cyberColor(view.getContext(), R.color.outline));
+            }
+        } else {
+            d.setCornerRadius(view.getResources().getDimension(R.dimen.oem_button_radius));
+        }
         view.setBackground(d);
     }
 
@@ -108,12 +123,26 @@ public final class UiStyles {
         float density = view.getContext().getResources().getDisplayMetrics().density;
         android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
         d.setColor(colorArgb);
-        d.setCornerRadius(cornerRadiusDp * density);
+        if (ThemeManager.isCyber(view.getContext())) {
+            d.setCornerRadius(0f);
+            if (android.graphics.Color.alpha(colorArgb) != 0) {
+                d.setStroke(Math.max(1, Math.round(density)),
+                        ThemeManager.cyberColor(view.getContext(), R.color.outline));
+            }
+        } else {
+            d.setCornerRadius(cornerRadiusDp * density);
+        }
         view.setBackground(d);
     }
 
     public static void styleOemButton(Button button, int backgroundColorArgb) {
         applySolidRoundedBackground(button, backgroundColorArgb);
+        if (ThemeManager.isCyber(button.getContext())) {
+            boolean bright = Color.luminance(backgroundColorArgb) > 0.45f;
+            button.setTextColor(bright
+                    ? Color.BLACK
+                    : color(button.getContext(), R.color.textPrimary));
+        }
     }
 
     /**

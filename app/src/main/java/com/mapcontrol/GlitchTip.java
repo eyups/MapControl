@@ -16,9 +16,12 @@ import io.sentry.protocol.Message;
 import io.sentry.protocol.Request;
 import io.sentry.protocol.SentryException;
 import io.sentry.protocol.User;
+import io.sentry.AsyncHttpTransportFactory;
 
 /** Çökme raporlarını GlitchTip'e gönderir. Konum, token ve telefon bilgisini ayıklar. */
 public final class GlitchTip {
+
+    private static final String SECRET_HEADER = "X-GlitchTip-Secret";
 
     private static final Pattern QUERY_SECRET = Pattern.compile(
             "(?i)\\b(latitude|longitude|lat|lon|lng|token|phone|authorization|password|email|imei|coordinate|coordinates)=([^&\\s]+)");
@@ -30,6 +33,13 @@ public final class GlitchTip {
     public static void start(Context context) {
         SentryAndroid.init(context, options -> {
             options.setDsn(BuildConfig.GLITCHTIP_DSN);
+            if (!BuildConfig.GLITCHTIP_SECRET.isEmpty()) {
+                // Sentry SDK'da başlık ayarı yok; Nginx doğrulaması için taşıyıcıda ekleniyor.
+                options.setTransportFactory((opts, details) -> {
+                    details.getHeaders().put(SECRET_HEADER, BuildConfig.GLITCHTIP_SECRET);
+                    return new AsyncHttpTransportFactory().create(opts, details);
+                });
+            }
             options.setEnableNdk(false);
             options.setSendDefaultPii(false);
             options.setAttachScreenshot(false);

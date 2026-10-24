@@ -122,7 +122,7 @@ public final class VehicleMetricsFormatter {
         if (!VehicleMetricsSnapshot.isValid(combined) || combined <= 0) {
             return dash();
         }
-        return String.format(Locale.getDefault(), "%.1f L/100", combined / 10.0);
+        return String.format(Locale.getDefault(), "%.1f L/100 km", combined / 10.0);
     }
 
     public String formatDashboardTemperature(int combined) {
@@ -207,11 +207,25 @@ public final class VehicleMetricsFormatter {
         return String.format(Locale.getDefault(), "%d ml", combined);
     }
 
+    public String formatLightDetected(int combined) {
+        if (!VehicleMetricsSnapshot.isValid(combined)) {
+            return dash();
+        }
+        return context.getString(combined != 0
+                ? R.string.vehicle_info_light_day
+                : R.string.vehicle_info_light_night);
+    }
+
+    public String formatRawSignal(int combined) {
+        return VehicleMetricsSnapshot.isValid(combined)
+                ? String.valueOf(combined) : dash();
+    }
+
     public String formatSpeed(int combined) {
         if (!VehicleMetricsSnapshot.isValid(combined) || combined <= 0) {
             return context.getString(R.string.vehicle_info_speed_parked);
         }
-        return String.format(Locale.getDefault(), "%d km/saat", combined);
+        return String.format(Locale.getDefault(), "%d km/h", combined);
     }
 
     public String formatRpm(int combined) {

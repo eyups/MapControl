@@ -106,6 +106,25 @@ public final class WelcomeAudioFiles {
         }
     }
 
+    /** TTS çıktısı için benzersiz dosya yolu. */
+    public static File newTtsFile(Context context, String extension) throws IOException {
+        String ext = extension == null || extension.isEmpty() ? ".wav"
+                : (extension.startsWith(".") ? extension : "." + extension);
+        return new File(storeDir(context), "welcome-tts-" + System.currentTimeMillis() + ext);
+    }
+
+    /** Yeni TTS dosyasını seçili tek dosya yapar, eskileri siler. */
+    public static void keepOnly(Context context, File keep) throws IOException {
+        File store = storeDir(context);
+        File[] files = store.listFiles();
+        if (files == null) return;
+        for (File file : files) {
+            if (!file.equals(keep)) {
+                file.delete();
+            }
+        }
+    }
+
     public static File copyUri(Context context, Uri uri) throws IOException {
         String name = displayName(context, uri);
         try (InputStream in = context.getContentResolver().openInputStream(uri)) {

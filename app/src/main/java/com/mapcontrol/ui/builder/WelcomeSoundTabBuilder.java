@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mapcontrol.R;
+import com.mapcontrol.tts.TtsAudioFocus;
+import com.mapcontrol.tts.WelcomeTts;
 import com.mapcontrol.ui.welcome.WelcomeAudioFiles;
 import com.mapcontrol.ui.welcome.WelcomeDesignCatalog;
 import com.mapcontrol.ui.welcome.WelcomeScreenPresenter;
@@ -57,6 +60,9 @@ public class WelcomeSoundTabBuilder {
     private boolean copying;
     private boolean mediaRegistered;
     private int usbScanGen;
+    private EditText ttsInput;
+    private TextView ttsStatus;
+    private boolean ttsGenerating;
 
     public WelcomeSoundTabBuilder(AppCompatActivity activity, SharedPreferences prefs,
             ActivityResultLauncher<Intent> audioPicker) {
@@ -76,13 +82,16 @@ public class WelcomeSoundTabBuilder {
                 activity, autoPlayInitial, this::saveAutoPlaySetting,
                 designId, this::saveDesignSetting,
                 prefs.getString(WelcomeDesignCatalog.PREF_LINE, ""),
-                this::saveCustomLine);
+                this::saveCustomLine,
+                prefs.getString("welcomeTtsText", ""));
         this.scrollView = screen.scrollView;
         this.usbStatus = screen.usbStatus;
         this.usbList = screen.usbList;
         this.tvFilePath = screen.tvFilePath;
         this.playbackRow = screen.playbackRow;
         this.playbackLabel = screen.playbackLabel;
+        this.ttsInput = screen.ttsInput;
+        this.ttsStatus = screen.ttsStatus;
 
         screen.rowSelect.setOnClickListener(v -> selectAudioFile());
         playbackRow.setOnClickListener(v -> {
@@ -92,7 +101,11 @@ public class WelcomeSoundTabBuilder {
                 playAudio();
             }
         });
-        screen.btnPreview.setOnClickListener(v -> WelcomeScreenPresenter.showSaved(activity));
+        screen.btnPreview.setOnClickListener(v -> {
+            playAudio();
+            WelcomeScreenPresenter.showSaved(activity);
+        });
+        screen.ttsGenerateRow.setOnClickListener(v -> generateTts());
 
         loadSavedSettings();
         refreshUsb();
@@ -284,6 +297,39 @@ public class WelcomeSoundTabBuilder {
         Toast.makeText(activity, R.string.welcome_sound_saved, Toast.LENGTH_SHORT).show();
     }
 
+    private void generateTts() {
+        if (ttsGenerating || ttsInput == null) {
+            return;
+        }
+        String text = ttsInput.getText().toString().trim();
+        if (text.isEmpty()) {
+            Toast.makeText(activity, R.string.welcome_tts_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ttsGenerating = true;
+        prefs.edit().putString("welcomeTtsText", text).apply();
+        if (ttsStatus != null) {
+            ttsStatus.setText(R.string.welcome_tts_generating);
+        }
+        WelcomeTts.generate(activity, text,
+                file -> {
+                    ttsGenerating = false;
+                    applySelected(file);
+                    if (ttsStatus != null) {
+                        ttsStatus.setText(R.string.welcome_tts_saved);
+                    }
+                },
+                reason -> {
+                    ttsGenerating = false;
+                    if (ttsStatus != null) {
+                        ttsStatus.setText(activity.getString(
+                                R.string.welcome_tts_error, reason));
+                    }
+                    Toast.makeText(activity, activity.getString(
+                            R.string.welcome_tts_error, reason), Toast.LENGTH_SHORT).show();
+                });
+    }
+
     private void playAudio() {
         if (selectedFilePath == null || selectedFilePath.isEmpty()) {
             Toast.makeText(activity, R.string.welcome_sound_pick_first, Toast.LENGTH_SHORT).show();
@@ -291,6 +337,10 @@ public class WelcomeSoundTabBuilder {
         }
         try {
             releasePlayer();
+            TtsAudioFocus.acquire(activity, () -> {
+                releasePlayer();
+                setPlaying(false);
+            });
             mediaPlayer = new MediaPlayer();
             Uri audioUri = Uri.parse(selectedFilePath);
             if ("file".equals(audioUri.getScheme())) {
@@ -304,32 +354,52 @@ public class WelcomeSoundTabBuilder {
             }
             mediaPlayer.prepare();
             mediaPlayer.setOnCompletionListener(mp -> handler.post(() -> {
+                TtsAudioFocus.release();
                 setPlaying(false);
                 Toast.makeText(activity, R.string.welcome_sound_play_done, Toast.LENGTH_SHORT).show();
             }));
             mediaPlayer.setOnErrorListener((mp, what, extra) -> {
                 handler.post(() -> {
+                    TtsAudioFocus.release();
                     Toast.makeText(activity, R.string.welcome_sound_play_error, Toast.LENGTH_SHORT).show();
                     setPlaying(false);
                 });
                 return true;
             });
-            mediaPlayer.start();
-            setPlaying(true);
-            Toast.makeText(activity, R.string.welcome_sound_playing, Toast.LENGTH_SHORT).show();
+            final MediaPlayer started = mediaPlayer;
+            handler.postDelayed(() -> {
+                if (mediaPlayer != started) {
+                    return;
+                }
+                try {
+                    started.start();
+                    setPlaying(true);
+                    Toast.makeText(activity, R.string.welcome_sound_playing,
+                            Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    TtsAudioFocus.release();
+                    releasePlayer();
+                    setPlaying(false);
+                    Toast.makeText(activity, R.string.welcome_sound_play_error,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }, TtsAudioFocus.DUCK_SETTLE_MS);
         } catch (Exception e) {
+            TtsAudioFocus.release();
             Toast.makeText(activity, R.string.welcome_sound_file_open_error, Toast.LENGTH_SHORT).show();
             setPlaying(false);
         }
     }
 
     private void stopAudio() {
+        TtsAudioFocus.release();
         releasePlayer();
         setPlaying(false);
         Toast.makeText(activity, R.string.welcome_sound_stopped, Toast.LENGTH_SHORT).show();
     }
 
     private void releasePlayer() {
+        TtsAudioFocus.release();
         if (mediaPlayer == null) {
             return;
         }

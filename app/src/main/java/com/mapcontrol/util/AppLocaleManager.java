@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 
+import java.util.Locale;
+
 /**
  * Persists in-app locale (tr / en) and applies it via AppCompat per-app locales API.
  */
@@ -51,5 +53,10 @@ public final class AppLocaleManager {
 
     public static boolean isEnglish(Context context) {
         return LOCALE_EN.equals(getStoredLocaleTag(context));
+    }
+
+    /** Uygulama dili için tarih/sayı biçimlendirme Locale'i. */
+    public static Locale locale(Context context) {
+        return isEnglish(context) ? Locale.ENGLISH : new Locale("tr", "TR");
     }
 }

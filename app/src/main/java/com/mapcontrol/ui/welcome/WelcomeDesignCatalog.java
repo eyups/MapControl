@@ -24,6 +24,7 @@ public final class WelcomeDesignCatalog {
     public static final String ID_SIGNATURE = "signature";
     public static final String ID_WINTER = "winter";
     public static final String ID_HIKE = "hike";
+    public static final String ID_CYBER = "cyber";
 
     private static final WelcomeDesign OFF = new WelcomeDesign() {
         @Override
@@ -52,7 +53,8 @@ public final class WelcomeDesignCatalog {
             OFF,
             new SignatureWelcomeDesign(),
             new WinterTouchWelcomeDesign(),
-            new MountainHikeWelcomeDesign()
+            new MountainHikeWelcomeDesign(),
+            new CyberTerminalWelcomeDesign()
     ));
 
     private WelcomeDesignCatalog() {

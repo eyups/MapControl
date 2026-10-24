@@ -7,3 +7,10 @@
 # Release keystore passwords (required for signed release builds)
 RELEASE_STORE_PASSWORD=your_keystore_password
 RELEASE_KEY_PASSWORD=your_key_password
+
+# GlitchTip crash reporting (leave empty to disable)
+GLITCHTIP_DSN=https://<key>@your-glitchtip-host/<project-id>
+GLITCHTIP_SECRET=your_nginx_header_secret
+
+# ElevenLabs TTS (optional; Settings ekranından da girilebilir)
+ELEVENLABS_API_KEY=sk_your_key_here

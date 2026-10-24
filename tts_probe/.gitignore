@@ -1,0 +1,6 @@
+.deps/
+build/
+.gradle/
+local.properties
+app/src/main/assets/vits-*/
+app/src/main/jniLibs/

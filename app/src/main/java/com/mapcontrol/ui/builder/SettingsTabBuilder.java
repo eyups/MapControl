@@ -2,6 +2,7 @@ package com.mapcontrol.ui.builder;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.InputType;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
@@ -9,6 +10,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -23,9 +25,15 @@ import java.net.URL;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.driving.DrivingSessionRecorder;
+import com.mapcontrol.driving.DrivingTestData;
+import com.mapcontrol.driving.DrivingTripStore;
+import com.mapcontrol.tts.MapControlSpeech;
+import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.manager.FloatingBackButtonManager;
 import com.mapcontrol.service.BootReceiver;
+import com.mapcontrol.util.AdbSettings;
 import com.mapcontrol.util.AppLocaleManager;
 import com.mapcontrol.util.LauncherModeManager;
 import com.mapcontrol.util.PermissionProbeDialog;
@@ -40,6 +48,8 @@ public class SettingsTabBuilder {
         void onLauncherModeChanged(boolean enabled);
 
         void onLocaleChanged();
+
+        void onThemeChanged();
     }
 
     private final Context context;
@@ -74,10 +84,6 @@ public class SettingsTabBuilder {
 
         settingsTabContent = new LinearLayout(context);
         settingsTabContent.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        settingsTabContent.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(settingsTabContent);
-
         outer.addView(settingsTabContent, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -86,14 +92,131 @@ public class SettingsTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        createLanguageSection(settingsTabContent);
-        createAppInfoSection(settingsTabContent);
-        createBootAutostartSection(settingsTabContent);
-        createPermissionsSection(settingsTabContent);
-        createFloatingBackButtonSection(settingsTabContent);
-        createLauncherModeSection(settingsTabContent);
-        createVehicleModelSection(settingsTabContent);
+        buildSettingsSections(settingsTabContent);
         return scrollView;
+    }
+
+    private void buildSettingsSections(LinearLayout parent) {
+        if (context.getResources().getConfiguration().screenWidthDp >= 1000) {
+            LinearLayout columns = new LinearLayout(context);
+            columns.setOrientation(LinearLayout.HORIZONTAL);
+            columns.setBaselineAligned(false);
+
+            LinearLayout left = createSettingsCard();
+            LinearLayout right = createSettingsCard();
+            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            leftLp.setMarginEnd(gutter / 2);
+            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            rightLp.setMarginStart(gutter / 2);
+            columns.addView(left, leftLp);
+            columns.addView(right, rightLp);
+
+            createThemeSection(left);
+            createLanguageSection(left);
+            createTtsSection(left);
+            createDrivingTestDataSection(left);
+            createAppInfoSection(left);
+            createBootAutostartSection(left);
+
+            createAdbSection(right);
+            createPermissionsSection(right);
+            createFloatingBackButtonSection(right);
+            createLauncherModeSection(right);
+            createVehicleModelSection(right);
+
+            parent.addView(columns, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            return;
+        }
+
+        LinearLayout card = createSettingsCard();
+        createThemeSection(card);
+        createLanguageSection(card);
+        createTtsSection(card);
+        createDrivingTestDataSection(card);
+        createAppInfoSection(card);
+        createBootAutostartSection(card);
+        createAdbSection(card);
+        createPermissionsSection(card);
+        createFloatingBackButtonSection(card);
+        createLauncherModeSection(card);
+        createVehicleModelSection(card);
+        parent.addView(card, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private LinearLayout createSettingsCard() {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        card.setPadding(inner, inner, inner, inner);
+        UiStyles.setGlassCardBackground(card);
+        return card;
+    }
+
+    private void createThemeSection(LinearLayout parentContainer) {
+        TextView sectionTitle = new TextView(context);
+        sectionTitle.setText(R.string.settings_theme_section_title);
+        sectionTitle.setTextSize(18);
+        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        sectionTitle.setTypeface(android.graphics.Typeface.MONOSPACE,
+                android.graphics.Typeface.BOLD);
+        sectionTitle.setPadding(16, 24, 16, 8);
+        parentContainer.addView(sectionTitle, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView sectionDesc = new TextView(context);
+        sectionDesc.setText(R.string.settings_theme_section_desc);
+        sectionDesc.setTextSize(13);
+        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+        sectionDesc.setPadding(16, 0, 16, 12);
+        parentContainer.addView(sectionDesc, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        boolean cyber = ThemeManager.isCyber(context);
+        UiStyles.addBinarySegmentedControl(context, parentContainer,
+                null,
+                context.getString(R.string.settings_theme_modern),
+                context.getString(R.string.settings_theme_cyber),
+                context.getString(R.string.settings_theme_modern_help),
+                context.getString(R.string.settings_theme_cyber_help),
+                !cyber,
+                modernSelected -> {
+                    boolean targetCyber = !modernSelected;
+                    if (targetCyber == ThemeManager.isCyber(context)) {
+                        return;
+                    }
+                    ThemeManager.setCyber(context, targetCyber);
+                    callback.log("[Tema] " + (targetCyber ? "Cyber" : "Modern"));
+                    callback.onThemeChanged();
+                });
+
+        if (cyber) {
+            TextView preview = new TextView(context);
+            preview.setText("+-- DISPLAY PROFILE --+\n"
+                    + "| > CYBER / 0x33FF00  |\n"
+                    + "| scanlines: ON       |\n"
+                    + "+---------------------+");
+            preview.setTextSize(12);
+            preview.setTypeface(android.graphics.Typeface.MONOSPACE);
+            preview.setTextColor(UiStyles.color(context, R.color.textPrimary));
+            int pad = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+            preview.setPadding(pad, pad, pad, pad);
+            UiStyles.applySolidRoundedBackground(preview,
+                    UiStyles.color(context, R.color.surfaceCard));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(pad, 0, pad, pad);
+            parentContainer.addView(preview, lp);
+        }
     }
 
     private void createLanguageSection(LinearLayout parentContainer) {
@@ -135,6 +258,211 @@ public class SettingsTabBuilder {
                     callback.log("Locale: " + tag);
                     callback.onLocaleChanged();
                 });
+    }
+
+    private void createTtsSection(LinearLayout parentContainer) {
+        TextView sectionTitle = new TextView(context);
+        sectionTitle.setText(R.string.settings_tts_section_title);
+        sectionTitle.setTextSize(18);
+        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        sectionTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        sectionTitle.setPadding(16, 24, 16, 8);
+        parentContainer.addView(sectionTitle, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView sectionDesc = new TextView(context);
+        sectionDesc.setText(R.string.settings_tts_section_desc);
+        sectionDesc.setTextSize(13);
+        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+        sectionDesc.setPadding(16, 0, 16, 12);
+        parentContainer.addView(sectionDesc, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        String engine = MapControlSpeech.engine(context);
+        boolean eleven = MapControlSpeech.ENGINE_ELEVENLABS.equals(engine);
+        UiStyles.addBinarySegmentedControl(context, parentContainer,
+                context.getString(R.string.settings_tts_engine_title),
+                context.getString(R.string.settings_tts_sherpa),
+                context.getString(R.string.settings_tts_elevenlabs),
+                context.getString(R.string.settings_tts_sherpa_help),
+                context.getString(R.string.settings_tts_elevenlabs_help),
+                !eleven,
+                elevenSelected -> {
+                    prefs.edit().putString(MapControlSpeech.KEY_ENGINE,
+                            elevenSelected ? MapControlSpeech.ENGINE_ELEVENLABS
+                                    : MapControlSpeech.ENGINE_SHERPA)
+                            .putBoolean(MapControlSpeech.KEY_ENGINE_CONFIGURED, true)
+                            .apply();
+                    callback.log("TTS motoru: " + (elevenSelected ? "ElevenLabs" : "Sherpa-ONNX"));
+                });
+
+        TextView keyLabel = new TextView(context);
+        keyLabel.setText(R.string.settings_tts_api_key);
+        keyLabel.setTextSize(13);
+        keyLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+        keyLabel.setPadding(16, 14, 16, 4);
+        parentContainer.addView(keyLabel);
+
+        EditText keyField = createTtsField(
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        keyField.setHint(R.string.settings_tts_api_hint);
+        LinearLayout.LayoutParams keyLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        keyLp.setMargins(16, 0, 16, 8);
+        parentContainer.addView(keyField, keyLp);
+
+        TextView voiceLabel = new TextView(context);
+        voiceLabel.setText(R.string.settings_tts_voice_id);
+        voiceLabel.setTextSize(13);
+        voiceLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+        voiceLabel.setPadding(16, 8, 16, 4);
+        parentContainer.addView(voiceLabel);
+
+        EditText voiceField = createTtsField(InputType.TYPE_CLASS_TEXT);
+        voiceField.setHint(R.string.settings_tts_voice_hint);
+        voiceField.setText(prefs.getString(MapControlSpeech.KEY_VOICE_ID,
+                MapControlSpeech.DEFAULT_VOICE_ID));
+        LinearLayout.LayoutParams voiceLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        voiceLp.setMargins(16, 0, 16, 8);
+        parentContainer.addView(voiceField, voiceLp);
+
+        TextView status = new TextView(context);
+        status.setTextSize(12);
+        status.setTextColor(UiStyles.color(context, R.color.textHint));
+        status.setPadding(16, 4, 16, 6);
+        status.setText(MapControlSpeech.hasApiKey(context)
+                ? R.string.settings_tts_key_saved
+                : R.string.settings_tts_key_missing);
+        parentContainer.addView(status);
+
+        Button save = new Button(context);
+        save.setText(R.string.settings_tts_save);
+        UiStyles.styleOemButton(save, UiStyles.color(context, R.color.accentHighlight));
+        if (ThemeManager.isCyber(context)) {
+            save.setTextColor(android.graphics.Color.BLACK);
+        }
+        LinearLayout.LayoutParams saveLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        saveLp.setMargins(16, 0, 16, 10);
+        save.setOnClickListener(v -> {
+            String key = keyField.getText().toString().trim();
+            String voice = voiceField.getText().toString().trim();
+            if (!key.isEmpty() && !MapControlSpeech.isValidApiKey(key)) {
+                Toast.makeText(context, R.string.settings_tts_api_invalid, Toast.LENGTH_LONG).show();
+                return;
+            }
+            SharedPreferences.Editor editor = prefs.edit();
+            if (!key.isEmpty()) {
+                editor.putString(MapControlSpeech.KEY_API_KEY, key);
+            }
+            if (!voice.isEmpty()) {
+                editor.putString(MapControlSpeech.KEY_VOICE_ID, voice);
+            }
+            editor.apply();
+            keyField.setText("");
+            status.setText(MapControlSpeech.hasApiKey(context)
+                    ? R.string.settings_tts_key_saved
+                    : R.string.settings_tts_key_missing);
+            Toast.makeText(context, R.string.settings_tts_saved, Toast.LENGTH_SHORT).show();
+            callback.log("TTS ayarları kaydedildi");
+        });
+        parentContainer.addView(save, saveLp);
+    }
+
+    private EditText createTtsField(int inputType) {
+        EditText field = new EditText(context);
+        field.setTextSize(14);
+        field.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        field.setHintTextColor(UiStyles.color(context, R.color.textMuted));
+        field.setInputType(inputType);
+        field.setSingleLine(true);
+        field.setPadding(14, 12, 14, 12);
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(UiStyles.color(context, R.color.logFieldBg));
+        bg.setCornerRadius(context.getResources().getDimension(R.dimen.oem_button_radius));
+        bg.setStroke(1, UiStyles.color(context, R.color.outlineStrong));
+        field.setBackground(bg);
+        return field;
+    }
+
+    private void createDrivingTestDataSection(LinearLayout parentContainer) {
+        TextView title = new TextView(context);
+        title.setText(R.string.settings_driving_test_title);
+        title.setTextSize(18);
+        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        title.setPadding(16, 24, 16, 8);
+        parentContainer.addView(title, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView desc = new TextView(context);
+        desc.setText(R.string.settings_driving_test_desc);
+        desc.setTextSize(13);
+        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+        desc.setPadding(16, 0, 16, 10);
+        parentContainer.addView(desc, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView status = new TextView(context);
+        status.setTextSize(12);
+        status.setTextColor(UiStyles.color(context, R.color.textHint));
+        status.setPadding(16, 0, 16, 8);
+        updateDrivingTestStatus(status);
+        parentContainer.addView(status);
+
+        LinearLayout buttons = new LinearLayout(context);
+        buttons.setOrientation(LinearLayout.HORIZONTAL);
+        buttons.setPadding(16, 0, 16, 16);
+
+        Button generate = new Button(context);
+        generate.setText(R.string.settings_driving_test_generate);
+        generate.setAllCaps(false);
+        UiStyles.styleOemButton(generate, UiStyles.color(context, R.color.accentHighlight));
+        generate.setOnClickListener(v -> {
+            int count = DrivingTestData.generate(context, DrivingTestData.DEFAULT_COUNT);
+            DrivingSessionRecorder.get(context).reloadLastTrip();
+            updateDrivingTestStatus(status);
+            Toast.makeText(context, R.string.settings_driving_test_generated,
+                    Toast.LENGTH_SHORT).show();
+            callback.log("Sürüş Karnesi: " + count + " test sürüşü oluşturuldu");
+        });
+        LinearLayout.LayoutParams genLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        genLp.setMarginEnd(8);
+        buttons.addView(generate, genLp);
+
+        Button delete = new Button(context);
+        delete.setText(R.string.settings_driving_test_delete);
+        delete.setAllCaps(false);
+        UiStyles.styleOemButton(delete, UiStyles.color(context, R.color.statusError));
+        delete.setOnClickListener(v -> {
+            int removed = DrivingTripStore.deleteTestTrips(context);
+            DrivingSessionRecorder.get(context).reloadLastTrip();
+            updateDrivingTestStatus(status);
+            Toast.makeText(context, removed > 0
+                            ? context.getString(R.string.settings_driving_test_deleted, removed)
+                            : context.getString(R.string.settings_driving_test_none),
+                    Toast.LENGTH_SHORT).show();
+            callback.log("Sürüş Karnesi: " + removed + " test sürüşü silindi");
+        });
+        buttons.addView(delete, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        parentContainer.addView(buttons, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void updateDrivingTestStatus(TextView status) {
+        int count = DrivingTripStore.countTestTrips(context);
+        status.setText(context.getString(R.string.settings_driving_test_count, count));
     }
 
     private void createBootAutostartSection(LinearLayout parentContainer) {
@@ -182,6 +510,74 @@ public class SettingsTabBuilder {
                 });
     }
 
+    private void createAdbSection(LinearLayout parentContainer) {
+        TextView sectionTitle = new TextView(context);
+        sectionTitle.setText(R.string.settings_adb_title);
+        sectionTitle.setTextSize(18);
+        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        sectionTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        sectionTitle.setPadding(16, 24, 16, 8);
+        parentContainer.addView(sectionTitle, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView sectionDesc = new TextView(context);
+        boolean canWrite = AdbSettings.canWrite(context);
+        sectionDesc.setText(canWrite ? R.string.settings_adb_desc : R.string.settings_adb_no_permission);
+        sectionDesc.setTextSize(13);
+        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+        sectionDesc.setPadding(16, 0, 16, 12);
+        parentContainer.addView(sectionDesc, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        UiStyles.BinarySegmentHandle[] usbHandle = new UiStyles.BinarySegmentHandle[1];
+        usbHandle[0] = UiStyles.addBinarySegmentedControl(context, parentContainer,
+                context.getString(R.string.settings_adb_usb_title),
+                context.getString(R.string.common_on), context.getString(R.string.common_off),
+                context.getString(R.string.settings_adb_usb_help_on),
+                context.getString(R.string.settings_adb_usb_help_off),
+                AdbSettings.isUsbEnabled(context),
+                on -> applyAdbSetting(false, on, usbHandle[0]));
+
+        UiStyles.BinarySegmentHandle[] wifiHandle = new UiStyles.BinarySegmentHandle[1];
+        wifiHandle[0] = UiStyles.addBinarySegmentedControl(context, parentContainer,
+                context.getString(R.string.settings_adb_wifi_title),
+                context.getString(R.string.common_on), context.getString(R.string.common_off),
+                context.getString(R.string.settings_adb_wifi_help_on),
+                context.getString(R.string.settings_adb_wifi_help_off),
+                AdbSettings.isWifiEnabled(context),
+                on -> applyAdbSetting(true, on, wifiHandle[0]));
+
+        if (!canWrite) {
+            usbHandle[0].setInteractionEnabled(false);
+            wifiHandle[0].setInteractionEnabled(false);
+        }
+    }
+
+    private void applyAdbSetting(boolean wifi, boolean on, UiStyles.BinarySegmentHandle handle) {
+        String name = wifi ? "Wi-Fi ADB" : "USB ADB";
+        boolean ok = wifi ? AdbSettings.setWifiEnabled(context, on) : AdbSettings.setUsbEnabled(context, on);
+        if (!ok) {
+            callback.log(name + ": değer yazılamadı (izin yok veya sistem reddetti)");
+            if (handle != null) {
+                handle.syncVisualWithoutCommit(!on);
+            }
+            return;
+        }
+        callback.log(name + ": " + (on ? "Açık" : "Kapalı"));
+        // OEM servisleri değeri kısa süre sonra geri alabilir.
+        handler.postDelayed(() -> {
+            boolean now = wifi ? AdbSettings.isWifiEnabled(context) : AdbSettings.isUsbEnabled(context);
+            if (now != on) {
+                callback.log(name + ": sistem değeri geri aldı (" + (now ? "Açık" : "Kapalı") + ")");
+                if (handle != null) {
+                    handle.syncVisualWithoutCommit(now);
+                }
+            }
+        }, 2000);
+    }
+
     private void createPermissionsSection(LinearLayout parentContainer) {
         TextView sectionTitle = new TextView(context);
         sectionTitle.setText(R.string.settings_permissions_title);
@@ -205,6 +601,9 @@ public class SettingsTabBuilder {
         final Button toggle = new Button(context);
         toggle.setText(R.string.settings_permissions_show);
         UiStyles.styleOemButton(toggle, UiStyles.color(context, R.color.accentHighlight));
+        if (ThemeManager.isCyber(context)) {
+            toggle.setTextColor(android.graphics.Color.BLACK);
+        }
         LinearLayout.LayoutParams toggleLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -624,6 +1023,9 @@ public class SettingsTabBuilder {
         Button pickButton = new Button(context);
         pickButton.setText(R.string.settings_vehicle_image_pick);
         UiStyles.styleOemButton(pickButton, UiStyles.color(context, R.color.accentHighlight));
+        if (ThemeManager.isCyber(context)) {
+            pickButton.setTextColor(android.graphics.Color.BLACK);
+        }
         LinearLayout.LayoutParams pickLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -695,4 +1097,9 @@ public class SettingsTabBuilder {
     public ScrollView getScrollView() {
         return scrollView != null ? scrollView : build();
     }
+
+    public void release() {
+        handler.removeCallbacksAndMessages(null);
+    }
+
 }

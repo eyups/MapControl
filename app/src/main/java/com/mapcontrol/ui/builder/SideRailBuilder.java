@@ -21,7 +21,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
+import com.mapcontrol.valet.ValetModeManager;
 
 public class SideRailBuilder {
     public interface SideRailCallback {
@@ -30,6 +32,7 @@ public class SideRailBuilder {
         void log(String message);
     }
 
+    private static final int TAB_HOME = 17;
     private static final int TAB_WIFI = 0;
     private static final int TAB_FILE = 1;
     private static final int TAB_PROFILE = 2;
@@ -40,11 +43,17 @@ public class SideRailBuilder {
     private static final int TAB_WELCOME_SOUND = 8;
     private static final int TAB_VEHICLE_INFO = 9;
     private static final int TAB_EQUALIZER = 11;
+    private static final int TAB_AUTOMATION = 12;
+    private static final int TAB_DRIVER_PROFILES = 13;
+    private static final int TAB_DRIVING_HISTORY = 14;
+    private static final int TAB_COMFORT = 15;
+    private static final int TAB_VALET = 16;
 
     private final Context context;
     private final SharedPreferences prefs;
     private final SideRailCallback callback;
 
+    private LinearLayout menuHome;
     private LinearLayout menuApps;
     private LinearLayout menuWifi;
     private LinearLayout menuFileUpload;
@@ -54,8 +63,13 @@ public class SideRailBuilder {
     private LinearLayout menuTest;
     private LinearLayout menuWelcomeSound;
     private LinearLayout menuEqualizer;
+    private LinearLayout menuAutomation;
+    private LinearLayout menuDriverProfiles;
     private LinearLayout menuProfile;
     private LinearLayout menuVehicleInfo;
+    private LinearLayout menuDrivingHistory;
+    private LinearLayout menuComfort;
+    private LinearLayout menuValet;
     private LinearLayout sideRail;
     private TextView appTitleText;
     private LinearLayout selectedMenuRow;
@@ -76,9 +90,9 @@ public class SideRailBuilder {
         LinearLayout sideRailTopBar = new LinearLayout(context);
         sideRailTopBar.setOrientation(LinearLayout.HORIZONTAL);
         sideRailTopBar.setBackgroundColor(Color.TRANSPARENT);
-        sideRailTopBar.setPadding(36, 26, 28, 22);
+        sideRailTopBar.setPadding(26, 18, 22, 14);
         sideRailTopBar.setGravity(Gravity.CENTER_VERTICAL);
-        sideRailTopBar.setMinimumHeight((int) (76 * context.getResources().getDisplayMetrics().density));
+        sideRailTopBar.setMinimumHeight((int) (64 * context.getResources().getDisplayMetrics().density));
 
         appTitleText = new TextView(context);
         try {
@@ -107,7 +121,7 @@ public class SideRailBuilder {
             }
             appTitleText.setText(spannableText);
         }
-        appTitleText.setTextSize(28);
+        appTitleText.setTextSize(24);
         appTitleText.setTextColor(UiStyles.color(context, R.color.textPrimary));
         appTitleText.setTypeface(null, android.graphics.Typeface.BOLD);
         sideRailTopBar.addView(appTitleText);
@@ -124,12 +138,21 @@ public class SideRailBuilder {
         menuContainer.setOrientation(LinearLayout.VERTICAL);
         menuContainer.setBackgroundColor(Color.TRANSPARENT);
 
+        menuHome = createRailMenuItemView(R.drawable.ic_mdi_home, t(R.string.side_rail_home));
         menuWifi = createRailMenuItemView(R.drawable.ic_mdi_wifi, t(R.string.side_rail_wifi));
         menuApps = createRailMenuItemView(R.drawable.ic_mdi_cellphone, t(R.string.side_rail_apps));
         menuFileUpload = createRailMenuItemView(R.drawable.ic_mdi_web, t(R.string.side_rail_web));
         // Temporarily hidden: Profile rail item (uncomment addView and onClick below to restore).
         menuProfile = createRailMenuItemView(R.drawable.ic_mdi_account, t(R.string.side_rail_profile));
         menuDriveMode = createRailMenuItemView(R.drawable.ic_mdi_car, t(R.string.side_rail_drive_mode));
+        menuAutomation = createRailMenuItemView(R.drawable.ic_mdi_thermometer,
+                t(R.string.side_rail_automation));
+        menuComfort = createRailMenuItemView(R.drawable.ic_mdi_car_seat,
+                t(R.string.side_rail_comfort));
+        menuValet = createRailMenuItemView(R.drawable.ic_mdi_shield_car,
+                t(R.string.side_rail_valet));
+        menuDriverProfiles = createRailMenuItemView(R.drawable.ic_mdi_account,
+                t(R.string.side_rail_driver_profiles));
         menuWelcomeSound = createRailMenuItemView(R.drawable.ic_mdi_volume_high,
                 t(R.string.side_rail_welcome_sound));
         menuEqualizer = createRailMenuItemView(R.drawable.ic_mdi_equalizer,
@@ -138,19 +161,31 @@ public class SideRailBuilder {
         menuProjection = createRailMenuItemView(R.drawable.ic_mdi_map, t(R.string.side_rail_projection));
         menuVehicleInfo = createRailMenuItemView(R.drawable.ic_mdi_speedometer,
                 t(R.string.side_rail_vehicle_info));
+        menuDrivingHistory = createRailMenuItemView(R.drawable.ic_mdi_road_variant,
+                t(R.string.side_rail_driving_report));
         menuSettings = createRailMenuItemView(R.drawable.ic_mdi_cog, t(R.string.side_rail_settings));
 
+        menuContainer.addView(menuHome);
+        menuContainer.addView(sectionHeader(R.string.nav_section_connect));
         menuContainer.addView(menuWifi);
         menuContainer.addView(menuApps);
         menuContainer.addView(menuFileUpload);
         // menuContainer.addView(menuProfile); // Temporarily hidden — see comment above menuProfile creation.
+        menuContainer.addView(sectionHeader(R.string.nav_section_vehicle));
         menuContainer.addView(menuDriveMode);
+        menuContainer.addView(menuDriverProfiles);
+        menuContainer.addView(menuAutomation);
+        menuContainer.addView(menuComfort);
+        menuContainer.addView(menuValet);
+        menuContainer.addView(menuVehicleInfo);
+        menuContainer.addView(menuDrivingHistory);
+        menuContainer.addView(sectionHeader(R.string.nav_section_media));
         menuContainer.addView(menuWelcomeSound);
         menuContainer.addView(menuEqualizer);
         menuTest.setVisibility(View.GONE);
         menuContainer.addView(menuTest);
         menuContainer.addView(menuProjection);
-        menuContainer.addView(menuVehicleInfo);
+        menuContainer.addView(sectionHeader(R.string.nav_section_system));
         menuContainer.addView(menuSettings);
 
         menuScrollView.addView(menuContainer, new LinearLayout.LayoutParams(
@@ -165,6 +200,7 @@ public class SideRailBuilder {
 
         updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
         bindMenuClicks();
+        setValetModeActive(ValetModeManager.shouldHidePersonal(context));
         return sideRail;
     }
 
@@ -184,11 +220,20 @@ public class SideRailBuilder {
         menuContainer.setOrientation(LinearLayout.HORIZONTAL);
         menuContainer.setGravity(Gravity.CENTER_VERTICAL);
 
+        menuHome = createPortraitRailItem(R.drawable.ic_mdi_home, t(R.string.side_rail_home));
         menuWifi = createPortraitRailItem(R.drawable.ic_mdi_wifi, t(R.string.side_rail_wifi));
         menuApps = createPortraitRailItem(R.drawable.ic_mdi_cellphone, t(R.string.side_rail_apps));
         menuFileUpload = createPortraitRailItem(R.drawable.ic_mdi_web, t(R.string.side_rail_web));
         menuProfile = createPortraitRailItem(R.drawable.ic_mdi_account, t(R.string.side_rail_profile));
         menuDriveMode = createPortraitRailItem(R.drawable.ic_mdi_car, t(R.string.side_rail_drive_mode));
+        menuAutomation = createPortraitRailItem(R.drawable.ic_mdi_thermometer,
+                t(R.string.side_rail_automation));
+        menuComfort = createPortraitRailItem(R.drawable.ic_mdi_car_seat,
+                t(R.string.side_rail_comfort));
+        menuValet = createPortraitRailItem(R.drawable.ic_mdi_shield_car,
+                t(R.string.side_rail_valet));
+        menuDriverProfiles = createPortraitRailItem(R.drawable.ic_mdi_account,
+                t(R.string.side_rail_driver_profiles));
         menuWelcomeSound = createPortraitRailItem(R.drawable.ic_mdi_volume_high,
                 t(R.string.side_rail_welcome_sound));
         menuEqualizer = createPortraitRailItem(R.drawable.ic_mdi_equalizer,
@@ -197,18 +242,26 @@ public class SideRailBuilder {
         menuProjection = createPortraitRailItem(R.drawable.ic_mdi_map, t(R.string.side_rail_projection));
         menuVehicleInfo = createPortraitRailItem(R.drawable.ic_mdi_speedometer,
                 t(R.string.side_rail_vehicle_info));
+        menuDrivingHistory = createPortraitRailItem(R.drawable.ic_mdi_road_variant,
+                t(R.string.side_rail_driving_report));
         menuSettings = createPortraitRailItem(R.drawable.ic_mdi_cog, t(R.string.side_rail_settings));
 
+        menuContainer.addView(menuHome);
         menuContainer.addView(menuWifi);
         menuContainer.addView(menuApps);
         menuContainer.addView(menuFileUpload);
         menuContainer.addView(menuDriveMode);
+        menuContainer.addView(menuDriverProfiles);
+        menuContainer.addView(menuAutomation);
+        menuContainer.addView(menuComfort);
+        menuContainer.addView(menuValet);
         menuContainer.addView(menuWelcomeSound);
         menuContainer.addView(menuEqualizer);
         menuTest.setVisibility(View.GONE);
         menuContainer.addView(menuTest);
         menuContainer.addView(menuProjection);
         menuContainer.addView(menuVehicleInfo);
+        menuContainer.addView(menuDrivingHistory);
         menuContainer.addView(menuSettings);
 
         menuScroll.addView(menuContainer, new HorizontalScrollView.LayoutParams(
@@ -220,10 +273,16 @@ public class SideRailBuilder {
 
         updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
         bindMenuClicks();
+        setValetModeActive(ValetModeManager.shouldHidePersonal(context));
         return sideRail;
     }
 
     private void bindMenuClicks() {
+        menuHome.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_HOME, t(R.string.side_rail_home));
+            updateMenuSelection(menuHome);
+        });
+
         menuWifi.setOnClickListener(v -> {
             callback.onTabSelected(TAB_WIFI, t(R.string.side_rail_wifi));
             updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
@@ -242,6 +301,11 @@ public class SideRailBuilder {
         menuVehicleInfo.setOnClickListener(v -> {
             callback.onTabSelected(TAB_VEHICLE_INFO, t(R.string.side_rail_vehicle_info));
             updateMenuSelection(menuVehicleInfo, menuWifi, menuFileUpload, menuProfile, menuProjection, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
+        });
+
+        menuDrivingHistory.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_DRIVING_HISTORY, t(R.string.side_rail_driving_report));
+            updateMenuSelection(menuDrivingHistory);
         });
 
         menuSettings.setOnClickListener(v -> {
@@ -272,6 +336,26 @@ public class SideRailBuilder {
         menuEqualizer.setOnClickListener(v -> {
             callback.onTabSelected(TAB_EQUALIZER, t(R.string.side_rail_equalizer));
             updateMenuSelection(menuEqualizer, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
+        });
+
+        menuAutomation.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_AUTOMATION, t(R.string.side_rail_automation));
+            updateMenuSelection(menuAutomation);
+        });
+
+        menuComfort.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_COMFORT, t(R.string.side_rail_comfort));
+            updateMenuSelection(menuComfort);
+        });
+
+        menuValet.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_VALET, t(R.string.side_rail_valet));
+            updateMenuSelection(menuValet);
+        });
+
+        menuDriverProfiles.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_DRIVER_PROFILES, t(R.string.side_rail_driver_profiles));
+            updateMenuSelection(menuDriverProfiles);
         });
     }
 
@@ -312,6 +396,9 @@ public class SideRailBuilder {
      */
     public void setSelectionForTabIndex(int tabIndex) {
         switch (tabIndex) {
+            case TAB_HOME:
+                updateMenuSelection(menuHome);
+                break;
             case 0:
                 updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
                 break;
@@ -344,6 +431,21 @@ public class SideRailBuilder {
             case 11:
                 updateMenuSelection(menuEqualizer, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
                 break;
+            case TAB_AUTOMATION:
+                updateMenuSelection(menuAutomation);
+                break;
+            case TAB_DRIVER_PROFILES:
+                updateMenuSelection(menuDriverProfiles);
+                break;
+            case TAB_COMFORT:
+                updateMenuSelection(menuComfort);
+                break;
+            case TAB_VALET:
+                updateMenuSelection(menuValet);
+                break;
+            case TAB_DRIVING_HISTORY:
+                updateMenuSelection(menuDrivingHistory);
+                break;
             default:
                 break;
         }
@@ -353,14 +455,27 @@ public class SideRailBuilder {
         return context.getString(resId);
     }
 
+    private TextView sectionHeader(int labelResId) {
+        float density = context.getResources().getDisplayMetrics().density;
+        TextView view = new TextView(context);
+        view.setText(labelResId);
+        view.setTextSize(10);
+        view.setLetterSpacing(0.18f);
+        view.setTextColor(UiStyles.color(context, R.color.textHint));
+        view.setTypeface(null, android.graphics.Typeface.BOLD);
+        view.setPadding((int) (26 * density), (int) (18 * density),
+                (int) (26 * density), (int) (6 * density));
+        return view;
+    }
+
     private LinearLayout createRailMenuItemView(int iconResId, String text) {
         float density = context.getResources().getDisplayMetrics().density;
         int minTouchPx = Math.round(context.getResources().getDimension(R.dimen.rail_row_min_height));
 
         LinearLayout itemLayout = new LinearLayout(context);
         itemLayout.setOrientation(LinearLayout.HORIZONTAL);
-        int padH = (int) (26 * density);
-        int padV = (int) (20 * density);
+        int padH = (int) (18 * density);
+        int padV = (int) (12 * density);
         itemLayout.setPadding(padH, padV, padH, padV);
         itemLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
         itemLayout.setClickable(true);
@@ -375,7 +490,7 @@ public class SideRailBuilder {
         params.setMargins(mH, mV, mH, mV);
         itemLayout.setLayoutParams(params);
 
-        int iconSize = (int) (36 * density);
+        int iconSize = (int) (24 * density);
         AppCompatImageView iconView = new AppCompatImageView(context);
         iconView.setImageResource(iconResId);
         iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -386,14 +501,14 @@ public class SideRailBuilder {
 
         TextView textView = new TextView(context);
         textView.setText(text);
-        textView.setTextSize(22);
+        textView.setTextSize(17);
         textView.setTextColor(UiStyles.color(context, R.color.textSecondary));
         textView.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
         LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f);
-        textParams.setMargins((int) (16 * density), 0, 0, 0);
+        textParams.setMargins((int) (12 * density), 0, 0, 0);
         itemLayout.addView(textView, textParams);
 
         itemLayout.setTag(R.id.side_rail_icon, iconView);
@@ -406,13 +521,13 @@ public class SideRailBuilder {
         float density = context.getResources().getDisplayMetrics().density;
         LinearLayout itemLayout = new LinearLayout(context);
         itemLayout.setOrientation(LinearLayout.VERTICAL);
-        int padH = (int) (14 * density);
-        int padV = (int) (10 * density);
+        int padH = (int) (10 * density);
+        int padV = (int) (8 * density);
         itemLayout.setPadding(padH, padV, padH, padV);
         itemLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         itemLayout.setClickable(true);
         itemLayout.setFocusable(true);
-        itemLayout.setMinimumWidth((int) (88 * density));
+        itemLayout.setMinimumWidth((int) (76 * density));
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -421,7 +536,7 @@ public class SideRailBuilder {
         params.setMargins(m, m, m, m);
         itemLayout.setLayoutParams(params);
 
-        int iconSize = (int) (28 * density);
+        int iconSize = (int) (24 * density);
         AppCompatImageView iconView = new AppCompatImageView(context);
         iconView.setImageResource(iconResId);
         iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
@@ -432,7 +547,7 @@ public class SideRailBuilder {
 
         TextView textView = new TextView(context);
         textView.setText(text);
-        textView.setTextSize(12);
+        textView.setTextSize(11);
         textView.setMaxLines(1);
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setTextColor(UiStyles.color(context, R.color.textSecondary));
@@ -458,7 +573,7 @@ public class SideRailBuilder {
             }
             if (label != null) {
                 label.setTextColor(UiStyles.color(context, R.color.oemAccent));
-                label.setTypeface(null, android.graphics.Typeface.BOLD);
+                applyRailTypeface(label, true);
             }
         } else {
             row.setBackgroundColor(Color.TRANSPARENT);
@@ -467,15 +582,40 @@ public class SideRailBuilder {
             }
             if (label != null) {
                 label.setTextColor(UiStyles.color(context, R.color.textSecondary));
-                label.setTypeface(null, android.graphics.Typeface.NORMAL);
+                applyRailTypeface(label, false);
             }
+        }
+    }
+
+    private void applyRailTypeface(TextView label, boolean bold) {
+        if (ThemeManager.isCyber(context)) {
+            label.setTypeface(android.graphics.Typeface.MONOSPACE,
+                    bold ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+        } else {
+            label.setTypeface(null,
+                    bold ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+        }
+    }
+
+    /** Hides personal navigation entries while a privacy-enabled valet session is active. */
+    public void setValetModeActive(boolean active) {
+        setMenuVisible(menuApps, !active);
+        setMenuVisible(menuDriverProfiles, !active);
+        setMenuVisible(menuWelcomeSound, !active);
+        setMenuVisible(menuEqualizer, !active);
+    }
+
+    private void setMenuVisible(LinearLayout item, boolean visible) {
+        if (item != null) {
+            item.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 
     private LinearLayout[] menuRows() {
         return new LinearLayout[]{
-                menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo,
-                menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound, menuEqualizer
+                menuHome, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo,
+                menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound, menuEqualizer,
+                menuAutomation, menuComfort, menuValet, menuDriverProfiles, menuDrivingHistory
         };
     }
 

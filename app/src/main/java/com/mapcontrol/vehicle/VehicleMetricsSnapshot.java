@@ -21,6 +21,8 @@ public final class VehicleMetricsSnapshot {
     public final int gearSignal;
     public final int powerMode;
     public final int batteryRaw;
+    /** Exterior light detection (ReadOnly ID 5): 0 night, 1 day, INVALID unknown. */
+    public final int lightDetected;
 
     /** Sol ön / sürücü kapısı ham sinyal ({@link VehicleMetricsCache#INVALID} = yok). */
     public final int doorLf;
@@ -60,6 +62,7 @@ public final class VehicleMetricsSnapshot {
             int gearSignal,
             int powerMode,
             int batteryRaw,
+            int lightDetected,
             int doorLf,
             int doorRf,
             int doorLr,
@@ -77,6 +80,7 @@ public final class VehicleMetricsSnapshot {
         this.gearSignal = gearSignal;
         this.powerMode = powerMode;
         this.batteryRaw = batteryRaw;
+        this.lightDetected = lightDetected;
         this.doorLf = doorLf;
         this.doorRf = doorRf;
         this.doorLr = doorLr;
@@ -196,7 +200,7 @@ public final class VehicleMetricsSnapshot {
         return new VehicleMetricsSnapshot(
                 connected,
                 invalid, invalid, invalid, invalid, invalid, invalid, invalid, invalid,
-                invalid, invalid, invalid, invalid, invalid,
+                invalid, invalid, invalid, invalid, invalid, invalid,
                 invalid, invalid,
                 invalid);
     }
@@ -212,6 +216,7 @@ public final class VehicleMetricsSnapshot {
                 cache.getCombined(ReadOnlyID.ID_GEARBOX_STATE),
                 cache.getCombined(ReadOnlyID.ID_SYSTEM_POWER_MODE),
                 cache.getCombined(ReadOnlyID.ID_IBS_VOLTAGE),
+                cache.getCombined(ReadOnlyID.ID_LIGHT_DETECTED_IHU),
                 cache.getCombined(ReadOnlyID.ID_DRIVE_DOOR_STATE),
                 cache.getCombined(ReadOnlyID.ID_PASSENGER_DOOR_STATE),
                 cache.getCombined(ReadOnlyID.ID_LFFT_BEHIND_DOOR_STATE),

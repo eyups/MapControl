@@ -48,24 +48,66 @@ public class FileUploadTabBuilder {
         scrollView.setPadding(0, 0, 0, 0);
         scrollView.setFillViewport(true);
 
-        LinearLayout outer = new LinearLayout(context);
-        outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        outer.setPadding(margin, margin, margin, margin);
-
         fileUploadTabContent = new LinearLayout(context);
         fileUploadTabContent.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        fileUploadTabContent.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(fileUploadTabContent);
+        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+        fileUploadTabContent.setPadding(margin, margin, margin, margin);
 
+        if (context.getResources().getConfiguration().screenWidthDp >= 1000) {
+            LinearLayout columns = new LinearLayout(context);
+            columns.setOrientation(LinearLayout.HORIZONTAL);
+            columns.setBaselineAligned(false);
+
+            LinearLayout left = createCard();
+            addControlPanel(left);
+            LinearLayout right = createCard();
+            addStatusPanel(right);
+
+            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            leftLp.setMarginEnd(gutter / 2);
+            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            rightLp.setMarginStart(gutter / 2);
+            columns.addView(left, leftLp);
+            columns.addView(right, rightLp);
+            fileUploadTabContent.addView(columns, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+        } else {
+            LinearLayout card = createCard();
+            addControlPanel(card);
+            addStatusPanel(card);
+            fileUploadTabContent.addView(card, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
+
+        scrollView.addView(fileUploadTabContent, new ScrollView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        return scrollView;
+    }
+
+    private LinearLayout createCard() {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        card.setPadding(inner, inner, inner, inner);
+        UiStyles.setGlassCardBackground(card);
+        return card;
+    }
+
+    private void addControlPanel(LinearLayout card) {
         TextView fileUploadTitle = new TextView(context);
         fileUploadTitle.setText(R.string.web_mgmt_title);
         fileUploadTitle.setTextSize(18);
         fileUploadTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
         fileUploadTitle.setTypeface(null, Typeface.BOLD);
-        fileUploadTitle.setPadding(16, 16, 16, 8);
-        fileUploadTabContent.addView(fileUploadTitle, new LinearLayout.LayoutParams(
+        fileUploadTitle.setPadding(16, 8, 16, 8);
+        card.addView(fileUploadTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -74,7 +116,7 @@ public class FileUploadTabBuilder {
         fileUploadDesc.setTextSize(13);
         fileUploadDesc.setTextColor(UiStyles.color(context, R.color.textHint));
         fileUploadDesc.setPadding(16, 0, 16, 16);
-        fileUploadTabContent.addView(fileUploadDesc, new LinearLayout.LayoutParams(
+        card.addView(fileUploadDesc, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -89,8 +131,18 @@ public class FileUploadTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         webServerToggleParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.spacing_medium));
-        fileUploadTabContent.addView(btnWebServerToggle, webServerToggleParams);
+        card.addView(btnWebServerToggle, webServerToggleParams);
 
+        btnWebServerToggle.setOnClickListener(v -> {
+            if (webServerManager.isRunning()) {
+                webServerManager.stopServer();
+            } else {
+                webServerManager.startServer();
+            }
+        });
+    }
+
+    private void addStatusPanel(LinearLayout card) {
         LinearLayout urlQrContainer = new LinearLayout(context);
         urlQrContainer.setOrientation(LinearLayout.VERTICAL);
         urlQrContainer.setGravity(Gravity.CENTER);
@@ -103,42 +155,22 @@ public class FileUploadTabBuilder {
         webServerStatusText.setGravity(Gravity.CENTER);
         webServerStatusText.setPadding(16, 16, 16, 16);
         webServerStatusText.setTypeface(null, Typeface.BOLD);
-        LinearLayout.LayoutParams urlParams = new LinearLayout.LayoutParams(
+        urlQrContainer.addView(webServerStatusText, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        urlQrContainer.addView(webServerStatusText, urlParams);
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         qrCodeImageView = new ImageView(context);
         qrCodeImageView.setVisibility(View.GONE);
         qrCodeImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         qrCodeImageView.setPadding(16, 16, 16, 16);
         int qrSize = (int) (200 * context.getResources().getDisplayMetrics().density);
-        LinearLayout.LayoutParams qrParams = new LinearLayout.LayoutParams(
-                qrSize,
-                qrSize);
+        LinearLayout.LayoutParams qrParams = new LinearLayout.LayoutParams(qrSize, qrSize);
         qrParams.gravity = Gravity.CENTER;
         urlQrContainer.addView(qrCodeImageView, qrParams);
 
-        fileUploadTabContent.addView(urlQrContainer, new LinearLayout.LayoutParams(
+        card.addView(urlQrContainer, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        btnWebServerToggle.setOnClickListener(v -> {
-            if (webServerManager.isRunning()) {
-                webServerManager.stopServer();
-            } else {
-                webServerManager.startServer();
-            }
-        });
-
-        outer.addView(fileUploadTabContent, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        scrollView.addView(outer, new ScrollView.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        return scrollView;
     }
 
     public LinearLayout getFileUploadTabContent() {

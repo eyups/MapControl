@@ -2,7 +2,9 @@ package com.mapcontrol.vehicle;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.os.Looper;
+import android.util.Log;
 
 import com.desaysv.ivi.extra.project.carinfo.CarSettingID;
 import com.desaysv.ivi.extra.project.carinfo.NewEnergyID;
@@ -24,6 +26,8 @@ import java.util.concurrent.Executors;
  * {@link com.mapcontrol.ui.builder.VehicleInfoTabBuilder} ve launcher dashboard aynı kaynağı kullanır.
  */
 public final class VehicleMetricsRepository {
+
+    private static final String TAG = "VehicleMetrics";
 
     public interface Listener {
         void onMetricsUpdated(VehicleMetricsSnapshot snapshot);
@@ -52,6 +56,7 @@ public final class VehicleMetricsRepository {
             ReadOnlyID.ID_SPEED_GAUGE_DISPLAY,
             ReadOnlyID.ID_GEARBOX_STATE,
             ReadOnlyID.ID_SYSTEM_POWER_MODE,
+            ReadOnlyID.ID_LIGHT_DETECTED_IHU,
             ReadOnlyID.ID_AVG_SPEED,
             // Kapı / bagaj (OEM: 1=açık, 0=kapalı)
             ReadOnlyID.ID_DRIVE_DOOR_STATE,
@@ -74,6 +79,7 @@ public final class VehicleMetricsRepository {
 
     private final Context appContext;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
+    private HandlerThread vdbusThread;
     private final ExecutorService ioExecutor = Executors.newSingleThreadExecutor();
     private final Set<Listener> listeners = new CopyOnWriteArraySet<>();
     private final VehicleMetricsCache cache = new VehicleMetricsCache();
@@ -104,8 +110,22 @@ public final class VehicleMetricsRepository {
         }
     };
 
+    private static volatile VehicleMetricsRepository backgroundInstance;
+
     public VehicleMetricsRepository(Context context) {
         this.appContext = context.getApplicationContext();
+    }
+
+    /** Shared repository for service-owned background consumers (trip/valet). */
+    public static VehicleMetricsRepository getBackground(Context context) {
+        if (backgroundInstance == null) {
+            synchronized (VehicleMetricsRepository.class) {
+                if (backgroundInstance == null) {
+                    backgroundInstance = new VehicleMetricsRepository(context);
+                }
+            }
+        }
+        return backgroundInstance;
     }
 
     public void addListener(Listener listener) {
@@ -163,21 +183,45 @@ public final class VehicleMetricsRepository {
             return;
         }
         started = true;
-        ioExecutor.execute(() -> {
+        Log.i(TAG, "start");
+        // VDBus/VDRouter kendi Handler'ını oluşturur; Looper'ı olan ayrı bir
+        // thread kullan. Main thread'i bloke etmeden ve background thread'de
+        // Looper.prepare() hatası almadan init tamamlanır.
+        vdbusThread = new HandlerThread("vdbus-carinfo");
+        vdbusThread.start();
+        Handler vdbusHandler = new Handler(vdbusThread.getLooper());
+        vdbusHandler.post(() -> {
             try {
-                ensureCarInfoReady();
-                registerCallbacksIfNeeded();
-                loadSnapshotFromBus();
-            } catch (Throwable ignored) {
-                cache.clear();
+                VDBus.getDefault().init(appContext);
+                ioExecutor.execute(() -> {
+                    try {
+                        ensureCarInfoReady();
+                        registerCallbacksIfNeeded();
+                        loadSnapshotFromBus();
+                        Log.i(TAG, "connected=" + isCarInfoConnected()
+                                + " callbacks=" + callbacksRegistered
+                                + " speed=" + cache.getCombined(ReadOnlyID.ID_SPEED_GAUGE_DISPLAY)
+                                + " actual=" + cache.getCombined(ReadOnlyID.ID_CAR_SPEED));
+                    } catch (Throwable t) {
+                        cache.clear();
+                        Log.e(TAG, "start failed", t);
+                    }
+                    notifyListeners();
+                });
+            } catch (Throwable t) {
+                Log.e(TAG, "VDBus init failed", t);
+                started = false;
             }
-            notifyListeners();
         });
     }
 
     private void stop() {
         started = false;
         unregisterCallbacks();
+        if (vdbusThread != null) {
+            vdbusThread.quitSafely();
+            vdbusThread = null;
+        }
     }
 
     private void notifyListeners() {
@@ -193,7 +237,7 @@ public final class VehicleMetricsRepository {
     }
 
     private void ensureCarInfoReady() {
-        VDBus.getDefault().init(appContext);
+        // VDBus init start() içinde main thread'de yapıldı.
         CarInfoProxy proxy = CarInfoProxy.getInstance();
         if (!proxy.isServiceConnnected()) {
             proxy.init(appContext);

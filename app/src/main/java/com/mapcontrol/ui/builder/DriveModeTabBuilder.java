@@ -15,6 +15,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
@@ -37,6 +38,16 @@ public class DriveModeTabBuilder {
         this.prefs = prefs;
         this.callback = callback;
         build();
+    }
+
+    private void applySelectedThumb(LinearLayout card) {
+        android.graphics.drawable.Drawable thumb =
+                UiStyles.drawable(context, R.drawable.bg_segment_thumb);
+        if (thumb != null) {
+            card.setBackground(thumb);
+        } else {
+            card.setBackgroundResource(R.drawable.bg_segment_thumb);
+        }
     }
 
     public ScrollView build() {
@@ -94,7 +105,11 @@ public class DriveModeTabBuilder {
 
         LinearLayout driveModeTrack = new LinearLayout(context);
         driveModeTrack.setOrientation(LinearLayout.HORIZONTAL);
-        driveModeTrack.setBackgroundResource(R.drawable.bg_segment_track);
+        if (ThemeManager.isCyber(context)) {
+            driveModeTrack.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            driveModeTrack.setBackgroundResource(R.drawable.bg_segment_track);
+        }
         int trackPad = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
         driveModeTrack.setPadding(trackPad, trackPad, trackPad, trackPad);
         LinearLayout.LayoutParams driveModeTrackParams = new LinearLayout.LayoutParams(
@@ -153,7 +168,7 @@ public class DriveModeTabBuilder {
 
             boolean isSelected = (savedMode == modeValue);
             if (isSelected) {
-                modeCard.setBackgroundResource(R.drawable.bg_segment_thumb);
+                applySelectedThumb(modeCard);
             } else {
                 modeCard.setBackgroundColor(Color.TRANSPARENT);
             }
@@ -257,7 +272,7 @@ public class DriveModeTabBuilder {
                     if (modeCards[i] != null) {
                         boolean isSelected = (i == selectedIndex);
                         if (isSelected) {
-                            modeCards[i].setBackgroundResource(R.drawable.bg_segment_thumb);
+                            applySelectedThumb(modeCards[i]);
                         } else {
                             modeCards[i].setBackgroundColor(Color.TRANSPARENT);
                         }

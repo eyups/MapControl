@@ -787,6 +787,13 @@ public class FloatingBackButtonManager {
         context.getApplicationContext().registerComponentCallbacks(mThemeConfigCallback);
     }
 
+    /** Rebuilds the visible hub chrome after a manual skin change (Cyber/Modern). */
+    public void refreshTheme() {
+        if (handler != null) {
+            handler.post(this::reapplyHubTheme);
+        }
+    }
+
     private void reapplyHubTheme() {
         if (floatingButton == null || !isShowing || cardInner == null) {
             return;

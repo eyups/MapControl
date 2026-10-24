@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import com.mapcontrol.ui.theme.UiStyles;
+import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.util.AppLocaleManager;
 import com.mapcontrol.util.DisplayHelper;
 import com.mapcontrol.util.LauncherLegacyPrefs;
@@ -21,6 +22,7 @@ public final class MapControlApplication extends Application {
         GlitchTip.start(this);
         AppLocaleManager.applyStoredLocale(this);
         LauncherLegacyPrefs.applyMigrations(this);
+        DriverProfileManager.get(this);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         lastNightModeUiBits = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         UiStyles.setUiModeOverride(getResources().getConfiguration());

@@ -145,6 +145,12 @@
         </activity-alias>
         
         <activity
+            android:name=".ui.activity.DrivingAnalysisActivity"
+            android:label="Sürüş Karnesi"
+            android:exported="false"
+            android:theme="@style/Theme.MapControl.Driving" />
+
+        <activity
             android:name=".ui.activity.CameraActivity"
             android:label="Kamera Test"
             android:screenOrientation="landscape" />
@@ -152,6 +158,11 @@
         <activity
             android:name=".ui.activity.ClusterVDBusTestActivity"
             android:label="Cluster / VDBus bench"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".ui.activity.IdDiscoveryActivity"
+            android:label="ID discovery"
             android:screenOrientation="landscape" />
         
         <!-- FileProvider for APK installation -->

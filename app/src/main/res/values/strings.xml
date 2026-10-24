@@ -45,6 +45,24 @@ Monitor — Foreground apps on display 2</string>
     <string name="welcome_sound_title">Welcome Screen</string>
     <string name="welcome_sound_back">Back</string>
     <string name="welcome_sound_steps">1. Download a sound file on your phone (mp3, wav, m4a, ogg, flac, aac, wma, amr).\n2. Plug the USB drive into the car. The file shows on this screen. Touch its name.\n3. If you have no USB drive, send the file to Downloads from the Web screen, then touch Choose sound.</string>
+
+    <string name="welcome_tts_title">Welcome voice with TTS</string>
+    <string name="welcome_tts_desc">Type a message, generate it with the selected TTS engine, and keep the audio in memory.</string>
+    <string name="welcome_tts_default">Welcome, have a safe trip!</string>
+    <string name="welcome_tts_hint">Welcome message</string>
+
+    <string name="welcome_tts_tags_label">Emotion / delivery tags</string>
+    <string name="welcome_tts_tags_help">Tags are interpreted by ElevenLabs v3. Sherpa-ONNX strips them and reads plain text.</string>
+
+    <string name="welcome_tts_generate">Generate with TTS</string>
+    <string name="welcome_tts_generating">Generating audio…</string>
+    <string name="welcome_tts_saved">Audio generated and saved</string>
+    <string name="welcome_tts_error">Could not generate audio: %1$s</string>
+    <string name="welcome_tts_empty">Message is empty</string>
+
+    <string name="welcome_sound_subtitle">Sound, startup behavior and entry design</string>
+    <string name="welcome_sound_source_title">Sound source</string>
+    <string name="welcome_sound_source_desc">Selected greeting sound and USB files.</string>
     <string name="welcome_sound_usb_title">Sounds on USB</string>
     <string name="welcome_sound_usb_absent">No USB drive is plugged in.</string>
     <string name="welcome_sound_usb_empty">No sound file on the USB drive.</string>
@@ -72,6 +90,10 @@ Monitor — Foreground apps on display 2</string>
     <string name="welcome_sound_folder_error">Could not access Downloads folder</string>
     <string name="welcome_sound_pick_first">Select a sound file first</string>
     <string name="welcome_sound_stopped">Stopped</string>
+    <string name="nav_section_connect">CONNECT</string>
+    <string name="nav_section_vehicle">VEHICLE</string>
+    <string name="nav_section_media">MEDIA</string>
+    <string name="nav_section_system">SYSTEM</string>
     <string name="side_rail_welcome_sound">Welcome Screen</string>
     <string name="welcome_design_section_title">Entrance design</string>
     <string name="welcome_design_section_desc">Shown on the main screen when the vehicle starts.</string>
@@ -83,6 +105,10 @@ Monitor — Foreground apps on display 2</string>
     <string name="welcome_design_winter_help">A pink night, blossoms, butterflies, and the line you write.</string>
     <string name="welcome_design_hike">Mountain Hike</string>
     <string name="welcome_design_hike_help">A sunset ridge and the line you write.</string>
+    <string name="welcome_design_cyber">Cyber Terminal</string>
+    <string name="welcome_design_cyber_help">Black terminal, phosphor-green uppercase text, typewriter reveal, blinking cursor and glitch.</string>
+    <string name="welcome_cyber_fallback">SYSTEM READY</string>
+    <string name="welcome_turkish_chars_label">Turkish characters</string>
     <string name="welcome_custom_text_label">Welcome line</string>
     <string name="welcome_custom_text_hint">First and last name</string>
     <string name="welcome_custom_text_help">Leave blank to hide the name line.</string>
