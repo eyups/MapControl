@@ -57,8 +57,12 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
 
     private int effectivePowerMode(VehicleMetricsSnapshot snapshot) {
         int carPowerMode = repository.getCombined(ReadOnlyID.ID_CAR_POWER_MODE);
-        return VehicleMetricsSnapshot.isValid(carPowerMode)
-                ? carPowerMode : snapshot.powerMode;
+        // CAR_POWER_MODE bazı araçlarda yalnız OFF'ta anlamlı; OFF dışında
+        // sistem güç modunu kullan. Aksi hâlde ACC/ON geçişinde telemetri kesiliyor.
+        if (VehicleMetricsSnapshot.isValid(carPowerMode) && carPowerMode == 0) {
+            return 0;
+        }
+        return snapshot.powerMode;
     }
 
     /** Gönderilecek gövde yoksa null döner. */
