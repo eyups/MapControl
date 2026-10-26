@@ -120,7 +120,10 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
                 }
             }
             if (snapshot.isValid(snapshot.batteryRaw)) {
-                payload.put("battery_raw", CloudTelemetryPolicy.clamp(snapshot.batteryRaw, 0, 255));
+                int battery = CloudTelemetryPolicy.batteryTenthsVolts(snapshot.batteryRaw);
+                if (battery > 0) {
+                    payload.put("battery_raw", battery);
+                }
             }
 
             JSONObject doors = new JSONObject();

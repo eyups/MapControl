@@ -46,6 +46,13 @@ public class CloudTelemetryPolicyTest {
     }
 
     @Test
+    public void batteryVoltageNormalizesMillivoltsAndTenths() {
+        assertEquals(120, CloudTelemetryPolicy.batteryTenthsVolts(12000));
+        assertEquals(127, CloudTelemetryPolicy.batteryTenthsVolts(127));
+        assertEquals(-1, CloudTelemetryPolicy.batteryTenthsVolts(0));
+    }
+
+    @Test
     public void finalIsSentOnlyOnceForPowerOff() {
         assertTrue(CloudTelemetryPolicy.shouldSendFinal(0, false));
         assertTrue(CloudTelemetryPolicy.shouldSendFinal(1, false));

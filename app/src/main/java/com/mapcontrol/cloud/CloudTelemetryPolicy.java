@@ -36,6 +36,17 @@ final class CloudTelemetryPolicy {
         return clamp(percent, 0, 100);
     }
 
+    /** IBS voltajı mV ise 0.1 V'a çevir; zaten 0–255 ise olduğu gibi bırak. */
+    static int batteryTenthsVolts(int raw) {
+        if (raw <= 0) {
+            return -1;
+        }
+        if (raw <= 255) {
+            return raw;
+        }
+        return clamp(Math.round(raw / 100f), 0, 255);
+    }
+
     /** Bu araçta 2000 km, menzil modülünün başlatılmamış placeholder değeri. */
     static int rangeKm(int raw) {
         if (raw < 0 || raw >= 2000) {
