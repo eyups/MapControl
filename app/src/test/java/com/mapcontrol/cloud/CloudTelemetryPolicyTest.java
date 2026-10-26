@@ -37,6 +37,15 @@ public class CloudTelemetryPolicyTest {
     }
 
     @Test
+    public void rangePlaceholderIsNotUploaded() {
+        assertEquals(114, CloudTelemetryPolicy.rangeKm(114));
+        assertEquals(1999, CloudTelemetryPolicy.rangeKm(1999));
+        assertEquals(-1, CloudTelemetryPolicy.rangeKm(2000));
+        assertEquals(-1, CloudTelemetryPolicy.rangeKm(2500));
+        assertEquals(-1, CloudTelemetryPolicy.rangeKm(-1));
+    }
+
+    @Test
     public void finalIsSentOnlyOnceForPowerOff() {
         assertTrue(CloudTelemetryPolicy.shouldSendFinal(0, false));
         assertFalse(CloudTelemetryPolicy.shouldSendFinal(0, true));

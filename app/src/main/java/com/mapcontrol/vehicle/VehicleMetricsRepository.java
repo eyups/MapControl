@@ -59,6 +59,7 @@ public final class VehicleMetricsRepository {
             ReadOnlyID.ID_SPEED_GAUGE_DISPLAY,
             ReadOnlyID.ID_GEARBOX_STATE,
             ReadOnlyID.ID_SYSTEM_POWER_MODE,
+            ReadOnlyID.ID_CAR_POWER_MODE,
             ReadOnlyID.ID_LIGHT_DETECTED_IHU,
             ReadOnlyID.ID_AVG_SPEED,
             // Kapı / bagaj (OEM: 1=açık, 0=kapalı)

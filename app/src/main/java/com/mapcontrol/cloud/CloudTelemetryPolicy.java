@@ -35,4 +35,12 @@ final class CloudTelemetryPolicy {
         int percent = raw <= 100 ? raw : Math.round(raw / 10f);
         return clamp(percent, 0, 100);
     }
+
+    /** Bu araçta 2000 km, menzil modülünün başlatılmamış placeholder değeri. */
+    static int rangeKm(int raw) {
+        if (raw < 0 || raw >= 2000) {
+            return -1;
+        }
+        return clamp(raw, 0, 1999);
+    }
 }

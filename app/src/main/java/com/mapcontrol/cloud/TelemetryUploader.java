@@ -3,6 +3,7 @@ package com.mapcontrol.cloud;
 import android.content.Context;
 import android.location.Location;
 
+import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.mapcontrol.vehicle.VehicleMetricsRepository;
 import com.mapcontrol.vehicle.VehicleMetricsSnapshot;
 
@@ -51,7 +52,13 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
 
     int powerMode() {
         VehicleMetricsSnapshot snapshot = latest;
-        return snapshot == null ? -1 : snapshot.powerMode;
+        return snapshot == null ? -1 : effectivePowerMode(snapshot);
+    }
+
+    private int effectivePowerMode(VehicleMetricsSnapshot snapshot) {
+        int carPowerMode = repository.getCombined(ReadOnlyID.ID_CAR_POWER_MODE);
+        return VehicleMetricsSnapshot.isValid(carPowerMode)
+                ? carPowerMode : snapshot.powerMode;
     }
 
     /** Gönderilecek gövde yoksa null döner. */
@@ -60,7 +67,7 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         if (snapshot == null) {
             return null;
         }
-        int powerMode = snapshot.powerMode;
+        int powerMode = effectivePowerMode(snapshot);
         long ageMs = lastMetricsAtMs == 0L
                 ? -1L : android.os.SystemClock.elapsedRealtime() - lastMetricsAtMs;
         if (powerMode == 2) {
@@ -98,7 +105,10 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
                 }
             }
             if (snapshot.isValid(snapshot.rangeKm)) {
-                payload.put("range_km", CloudTelemetryPolicy.clamp(snapshot.rangeKm, 0, 2000));
+                int rangeKm = CloudTelemetryPolicy.rangeKm(snapshot.rangeKm);
+                if (rangeKm >= 0) {
+                    payload.put("range_km", rangeKm);
+                }
             }
             if (snapshot.isValid(snapshot.batteryRaw)) {
                 payload.put("battery_raw", CloudTelemetryPolicy.clamp(snapshot.batteryRaw, 0, 255));
