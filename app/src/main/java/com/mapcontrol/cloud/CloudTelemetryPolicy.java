@@ -26,4 +26,13 @@ final class CloudTelemetryPolicy {
     static boolean liveUploadAllowed(int powerMode, boolean connected, long ageMs) {
         return connected && powerMode == 2 && ageMs >= 0L && ageMs <= MAX_METRICS_AGE_MS;
     }
+
+    /** OEM yakıt: 0–100 tam yüzde; >100 ise onda bir (348 -> %34.8). */
+    static int fuelPercent(int raw) {
+        if (raw < 0) {
+            return -1;
+        }
+        int percent = raw <= 100 ? raw : Math.round(raw / 10f);
+        return clamp(percent, 0, 100);
+    }
 }

@@ -92,7 +92,10 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
                 payload.put("odo_km", CloudTelemetryPolicy.clamp(snapshot.odoKm, 0, 2_000_000));
             }
             if (snapshot.isValid(snapshot.fuelPercent)) {
-                payload.put("fuel_pct", CloudTelemetryPolicy.clamp(snapshot.fuelPercent, 0, 100));
+                int fuelPercent = CloudTelemetryPolicy.fuelPercent(snapshot.fuelPercent);
+                if (fuelPercent >= 0) {
+                    payload.put("fuel_pct", fuelPercent);
+                }
             }
             if (snapshot.isValid(snapshot.rangeKm)) {
                 payload.put("range_km", CloudTelemetryPolicy.clamp(snapshot.rangeKm, 0, 2000));

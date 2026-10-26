@@ -28,6 +28,15 @@ public class CloudTelemetryPolicyTest {
     }
 
     @Test
+    public void fuelPercentHandlesWholeAndTenthsRawValues() {
+        assertEquals(50, CloudTelemetryPolicy.fuelPercent(50));
+        assertEquals(100, CloudTelemetryPolicy.fuelPercent(100));
+        assertEquals(35, CloudTelemetryPolicy.fuelPercent(348));
+        assertEquals(100, CloudTelemetryPolicy.fuelPercent(1000));
+        assertEquals(-1, CloudTelemetryPolicy.fuelPercent(-1));
+    }
+
+    @Test
     public void finalIsSentOnlyOnceForPowerOff() {
         assertTrue(CloudTelemetryPolicy.shouldSendFinal(0, false));
         assertFalse(CloudTelemetryPolicy.shouldSendFinal(0, true));
