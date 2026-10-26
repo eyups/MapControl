@@ -1023,4 +1023,27 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="adas_probe_scan_start">Scan started</string>
     <string name="adas_probe_scan_stop">Scan stopped</string>
     <string name="adas_probe_subscribed">Subscribed: %1$d, failed: %2$d</string>
+
+    <!-- Bulut -->
+    <string name="settings_cloud_title">Cloud</string>
+    <string name="settings_cloud_desc">Sends telemetry and completed drives to the server. Starts only when you press Start.</string>
+    <string name="settings_cloud_status_unpaired">Not paired</string>
+    <string name="settings_cloud_status_ready">Ready</string>
+    <string name="settings_cloud_status_pairing">Pairing…</string>
+    <string name="settings_cloud_status_running">Running</string>
+    <string name="settings_cloud_status_error">Cloud error</string>
+    <string name="settings_cloud_pair_hint">Pairing code</string>
+    <string name="settings_cloud_pair_action">Pair</string>
+    <string name="settings_cloud_pairing">Pairing…</string>
+    <string name="settings_cloud_paired">Paired</string>
+    <string name="settings_cloud_start">Start</string>
+    <string name="settings_cloud_stop">Stop</string>
+    <string name="settings_cloud_running">Running</string>
+    <string name="settings_cloud_ready">Paired; ready to start</string>
+    <string name="settings_cloud_share_location">Share location</string>
+    <string name="settings_cloud_invalid_code">Enter the 8-character code.</string>
+    <string name="settings_cloud_revoked">Device revoked; pair again.</string>
+    <string name="settings_cloud_pair_failed">Pairing failed.</string>
+    <string name="settings_cloud_error">Cloud error.</string>
+
 </resources>

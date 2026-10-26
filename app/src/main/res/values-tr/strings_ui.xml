@@ -1042,4 +1042,27 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="adas_probe_scan_start">Tarama başladı</string>
     <string name="adas_probe_scan_stop">Tarama durdu</string>
     <string name="adas_probe_subscribed">Abone: %1$d, hata: %2$d</string>
+
+    <!-- Bulut -->
+    <string name="settings_cloud_title">Bulut</string>
+    <string name="settings_cloud_desc">Telemetri ve tamamlanan sürüşleri sunucuya gönderir. Yalnızca Başlat’a basınca çalışır.</string>
+    <string name="settings_cloud_status_unpaired">Eşleştirilmedi</string>
+    <string name="settings_cloud_status_ready">Hazır</string>
+    <string name="settings_cloud_status_pairing">Eşleştiriliyor…</string>
+    <string name="settings_cloud_status_running">Çalışıyor</string>
+    <string name="settings_cloud_status_error">Bulut hatası</string>
+    <string name="settings_cloud_pair_hint">Eşleştirme kodu</string>
+    <string name="settings_cloud_pair_action">Eşleştir</string>
+    <string name="settings_cloud_pairing">Eşleştiriliyor…</string>
+    <string name="settings_cloud_paired">Eşleştirildi</string>
+    <string name="settings_cloud_start">Başlat</string>
+    <string name="settings_cloud_stop">Durdur</string>
+    <string name="settings_cloud_running">Çalışıyor</string>
+    <string name="settings_cloud_ready">Eşleştirildi; başlatmaya hazır</string>
+    <string name="settings_cloud_share_location">Konum paylaş</string>
+    <string name="settings_cloud_invalid_code">8 karakterlik kodu girin.</string>
+    <string name="settings_cloud_revoked">Cihaz iptal edildi; yeniden eşleştirin.</string>
+    <string name="settings_cloud_pair_failed">Eşleştirme başarısız.</string>
+    <string name="settings_cloud_error">Bulut hatası.</string>
+
 </resources>
