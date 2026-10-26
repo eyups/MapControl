@@ -18,6 +18,16 @@ public class CloudTelemetryPolicyTest {
     }
 
     @Test
+    public void liveUploadRequiresPowerOnFreshConnectedMetrics() {
+        assertTrue(CloudTelemetryPolicy.liveUploadAllowed(2, true, 0L));
+        assertTrue(CloudTelemetryPolicy.liveUploadAllowed(2, true, 60_000L));
+        assertFalse(CloudTelemetryPolicy.liveUploadAllowed(1, true, 0L));
+        assertFalse(CloudTelemetryPolicy.liveUploadAllowed(0, true, 0L));
+        assertFalse(CloudTelemetryPolicy.liveUploadAllowed(2, false, 0L));
+        assertFalse(CloudTelemetryPolicy.liveUploadAllowed(2, true, 60_001L));
+    }
+
+    @Test
     public void finalIsSentOnlyOnceForPowerOff() {
         assertTrue(CloudTelemetryPolicy.shouldSendFinal(0, false));
         assertFalse(CloudTelemetryPolicy.shouldSendFinal(0, true));

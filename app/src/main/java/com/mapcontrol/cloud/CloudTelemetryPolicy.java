@@ -5,6 +5,7 @@ final class CloudTelemetryPolicy {
 
     static final int MIN_UPLOAD_INTERVAL_S = 10;
     static final int MAX_UPLOAD_INTERVAL_S = 30;
+    static final long MAX_METRICS_AGE_MS = 60_000L;
 
     private CloudTelemetryPolicy() {
     }
@@ -19,5 +20,10 @@ final class CloudTelemetryPolicy {
 
     static boolean shouldSendFinal(int powerMode, boolean finalAlreadySent) {
         return powerMode == 0 && !finalAlreadySent;
+    }
+
+    /** Canlı telemetri yalnız kontak ON ve taze metriklerle gönderilir. */
+    static boolean liveUploadAllowed(int powerMode, boolean connected, long ageMs) {
+        return connected && powerMode == 2 && ageMs >= 0L && ageMs <= MAX_METRICS_AGE_MS;
     }
 }

@@ -18,6 +18,8 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
 
     private volatile VehicleMetricsSnapshot latest;
     private volatile boolean finalSent;
+    private volatile boolean sawPoweredOn;
+    private volatile long lastMetricsAtMs;
 
     TelemetryUploader(Context context, CloudConfig config) {
         this.context = context.getApplicationContext();
@@ -27,12 +29,15 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
 
     void start() {
         finalSent = false;
+        sawPoweredOn = false;
+        lastMetricsAtMs = 0L;
         repository.addListener(this);
     }
 
     void stop() {
         repository.removeListener(this);
         latest = null;
+        lastMetricsAtMs = 0L;
         pending.clear();
     }
 
@@ -40,6 +45,7 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
     public void onMetricsUpdated(VehicleMetricsSnapshot snapshot) {
         if (snapshot != null) {
             latest = snapshot;
+            lastMetricsAtMs = android.os.SystemClock.elapsedRealtime();
         }
     }
 
@@ -55,14 +61,16 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
             return null;
         }
         int powerMode = snapshot.powerMode;
-        if (VehicleMetricsSnapshot.isValid(powerMode) && powerMode > 0) {
+        long ageMs = lastMetricsAtMs == 0L
+                ? -1L : android.os.SystemClock.elapsedRealtime() - lastMetricsAtMs;
+        if (powerMode == 2) {
+            sawPoweredOn = true;
             finalSent = false;
         }
-        if (powerMode == 0 && finalSent) {
-            return null;
-        }
-        boolean finalFlag = CloudTelemetryPolicy.shouldSendFinal(powerMode, finalSent);
-        if (!finalFlag && !snapshot.connected) {
+        boolean finalFlag = CloudTelemetryPolicy.shouldSendFinal(powerMode, finalSent)
+                && sawPoweredOn;
+        if (!finalFlag && !CloudTelemetryPolicy.liveUploadAllowed(
+                powerMode, snapshot.connected, ageMs)) {
             return null;
         }
 
