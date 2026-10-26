@@ -58,6 +58,8 @@ public final class CloudManager {
     private volatile String detail = "";
     private TelemetryUploader telemetry;
     private TripUploader tripUploader;
+    private CommandExecutor commandExecutor;
+    private CommandPoller commandPoller;
 
     private final Runnable loopRunnable = this::loop;
 
@@ -170,6 +172,8 @@ public final class CloudManager {
         nextTripsAt = 0L;
         telemetry = new TelemetryUploader(appContext, config);
         tripUploader = new TripUploader(appContext, config, http);
+        commandExecutor = new CommandExecutor(appContext, config, http, telemetry);
+        commandPoller = new CommandPoller(config, http, commandExecutor, this::onCommandAuthRevoked);
         setState(State.RUNNING, "Başlatılıyor");
         Handler target = ensureWorker();
         target.post(() -> {
@@ -178,6 +182,9 @@ public final class CloudManager {
             }
             if (telemetry != null) {
                 telemetry.start();
+            }
+            if (commandPoller != null) {
+                commandPoller.start();
             }
             loop();
         });
@@ -193,6 +200,14 @@ public final class CloudManager {
         telemetry = null;
         if (activeTelemetry != null) {
             activeTelemetry.stop();
+        }
+        if (commandPoller != null) {
+            commandPoller.stop();
+            commandPoller = null;
+        }
+        if (commandExecutor != null) {
+            commandExecutor.stop();
+            commandExecutor = null;
         }
         tripUploader = null;
         setState(State.STOPPED, "Durduruldu");
@@ -366,6 +381,10 @@ public final class CloudManager {
         setState(State.RUNNING, message);
     }
 
+    private void onCommandAuthRevoked() {
+        revoke("Cihaz iptal edildi; yeniden eşleştirin.");
+    }
+
     private void revoke(String message) {
         running = false;
         heartbeatOk = false;
@@ -374,6 +393,14 @@ public final class CloudManager {
         telemetry = null;
         if (activeTelemetry != null) {
             activeTelemetry.stop();
+        }
+        if (commandPoller != null) {
+            commandPoller.stop();
+            commandPoller = null;
+        }
+        if (commandExecutor != null) {
+            commandExecutor.stop();
+            commandExecutor = null;
         }
         tripUploader = null;
         if (worker != null) {

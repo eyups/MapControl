@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -26,6 +27,103 @@ final class CloudHttp {
         Response(int code, String body) {
             this.code = code;
             this.body = body == null ? "" : body;
+        }
+    }
+
+    Response getJson(String path, String deviceToken, int readTimeoutMs) throws IOException {
+        if (path == null || !path.startsWith("/api/v1/") || path.contains("..")) {
+            throw new IOException("invalid_path");
+        }
+        URL url = new URL(CloudConfig.BASE_URL + path);
+        if (!"https".equalsIgnoreCase(url.getProtocol())) {
+            throw new IOException("https_required");
+        }
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        if (!(connection instanceof HttpsURLConnection)) {
+            connection.disconnect();
+            throw new IOException("https_required");
+        }
+        try {
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
+            connection.setReadTimeout(readTimeoutMs);
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(false);
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Accept-Encoding", "identity");
+            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            if (deviceToken != null && !deviceToken.isEmpty()) {
+                connection.setRequestProperty("Authorization", "Device " + deviceToken);
+            }
+            int code = connection.getResponseCode();
+            InputStream input = code >= 200 && code < 300
+                    ? connection.getInputStream()
+                    : connection.getErrorStream();
+            return new Response(code, readLimited(input));
+        } finally {
+            connection.disconnect();
+        }
+    }
+
+    Response postFile(String path, String deviceToken, String fileName,
+            String contentType, byte[] fileBytes, int maxRequestBytes) throws IOException {
+        if (path == null || !path.startsWith("/api/v1/") || path.contains("..")) {
+            throw new IOException("invalid_path");
+        }
+        if (fileBytes == null || fileBytes.length > maxRequestBytes) {
+            throw new IOException("request_too_large");
+        }
+        URL url = new URL(CloudConfig.BASE_URL + path);
+        if (!"https".equalsIgnoreCase(url.getProtocol())) {
+            throw new IOException("https_required");
+        }
+        String boundary = "----MapControl" + UUID.randomUUID().toString().replace("-", "");
+        String safeName = fileName == null ? "log.txt" : fileName.replace("\"", "");
+        ByteArrayOutputStream multipart = new ByteArrayOutputStream();
+        multipart.write(("--" + boundary + "\r\n").getBytes(StandardCharsets.UTF_8));
+        multipart.write(("Content-Disposition: form-data; name=\"file\"; filename=\""
+                + safeName + "\"\r\n").getBytes(StandardCharsets.UTF_8));
+        multipart.write(("Content-Type: " + (contentType == null
+                ? "application/octet-stream" : contentType) + "\r\n\r\n")
+                .getBytes(StandardCharsets.UTF_8));
+        multipart.write(fileBytes);
+        multipart.write(("\r\n--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8));
+        byte[] raw = multipart.toByteArray();
+        if (raw.length > maxRequestBytes + 64 * 1024) {
+            throw new IOException("request_too_large");
+        }
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        if (!(connection instanceof HttpsURLConnection)) {
+            connection.disconnect();
+            throw new IOException("https_required");
+        }
+        try {
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
+            connection.setReadTimeout(READ_TIMEOUT_MS);
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(false);
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Accept-Encoding", "identity");
+            connection.setRequestProperty("Content-Type",
+                    "multipart/form-data; boundary=" + boundary);
+            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            if (deviceToken != null && !deviceToken.isEmpty()) {
+                connection.setRequestProperty("Authorization", "Device " + deviceToken);
+            }
+            connection.setFixedLengthStreamingMode(raw.length);
+            try (OutputStream output = connection.getOutputStream()) {
+                output.write(raw);
+            }
+            int code = connection.getResponseCode();
+            InputStream input = code >= 200 && code < 300
+                    ? connection.getInputStream()
+                    : connection.getErrorStream();
+            return new Response(code, readLimited(input));
+        } finally {
+            connection.disconnect();
         }
     }
 

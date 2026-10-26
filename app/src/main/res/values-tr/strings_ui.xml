@@ -1065,4 +1065,15 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_pair_failed">Eşleştirme başarısız.</string>
     <string name="settings_cloud_error">Bulut hatası.</string>
 
+
+    <string name="cloud_command_title">Bulut komutu</string>
+    <string name="cloud_command_message">“%1$s” hedefine navigasyon başlatılsın mı?</string>
+    <string name="cloud_command_accept">Başlat</string>
+    <string name="cloud_command_reject">Reddet</string>
+
+
+    <string name="settings_cloud_send_log">Log gönder</string>
+    <string name="settings_cloud_log_sent">Log gönderildi.</string>
+    <string name="settings_cloud_log_failed">Log gönderilemedi.</string>
+
 </resources>

@@ -55,6 +55,11 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         return snapshot == null ? -1 : effectivePowerMode(snapshot);
     }
 
+    int speedKmh() {
+        VehicleMetricsSnapshot snapshot = latest;
+        return snapshot == null ? 0 : snapshot.preferredSpeed();
+    }
+
     private int effectivePowerMode(VehicleMetricsSnapshot snapshot) {
         int carPowerMode = repository.getCombined(ReadOnlyID.ID_CAR_POWER_MODE);
         // CAR_POWER_MODE bazı araçlarda yalnız OFF'ta anlamlı; OFF dışında

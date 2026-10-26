@@ -1046,4 +1046,15 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_pair_failed">Pairing failed.</string>
     <string name="settings_cloud_error">Cloud error.</string>
 
+
+    <string name="cloud_command_title">Cloud command</string>
+    <string name="cloud_command_message">Start navigation to “%1$s”?</string>
+    <string name="cloud_command_accept">Start</string>
+    <string name="cloud_command_reject">Reject</string>
+
+
+    <string name="settings_cloud_send_log">Send log</string>
+    <string name="settings_cloud_log_sent">Log uploaded.</string>
+    <string name="settings_cloud_log_failed">Log upload failed.</string>
+
 </resources>

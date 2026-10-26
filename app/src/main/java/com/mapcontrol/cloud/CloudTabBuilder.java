@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mapcontrol.R;
 import com.mapcontrol.ui.theme.UiStyles;
@@ -36,6 +37,7 @@ public final class CloudTabBuilder {
     private final LinearLayout pairedRow;
     private final Button startStopButton;
     private final Switch shareLocationSwitch;
+    private final Button logUploadButton;
 
     private final CloudManager.Listener managerListener = this::refresh;
 
@@ -114,10 +116,19 @@ public final class CloudTabBuilder {
         shareLocationSwitch.setTextColor(UiStyles.color(context, R.color.textPrimary));
         shareLocationSwitch.setPadding(0, dp(8), 0, 0);
         pairedRow.addView(shareLocationSwitch, matchWidth());
+
+        logUploadButton = new Button(context);
+        logUploadButton.setText(R.string.settings_cloud_send_log);
+        logUploadButton.setAllCaps(false);
+        logUploadButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.applySolidRoundedBackground(
+                logUploadButton, UiStyles.color(context, R.color.buttonNeutral));
+        pairedRow.addView(logUploadButton, matchWidth());
         root.addView(pairedRow, matchWidth());
 
         pairButton.setOnClickListener(view -> pair());
         startStopButton.setOnClickListener(view -> toggleRunning());
+        logUploadButton.setOnClickListener(view -> uploadLog());
         shareLocationSwitch.setChecked(config.shareLocation());
         shareLocationSwitch.setOnCheckedChangeListener((buttonView, checked) -> {
             config.setShareLocation(checked);
@@ -165,6 +176,19 @@ public final class CloudTabBuilder {
                 });
             }
         });
+    }
+
+    private void uploadLog() {
+        logUploadButton.setEnabled(false);
+        new CloudLogUploader().upload(config, new CloudHttp(),
+                (ok, message) -> mainHandler.post(() -> {
+                    logUploadButton.setEnabled(true);
+                    Toast.makeText(context,
+                            ok ? R.string.settings_cloud_log_sent
+                                    : R.string.settings_cloud_log_failed,
+                            Toast.LENGTH_SHORT).show();
+                    logger.accept("Log yükleme: " + message);
+                }));
     }
 
     private void toggleRunning() {
