@@ -226,6 +226,12 @@ public final class CloudManager {
         if (!running) {
             return;
         }
+        if (telemetry != null) {
+            JSONObject immediateFinal = telemetry.captureFinal(System.currentTimeMillis());
+            if (immediateFinal != null) {
+                sendFinal(immediateFinal);
+            }
+        }
         long now = SystemClock.elapsedRealtime();
         if (now >= nextHeartbeatAt && now >= nextAttemptAt) {
             if (sendHeartbeat()) {
@@ -296,7 +302,14 @@ public final class CloudManager {
         }
         JSONObject finalPayload = current.capture(
                 System.currentTimeMillis(), serverShareLocation);
-        if (finalPayload == null) {
+        if (finalPayload != null) {
+            sendFinal(finalPayload);
+        }
+    }
+
+    private void sendFinal(JSONObject finalPayload) {
+        TelemetryUploader current = telemetry;
+        if (current == null) {
             return;
         }
         try {

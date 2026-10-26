@@ -19,7 +19,7 @@ final class CloudTelemetryPolicy {
     }
 
     static boolean shouldSendFinal(int powerMode, boolean finalAlreadySent) {
-        return powerMode == 0 && !finalAlreadySent;
+        return (powerMode == 0 || powerMode == 1) && !finalAlreadySent;
     }
 
     /** Canlı telemetri yalnız kontak ON ve taze metriklerle gönderilir. */

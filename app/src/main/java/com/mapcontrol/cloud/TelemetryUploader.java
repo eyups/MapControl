@@ -175,6 +175,27 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         pending.clear();
     }
 
+    /** Kontak kapanışını 15 sn yükleme aralığını beklemeden yakalar. */
+    JSONObject captureFinal(long tsMs) {
+        VehicleMetricsSnapshot snapshot = latest;
+        if (snapshot == null) {
+            return null;
+        }
+        int powerMode = effectivePowerMode(snapshot);
+        if (powerMode == 2) {
+            sawPoweredOn = true;
+            finalSent = false;
+            return null;
+        }
+        if (!sawPoweredOn || finalSent) {
+            return null;
+        }
+        if (powerMode != 0 && powerMode != 1) {
+            return null;
+        }
+        return buildPayload(tsMs, false);
+    }
+
     /** Normal örneği tampona ekler; final örneğini hemen gönderilmek üzere döndürür. */
     JSONObject capture(long tsMs, boolean serverAllowsLocation) {
         JSONObject payload = buildPayload(tsMs, serverAllowsLocation);

@@ -48,6 +48,7 @@ public class CloudTelemetryPolicyTest {
     @Test
     public void finalIsSentOnlyOnceForPowerOff() {
         assertTrue(CloudTelemetryPolicy.shouldSendFinal(0, false));
+        assertTrue(CloudTelemetryPolicy.shouldSendFinal(1, false));
         assertFalse(CloudTelemetryPolicy.shouldSendFinal(0, true));
         assertFalse(CloudTelemetryPolicy.shouldSendFinal(2, false));
     }
