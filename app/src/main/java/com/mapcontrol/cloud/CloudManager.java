@@ -33,6 +33,7 @@ public final class CloudManager {
     private static final long HEARTBEAT_INTERVAL_MS = 30_000L;
     private static final long TRIP_SCAN_INTERVAL_MS = 60_000L;
     private static final long HEALTH_INTERVAL_MS = 5 * 60_000L;
+    private static final long VALET_INTERVAL_MS = 30_000L;
     private static final long LOOP_INTERVAL_MS = 1_000L;
 
     private static volatile CloudManager instance;
@@ -62,7 +63,9 @@ public final class CloudManager {
     private CommandExecutor commandExecutor;
     private CommandPoller commandPoller;
     private HealthUploader healthUploader;
+    private ValetUploader valetUploader;
     private long nextHealthAt;
+    private long nextValetAt;
 
     private final Runnable loopRunnable = this::loop;
 
@@ -179,6 +182,8 @@ public final class CloudManager {
         commandPoller = new CommandPoller(config, http, commandExecutor, this::onCommandAuthRevoked);
         healthUploader = new HealthUploader(appContext, config, http);
         nextHealthAt = 0L;
+        valetUploader = new ValetUploader(appContext, config, http);
+        nextValetAt = 0L;
         setState(State.RUNNING, "Başlatılıyor");
         Handler target = ensureWorker();
         target.post(() -> {
@@ -215,6 +220,7 @@ public final class CloudManager {
             commandExecutor = null;
         }
         healthUploader = null;
+        valetUploader = null;
         tripUploader = null;
         setState(State.STOPPED, "Durduruldu");
     }
@@ -264,6 +270,10 @@ public final class CloudManager {
         if (heartbeatOk && now >= nextHealthAt) {
             sendHealth();
             nextHealthAt = now + HEALTH_INTERVAL_MS;
+        }
+        if (heartbeatOk && now >= nextValetAt) {
+            sendValet();
+            nextValetAt = now + VALET_INTERVAL_MS;
         }
         schedule(LOOP_INTERVAL_MS);
     }
@@ -386,6 +396,24 @@ public final class CloudManager {
         }
     }
 
+    private void sendValet() {
+        if (!running) {
+            return;
+        }
+        ValetUploader current = valetUploader;
+        if (current == null) {
+            return;
+        }
+        try {
+            CloudHttp.Response response = current.upload();
+            if (response != null && response.code == 401) {
+                revoke("Cihaz iptal edildi; yeniden eşleştirin.");
+            }
+        } catch (Exception ignored) {
+            // Valet durumu bir sonraki turda tekrar denenir.
+        }
+    }
+
     private void sendTrips() {
         if (!running) {
             return;
@@ -446,6 +474,7 @@ public final class CloudManager {
             commandExecutor = null;
         }
         healthUploader = null;
+        valetUploader = null;
         tripUploader = null;
         if (worker != null) {
             worker.removeCallbacksAndMessages(null);
