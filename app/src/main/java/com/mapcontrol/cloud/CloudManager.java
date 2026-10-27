@@ -272,6 +272,11 @@ public final class CloudManager {
         if (!running) {
             return false;
         }
+        TelemetryUploader currentTelemetry = telemetry;
+        if (currentTelemetry == null || currentTelemetry.powerMode() != 2) {
+            heartbeatOk = false;
+            return false;
+        }
         try {
             JSONObject body = new JSONObject();
             body.put("ts_ms", System.currentTimeMillis());
