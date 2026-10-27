@@ -154,6 +154,52 @@ public final class ComfortCommands {
                 VDEventCarInfo.MODULE_CAR_SETTING, CarSettingID.ID_CAR_STEER_WHEEL_HEAT, 1);
     }
 
+    /** C3: allowlist'teki konfor sahnelerini uygular ve HVAC geri okuması yapar. */
+    public static boolean applyScene(String scene) {
+        if (!isConnected() || !isEngineRunning()) {
+            return false;
+        }
+        try {
+            if ("cool".equals(scene)) {
+                setHvac(true);
+                sendRecirculation(true);
+                Thread.sleep(350L);
+                return read(VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_WORKING) == 1;
+            }
+            if ("heat".equals(scene)) {
+                setHvac(true);
+                sendRecirculation(false);
+                Thread.sleep(350L);
+                return read(VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_WORKING) == 1;
+            }
+            if ("defog".equals(scene)) {
+                CarInfoProxy proxy = CarInfoProxy.getInstance();
+                proxy.sendItemValue(VDEventCarInfo.MODULE_HVAC,
+                        HvacID.ID_AC_FRONT_GLASS_HEAT, 1);
+                proxy.sendItemValue(VDEventCarInfo.MODULE_HVAC,
+                        HvacID.ID_AC_MAX_FRONT_DEFOREST, 1);
+                proxy.sendItemValue(VDEventCarInfo.MODULE_HVAC,
+                        HvacID.ID_AC_REAR_DEFROST, 1);
+                Thread.sleep(350L);
+                return read(VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_FRONT_GLASS_HEAT) == 1
+                        || read(VDEventCarInfo.MODULE_HVAC,
+                        HvacID.ID_AC_MAX_FRONT_DEFOREST) == 1;
+            }
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+        } catch (Throwable ignored) {
+        }
+        return false;
+    }
+
+    private static void setHvac(boolean on) {
+        CarInfoProxy proxy = CarInfoProxy.getInstance();
+        int value = on ? 1 : 0;
+        proxy.sendItemValue(VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_STATE, value);
+        proxy.sendItemValue(VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_WORKING, value);
+        proxy.sendItemValue(VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_AUTO_STATE, value);
+    }
+
     private static int read(int module, int id) {
         int[] raw = CarInfoProxy.getInstance().getItemValues(module, id);
         int combined = VehicleMetricsCache.combineRaw(raw);

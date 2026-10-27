@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.mapcontrol.tts.MapControlSpeech;
+import com.mapcontrol.vehicle.ComfortCommands;
 
 import org.json.JSONObject;
 
@@ -60,7 +61,7 @@ final class CommandExecutor {
             return;
         }
         if (!"ping".equals(type) && !"nav.navigate".equals(type)
-                && !"tts.say".equals(type)) {
+                && !"tts.say".equals(type) && !"comfort.scene".equals(type)) {
             sendResult(commandId, "rejected", reason("unsupported_type"));
             return;
         }
@@ -93,6 +94,14 @@ final class CommandExecutor {
                 sendResult(commandId, "failed", reason("invalid_text"));
                 return;
             }
+        } else if ("comfort.scene".equals(type)) {
+            String scene = payload.optString("scene", "");
+            if (!"cool".equals(scene) && !"heat".equals(scene)
+                    && !"defog".equals(scene)) {
+                sendResult(commandId, "failed", reason("invalid_scene"));
+                return;
+            }
+            message = sceneLabel(scene);
         } else {
             String name = payload.optString("name", "").trim();
             double lat = payload.optDouble("lat", Double.NaN);
@@ -155,6 +164,20 @@ final class CommandExecutor {
                 sendResult(active.commandId, "done", detail);
                 return;
             }
+            if ("comfort.scene".equals(active.type)) {
+                String scene = active.payload.optString("scene", "");
+                resultExecutor.execute(() -> {
+                    boolean ok = ComfortCommands.applyScene(scene);
+                    JSONObject detail = new JSONObject();
+                    try {
+                        detail.put("ok", ok);
+                        detail.put("scene", scene);
+                    } catch (Exception ignored) {
+                    }
+                    sendResult(active.commandId, ok ? "done" : "failed", detail);
+                });
+                return;
+            }
             launchNavigation(active.payload);
             JSONObject detail = new JSONObject();
             detail.put("ok", true);
@@ -202,6 +225,16 @@ final class CommandExecutor {
                 // Sonraki poll 401 görürse oturum kapanır; sonuç tekrarı sunucuda idempotent.
             }
         });
+    }
+
+    private static String sceneLabel(String scene) {
+        if ("cool".equals(scene)) {
+            return "Klima soğutma";
+        }
+        if ("heat".equals(scene)) {
+            return "Klima ısıtma";
+        }
+        return "Ön cam defrost";
     }
 
     private static JSONObject reason(String value) {

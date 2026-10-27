@@ -1066,4 +1066,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_vdbus_sent">VDBus snapshot uploaded.</string>
     <string name="settings_cloud_vdbus_failed">VDBus snapshot failed.</string>
 
+
+    <string name="cloud_command_scene_message">Apply “%1$s” scene in the vehicle?</string>
+    <string name="cloud_command_scene_accept">Apply</string>
+
 </resources>

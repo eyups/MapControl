@@ -1085,4 +1085,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_vdbus_sent">VDBus anlık görüntüsü gönderildi.</string>
     <string name="settings_cloud_vdbus_failed">VDBus anlık görüntüsü gönderilemedi.</string>
 
+
+    <string name="cloud_command_scene_message">Araçta “%1$s” sahnesi uygulansın mı?</string>
+    <string name="cloud_command_scene_accept">Uygula</string>
+
 </resources>
