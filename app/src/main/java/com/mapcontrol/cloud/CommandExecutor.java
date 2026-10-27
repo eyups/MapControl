@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.mapcontrol.tts.MapControlSpeech;
+
 import org.json.JSONObject;
 
 import java.util.concurrent.ExecutorService;
@@ -17,14 +19,17 @@ final class CommandExecutor {
     private static final class Pending {
         final CommandExecutor owner;
         final String commandId;
+        final String type;
         final JSONObject payload;
-        final String name;
+        final String message;
 
-        Pending(CommandExecutor owner, String commandId, JSONObject payload, String name) {
+        Pending(CommandExecutor owner, String commandId, String type,
+                JSONObject payload, String message) {
             this.owner = owner;
             this.commandId = commandId;
+            this.type = type;
             this.payload = payload;
-            this.name = name;
+            this.message = message;
         }
     }
 
@@ -54,7 +59,8 @@ final class CommandExecutor {
         if (commandId.isEmpty()) {
             return;
         }
-        if (!"ping".equals(type) && !"nav.navigate".equals(type)) {
+        if (!"ping".equals(type) && !"nav.navigate".equals(type)
+                && !"tts.say".equals(type)) {
             sendResult(commandId, "rejected", reason("unsupported_type"));
             return;
         }
@@ -80,19 +86,29 @@ final class CommandExecutor {
             sendResult(commandId, "failed", reason("missing_payload"));
             return;
         }
-        String name = payload.optString("name", "").trim();
-        double lat = payload.optDouble("lat", Double.NaN);
-        double lon = payload.optDouble("lon", Double.NaN);
-        if (name.isEmpty() || Double.isNaN(lat) || Double.isNaN(lon)
-                || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-            sendResult(commandId, "failed", reason("invalid_target"));
-            return;
+        String message;
+        if ("tts.say".equals(type)) {
+            message = payload.optString("text", "").trim();
+            if (message.isEmpty() || message.length() > 200) {
+                sendResult(commandId, "failed", reason("invalid_text"));
+                return;
+            }
+        } else {
+            String name = payload.optString("name", "").trim();
+            double lat = payload.optDouble("lat", Double.NaN);
+            double lon = payload.optDouble("lon", Double.NaN);
+            if (name.isEmpty() || Double.isNaN(lat) || Double.isNaN(lon)
+                    || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+                sendResult(commandId, "failed", reason("invalid_target"));
+                return;
+            }
+            message = name;
         }
         if (pending != null) {
             sendResult(commandId, "rejected", reason("busy"));
             return;
         }
-        pending = new Pending(this, commandId, payload, name);
+        pending = new Pending(this, commandId, type, payload, message);
         mainHandler.post(() -> {
             try {
                 Intent intent = new Intent(appContext, CloudCommandActivity.class);
@@ -114,7 +130,7 @@ final class CommandExecutor {
         if (active == null) {
             return null;
         }
-        return new PendingView(active.name);
+        return new PendingView(active.type, active.message);
     }
 
     static void resolvePending(boolean accepted) {
@@ -131,13 +147,21 @@ final class CommandExecutor {
             return;
         }
         try {
+            if ("tts.say".equals(active.type)) {
+                MapControlSpeech.speak(appContext, active.message);
+                JSONObject detail = new JSONObject();
+                detail.put("ok", true);
+                detail.put("spoken", true);
+                sendResult(active.commandId, "done", detail);
+                return;
+            }
             launchNavigation(active.payload);
             JSONObject detail = new JSONObject();
             detail.put("ok", true);
-            detail.put("target", active.name);
+            detail.put("target", active.message);
             sendResult(active.commandId, "done", detail);
         } catch (Exception error) {
-            sendResult(active.commandId, "failed", reason("navigation_failed"));
+            sendResult(active.commandId, "failed", reason("execution_failed"));
         }
     }
 
@@ -196,10 +220,12 @@ final class CommandExecutor {
     }
 
     static final class PendingView {
-        final String name;
+        final String type;
+        final String message;
 
-        PendingView(String name) {
-            this.name = name;
+        PendingView(String type, String message) {
+            this.type = type;
+            this.message = message;
         }
     }
 }

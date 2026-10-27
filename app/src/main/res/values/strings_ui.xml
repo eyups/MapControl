@@ -1057,4 +1057,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_log_sent">Log uploaded.</string>
     <string name="settings_cloud_log_failed">Log upload failed.</string>
 
+
+    <string name="cloud_command_tts_message">Read aloud in the vehicle: “%1$s”?</string>
+    <string name="cloud_command_tts_accept">Read</string>
+
 </resources>

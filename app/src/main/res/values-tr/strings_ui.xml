@@ -1076,4 +1076,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_log_sent">Log gönderildi.</string>
     <string name="settings_cloud_log_failed">Log gönderilemedi.</string>
 
+
+    <string name="cloud_command_tts_message">Araçta sesli okunsun mu: “%1$s”?</string>
+    <string name="cloud_command_tts_accept">Oku</string>
+
 </resources>

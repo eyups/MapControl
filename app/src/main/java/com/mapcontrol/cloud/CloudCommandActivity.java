@@ -17,11 +17,18 @@ public final class CloudCommandActivity extends Activity {
             finish();
             return;
         }
+        boolean tts = "tts.say".equals(pending.type);
         new AlertDialog.Builder(this)
                 .setTitle(R.string.cloud_command_title)
-                .setMessage(getString(R.string.cloud_command_message, pending.name))
+                .setMessage(getString(
+                        tts ? R.string.cloud_command_tts_message
+                                : R.string.cloud_command_message,
+                        pending.message))
                 .setCancelable(false)
-                .setPositiveButton(R.string.cloud_command_accept, (dialog, which) -> {
+                .setPositiveButton(
+                        tts ? R.string.cloud_command_tts_accept
+                                : R.string.cloud_command_accept,
+                        (dialog, which) -> {
                     CommandExecutor.resolvePending(true);
                     finish();
                 })
