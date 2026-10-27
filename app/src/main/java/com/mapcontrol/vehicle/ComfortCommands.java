@@ -66,6 +66,10 @@ public final class ComfortCommands {
     }
 
     /** km/h; gösterge hızı yoksa gerçek hız. Okunamazsa {@code -1}. */
+    public static int readGear() {
+        return read(VDEventCarInfo.MODULE_READONLY_INFO, ReadOnlyID.ID_GEARBOX_STATE);
+    }
+
     public static int readSpeedKmh() {
         int display = read(VDEventCarInfo.MODULE_READONLY_INFO, ReadOnlyID.ID_SPEED_GAUGE_DISPLAY);
         if (display > 0) {

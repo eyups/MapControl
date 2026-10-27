@@ -1,5 +1,6 @@
 package com.mapcontrol.cloud;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -39,6 +40,7 @@ public final class CloudTabBuilder {
     private final Switch shareLocationSwitch;
     private final Button logUploadButton;
     private final Button vdbusButton;
+    private final Button updateButton;
 
     private final CloudManager.Listener managerListener = this::refresh;
 
@@ -133,12 +135,21 @@ public final class CloudTabBuilder {
         UiStyles.applySolidRoundedBackground(
                 vdbusButton, UiStyles.color(context, R.color.buttonNeutral));
         pairedRow.addView(vdbusButton, matchWidth());
+
+        updateButton = new Button(context);
+        updateButton.setText(R.string.settings_cloud_check_update);
+        updateButton.setAllCaps(false);
+        updateButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.applySolidRoundedBackground(
+                updateButton, UiStyles.color(context, R.color.buttonNeutral));
+        pairedRow.addView(updateButton, matchWidth());
         root.addView(pairedRow, matchWidth());
 
         pairButton.setOnClickListener(view -> pair());
         startStopButton.setOnClickListener(view -> toggleRunning());
         logUploadButton.setOnClickListener(view -> uploadLog());
         vdbusButton.setOnClickListener(view -> uploadVdbus());
+        updateButton.setOnClickListener(view -> checkUpdate());
         shareLocationSwitch.setChecked(config.shareLocation());
         shareLocationSwitch.setOnCheckedChangeListener((buttonView, checked) -> {
             config.setShareLocation(checked);
@@ -199,6 +210,55 @@ public final class CloudTabBuilder {
                             Toast.LENGTH_SHORT).show();
                     logger.accept("Log yükleme: " + message);
                 }));
+    }
+
+    private void checkUpdate() {
+        updateButton.setEnabled(false);
+        ApkUpdater updater = new ApkUpdater(context, config, new CloudHttp());
+        new Thread(() -> {
+            try {
+                ApkUpdater.Info info = updater.check();
+                mainHandler.post(() -> {
+                    updateButton.setEnabled(true);
+                    if (info == null) {
+                        Toast.makeText(context, R.string.settings_cloud_up_to_date,
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    new AlertDialog.Builder(context)
+                            .setTitle(R.string.settings_cloud_update_title)
+                            .setMessage(context.getString(
+                                    R.string.settings_cloud_update_message,
+                                    info.versionName,
+                                    info.size / (1024 * 1024),
+                                    info.releaseNotes))
+                            .setNegativeButton(android.R.string.cancel, null)
+                            .setPositiveButton(R.string.settings_cloud_update_install,
+                                    (dialog, which) -> downloadUpdate(updater, info))
+                            .show();
+                });
+            } catch (Exception error) {
+                mainHandler.post(() -> {
+                    updateButton.setEnabled(true);
+                    Toast.makeText(context, R.string.settings_cloud_update_failed,
+                            Toast.LENGTH_SHORT).show();
+                });
+            }
+        }, "MapControlOtaCheck").start();
+    }
+
+    private void downloadUpdate(ApkUpdater updater, ApkUpdater.Info info) {
+        updateButton.setEnabled(false);
+        Toast.makeText(context, R.string.settings_cloud_update_downloading,
+                Toast.LENGTH_SHORT).show();
+        updater.downloadAndInstall(info, (ok, message) -> {
+            updateButton.setEnabled(true);
+            logger.accept("OTA: " + message);
+            Toast.makeText(context,
+                    ok ? R.string.settings_cloud_update_ready
+                            : R.string.settings_cloud_update_failed,
+                    Toast.LENGTH_LONG).show();
+        });
     }
 
     private void uploadVdbus() {

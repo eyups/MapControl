@@ -3,6 +3,8 @@ package com.mapcontrol.cloud;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -178,6 +180,69 @@ final class CloudHttp {
                     : connection.getErrorStream();
             String responseBody = readLimited(input);
             return new Response(code, responseBody);
+        } finally {
+            connection.disconnect();
+        }
+    }
+
+    /** F4: APK'yı akış hâlinde dosyaya indirir; boyut sınırını aşarsa siler. */
+    Response downloadToFile(String path, String deviceToken, File target, long maxBytes)
+            throws IOException {
+        if (path == null || !path.startsWith("/api/v1/") || path.contains("..")) {
+            throw new IOException("invalid_path");
+        }
+        URL url = new URL(CloudConfig.BASE_URL + path);
+        if (!"https".equalsIgnoreCase(url.getProtocol())) {
+            throw new IOException("https_required");
+        }
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        if (!(connection instanceof HttpsURLConnection)) {
+            connection.disconnect();
+            throw new IOException("https_required");
+        }
+        File parent = target.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            connection.disconnect();
+            throw new IOException("storage_unavailable");
+        }
+        try {
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
+            connection.setReadTimeout(120_000);
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(false);
+            connection.setRequestProperty("Accept", "application/vnd.android.package-archive");
+            connection.setRequestProperty("Accept-Encoding", "identity");
+            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            if (deviceToken != null && !deviceToken.isEmpty()) {
+                connection.setRequestProperty("Authorization", "Device " + deviceToken);
+            }
+            int code = connection.getResponseCode();
+            if (code != 200) {
+                InputStream input = connection.getErrorStream();
+                return new Response(code, readLimited(input));
+            }
+            long declared = connection.getContentLengthLong();
+            if (declared > maxBytes) {
+                throw new IOException("response_too_large");
+            }
+            try (InputStream input = connection.getInputStream();
+                    FileOutputStream output = new FileOutputStream(target)) {
+                byte[] chunk = new byte[8192];
+                long total = 0L;
+                int read;
+                while ((read = input.read(chunk)) != -1) {
+                    total += read;
+                    if (total > maxBytes) {
+                        throw new IOException("response_too_large");
+                    }
+                    output.write(chunk, 0, read);
+                }
+            }
+            return new Response(code, "");
+        } catch (IOException error) {
+            target.delete();
+            throw error;
         } finally {
             connection.disconnect();
         }
