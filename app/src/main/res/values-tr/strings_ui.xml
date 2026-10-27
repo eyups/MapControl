@@ -1080,4 +1080,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="cloud_command_tts_message">Araçta sesli okunsun mu: “%1$s”?</string>
     <string name="cloud_command_tts_accept">Oku</string>
 
+
+    <string name="settings_cloud_vdbus_snapshot">VDBus anlık görüntüsü gönder</string>
+    <string name="settings_cloud_vdbus_sent">VDBus anlık görüntüsü gönderildi.</string>
+    <string name="settings_cloud_vdbus_failed">VDBus anlık görüntüsü gönderilemedi.</string>
+
 </resources>

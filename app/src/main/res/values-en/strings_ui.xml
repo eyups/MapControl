@@ -1061,4 +1061,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="cloud_command_tts_message">Read aloud in the vehicle: “%1$s”?</string>
     <string name="cloud_command_tts_accept">Read</string>
 
+
+    <string name="settings_cloud_vdbus_snapshot">Send VDBus snapshot</string>
+    <string name="settings_cloud_vdbus_sent">VDBus snapshot uploaded.</string>
+    <string name="settings_cloud_vdbus_failed">VDBus snapshot failed.</string>
+
 </resources>

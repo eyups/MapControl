@@ -38,6 +38,7 @@ public final class CloudTabBuilder {
     private final Button startStopButton;
     private final Switch shareLocationSwitch;
     private final Button logUploadButton;
+    private final Button vdbusButton;
 
     private final CloudManager.Listener managerListener = this::refresh;
 
@@ -124,11 +125,20 @@ public final class CloudTabBuilder {
         UiStyles.applySolidRoundedBackground(
                 logUploadButton, UiStyles.color(context, R.color.buttonNeutral));
         pairedRow.addView(logUploadButton, matchWidth());
+
+        vdbusButton = new Button(context);
+        vdbusButton.setText(R.string.settings_cloud_vdbus_snapshot);
+        vdbusButton.setAllCaps(false);
+        vdbusButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.applySolidRoundedBackground(
+                vdbusButton, UiStyles.color(context, R.color.buttonNeutral));
+        pairedRow.addView(vdbusButton, matchWidth());
         root.addView(pairedRow, matchWidth());
 
         pairButton.setOnClickListener(view -> pair());
         startStopButton.setOnClickListener(view -> toggleRunning());
         logUploadButton.setOnClickListener(view -> uploadLog());
+        vdbusButton.setOnClickListener(view -> uploadVdbus());
         shareLocationSwitch.setChecked(config.shareLocation());
         shareLocationSwitch.setOnCheckedChangeListener((buttonView, checked) -> {
             config.setShareLocation(checked);
@@ -189,6 +199,18 @@ public final class CloudTabBuilder {
                             Toast.LENGTH_SHORT).show();
                     logger.accept("Log yükleme: " + message);
                 }));
+    }
+
+    private void uploadVdbus() {
+        vdbusButton.setEnabled(false);
+        new VdbusLabUploader(context, config, new CloudHttp()).upload((ok, message) -> {
+            vdbusButton.setEnabled(true);
+            Toast.makeText(context,
+                    ok ? R.string.settings_cloud_vdbus_sent
+                            : R.string.settings_cloud_vdbus_failed,
+                    Toast.LENGTH_SHORT).show();
+            logger.accept("VDBus snapshot: " + message);
+        });
     }
 
     private void toggleRunning() {
