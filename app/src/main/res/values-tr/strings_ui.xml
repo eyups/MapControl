@@ -1101,4 +1101,14 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_update_ready">Kurulumu tamamlamak için kurulum ekranını aç.</string>
     <string name="settings_cloud_update_failed">Güncelleme başlatılamadı.</string>
 
+
+    <string name="settings_cloud_backup">Profilleri yedekle</string>
+    <string name="settings_cloud_restore">Profilleri geri yükle</string>
+    <string name="settings_cloud_backup_done">Profil yedeği gönderildi.</string>
+    <string name="settings_cloud_backup_failed">Profil yedeği gönderilemedi.</string>
+    <string name="settings_cloud_restore_confirm">Profil ve sahne tercihleri son bulut yedeğiyle değiştirilecek. Devam edilsin mi?</string>
+    <string name="settings_cloud_restore_action">Geri yükle</string>
+    <string name="settings_cloud_restore_done">Yedek geri yüklendi. Arayüz için uygulamayı yeniden başlat.</string>
+    <string name="settings_cloud_restore_failed">Yedek geri yüklenemedi.</string>
+
 </resources>

@@ -39,6 +39,8 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
             RecirculationAutomation.PREF_ENABLED, TemperatureAutomation.PREF_ENABLED,
             "welcomeDesignId", "welcomeCustomText", "welcomeAudioFilePath", "welcomeAudioAutoPlay"));
     private static final String[] SCOPED_PREFIXES = {"tempAuto_"};
+    private static final Set<String> BACKUP_PREF_KEYS = new HashSet<>(Arrays.asList(
+            "welcomeDesignId", "welcomeCustomText", "welcomeAudioFilePath", "welcomeAudioAutoPlay"));
 
     /** Profile bağlı keyfi araç değeri (ID keşfinden eklenir); uygulanırken olduğu gibi yazılır. */
     public static final class MemoryItem {
@@ -417,6 +419,99 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
         } catch (JSONException e) {
             return "{}";
         }
+    }
+
+    /** F5: profilleri yedeklemek için JSON snapshot. */
+    public synchronized String exportBackup() {
+        return serialize();
+    }
+
+    /** F5: yedeği geri yükler; geçersiz içerik mevcut durumu bozmaz. */
+    public synchronized boolean importBackup(String json) {
+        if (json == null || json.isEmpty()) {
+            return false;
+        }
+        String previous = prefs.getString(PREF_STATE, "");
+        try {
+            JSONObject root = new JSONObject(json);
+            JSONArray array = root.optJSONArray("profiles");
+            if (array == null || array.length() == 0) {
+                return false;
+            }
+            prefs.edit().putString(PREF_STATE, json).apply();
+            profiles.clear();
+            activeId = null;
+            load();
+            if (profiles.isEmpty()) {
+                throw new JSONException("empty_profiles");
+            }
+            applyActiveSettings();
+            save();
+            return true;
+        } catch (Exception error) {
+            prefs.edit().putString(PREF_STATE, previous).apply();
+            profiles.clear();
+            activeId = null;
+            load();
+            return false;
+        }
+    }
+
+    /** F5: yalnız sahne/karşılama tercihlerini dışa aktarır; sırlar hariçtir. */
+    public synchronized JSONObject exportPreferences() {
+        JSONObject output = new JSONObject();
+        for (String key : BACKUP_PREF_KEYS) {
+            Object value = prefs.getAll().get(key);
+            JSONObject encoded = encode(value);
+            if (encoded != null) {
+                try {
+                    output.put(key, encoded);
+                } catch (JSONException ignored) {
+                }
+            }
+        }
+        return output;
+    }
+
+    /** F5: yalnız izinli sahne/karşılama tercihlerini geri yükler. */
+    public synchronized boolean importPreferences(JSONObject data) {
+        if (data == null) {
+            return false;
+        }
+        SharedPreferences.Editor editor = prefs.edit();
+        try {
+            for (String key : BACKUP_PREF_KEYS) {
+                if (data.has(key)) {
+                    putEncoded(editor, key, data.getJSONObject(key));
+                }
+            }
+            editor.apply();
+            return true;
+        } catch (JSONException error) {
+            return false;
+        }
+    }
+
+    private void applyActiveSettings() {
+        Profile active = find(activeId);
+        if (active == null) {
+            return;
+        }
+        SharedPreferences.Editor editor = prefs.edit();
+        for (String key : prefs.getAll().keySet()) {
+            if (isScoped(key)) {
+                editor.remove(key);
+            }
+        }
+        Iterator<String> keys = active.settings.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            try {
+                putEncoded(editor, key, active.settings.getJSONObject(key));
+            } catch (JSONException ignored) {
+            }
+        }
+        editor.apply();
     }
 
     private void load() {

@@ -41,6 +41,8 @@ public final class CloudTabBuilder {
     private final Button logUploadButton;
     private final Button vdbusButton;
     private final Button updateButton;
+    private final Button backupButton;
+    private final Button restoreButton;
 
     private final CloudManager.Listener managerListener = this::refresh;
 
@@ -143,6 +145,22 @@ public final class CloudTabBuilder {
         UiStyles.applySolidRoundedBackground(
                 updateButton, UiStyles.color(context, R.color.buttonNeutral));
         pairedRow.addView(updateButton, matchWidth());
+
+        backupButton = new Button(context);
+        backupButton.setText(R.string.settings_cloud_backup);
+        backupButton.setAllCaps(false);
+        backupButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.applySolidRoundedBackground(
+                backupButton, UiStyles.color(context, R.color.buttonNeutral));
+        pairedRow.addView(backupButton, matchWidth());
+
+        restoreButton = new Button(context);
+        restoreButton.setText(R.string.settings_cloud_restore);
+        restoreButton.setAllCaps(false);
+        restoreButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.applySolidRoundedBackground(
+                restoreButton, UiStyles.color(context, R.color.buttonNeutral));
+        pairedRow.addView(restoreButton, matchWidth());
         root.addView(pairedRow, matchWidth());
 
         pairButton.setOnClickListener(view -> pair());
@@ -150,6 +168,8 @@ public final class CloudTabBuilder {
         logUploadButton.setOnClickListener(view -> uploadLog());
         vdbusButton.setOnClickListener(view -> uploadVdbus());
         updateButton.setOnClickListener(view -> checkUpdate());
+        backupButton.setOnClickListener(view -> backupProfiles());
+        restoreButton.setOnClickListener(view -> confirmRestoreProfiles());
         shareLocationSwitch.setChecked(config.shareLocation());
         shareLocationSwitch.setOnCheckedChangeListener((buttonView, checked) -> {
             config.setShareLocation(checked);
@@ -210,6 +230,62 @@ public final class CloudTabBuilder {
                             Toast.LENGTH_SHORT).show();
                     logger.accept("Log yükleme: " + message);
                 }));
+    }
+
+    private void backupProfiles() {
+        backupButton.setEnabled(false);
+        restoreButton.setEnabled(false);
+        ProfileSyncService service = new ProfileSyncService(context, config, new CloudHttp());
+        new Thread(() -> {
+            boolean ok = false;
+            try {
+                ok = service.backup();
+            } catch (Exception ignored) {
+            }
+            boolean result = ok;
+            mainHandler.post(() -> {
+                backupButton.setEnabled(true);
+                restoreButton.setEnabled(true);
+                Toast.makeText(context,
+                        result ? R.string.settings_cloud_backup_done
+                                : R.string.settings_cloud_backup_failed,
+                        Toast.LENGTH_SHORT).show();
+                logger.accept("Profil yedeği: " + (result ? "ok" : "failed"));
+            });
+        }, "MapControlProfileBackup").start();
+    }
+
+    private void confirmRestoreProfiles() {
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.settings_cloud_restore)
+                .setMessage(R.string.settings_cloud_restore_confirm)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(R.string.settings_cloud_restore_action,
+                        (dialog, which) -> restoreProfiles())
+                .show();
+    }
+
+    private void restoreProfiles() {
+        backupButton.setEnabled(false);
+        restoreButton.setEnabled(false);
+        ProfileSyncService service = new ProfileSyncService(context, config, new CloudHttp());
+        new Thread(() -> {
+            boolean ok = false;
+            try {
+                ok = service.restore();
+            } catch (Exception ignored) {
+            }
+            boolean result = ok;
+            mainHandler.post(() -> {
+                backupButton.setEnabled(true);
+                restoreButton.setEnabled(true);
+                Toast.makeText(context,
+                        result ? R.string.settings_cloud_restore_done
+                                : R.string.settings_cloud_restore_failed,
+                        Toast.LENGTH_LONG).show();
+                logger.accept("Profil geri yükleme: " + (result ? "ok" : "failed"));
+            });
+        }, "MapControlProfileRestore").start();
     }
 
     private void checkUpdate() {

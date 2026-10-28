@@ -1082,4 +1082,14 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_update_ready">Open the installer to finish the update.</string>
     <string name="settings_cloud_update_failed">Update could not be started.</string>
 
+
+    <string name="settings_cloud_backup">Back up profiles</string>
+    <string name="settings_cloud_restore">Restore profiles</string>
+    <string name="settings_cloud_backup_done">Profile backup uploaded.</string>
+    <string name="settings_cloud_backup_failed">Profile backup failed.</string>
+    <string name="settings_cloud_restore_confirm">Profile and scene preferences will be replaced with the last cloud backup. Continue?</string>
+    <string name="settings_cloud_restore_action">Restore</string>
+    <string name="settings_cloud_restore_done">Backup restored. Restart MapControl to refresh the UI.</string>
+    <string name="settings_cloud_restore_failed">Backup could not be restored.</string>
+
 </resources>

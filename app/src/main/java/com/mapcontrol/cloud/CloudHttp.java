@@ -185,6 +185,53 @@ final class CloudHttp {
         }
     }
 
+    Response putJson(String path, String deviceToken, JSONObject body, int maxRequestBytes)
+            throws IOException {
+        if (path == null || !path.startsWith("/api/v1/") || path.contains("..")) {
+            throw new IOException("invalid_path");
+        }
+        URL url = new URL(CloudConfig.BASE_URL + path);
+        if (!"https".equalsIgnoreCase(url.getProtocol())) {
+            throw new IOException("https_required");
+        }
+        byte[] raw = body == null ? new byte[0]
+                : body.toString().getBytes(StandardCharsets.UTF_8);
+        if (raw.length > maxRequestBytes) {
+            throw new IOException("request_too_large");
+        }
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        if (!(connection instanceof HttpsURLConnection)) {
+            connection.disconnect();
+            throw new IOException("https_required");
+        }
+        try {
+            connection.setRequestMethod("PUT");
+            connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
+            connection.setReadTimeout(READ_TIMEOUT_MS);
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(false);
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Accept-Encoding", "identity");
+            connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            if (deviceToken != null && !deviceToken.isEmpty()) {
+                connection.setRequestProperty("Authorization", "Device " + deviceToken);
+            }
+            connection.setFixedLengthStreamingMode(raw.length);
+            try (OutputStream output = connection.getOutputStream()) {
+                output.write(raw);
+            }
+            int code = connection.getResponseCode();
+            InputStream input = code >= 200 && code < 300
+                    ? connection.getInputStream()
+                    : connection.getErrorStream();
+            return new Response(code, readLimited(input));
+        } finally {
+            connection.disconnect();
+        }
+    }
+
     /** F4: APK'yı akış hâlinde dosyaya indirir; boyut sınırını aşarsa siler. */
     Response downloadToFile(String path, String deviceToken, File target, long maxBytes)
             throws IOException {
