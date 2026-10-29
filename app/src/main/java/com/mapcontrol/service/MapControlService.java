@@ -37,6 +37,7 @@ import com.mapcontrol.api.ProfileApiService;
 import com.mapcontrol.audio.AudioEqualizerController;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.valet.ValetMonitor;
+import com.mapcontrol.ui.activity.CockpitActivity;
 import com.mapcontrol.ui.activity.MainActivity;
 import com.mapcontrol.util.AppLaunchHelper;
 import com.mapcontrol.util.BootSession;
@@ -219,7 +220,7 @@ public class MapControlService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         // Foreground service için notification oluştur
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, CockpitActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, notificationIntent, 
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
@@ -582,7 +583,7 @@ public class MapControlService extends Service {
             return;
         }
         try {
-            Intent activityIntent = new Intent(this, MainActivity.class);
+            Intent activityIntent = new Intent(this, CockpitActivity.class);
             activityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -1,0 +1,960 @@
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1024, initial-scale=1.0">
+<title>Chery Tiggo 8 Pro Max - MapControl Konfor</title>
+
+
+
+
+
+
+
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0e12;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #272a2f;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #3d494d;
+    }
+  </style>
+<style data-stitch-injected="">
+  /* Hide scrollbars on ALL elements (Webkit) */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbars on ALL elements (Firefox) */
+  * {
+    scrollbar-width: none;
+  }
+
+  /* Suppress horizontal overflow and legacy IE/Edge */
+  html, body {
+    overflow-x: hidden !important;
+    -ms-overflow-style: none;
+    min-height: auto !important;
+  }
+
+  /* Global text selection highlight color override inside all iframe modes */
+  ::selection {
+    background-color: rgba(96, 86, 240, 0.3) !important;
+    color: inherit !important;
+  }
+  ::-moz-selection {
+    background-color: rgba(96, 86, 240, 0.3) !important;
+    color: inherit !important;
+  }
+
+  /* Suppress browser default focus outlines and box-shadow glows globally */
+  *:focus, *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+</style><style data-stitch-injected="">
+  /* ─── Animation styles ─── */
+  .stitch-anim-highlight {
+    outline: 2px solid #6056f080;
+    outline-offset: 2px;
+    border-radius: 4px;
+    transition: outline-color 0.4s ease;
+  }
+  .stitch-anim-highlight-fade {
+    outline-color: transparent;
+  }
+  @keyframes stitch-anim-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes stitch-anim-pure-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .stitch-anim-fade-in {
+    animation: stitch-anim-fade-in 0.3s ease forwards;
+  }
+
+  /* ─── Drawing rectangle overlay ─── */
+  .stitch-anim-draw-overlay {
+    position: fixed;
+    border: 2px solid #6056f099;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 998;
+    clip-path: polygon(
+      0% 0%, 0% 0%,
+      0% 0%, 0% 0%,
+      0% 0%, 0% 0%
+    );
+    animation: stitch-anim-draw-rect 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes stitch-anim-draw-rect {
+    0%   { clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%); }
+    30%  { clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 100% 0%, 0% 0%, 0% 0%); }
+    55%  { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 0%, 0% 0%); }
+    80%  { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 0%); }
+    100% { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 0% 0%); }
+  }
+  .stitch-anim-draw-overlay.fading {
+    animation: stitch-anim-border-fade 0.5s ease forwards;
+  }
+  @keyframes stitch-anim-border-fade {
+    to { opacity: 0; }
+  }
+  /* ─── Image reveal crossfade ─── */
+  .stitch-anim-img-dimming {
+    transition: opacity 0.2s ease !important;
+    opacity: 0.15 !important;
+  }
+  .stitch-anim-img-revealing {
+    transition: opacity 0.35s ease !important;
+    opacity: 1 !important;
+  }
+  .stitch-anim-cursor::after {
+    content: '|';
+    font-weight: 100;
+    animation: stitch-anim-blink 0.6s step-end infinite;
+    color: #6056f0B3;
+    margin-left: 1px;
+  }
+  @keyframes stitch-anim-blink {
+    50% { opacity: 0; }
+  }
+
+  /* ─── AI Agent Cursor ─── */
+  #stitch-agent-cursor {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 0px;
+    transition: left 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                top 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.25s ease;
+    opacity: 0;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18));
+  }
+  #stitch-agent-cursor.working {
+    animation: stitch-anim-wobble 0.8s ease-in-out infinite;
+  }
+  #stitch-agent-cursor.drawing {
+    animation: none;
+    transition: left 0.12s linear, top 0.12s linear, opacity 0.25s ease;
+  }
+  @keyframes stitch-anim-wobble {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(1px, -1px) rotate(2deg); }
+    50%  { transform: translate(-1px, 1px) rotate(-1deg); }
+    75%  { transform: translate(1px, 0px) rotate(1deg); }
+  }
+  #stitch-agent-cursor .cursor-pointer {
+    display: block;
+  }
+  #stitch-agent-cursor .cursor-text,
+  #stitch-agent-cursor .cursor-paint {
+    display: none;
+  }
+  #stitch-agent-cursor.text-mode .cursor-pointer,
+  #stitch-agent-cursor.text-mode .cursor-paint {
+    display: none;
+  }
+  #stitch-agent-cursor.text-mode .cursor-text {
+    display: block;
+  }
+  #stitch-agent-cursor.paint-mode .cursor-pointer,
+  #stitch-agent-cursor.paint-mode .cursor-text {
+    display: none;
+  }
+  #stitch-agent-cursor.paint-mode .cursor-paint {
+    display: block;
+  }
+  #stitch-cursor-label {
+    margin-top: 14px;
+    margin-left: -3px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+  }
+
+  /* ─── Active Element Indicator (Multi-Select Outline & Aurora Glow) ─── */
+  @keyframes stitch-aurora-sweep {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  @keyframes stitch-indicator-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.78;
+    }
+  }
+  .stitch-active-indicator {
+    position: absolute;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: #6056f0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .stitch-active-indicator.stitch-aurora,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"]) {
+    border: none !important;
+    border-radius: 4px;
+    background: linear-gradient(
+      135deg,
+      rgba(145, 84, 231, 0.10),
+      rgba(96, 86, 240, 0.08),
+      rgba(64, 217, 198, 0.08),
+      rgba(66, 133, 244, 0.10)
+    );
+    box-shadow: 0 2px 12px rgba(96, 86, 240, 0.22);
+    animation: stitch-indicator-pulse 3s ease-in-out infinite;
+    pointer-events: auto;
+    cursor: not-allowed;
+    z-index: 3;
+  }
+  .stitch-active-indicator.stitch-aurora::before,
+  .stitch-active-indicator.stitch-aurora::after,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::before,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::after {
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    background: linear-gradient(
+      120deg,
+      #9154E7 0%,
+      #6056F0 25%,
+      #40D9C6 50%,
+      #4285F4 75%,
+      #9154E7 100%
+    );
+    background-size: 300% 300%;
+    animation: stitch-aurora-sweep 4s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .stitch-active-indicator.stitch-aurora::before,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::before {
+    inset: 0;
+    padding: 2px;
+  }
+  .stitch-active-indicator.stitch-aurora::after,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::after {
+    inset: -3px;
+    padding: 3px;
+    filter: blur(6px);
+    opacity: 0.55;
+  }
+</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select{-webkit-appearance:none;appearance:none;background-color:#fff;border-color:#6b7280;border-width:1px;border-radius:0px;padding-top:0.5rem;padding-right:0.75rem;padding-bottom:0.5rem;padding-left:0.75rem;font-size:1rem;line-height:1.5rem;--tw-shadow:0 0 #0000;}[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);border-color:#2563eb}input::placeholder,textarea::placeholder{color:#6b7280;opacity:1}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-date-and-time-value{min-height:1.5em;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field{padding-top:0;padding-bottom:0}select{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right 0.5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem;print-color-adjust:exact}[multiple],[size]:where(select:not([size="1"])){background-image:initial;background-position:initial;background-repeat:unset;background-size:initial;padding-right:0.75rem;print-color-adjust:unset}[type='checkbox'],[type='radio']{-webkit-appearance:none;appearance:none;padding:0;print-color-adjust:exact;display:inline-block;vertical-align:middle;background-origin:border-box;-webkit-user-select:none;user-select:none;flex-shrink:0;height:1rem;width:1rem;color:#2563eb;background-color:#fff;border-color:#6b7280;border-width:1px;--tw-shadow:0 0 #0000}[type='checkbox']{border-radius:0px}[type='radio']{border-radius:100%}[type='checkbox']:focus,[type='radio']:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:2px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[type='checkbox']:checked,[type='radio']:checked{border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat}[type='checkbox']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='checkbox']:checked{-webkit-appearance:auto;appearance:auto}}[type='radio']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='radio']:checked{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus{border-color:transparent;background-color:currentColor}[type='checkbox']:indeterminate{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat;}@media (forced-colors: active) {[type='checkbox']:indeterminate{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus{border-color:transparent;background-color:currentColor}[type='file']{background:unset;border-color:inherit;border-width:0;border-radius:0;padding:0;font-size:unset;line-height:inherit}[type='file']:focus{outline:1px solid ButtonText;outline:1px auto -webkit-focus-ring-color}.fixed{position:fixed}.relative{position:relative}.left-0{left:0px}.right-0{right:0px}.top-0{top:0px}.z-40{z-index:40}.z-50{z-index:50}.col-span-5{grid-column:span 5 / span 5}.col-span-7{grid-column:span 7 / span 7}.mx-1{margin-left:0.25rem;margin-right:0.25rem}.my-1{margin-top:0.25rem;margin-bottom:0.25rem}.my-2{margin-top:0.5rem;margin-bottom:0.5rem}.-mt-2{margin-top:-0.5rem}.mb-2{margin-bottom:0.5rem}.mt-0\.5{margin-top:0.125rem}.flex{display:flex}.grid{display:grid}.h-1\.5{height:0.375rem}.h-10{height:2.5rem}.h-11{height:2.75rem}.h-14{height:3.5rem}.h-2{height:0.5rem}.h-2\.5{height:0.625rem}.h-20{height:5rem}.h-3{height:0.75rem}.h-4{height:1rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\[1024px\]{height:1024px}.h-\[72px\]{height:72px}.h-full{height:100%}.min-h-\[48px\]{min-height:48px}.min-h-\[52px\]{min-height:52px}.min-h-\[64px\]{min-height:64px}.w-2{width:0.5rem}.w-2\.5{width:0.625rem}.w-36{width:9rem}.w-60{width:15rem}.w-8{width:2rem}.w-\[1px\]{width:1px}.w-\[72px\]{width:72px}.w-full{width:100%}.w-screen{width:100vw}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}@keyframes ping{75%, 100%{transform:scale(2);opacity:0}}.animate-ping{animation:ping 1s cubic-bezier(0, 0, 0.2, 1) infinite}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}@keyframes spin{to{transform:rotate(360deg)}}.animate-spin{animation:spin 1s linear infinite}.cursor-pointer{cursor:pointer}.cursor-text{cursor:text}.select-none{-webkit-user-select:none;user-select:none}.grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-cols-6{grid-template-columns:repeat(6, minmax(0, 1fr))}.grid-cols-7{grid-template-columns:repeat(7, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-gutter{gap:1rem}.gap-space-md{gap:1rem}.gap-space-sm{gap:0.5rem}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-sm{border-radius:0.125rem}.rounded-xl{border-radius:0.75rem}.rounded-r-lg{border-top-right-radius:0.5rem;border-bottom-right-radius:0.5rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-r{border-right-width:1px}.border-r-2{border-right-width:2px}.border-t{border-top-width:1px}.border-amber-500{--tw-border-opacity:1;border-color:rgb(245 158 11 / var(--tw-border-opacity, 1))}.border-amber-500\/50{border-color:rgb(245 158 11 / 0.5)}.border-error\/40{border-color:rgb(255 180 171 / 0.4)}.border-error\/50{border-color:rgb(255 180 171 / 0.5)}.border-outline-variant{--tw-border-opacity:1;border-color:rgb(61 73 77 / var(--tw-border-opacity, 1))}.border-outline-variant\/30{border-color:rgb(61 73 77 / 0.3)}.border-outline-variant\/40{border-color:rgb(61 73 77 / 0.4)}.border-outline-variant\/60{border-color:rgb(61 73 77 / 0.6)}.border-outline-variant\/80{border-color:rgb(61 73 77 / 0.8)}.border-primary{--tw-border-opacity:1;border-color:rgb(76 214 251 / var(--tw-border-opacity, 1))}.border-primary\/30{border-color:rgb(76 214 251 / 0.3)}.border-primary\/50{border-color:rgb(76 214 251 / 0.5)}.border-secondary{--tw-border-opacity:1;border-color:rgb(70 238 224 / var(--tw-border-opacity, 1))}.border-secondary-container\/40{border-color:rgb(0 210 196 / 0.4)}.border-secondary\/30{border-color:rgb(70 238 224 / 0.3)}.border-secondary\/40{border-color:rgb(70 238 224 / 0.4)}.bg-amber-400{--tw-bg-opacity:1;background-color:rgb(251 191 36 / var(--tw-bg-opacity, 1))}.bg-amber-500{--tw-bg-opacity:1;background-color:rgb(245 158 11 / var(--tw-bg-opacity, 1))}.bg-error{--tw-bg-opacity:1;background-color:rgb(255 180 171 / var(--tw-bg-opacity, 1))}.bg-error-container\/30{background-color:rgb(147 0 10 / 0.3)}.bg-error\/20{background-color:rgb(255 180 171 / 0.2)}.bg-outline-variant{--tw-bg-opacity:1;background-color:rgb(61 73 77 / var(--tw-bg-opacity, 1))}.bg-primary{--tw-bg-opacity:1;background-color:rgb(76 214 251 / var(--tw-bg-opacity, 1))}.bg-primary-container\/20{background-color:rgb(0 180 216 / 0.2)}.bg-primary\/10{background-color:rgb(76 214 251 / 0.1)}.bg-primary\/30{background-color:rgb(76 214 251 / 0.3)}.bg-secondary{--tw-bg-opacity:1;background-color:rgb(70 238 224 / var(--tw-bg-opacity, 1))}.bg-secondary-container\/20{background-color:rgb(0 210 196 / 0.2)}.bg-secondary\/15{background-color:rgb(70 238 224 / 0.15)}.bg-surface-container{--tw-bg-opacity:1;background-color:rgb(29 32 36 / var(--tw-bg-opacity, 1))}.bg-surface-container-high{--tw-bg-opacity:1;background-color:rgb(39 42 47 / var(--tw-bg-opacity, 1))}.bg-surface-container-low{--tw-bg-opacity:1;background-color:rgb(25 28 32 / var(--tw-bg-opacity, 1))}.bg-surface-container-lowest{--tw-bg-opacity:1;background-color:rgb(11 14 18 / var(--tw-bg-opacity, 1))}.bg-surface-container-lowest\/80{background-color:rgb(11 14 18 / 0.8)}.bg-surface-dim{--tw-bg-opacity:1;background-color:rgb(17 20 24 / var(--tw-bg-opacity, 1))}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-3\.5{padding:0.875rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-space-sm{padding:0.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-margin{padding-left:1.5rem;padding-right:1.5rem}.px-space-md{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-space-sm{padding-top:0.5rem;padding-bottom:0.5rem}.pb-1{padding-bottom:0.25rem}.pb-2{padding-bottom:0.5rem}.pb-3{padding-bottom:0.75rem}.pl-1{padding-left:0.25rem}.pl-2{padding-left:0.5rem}.pt-1{padding-top:0.25rem}.pt-14{padding-top:3.5rem}.pt-2{padding-top:0.5rem}.text-left{text-align:left}.text-center{text-align:center}.font-body-md{font-family:Inter}.font-body-sm{font-family:Inter}.font-diagnostic-code{font-family:JetBrains Mono}.font-display-telematics{font-family:Inter}.font-headline-md{font-family:Inter}.font-headline-sm{font-family:Inter}.font-label-caps{font-family:Inter}.font-title-cockpit{font-family:Inter}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[12px\]{font-size:12px}.text-\[14px\]{font-size:14px}.text-\[15px\]{font-size:15px}.text-\[18px\]{font-size:18px}.text-\[20px\]{font-size:20px}.text-\[9px\]{font-size:9px}.text-base{font-size:1rem;line-height:1.5rem}.text-body-md{font-size:16px;line-height:24px;font-weight:400}.text-body-sm{font-size:15px;line-height:20px;font-weight:500}.text-diagnostic-code{font-size:15px;line-height:20px;font-weight:500}.text-display-telematics{font-size:48px;line-height:56px;letter-spacing:-0.02em;font-weight:700}.text-headline-md{font-size:28px;line-height:36px;font-weight:600}.text-headline-sm{font-size:22px;line-height:28px;font-weight:600}.text-label-caps{font-size:13px;line-height:16px;letter-spacing:0.06em;font-weight:700}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-title-cockpit{font-size:18px;line-height:24px;font-weight:600}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36 / var(--tw-text-opacity, 1))}.text-error{--tw-text-opacity:1;color:rgb(255 180 171 / var(--tw-text-opacity, 1))}.text-on-primary{--tw-text-opacity:1;color:rgb(0 54 66 / var(--tw-text-opacity, 1))}.text-on-surface{--tw-text-opacity:1;color:rgb(225 226 232 / var(--tw-text-opacity, 1))}.text-on-surface-variant{--tw-text-opacity:1;color:rgb(188 201 206 / var(--tw-text-opacity, 1))}.text-outline{--tw-text-opacity:1;color:rgb(134 147 152 / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(76 214 251 / var(--tw-text-opacity, 1))}.text-secondary{--tw-text-opacity:1;color:rgb(70 238 224 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.ring-2{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.ring-primary{--tw-ring-opacity:1;--tw-ring-color:rgb(76 214 251 / var(--tw-ring-opacity, 1))}.ring-offset-2{--tw-ring-offset-width:2px}.ring-offset-surface-container-low{--tw-ring-offset-color:#191c20}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.duration-150{transition-duration:150ms}.hover\:border-error:hover{--tw-border-opacity:1;border-color:rgb(255 180 171 / var(--tw-border-opacity, 1))}.hover\:border-outline:hover{--tw-border-opacity:1;border-color:rgb(134 147 152 / var(--tw-border-opacity, 1))}.hover\:border-primary:hover{--tw-border-opacity:1;border-color:rgb(76 214 251 / var(--tw-border-opacity, 1))}.hover\:border-secondary:hover{--tw-border-opacity:1;border-color:rgb(70 238 224 / var(--tw-border-opacity, 1))}.hover\:bg-error\/30:hover{background-color:rgb(255 180 171 / 0.3)}.hover\:bg-surface-container:hover{--tw-bg-opacity:1;background-color:rgb(29 32 36 / var(--tw-bg-opacity, 1))}.hover\:text-on-surface:hover{--tw-text-opacity:1;color:rgb(225 226 232 / var(--tw-text-opacity, 1))}.active\:scale-90:active{--tw-scale-x:.9;--tw-scale-y:.9;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}</style><style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style><style data-stitch-injected="">*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"]),*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"])::before,*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"])::after{transition:none!important;animation:none!important}</style><style data-stitch-injected="">*:focus,*:focus-visible{outline:none!important;box-shadow:none!important}::selection{background-color:rgba(96, 86, 240, 0.3)!important;color:inherit!important}::-moz-selection{background-color:rgba(96, 86, 240, 0.3)!important;color:inherit!important}*{user-select:none!important;-webkit-user-select:none!important}.cursor-text,[contenteditable="true"]{cursor:text}[contenteditable="true"]:focus,input:focus,textarea:focus{user-select:text!important;-webkit-user-select:text!important;cursor:text!important}img{-webkit-user-drag:none!important;user-drag:none!important}@keyframes stitch-scan-flash{0%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}60%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}100%{outline:3px solid rgba(96, 86, 240, 0);outline-offset:4px}}@keyframes stitch-scan-flash-img{0%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}60%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}100%{outline:3px solid rgba(96, 86, 240, 0);outline-offset:4px}}.stitch-scan-entry{animation:stitch-scan-flash 1.5s ease-out forwards}.stitch-scan-entry-img{animation:stitch-scan-flash-img 1.5s ease-out forwards}</style>  <link href="fonts.css" rel="stylesheet">
+</head>
+<body class="bg-surface-dim text-on-surface antialiased select-none overflow-hidden h-[1024px] w-screen flex flex-col font-body-md text-body-md" data-stitch-vh="h-[1024px]===h-screen">
+<!-- TOP COCKPIT STATUS BAR -->
+<header class="fixed top-0 left-0 right-0 h-14 z-50 flex items-center justify-between px-margin bg-surface-container-lowest border-b border-outline-variant">
+<!-- Left telemetry cluster -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center justify-center w-8 h-8 rounded-lg bg-surface-container border border-outline-variant font-diagnostic-code text-title-cockpit font-bold text-primary">
+        P
+      </div>
+<div class="flex items-center gap-space-sm pl-2">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">Chery Tiggo 8 MapControl</span>
+<span class="text-xs px-2 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-diagnostic-code">PRO MAX</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-2 font-diagnostic-code text-diagnostic-code text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">&#xE8B5;</span>
+<span class="font-bold">14:32</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-2 font-diagnostic-code text-diagnostic-code text-on-surface">
+<span class="material-symbols-outlined text-primary text-[18px]">&#xE1FF;</span>
+<span class="">18°C Dış</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-2 font-diagnostic-code text-diagnostic-code text-secondary">
+<span class="material-symbols-outlined text-[18px]">&#xE1A3;</span>
+<span class="">516 km (%100)</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant mx-1"></div>
+<div class="flex items-center gap-1.5 font-diagnostic-code text-diagnostic-code text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-secondary">&#xEBC8;</span>
+<span class="">TPMS OK (2,4 bar)</span>
+</div>
+</div>
+<!-- Center/Right telemetry actions -->
+<div class="flex items-center gap-space-md">
+<!-- DVR Record Pill -->
+<div class="flex items-center gap-2 px-3 py-1 rounded-full bg-error-container/30 border border-error/40 text-error font-label-caps text-label-caps animate-pulse">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span class="">● KAYIT DEVAM EDİYOR</span>
+</div>
+<div class="flex items-center gap-3 pl-2">
+<div class="flex items-center gap-1 text-on-surface-variant font-diagnostic-code text-xs">
+<span class="material-symbols-outlined text-[18px]">&#xE1C8;</span>
+<span class="">4G LTE</span>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]" title="Bulut Eşitleme Aktif">&#xE2BF;</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<!-- Profile -->
+<div class="flex items-center gap-2.5 pl-1">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary font-bold text-xs">
+          AY
+        </div>
+<div class="flex flex-col text-left">
+<span class="font-title-cockpit text-[14px] text-on-surface leading-tight">Ahmet Y.</span>
+<span class="text-[11px] text-on-surface-variant leading-tight">Sürücü 1</span>
+</div>
+</div>
+</div>
+</header>
+<!-- APP SHELL CONTAINER -->
+<div class="flex h-[1024px] pt-14 overflow-hidden" data-stitch-vh="h-[1024px]===h-screen">
+<!-- LEFT PERSISTENT NAVIGATION RAIL (Consistent with SideNavBar) -->
+<aside class="w-60 flex-shrink-0 bg-surface-container-low border-r border-outline-variant flex flex-col justify-between p-space-sm z-40 select-none">
+<div class="flex flex-col gap-1">
+<!-- Sub Brand Header -->
+<div class="px-space-md py-space-sm mb-2 border-b border-outline-variant/60 flex items-center justify-between">
+<div>
+<div class="font-label-caps text-label-caps text-primary uppercase">MapControl</div>
+<div class="text-[12px] font-diagnostic-code text-on-surface-variant">Tiggo 8 Pro Max</div>
+</div>
+<span class="material-symbols-outlined text-primary text-xl">&#xE636;</span>
+</div>
+<!-- Group: GÜNLÜK -->
+<div class="text-[11px] font-label-caps text-outline px-space-md pt-1 pb-1">GÜNLÜK</div>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE88A;</span>
+<span class="font-title-cockpit text-[15px]">Ana Sayfa</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE531;</span>
+<span class="font-title-cockpit text-[15px]">Araç</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE04B;</span>
+<span class="font-title-cockpit text-[15px]">Kamera 360</span>
+</a>
+<!-- Group: KONFOR -->
+<div class="text-[11px] font-label-caps text-outline px-space-md pt-2 pb-1">KONFOR</div>
+<!-- Active Tab: Konfor -->
+<a class="flex items-center gap-space-md bg-surface-container-high text-primary border-l-4 border-primary px-space-md py-2.5 rounded-r-lg transition-colors duration-150 font-bold shadow-sm" href="#">
+<span class="material-symbols-outlined text-xl text-primary" style="font-variation-settings: 'FILL' 1;">&#xE636;</span>
+<span class="font-title-cockpit text-[15px]">Konfor</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE7FD;</span>
+<span class="font-title-cockpit text-[15px]">Sürücü</span>
+</a>
+<!-- Group: ARAÇLAR -->
+<div class="text-[11px] font-label-caps text-outline px-space-md pt-2 pb-1">ARAÇLAR</div>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE63E;</span>
+<span class="font-title-cockpit text-[15px]">Bağlantı</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE2BD;</span>
+<span class="font-title-cockpit text-[15px]">Bulut</span>
+</a>
+<!-- Group: SİSTEM -->
+<div class="text-[11px] font-label-caps text-outline px-space-md pt-2 pb-1">SİSTEM</div>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE869;</span>
+<span class="font-title-cockpit text-[15px]">Teşhis</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface px-space-md py-2.5 rounded-lg transition-colors duration-150" href="#">
+<span class="material-symbols-outlined text-xl">&#xE8B8;</span>
+<span class="font-title-cockpit text-[15px]">Ayarlar</span>
+</a>
+</div>
+<!-- Rail Footer: SOS & Exit -->
+<div class="pt-2 border-t border-outline-variant flex flex-col gap-2">
+<button class="w-full min-h-[48px] px-3 py-2 bg-error/20 hover:bg-error/30 text-error border border-error/50 rounded-xl flex items-center justify-center gap-2 font-title-cockpit text-sm font-bold transition-all active:scale-95">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">&#xE1EB;</span>
+<span class="">Acil Durum SOS</span>
+</button>
+<div class="flex items-center justify-between px-2 pt-1 text-on-surface-variant text-xs">
+<button class="flex items-center gap-1.5 hover:text-on-surface transition-colors py-1">
+<span class="material-symbols-outlined text-base">&#xE8AC;</span>
+<span class="font-label-caps">Çıkış</span>
+</button>
+<span class="font-diagnostic-code text-[11px] text-outline">v2.4.1</span>
+</div>
+</div>
+</aside>
+<!-- MAIN COCKPIT VIEWPORT (16:10 Dynamic Canvas) -->
+<main class="flex-1 flex flex-col overflow-y-auto px-margin py-4 bg-surface-dim gap-4">
+<!-- HEADER / TITLE ROW -->
+<section class="flex items-center justify-between flex-shrink-0 bg-surface-container-lowest/80 border border-outline-variant p-4 rounded-xl">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">İklimlendirme ve Konfor</h1>
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container/20 border border-secondary-container/40 text-secondary text-xs font-label-caps">OTOMATİK AKTİF</span>
+</div>
+<p class="text-on-surface-variant text-body-sm font-body-sm mt-0.5">
+            Çift Bölgeli Otomatik Klima • Koltuk İklimlendirme • Akıllı Cam &amp; Tavan Otomasyonuw</p>
+</div>
+<!-- Quick Mode Presets -->
+<div class="flex items-center gap-2">
+<button class="min-h-[48px] px-4 py-2 rounded-xl bg-surface-container-high border-2 border-primary text-primary font-title-cockpit text-sm flex items-center gap-2 shadow-sm transition-all active:scale-95">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">&#xEC20;</span>
+<span class="">Akıllı Otomatik (A/C Auto)</span>
+</button>
+<button class="min-h-[48px] px-4 py-2 rounded-xl bg-surface-container border border-outline-variant hover:border-outline text-on-surface font-title-cockpit text-sm flex items-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-lg text-primary">&#xEFD8;</span>
+<span class="">Hızlı Buğu Çözme</span>
+</button>
+<button class="min-h-[48px] px-4 py-2 rounded-xl bg-surface-container border border-outline-variant hover:border-outline text-on-surface font-title-cockpit text-sm flex items-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-lg text-secondary">&#xEA35;</span>
+<span class="">Eko Konfor</span>
+</button>
+<button class="min-h-[48px] px-4 py-2 rounded-xl bg-surface-container border border-outline-variant hover:border-outline text-on-surface font-title-cockpit text-sm flex items-center gap-2 transition-all active:scale-95">
+<span class="material-symbols-outlined text-lg text-secondary" style="font-variation-settings: 'FILL' 1;">&#xE3E3;</span>
+<span class="">Temiz Hava (PM2.5 İyonizer: Aktif)</span>
+</button>
+</div>
+</section>
+<!-- MAIN CONTENT 12-COLUMN GRID -->
+<div class="grid grid-cols-12 gap-gutter flex-1">
+<!-- ============================================== -->
+<!-- LEFT 7 COLUMNS: CLIMATE & SEATS                 -->
+<!-- ============================================== -->
+<div class="col-span-7 flex flex-col gap-4">
+<!-- A. Dual-Zone Climate Control Card -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-5 flex flex-col gap-4 shadow-sm">
+<div class="flex items-center justify-between border-b border-outline-variant/60 pb-3">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-2xl">&#xF076;</span>
+<span class="font-title-cockpit text-title-cockpit text-on-surface">İki Bölgeli Dijital Klima</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-label-caps text-on-surface-variant">SENKRONİZASYON</span>
+<button class="px-3 py-1 rounded-lg bg-surface-container-high border border-primary text-primary font-diagnostic-code text-xs font-bold transition-all active:scale-95" id="sync-btn" onclick="toggleSync()">
+                  SYNC: AKTİF
+                </button>
+</div>
+</div>
+<!-- Dual Temperature Steppers -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Driver Zone -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-xs font-label-caps text-on-surface-variant">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-primary">&#xE7FD;</span> SÜRÜCÜ TARAFI</span>
+<span class="text-secondary font-diagnostic-code text-[11px]">Hedef Sıcaklık</span>
+</div>
+<div class="flex items-center justify-between my-2">
+<!-- Minus Button (72x72px Touch Target) -->
+<button class="w-[72px] h-[72px] rounded-xl bg-surface-container-high border border-outline-variant hover:border-primary text-primary flex items-center justify-center font-bold text-3xl transition-all active:scale-90" onclick="adjustTemp('driver', -0.5)">
+<span class="material-symbols-outlined text-3xl">&#xE15B;</span>
+</button>
+<!-- Value Display -->
+<div class="flex flex-col items-center">
+<span class="font-display-telematics text-display-telematics font-bold text-on-surface tracking-tight" id="temp-driver">21.5</span>
+<span class="font-diagnostic-code text-xs text-on-surface-variant -mt-2">°C DERECE</span>
+</div>
+<!-- Plus Button (72x72px Touch Target) -->
+<button class="w-[72px] h-[72px] rounded-xl bg-surface-container-high border border-outline-variant hover:border-primary text-primary flex items-center justify-center font-bold text-3xl transition-all active:scale-90" onclick="adjustTemp('driver', 0.5)">
+<span class="material-symbols-outlined text-3xl">&#xE145;</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant pt-1 border-t border-outline-variant/40">
+<span class="">Kabine Üfleme: 21.0°C</span>
+<span class="text-secondary font-medium">Hassas Termostat</span>
+</div>
+</div>
+<!-- Passenger Zone -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-xs font-label-caps text-on-surface-variant">
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-on-surface-variant">&#xE637;</span> ÖN YOLCU</span>
+<span class="text-on-surface-variant font-diagnostic-code text-[11px]">Hedef Sıcaklık</span>
+</div>
+<div class="flex items-center justify-between my-2">
+<!-- Minus Button (72x72px Touch Target) -->
+<button class="w-[72px] h-[72px] rounded-xl bg-surface-container-high border border-outline-variant hover:border-primary text-primary flex items-center justify-center font-bold text-3xl transition-all active:scale-90" onclick="adjustTemp('passenger', -0.5)">
+<span class="material-symbols-outlined text-3xl">&#xE15B;</span>
+</button>
+<!-- Value Display -->
+<div class="flex flex-col items-center">
+<span class="font-display-telematics text-display-telematics font-bold text-on-surface tracking-tight" id="temp-passenger">22.5</span>
+<span class="font-diagnostic-code text-xs text-on-surface-variant -mt-2">°C DERECE</span>
+</div>
+<!-- Plus Button (72x72px Touch Target) -->
+<button class="w-[72px] h-[72px] rounded-xl bg-surface-container-high border border-outline-variant hover:border-primary text-primary flex items-center justify-center font-bold text-3xl transition-all active:scale-90" onclick="adjustTemp('passenger', 0.5)">
+<span class="material-symbols-outlined text-3xl">&#xE145;</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant pt-1 border-t border-outline-variant/40">
+<span class="">Bağımsız Mod</span>
+<span class="text-primary font-medium">Aktif Kontrol</span>
+</div>
+</div>
+</div>
+<!-- Airflow Direction Tactile Segments -->
+<div class="flex flex-col gap-2">
+<span class="text-xs font-label-caps text-on-surface-variant">HAVA AKIŞ YÖNLENDİRMESİ</span>
+<div class="grid grid-cols-3 gap-3">
+<button class="min-h-[64px] rounded-xl bg-surface-container-high border-2 border-primary text-primary flex items-center justify-center gap-3 font-title-cockpit text-sm font-semibold transition-all active:scale-98">
+<span class="material-symbols-outlined text-2xl">mode_fan</span>
+<span class="">Ön Cam (Buğu Çözme)</span>
+</button>
+<button class="min-h-[64px] rounded-xl bg-surface-container-high border-2 border-primary text-primary flex items-center justify-center gap-3 font-title-cockpit text-sm font-semibold transition-all active:scale-98 shadow-sm">
+<span class="material-symbols-outlined text-2xl">&#xEFD8;</span>
+<span class="">Yüz &amp; Gövde</span>
+</button>
+<button class="min-h-[64px] rounded-xl bg-surface-container-low border border-outline-variant hover:border-outline text-on-surface-variant flex items-center justify-center gap-3 font-title-cockpit text-sm font-semibold transition-all active:scale-98">
+<span class="material-symbols-outlined text-2xl">&#xE5DB;</span>
+<span class="">Ayaklar</span>
+</button>
+</div>
+</div>
+<!-- Fan Speed Stepper / Glowing Bar (Level 4/7) -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-3.5 flex flex-col gap-2">
+<div class="flex items-center justify-between text-xs">
+<span class="font-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base animate-spin" style="animation-duration: 4s;">mode_fan</span>
+                  FAN KADEMESİ
+                </span>
+<span class="font-diagnostic-code text-primary font-bold">Kademe 4 / 7 (Orta Seviye)</span>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<button class="h-10 rounded-lg bg-primary text-on-primary font-diagnostic-code font-bold text-sm flex items-center justify-center">1</button>
+<button class="h-10 rounded-lg bg-primary text-on-primary font-diagnostic-code font-bold text-sm flex items-center justify-center">2</button>
+<button class="h-10 rounded-lg bg-primary text-on-primary font-diagnostic-code font-bold text-sm flex items-center justify-center">3</button>
+<button class="h-10 rounded-lg bg-primary text-on-primary font-diagnostic-code font-bold text-sm flex items-center justify-center ring-2 ring-primary ring-offset-2 ring-offset-surface-container-low">4</button>
+<button class="h-10 rounded-lg bg-surface-container-high border border-outline-variant text-on-surface-variant font-diagnostic-code font-bold text-sm flex items-center justify-center hover:border-outline">5</button>
+<button class="h-10 rounded-lg bg-surface-container-high border border-outline-variant text-on-surface-variant font-diagnostic-code font-bold text-sm flex items-center justify-center hover:border-outline">6</button>
+<button class="h-10 rounded-lg bg-surface-container-high border border-outline-variant text-on-surface-variant font-diagnostic-code font-bold text-sm flex items-center justify-center hover:border-outline">7</button>
+</div>
+</div>
+<!-- Climate Primary Action Bar (Min 64px Touch targets) -->
+<div class="grid grid-cols-6 gap-2 pt-1">
+<!-- A/C -->
+<button class="min-h-[64px] rounded-xl bg-surface-container-high border-2 border-primary text-primary flex flex-col items-center justify-center gap-1 font-label-caps text-xs active:scale-95 transition-all">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">&#xEB3B;</span>
+<span class="font-bold">A/C AÇIK</span>
+</button>
+<!-- AUTO -->
+<button class="min-h-[64px] rounded-xl bg-surface-container-high border-2 border-secondary text-secondary flex flex-col items-center justify-center gap-1 font-label-caps text-xs active:scale-95 transition-all">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">&#xE863;</span>
+<span class="font-bold">AUTO</span>
+</button>
+<!-- Döngü / Recirc -->
+<button class="min-h-[64px] rounded-xl bg-surface-container-low border border-outline-variant text-on-surface-variant hover:text-on-surface flex flex-col items-center justify-center gap-1 font-label-caps text-xs active:scale-95 transition-all">
+<span class="material-symbols-outlined text-xl">&#xEA18;</span>
+<span class="">İÇ DÖNGÜ</span>
+</button>
+<!-- Ön Cam Isıtma (Defrost) -->
+<button class="min-h-[64px] rounded-xl bg-surface-container-low border border-outline-variant text-on-surface-variant hover:text-on-surface flex flex-col items-center justify-center gap-1 font-label-caps text-xs active:scale-95 transition-all">
+<span class="material-symbols-outlined text-xl">&#xE769;</span>
+<span class="">ÖN ISITMA</span>
+</button>
+<!-- Arka Cam & Ayna Isıtma (Amber active) -->
+<button class="min-h-[64px] rounded-xl bg-surface-container-high border-2 border-amber-500 text-amber-400 flex flex-col items-center justify-center gap-1 font-label-caps text-xs active:scale-95 transition-all">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">&#xE2C0;</span>
+<span class="font-bold">ARKA ISITMA</span>
+</button>
+<!-- DUAL / SYNC -->
+<button class="min-h-[64px] rounded-xl bg-surface-container-high border border-primary text-primary flex flex-col items-center justify-center gap-1 font-label-caps text-xs active:scale-95 transition-all">
+<span class="material-symbols-outlined text-xl">&#xE429;</span>
+<span class="font-bold">DÖNGÜ SYNC</span>
+</button>
+</div>
+</div>
+<!-- B. Front Seats Climate Control Card -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-5 flex flex-col gap-3 shadow-sm">
+<div class="flex items-center justify-between border-b border-outline-variant/60 pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">&#xE636;</span>
+<span class="font-title-cockpit text-title-cockpit text-on-surface">Ön Koltuk Havalandırma ve Isıtma</span>
+</div>
+<span class="text-xs font-diagnostic-code text-on-surface-variant">Otomatik Eko-Algılama</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Sürücü Koltuğu -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-4 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-title-cockpit text-sm text-on-surface font-bold">Sürücü Koltuğu</span>
+<span class="text-[11px] font-diagnostic-code px-2 py-0.5 rounded bg-surface-container-high text-primary border border-primary/30">Dolu</span>
+</div>
+<!-- Heating & Ventilation Controls -->
+<div class="grid grid-cols-2 gap-2">
+<!-- Koltuk Isıtma (Seviye 2 - Amber) -->
+<div class="p-2.5 rounded-lg bg-surface-container border border-amber-500/50 flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-xs text-amber-400">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">heat</span> Isıtma</span>
+<span class="font-bold">Sev. 2</span>
+</div>
+<div class="flex gap-1.5 pt-1">
+<div class="h-3 flex-1 rounded-sm bg-amber-500"></div>
+<div class="h-3 flex-1 rounded-sm bg-amber-500"></div>
+<div class="h-3 flex-1 rounded-sm bg-surface-container-high border border-outline-variant"></div>
+</div>
+</div>
+<!-- Koltuk Havalandırma (Seviye 1 - Cyan) -->
+<div class="p-2.5 rounded-lg bg-surface-container border border-primary/50 flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-xs text-primary">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">mode_fan</span> Soğutma</span>
+<span class="font-bold">Sev. 1</span>
+</div>
+<div class="flex gap-1.5 pt-1">
+<div class="h-3 flex-1 rounded-sm bg-primary"></div>
+<div class="h-3 flex-1 rounded-sm bg-surface-container-high border border-outline-variant"></div>
+<div class="h-3 flex-1 rounded-sm bg-surface-container-high border border-outline-variant"></div>
+</div>
+</div>
+</div>
+<!-- Direksiyon Isıtma Quick Toggle -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container border border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-400 text-lg">&#xEF4A;</span>
+<span class="text-xs text-on-surface font-medium">Direksiyon Isıtma</span>
+</div>
+<span class="text-xs font-diagnostic-code text-amber-400 font-bold">Açık (Otomatik 28°C)</span>
+</div>
+</div>
+<!-- Yolcu Koltuğu -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-4 flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-title-cockpit text-sm text-on-surface font-bold">Yolcu Koltuğu</span>
+<span class="text-[11px] font-diagnostic-code px-2 py-0.5 rounded bg-surface-container-high text-secondary border border-secondary/30">Dolu</span>
+</div>
+<!-- Heating & Ventilation Controls -->
+<div class="grid grid-cols-2 gap-2">
+<!-- Koltuk Isıtma (Kapalı) -->
+<div class="p-2.5 rounded-lg bg-surface-container border border-outline-variant flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">heat</span> Isıtma</span>
+<span class="">Kapalı</span>
+</div>
+<div class="flex gap-1.5 pt-1">
+<div class="h-3 flex-1 rounded-sm bg-surface-container-high border border-outline-variant"></div>
+<div class="h-3 flex-1 rounded-sm bg-surface-container-high border border-outline-variant"></div>
+<div class="h-3 flex-1 rounded-sm bg-surface-container-high border border-outline-variant"></div>
+</div>
+</div>
+<!-- Koltuk Havalandırma (Seviye 2 - Cyan) -->
+<div class="p-2.5 rounded-lg bg-surface-container border border-primary/50 flex flex-col gap-1.5">
+<div class="flex items-center justify-between text-xs text-primary">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">mode_fan</span> Soğutma</span>
+<span class="font-bold">Sev. 2</span>
+</div>
+<div class="flex gap-1.5 pt-1">
+<div class="h-3 flex-1 rounded-sm bg-primary"></div>
+<div class="h-3 flex-1 rounded-sm bg-primary"></div>
+<div class="h-3 flex-1 rounded-sm bg-surface-container-high border border-outline-variant"></div>
+</div>
+</div>
+</div>
+<!-- Koltuk Masaj Modu -->
+<div class="flex items-center justify-between p-2.5 rounded-lg bg-surface-container border border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-lg">&#xEB4C;</span>
+<span class="text-xs text-on-surface font-medium">Koltuk Masajı</span>
+</div>
+<span class="text-xs font-diagnostic-code text-secondary font-bold">Dalga Masajı (Hafif)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ============================================== -->
+<!-- RIGHT 5 COLUMNS: SUNROOF & AIR QUALITY         -->
+<!-- ============================================== -->
+<div class="col-span-5 flex flex-col gap-4">
+<!-- C. Smart Sunroof & Sunshade Automation Card -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-5 flex flex-col gap-4 shadow-sm">
+<div class="flex items-center justify-between border-b border-outline-variant/60 pb-3">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-2xl">&#xF201;</span>
+<span class="font-title-cockpit text-title-cockpit text-on-surface">Akıllı Panoramik Cam Tavan &amp; Perde</span>
+</div>
+<span class="material-symbols-outlined text-secondary" title="Otomatik Emniyet Sistemi Devrede">&#xE9E0;</span>
+</div>
+<!-- Sunroof Schematic & Physical Status -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-4 flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<span class="text-xs font-label-caps text-on-surface-variant">PANORAMİK CAM TAVAN</span>
+<div class="text-headline-sm font-bold text-primary flex items-center gap-2">
+<span class="">%45 Açık</span>
+<span class="text-xs font-diagnostic-code px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/30">Havalandırma</span>
+</div>
+<span class="text-[12px] text-on-surface-variant">Elektrikli Güneş Perdesi: %100 Açık Perde</span>
+</div>
+<!-- Graphic Micro Representation of Roof -->
+<div class="w-36 h-20 rounded-lg bg-surface-container-lowest border border-outline-variant p-2 flex flex-col justify-between relative overflow-hidden">
+<div class="text-[10px] font-diagnostic-code text-outline uppercase tracking-wider text-center">TIGGO 8 PRO MAX TAVAN</div>
+<div class="h-7 w-full rounded border border-primary/50 relative bg-surface-container-high overflow-hidden flex">
+<!-- Glass Open Portion -->
+<div class="h-full bg-primary/30 border-r-2 border-primary flex items-center justify-center text-[10px] font-bold text-primary" style="width: 45%;">
+                    %45
+                  </div>
+<div class="h-full flex-1 bg-surface-container-lowest flex items-center justify-center text-[9px] text-on-surface-variant">
+                    KAPALI BÖLÜM
+                  </div>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant font-diagnostic-code">
+<span class="">Ön Bölme</span>
+<span class="text-secondary">Arka Sabit</span>
+</div>
+</div>
+</div>
+<!-- Stepper / Sliders Direct Position -->
+<div class="space-y-3">
+<!-- Cam Tavan Kademe -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between text-xs">
+<span class="text-on-surface-variant font-label-caps">CAM TAVAN KONUMU</span>
+<span class="text-primary font-diagnostic-code text-xs font-bold">%45 Açık</span>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="h-11 rounded-lg bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface-variant font-title-cockpit text-xs font-semibold active:scale-95 transition-all">
+                    Tam Kapalı
+                  </button>
+<button class="h-11 rounded-lg bg-primary-container/20 border-2 border-primary text-primary font-title-cockpit text-xs font-bold active:scale-95 transition-all">
+                    Havalandırma (%20)
+                  </button>
+<button class="h-11 rounded-lg bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface font-title-cockpit text-xs font-semibold active:scale-95 transition-all">
+                    %50 Açık
+                  </button>
+<button class="h-11 rounded-lg bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface font-title-cockpit text-xs font-semibold active:scale-95 transition-all">
+                    Tam Açık
+                  </button>
+</div>
+</div>
+<!-- Güneş Perdesi Kademe -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between text-xs">
+<span class="text-on-surface-variant font-label-caps">GÜNEŞ PERDESİ KONUMU</span>
+<span class="text-secondary font-diagnostic-code text-xs font-bold">%100 Açık</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<button class="h-11 rounded-lg bg-surface-container-high border border-outline-variant hover:border-secondary text-on-surface-variant font-title-cockpit text-xs font-semibold active:scale-95 transition-all">
+                    Tam Kapalı
+                  </button>
+<button class="h-11 rounded-lg bg-surface-container-high border border-outline-variant hover:border-secondary text-on-surface font-title-cockpit text-xs font-semibold active:scale-95 transition-all">
+                    %50 Yarı Açık
+                  </button>
+<button class="h-11 rounded-lg bg-secondary-container/20 border-2 border-secondary text-secondary font-title-cockpit text-xs font-bold active:scale-95 transition-all">
+                    Tam Açık (%100)
+                  </button>
+</div>
+</div>
+</div>
+<!-- Smart Automation Safety Guards (ISO Guard Toggles) -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-3 flex flex-col gap-2.5">
+<span class="text-xs font-label-caps text-on-surface-variant">AKILLI OTOMASYON EMNİYET KORUMALARI</span>
+<!-- 1. Yağmur Koruma Sensörü -->
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">rainy</span>
+<div>
+<div class="text-xs text-on-surface font-semibold">Yağmur Koruma Sensörü (Rain Guard)</div>
+<div class="text-[11px] text-on-surface-variant">Yağmur algılandığında cam tavan otomatik kapanır</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-secondary/15 text-secondary border border-secondary/40 text-[11px] font-bold font-diagnostic-code">AKTİF</span>
+</div>
+<!-- 2. Hız Emniyeti -->
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-base">&#xE9E4;</span>
+<div>
+<div class="text-xs text-on-surface font-semibold">Hız Emniyeti (Speed Guard)</div>
+<div class="text-[11px] text-on-surface-variant">120 km/s üzerinde havalandırma açısına daralt</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-secondary/15 text-secondary border border-secondary/40 text-[11px] font-bold font-diagnostic-code">AKTİF</span>
+</div>
+<!-- 3. Güneş & Işık Sensörü -->
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-400 text-base">&#xE430;</span>
+<div>
+<div class="text-xs text-on-surface font-semibold">Güneş Sensörü (85.000 Lux Yüksek Güneş)</div>
+<div class="text-[11px] text-on-surface-variant">Perde %50 Otomatik Kapat</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-secondary/15 text-secondary border border-secondary/40 text-[11px] font-bold font-diagnostic-code">AKTİF</span>
+</div>
+<!-- 4. Kontak Kapatma Emniyeti -->
+<div class="flex items-center justify-between py-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">&#xE897;</span>
+<div>
+<div class="text-xs text-on-surface font-semibold">Park Kapatma Emniyeti (Park Auto-Close)</div>
+<div class="text-[11px] text-on-surface-variant">Araç kilitlendiğinde tüm camları ve tavanı kapat</div>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded bg-secondary/15 text-secondary border border-secondary/40 text-[11px] font-bold font-diagnostic-code">AKTİF</span>
+</div>
+</div>
+<!-- One-Touch Comfort Scenarios -->
+<div class="grid grid-cols-3 gap-2">
+<button class="min-h-[52px] rounded-xl bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface flex items-center justify-center gap-2 text-xs font-title-cockpit font-semibold active:scale-95 transition-all">
+<span class="material-symbols-outlined text-primary text-base">&#xE407;</span>
+<span class="">Açık Hava Modu</span>
+</button>
+<button class="min-h-[52px] rounded-xl bg-surface-container-high border border-outline-variant hover:border-primary text-on-surface flex items-center justify-center gap-2 text-xs font-title-cockpit font-semibold active:scale-95 transition-all">
+<span class="material-symbols-outlined text-amber-400 text-base">shield_with_heart</span>
+<span class="">Güneş Koruma</span>
+</button>
+<button class="min-h-[52px] rounded-xl bg-surface-container-high border border-outline-variant hover:border-error text-on-surface flex items-center justify-center gap-2 text-xs font-title-cockpit font-semibold active:scale-95 transition-all">
+<span class="material-symbols-outlined text-error text-base">graph_4</span>
+<span class="">Tünel / Toz Modu</span>
+</button>
+</div>
+</div>
+<!-- D. Cabin Air Quality & Fragrance (Hava Kalitesi ve İyonizer) -->
+<div class="bg-surface-container border border-outline-variant rounded-xl p-5 flex flex-col gap-3 shadow-sm">
+<div class="flex items-center justify-between border-b border-outline-variant/60 pb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xl">&#xEFD8;</span>
+<span class="font-title-cockpit text-title-cockpit text-on-surface">Kabin Hava Kalitesi &amp; İyonizer</span>
+</div>
+<span class="text-xs font-label-caps text-secondary flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
+                CN95 AKTİF TEMİZLEME
+              </span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- PM2.5 İç Hava -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-3 flex flex-col justify-between">
+<span class="text-xs font-label-caps text-on-surface-variant">İÇ HAVA KALİTESİ (PM2.5)</span>
+<div class="my-1">
+<span class="text-2xl font-bold font-diagnostic-code text-secondary">12 µg/m³</span>
+<div class="text-[11px] text-secondary font-medium">Mükemmel (ISO Sağlık Standartı)</div>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 15%;"></div>
+</div>
+</div>
+<!-- Dış Hava Kalitesi -->
+<div class="bg-surface-container-low border border-outline-variant/80 rounded-xl p-3 flex flex-col justify-between">
+<span class="text-xs font-label-caps text-on-surface-variant">DIŞ ORTAM HAVA KALİTESİ</span>
+<div class="my-1">
+<span class="text-2xl font-bold font-diagnostic-code text-amber-400">48 µg/m³</span>
+<div class="text-[11px] text-amber-400 font-medium">Orta Seviye Partikül</div>
+</div>
+<div class="w-full h-1.5 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-amber-400 rounded-full" style="width: 48%;"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 pt-1">
+<!-- CN95 Filtre Sağlığı -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/80 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">&#xEF76;</span>
+<div>
+<div class="text-xs font-bold text-on-surface">CN95 Filtre Ömrü</div>
+<div class="text-[11px] text-on-surface-variant">Antialerjik İyonizer</div>
+</div>
+</div>
+<span class="font-diagnostic-code text-sm font-bold text-primary">%88</span>
+</div>
+<!-- Akıllı Araç İçi Parfüm -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/80 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xl">maps_ar</span>
+<div>
+<div class="text-xs font-bold text-on-surface">Kabin Parfümü</div>
+<div class="text-[11px] text-on-surface-variant">Okyanus Esintisi</div>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container-high text-secondary border border-secondary/30 text-[11px] font-diagnostic-code font-bold">Hafif (1/3)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Micro-interactions Script -->
+
+
+
+
+<div id="stitch-agent-cursor" data-stitch-injected="" style="left: -40px; top: -40px; display: none;">
+  <svg class="cursor-pointer" width="20" height="20" viewBox="0 0 34 34" fill="none">
+    <path d="M15.0624 32.3549L5.16251 5.48544L32.0324 15.3848L19.3046 19.6276L15.0624 32.3549Z" fill="#7168f6"></path>
+    <path d="M4.80877 5.13207C4.94657 4.99427 5.15206 4.94886 5.33496 5.01606L32.205 14.9156C32.4041 14.9889 32.5354 15.1799 32.5323 15.392C32.529 15.6043 32.392 15.7924 32.1905 15.8595L19.6994 20.0227L15.5369 32.5131C15.4697 32.7145 15.2824 32.8509 15.0701 32.8542C14.8578 32.8575 14.6664 32.7268 14.5929 32.5276L4.69276 5.65826L4.67343 5.5892C4.63863 5.42535 4.68814 5.25283 4.80877 5.13207Z" stroke="rgba(255,255,255,0.15)" stroke-linejoin="round"></path>
+  </svg>
+  <svg class="cursor-text" width="20" height="28" viewBox="0 0 20 28" fill="none">
+    <path d="M6 2h8M6 26h8M10 2v24" stroke="#7168f6" stroke-width="2.5" stroke-linecap="round"></path>
+  </svg>
+  <svg class="cursor-paint" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M18.5 1.5c.8-.8 2.1-.8 2.8 0 .8.8.8 2.1 0 2.8L11 14.5l-3.5 1 1-3.5L18.5 1.5z" fill="#7168f6" stroke="#4f44e1" stroke-width="1" stroke-linejoin="round"></path>
+    <path d="M7 14.5c-2 2-3.5 4-3.5 5.5 0 1.5 1 2.5 2.5 2.5 1.5 0 3.5-1.5 5.5-3.5" stroke="#7168f6" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M4 20c-.5.5-1.2 1-2 1.2" stroke="#6056f0" stroke-width="1" stroke-linecap="round"></path>
+  </svg>
+  <svg id="stitch-cursor-label" width="28" height="14" viewBox="0 0 28 14" fill="none">
+    <rect width="28" height="14" rx="7" fill="#7168f6"></rect>
+    <circle cx="10.5" cy="7" r="1.8" fill="white"></circle>
+    <circle cx="17.5" cy="7" r="1.8" fill="white"></circle>
+  </svg>
+</div>
+<script>
+(function(){
+  function go(v){ try{ if(window.Android && Android.navigate) Android.navigate(v); }catch(e){} }
+  function native(v){ try{ if(window.Android && Android.openNative) Android.openNative(v); }catch(e){} }
+  var rail={'Ana Sayfa':'home','Araç':'vehicle','Kamera 360':'camera','Konfor':'comfort','Sürücü':'driver','Bağlantı':'connectivity','Bulut':'cloud','Teşhis':'diagnostics','Ayarlar':'settings'};
+  document.addEventListener('click',function(ev){
+    var el=ev.target.closest('a,button');
+    if(!el) return;
+    var s=(el.innerText||'').replace(/\s+/g,' ').trim();
+    for (var k in rail) { if (s.indexOf(k) >= 0) { ev.preventDefault(); var v=rail[k]; if(v==='home'||v==='comfort'||v==='driver'||v==='diagnostics') go(v); else native(v); return; } }
+    if(s.indexOf('Kamera Görüntüle')>=0 || s.indexOf('Kamera 360')>=0){ ev.preventDefault(); native('camera'); return; }
+    if(s.indexOf('Tüm sürüşleri')>=0 || s.indexOf('Sürüş Karnesi')>=0){ ev.preventDefault(); native('driving'); return; }
+    if(s.indexOf('Araç Bilgisi')>=0 || s.indexOf('3B Model')>=0){ ev.preventDefault(); native('vehicle'); return; }
+    if(s.indexOf('Klima')>=0 || s.indexOf('Konfor')>=0){ ev.preventDefault(); go('comfort'); return; }
+    if(s.indexOf('Detayları İncele')>=0){ ev.preventDefault(); go('diagnostics'); return; }
+  },true);
+})();
+</script>
+<script>
+(function(){
+  var gaps={'gap-space-sm':'0.375rem','gap-space-md':'0.75rem','gap-space-lg':'1rem','gap-space-xl':'1.5rem','gap-1':'0.25rem','gap-2':'0.5rem','gap-3':'0.75rem','gap-4':'1rem','gap-6':'1.5rem'};
+  function fix(){
+    document.querySelectorAll('[class]').forEach(function(el){
+      var d=getComputedStyle(el).display;
+      if(d!=='flex') return;
+      var dir=getComputedStyle(el).flexDirection||'row';
+      var g=null;
+      for(var k in gaps){ if(el.classList.contains(k)){g=gaps[k];break;} }
+      if(!g) return;
+      var kids=el.children; var first=true;
+      for(var i=0;i<kids.length;i++){
+        var c=kids[i]; if(!c || c.nodeType!==1) continue;
+        var cs=getComputedStyle(c);
+        if(dir.indexOf('column')===0){ if(!first && cs.marginTop==='0px') c.style.marginTop=g; }
+        else { if(!first && cs.marginLeft==='0px') c.style.marginLeft=g; }
+        first=false;
+      }
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fix); else fix();
+  window.addEventListener('resize',fix);
+  setTimeout(fix,400); setTimeout(fix,1200);
+})();
+</script>
+</body><div data-stitch-injected="" style="position: fixed; inset: 0px; z-index: 2147483647; pointer-events: none; overflow: hidden; display: none;"><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 1; border-radius: 4px;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 2; border-radius: 4px; opacity: 1;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 1; border-radius: 4px;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 2; border-radius: 4px;"></div></div></html>

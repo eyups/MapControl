@@ -1,0 +1,679 @@
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1024, initial-scale=1.0">
+<title>Chery Tiggo 8 MapControl - Ana Sayfa</title>
+
+
+
+
+
+
+
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    body {
+      background-color: #111418;
+      color: #e1e2e8;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+<style data-stitch-injected="">
+  /* Hide scrollbars on ALL elements (Webkit) */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbars on ALL elements (Firefox) */
+  * {
+    scrollbar-width: none;
+  }
+
+  /* Suppress horizontal overflow and legacy IE/Edge */
+  html, body {
+    overflow-x: hidden !important;
+    -ms-overflow-style: none;
+    min-height: auto !important;
+  }
+
+  /* Global text selection highlight color override inside all iframe modes */
+  ::selection {
+    background-color: rgba(96, 86, 240, 0.3) !important;
+    color: inherit !important;
+  }
+  ::-moz-selection {
+    background-color: rgba(96, 86, 240, 0.3) !important;
+    color: inherit !important;
+  }
+
+  /* Suppress browser default focus outlines and box-shadow glows globally */
+  *:focus, *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+</style><style data-stitch-injected="">
+  /* ─── Animation styles ─── */
+  .stitch-anim-highlight {
+    outline: 2px solid #6056f080;
+    outline-offset: 2px;
+    border-radius: 4px;
+    transition: outline-color 0.4s ease;
+  }
+  .stitch-anim-highlight-fade {
+    outline-color: transparent;
+  }
+  @keyframes stitch-anim-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes stitch-anim-pure-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .stitch-anim-fade-in {
+    animation: stitch-anim-fade-in 0.3s ease forwards;
+  }
+
+  /* ─── Drawing rectangle overlay ─── */
+  .stitch-anim-draw-overlay {
+    position: fixed;
+    border: 2px solid #6056f099;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 998;
+    clip-path: polygon(
+      0% 0%, 0% 0%,
+      0% 0%, 0% 0%,
+      0% 0%, 0% 0%
+    );
+    animation: stitch-anim-draw-rect 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes stitch-anim-draw-rect {
+    0%   { clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%); }
+    30%  { clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 100% 0%, 0% 0%, 0% 0%); }
+    55%  { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 0%, 0% 0%); }
+    80%  { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 0%); }
+    100% { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 0% 0%); }
+  }
+  .stitch-anim-draw-overlay.fading {
+    animation: stitch-anim-border-fade 0.5s ease forwards;
+  }
+  @keyframes stitch-anim-border-fade {
+    to { opacity: 0; }
+  }
+  /* ─── Image reveal crossfade ─── */
+  .stitch-anim-img-dimming {
+    transition: opacity 0.2s ease !important;
+    opacity: 0.15 !important;
+  }
+  .stitch-anim-img-revealing {
+    transition: opacity 0.35s ease !important;
+    opacity: 1 !important;
+  }
+  .stitch-anim-cursor::after {
+    content: '|';
+    font-weight: 100;
+    animation: stitch-anim-blink 0.6s step-end infinite;
+    color: #6056f0B3;
+    margin-left: 1px;
+  }
+  @keyframes stitch-anim-blink {
+    50% { opacity: 0; }
+  }
+
+  /* ─── AI Agent Cursor ─── */
+  #stitch-agent-cursor {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 0px;
+    transition: left 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                top 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.25s ease;
+    opacity: 0;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18));
+  }
+  #stitch-agent-cursor.working {
+    animation: stitch-anim-wobble 0.8s ease-in-out infinite;
+  }
+  #stitch-agent-cursor.drawing {
+    animation: none;
+    transition: left 0.12s linear, top 0.12s linear, opacity 0.25s ease;
+  }
+  @keyframes stitch-anim-wobble {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(1px, -1px) rotate(2deg); }
+    50%  { transform: translate(-1px, 1px) rotate(-1deg); }
+    75%  { transform: translate(1px, 0px) rotate(1deg); }
+  }
+  #stitch-agent-cursor .cursor-pointer {
+    display: block;
+  }
+  #stitch-agent-cursor .cursor-text,
+  #stitch-agent-cursor .cursor-paint {
+    display: none;
+  }
+  #stitch-agent-cursor.text-mode .cursor-pointer,
+  #stitch-agent-cursor.text-mode .cursor-paint {
+    display: none;
+  }
+  #stitch-agent-cursor.text-mode .cursor-text {
+    display: block;
+  }
+  #stitch-agent-cursor.paint-mode .cursor-pointer,
+  #stitch-agent-cursor.paint-mode .cursor-text {
+    display: none;
+  }
+  #stitch-agent-cursor.paint-mode .cursor-paint {
+    display: block;
+  }
+  #stitch-cursor-label {
+    margin-top: 14px;
+    margin-left: -3px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+  }
+
+  /* ─── Active Element Indicator (Multi-Select Outline & Aurora Glow) ─── */
+  @keyframes stitch-aurora-sweep {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  @keyframes stitch-indicator-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.78;
+    }
+  }
+  .stitch-active-indicator {
+    position: absolute;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: #6056f0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .stitch-active-indicator.stitch-aurora,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"]) {
+    border: none !important;
+    border-radius: 4px;
+    background: linear-gradient(
+      135deg,
+      rgba(145, 84, 231, 0.10),
+      rgba(96, 86, 240, 0.08),
+      rgba(64, 217, 198, 0.08),
+      rgba(66, 133, 244, 0.10)
+    );
+    box-shadow: 0 2px 12px rgba(96, 86, 240, 0.22);
+    animation: stitch-indicator-pulse 3s ease-in-out infinite;
+    pointer-events: auto;
+    cursor: not-allowed;
+    z-index: 3;
+  }
+  .stitch-active-indicator.stitch-aurora::before,
+  .stitch-active-indicator.stitch-aurora::after,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::before,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::after {
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    background: linear-gradient(
+      120deg,
+      #9154E7 0%,
+      #6056F0 25%,
+      #40D9C6 50%,
+      #4285F4 75%,
+      #9154E7 100%
+    );
+    background-size: 300% 300%;
+    animation: stitch-aurora-sweep 4s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .stitch-active-indicator.stitch-aurora::before,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::before {
+    inset: 0;
+    padding: 2px;
+  }
+  .stitch-active-indicator.stitch-aurora::after,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::after {
+    inset: -3px;
+    padding: 3px;
+    filter: blur(6px);
+    opacity: 0.55;
+  }
+</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select{-webkit-appearance:none;appearance:none;background-color:#fff;border-color:#6b7280;border-width:1px;border-radius:0px;padding-top:0.5rem;padding-right:0.75rem;padding-bottom:0.5rem;padding-left:0.75rem;font-size:1rem;line-height:1.5rem;--tw-shadow:0 0 #0000;}[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);border-color:#2563eb}input::placeholder,textarea::placeholder{color:#6b7280;opacity:1}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-date-and-time-value{min-height:1.5em;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field{padding-top:0;padding-bottom:0}select{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right 0.5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem;print-color-adjust:exact}[multiple],[size]:where(select:not([size="1"])){background-image:initial;background-position:initial;background-repeat:unset;background-size:initial;padding-right:0.75rem;print-color-adjust:unset}[type='checkbox'],[type='radio']{-webkit-appearance:none;appearance:none;padding:0;print-color-adjust:exact;display:inline-block;vertical-align:middle;background-origin:border-box;-webkit-user-select:none;user-select:none;flex-shrink:0;height:1rem;width:1rem;color:#2563eb;background-color:#fff;border-color:#6b7280;border-width:1px;--tw-shadow:0 0 #0000}[type='checkbox']{border-radius:0px}[type='radio']{border-radius:100%}[type='checkbox']:focus,[type='radio']:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:2px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[type='checkbox']:checked,[type='radio']:checked{border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat}[type='checkbox']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='checkbox']:checked{-webkit-appearance:auto;appearance:auto}}[type='radio']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='radio']:checked{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus{border-color:transparent;background-color:currentColor}[type='checkbox']:indeterminate{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat;}@media (forced-colors: active) {[type='checkbox']:indeterminate{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus{border-color:transparent;background-color:currentColor}[type='file']{background:unset;border-color:inherit;border-width:0;border-radius:0;padding:0;font-size:unset;line-height:inherit}[type='file']:focus{outline:1px solid ButtonText;outline:1px auto -webkit-focus-ring-color}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.inset-0{inset:0px}.left-0{left:0px}.left-1\/2{left:50%}.right-0{right:0px}.top-0{top:0px}.top-1\/2{top:50%}.z-10{z-index:10}.z-40{z-index:40}.z-50{z-index:50}.col-span-3{grid-column:span 3 / span 3}.col-span-4{grid-column:span 4 / span 4}.col-span-6{grid-column:span 6 / span 6}.col-span-8{grid-column:span 8 / span 8}.mx-auto{margin-left:auto;margin-right:auto}.my-auto{margin-top:auto;margin-bottom:auto}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mt-0\.5{margin-top:0.125rem}.mt-1\.5{margin-top:0.375rem}.mt-14{margin-top:3.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.flex{display:flex}.grid{display:grid}.h-1\.5{height:0.375rem}.h-10{height:2.5rem}.h-11{height:2.75rem}.h-12{height:3rem}.h-14{height:3.5rem}.h-16{height:4rem}.h-2{height:0.5rem}.h-2\.5{height:0.625rem}.h-3{height:0.75rem}.h-36{height:9rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-72{height:18rem}.h-8{height:2rem}.h-\[1024px\]{height:1024px}.h-\[152px\]{height:152px}.h-\[calc\(1024px-3\.5rem\)\]{height:calc(1024px - 3.5rem)}.h-auto{height:auto}.min-h-\[52px\]{min-height:52px}.w-10{width:2.5rem}.w-12{width:3rem}.w-14{width:3.5rem}.w-2{width:0.5rem}.w-2\.5{width:0.625rem}.w-3{width:0.75rem}.w-60{width:15rem}.w-7{width:1.75rem}.w-72{width:18rem}.w-8{width:2rem}.w-\[1px\]{width:1px}.w-full{width:100%}.w-screen{width:100vw}.max-w-\[1520px\]{max-width:1520px}.max-w-\[280px\]{max-width:280px}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.-translate-y-1\/2{--tw-translate-y:-50%;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes ping{75%, 100%{transform:scale(2);opacity:0}}.animate-ping{animation:ping 1s cubic-bezier(0, 0, 0.2, 1) infinite}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.cursor-text{cursor:text}.select-none{-webkit-user-select:none;user-select:none}.grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-space-lg{gap:1.5rem}.gap-space-md{gap:1rem}.gap-space-sm{gap:0.5rem}.space-y-space-md > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.self-center{align-self:center}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-md{border-radius:0.375rem}.rounded-xl{border-radius:0.75rem}.rounded-r-lg{border-top-right-radius:0.5rem;border-bottom-right-radius:0.5rem}.border{border-width:1px}.border-2{border-width:2px}.border-x{border-left-width:1px;border-right-width:1px}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-r{border-right-width:1px}.border-t{border-top-width:1px}.border-\[\#22272e\]{--tw-border-opacity:1;border-color:rgb(34 39 46 / var(--tw-border-opacity, 1))}.border-emerald-400{--tw-border-opacity:1;border-color:rgb(52 211 153 / var(--tw-border-opacity, 1))}.border-emerald-400\/50{border-color:rgb(52 211 153 / 0.5)}.border-emerald-500\/30{border-color:rgb(16 185 129 / 0.3)}.border-emerald-500\/50{border-color:rgb(16 185 129 / 0.5)}.border-outline-variant{--tw-border-opacity:1;border-color:rgb(61 73 77 / var(--tw-border-opacity, 1))}.border-outline-variant\/40{border-color:rgb(61 73 77 / 0.4)}.border-outline-variant\/60{border-color:rgb(61 73 77 / 0.6)}.border-primary{--tw-border-opacity:1;border-color:rgb(76 214 251 / var(--tw-border-opacity, 1))}.border-primary\/20{border-color:rgb(76 214 251 / 0.2)}.border-primary\/30{border-color:rgb(76 214 251 / 0.3)}.border-primary\/40{border-color:rgb(76 214 251 / 0.4)}.border-red-500\/40{border-color:rgb(239 68 68 / 0.4)}.bg-background{--tw-bg-opacity:1;background-color:rgb(17 20 24 / var(--tw-bg-opacity, 1))}.bg-emerald-400{--tw-bg-opacity:1;background-color:rgb(52 211 153 / var(--tw-bg-opacity, 1))}.bg-emerald-500\/10{background-color:rgb(16 185 129 / 0.1)}.bg-emerald-500\/20{background-color:rgb(16 185 129 / 0.2)}.bg-error-container\/40{background-color:rgb(147 0 10 / 0.4)}.bg-outline-variant{--tw-bg-opacity:1;background-color:rgb(61 73 77 / var(--tw-bg-opacity, 1))}.bg-primary{--tw-bg-opacity:1;background-color:rgb(76 214 251 / var(--tw-bg-opacity, 1))}.bg-primary-container\/20{background-color:rgb(0 180 216 / 0.2)}.bg-primary\/10{background-color:rgb(76 214 251 / 0.1)}.bg-primary\/20{background-color:rgb(76 214 251 / 0.2)}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68 / var(--tw-bg-opacity, 1))}.bg-red-500\/20{background-color:rgb(239 68 68 / 0.2)}.bg-red-600\/20{background-color:rgb(220 38 38 / 0.2)}.bg-secondary{--tw-bg-opacity:1;background-color:rgb(70 238 224 / var(--tw-bg-opacity, 1))}.bg-secondary\/20{background-color:rgb(70 238 224 / 0.2)}.bg-surface-container{--tw-bg-opacity:1;background-color:rgb(29 32 36 / var(--tw-bg-opacity, 1))}.bg-surface-container-high{--tw-bg-opacity:1;background-color:rgb(39 42 47 / var(--tw-bg-opacity, 1))}.bg-surface-container-high\/80{background-color:rgb(39 42 47 / 0.8)}.bg-surface-container-high\/90{background-color:rgb(39 42 47 / 0.9)}.bg-surface-container-highest{--tw-bg-opacity:1;background-color:rgb(50 53 57 / var(--tw-bg-opacity, 1))}.bg-surface-container-low{--tw-bg-opacity:1;background-color:rgb(25 28 32 / var(--tw-bg-opacity, 1))}.bg-surface-container-lowest{--tw-bg-opacity:1;background-color:rgb(11 14 18 / var(--tw-bg-opacity, 1))}.bg-surface-container-lowest\/80{background-color:rgb(11 14 18 / 0.8)}.bg-surface-container\/90{background-color:rgb(29 32 36 / 0.9)}.bg-\[radial-gradient\(\#4cd6fb_1px\2c transparent_1px\)\]{background-image:radial-gradient(#4cd6fb 1px,transparent 1px)}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.bg-gradient-to-t{background-image:linear-gradient(to top, var(--tw-gradient-stops))}.from-black\/80{--tw-gradient-from:rgb(0 0 0 / 0.8) var(--tw-gradient-from-position);--tw-gradient-to:rgb(0 0 0 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-primary\/5{--tw-gradient-from:rgb(76 214 251 / 0.05) var(--tw-gradient-from-position);--tw-gradient-to:rgb(76 214 251 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.via-black\/30{--tw-gradient-to:rgb(0 0 0 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), rgb(0 0 0 / 0.3) var(--tw-gradient-via-position), var(--tw-gradient-to)}.via-transparent{--tw-gradient-to:rgb(0 0 0 / 0)  var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), transparent var(--tw-gradient-via-position), var(--tw-gradient-to)}.to-black\/60{--tw-gradient-to:rgb(0 0 0 / 0.6) var(--tw-gradient-to-position)}.to-secondary\/5{--tw-gradient-to:rgb(70 238 224 / 0.05) var(--tw-gradient-to-position)}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.p-margin{padding:1.5rem}.p-space-lg{padding:1.5rem}.p-space-md{padding:1rem}.p-space-sm{padding:0.5rem}.px-1{padding-left:0.25rem;padding-right:0.25rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-margin{padding-left:1.5rem;padding-right:1.5rem}.px-space-lg{padding-left:1.5rem;padding-right:1.5rem}.px-space-md{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-space-sm{padding-top:0.5rem;padding-bottom:0.5rem}.pb-1{padding-bottom:0.25rem}.pl-1{padding-left:0.25rem}.pr-1{padding-right:0.25rem}.pr-3{padding-right:0.75rem}.pt-2{padding-top:0.5rem}.pt-3{padding-top:0.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.font-body-md{font-family:Inter}.font-body-sm{font-family:Inter}.font-diagnostic-code{font-family:JetBrains Mono}.font-display-telematics{font-family:Inter}.font-headline-md{font-family:Inter}.font-headline-sm{font-family:Inter}.font-label-caps{font-family:Inter}.font-title-cockpit{font-family:Inter}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[16px\]{font-size:16px}.text-\[18px\]{font-size:18px}.text-\[20px\]{font-size:20px}.text-\[22px\]{font-size:22px}.text-\[24px\]{font-size:24px}.text-\[28px\]{font-size:28px}.text-\[40px\]{font-size:40px}.text-base{font-size:1rem;line-height:1.5rem}.text-body-md{font-size:16px;line-height:24px;font-weight:400}.text-body-sm{font-size:15px;line-height:20px;font-weight:500}.text-diagnostic-code{font-size:15px;line-height:20px;font-weight:500}.text-headline-lg{font-size:36px;line-height:44px;letter-spacing:-0.01em;font-weight:600}.text-headline-md{font-size:28px;line-height:36px;font-weight:600}.text-headline-sm{font-size:22px;line-height:28px;font-weight:600}.text-label-caps{font-size:13px;line-height:16px;letter-spacing:0.06em;font-weight:700}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-title-cockpit{font-size:18px;line-height:24px;font-weight:600}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-none{line-height:1}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.text-emerald-300{--tw-text-opacity:1;color:rgb(110 231 183 / var(--tw-text-opacity, 1))}.text-emerald-300\/80{color:rgb(110 231 183 / 0.8)}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-emerald-400\/80{color:rgb(52 211 153 / 0.8)}.text-on-primary{--tw-text-opacity:1;color:rgb(0 54 66 / var(--tw-text-opacity, 1))}.text-on-surface{--tw-text-opacity:1;color:rgb(225 226 232 / var(--tw-text-opacity, 1))}.text-on-surface-variant{--tw-text-opacity:1;color:rgb(188 201 206 / var(--tw-text-opacity, 1))}.text-outline{--tw-text-opacity:1;color:rgb(134 147 152 / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(76 214 251 / var(--tw-text-opacity, 1))}.text-primary\/40{color:rgb(76 214 251 / 0.4)}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113 / var(--tw-text-opacity, 1))}.text-secondary{--tw-text-opacity:1;color:rgb(70 238 224 / var(--tw-text-opacity, 1))}.opacity-15{opacity:0.15}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.drop-shadow-\[0_10px_20px_rgba\(0\2c 180\2c 216\2c 0\.15\)\]{--tw-drop-shadow:drop-shadow(0 10px 20px rgba(0,180,216,0.15));filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.\[background-size\:16px_16px\]{background-size:16px 16px}.hover\:border-primary\/40:hover{border-color:rgb(76 214 251 / 0.4)}.hover\:bg-red-600\/30:hover{background-color:rgb(220 38 38 / 0.3)}.hover\:bg-surface-bright:hover{--tw-bg-opacity:1;background-color:rgb(54 57 62 / var(--tw-bg-opacity, 1))}.hover\:bg-surface-container:hover{--tw-bg-opacity:1;background-color:rgb(29 32 36 / var(--tw-bg-opacity, 1))}.hover\:bg-surface-container-high:hover{--tw-bg-opacity:1;background-color:rgb(39 42 47 / var(--tw-bg-opacity, 1))}.hover\:text-on-surface:hover{--tw-text-opacity:1;color:rgb(225 226 232 / var(--tw-text-opacity, 1))}.hover\:underline:hover{-webkit-text-decoration-line:underline;text-decoration-line:underline}.active\:scale-95:active{--tw-scale-x:.95;--tw-scale-y:.95;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}</style><style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style><style data-stitch-injected="">*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"]),*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"])::before,*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"])::after{transition:none!important;animation:none!important}</style><style data-stitch-injected="">*:focus,*:focus-visible{outline:none!important;box-shadow:none!important}::selection{background-color:rgba(96, 86, 240, 0.3)!important;color:inherit!important}::-moz-selection{background-color:rgba(96, 86, 240, 0.3)!important;color:inherit!important}*{user-select:none!important;-webkit-user-select:none!important}.cursor-text,[contenteditable="true"]{cursor:text}[contenteditable="true"]:focus,input:focus,textarea:focus{user-select:text!important;-webkit-user-select:text!important;cursor:text!important}img{-webkit-user-drag:none!important;user-drag:none!important}@keyframes stitch-scan-flash{0%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}60%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}100%{outline:3px solid rgba(96, 86, 240, 0);outline-offset:4px}}@keyframes stitch-scan-flash-img{0%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}60%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}100%{outline:3px solid rgba(96, 86, 240, 0);outline-offset:4px}}.stitch-scan-entry{animation:stitch-scan-flash 1.5s ease-out forwards}.stitch-scan-entry-img{animation:stitch-scan-flash-img 1.5s ease-out forwards}</style>  <link href="fonts.css" rel="stylesheet">
+</head>
+<body class="bg-background text-on-surface h-[1024px] w-screen overflow-hidden flex flex-col font-body-md text-body-md" data-stitch-vh="h-[1024px]===h-screen">
+<!-- TOP STATUS BAR (Cockpit Telematics TopNavBar) -->
+<header class="fixed top-0 left-0 right-0 h-14 z-50 flex items-center justify-between px-margin bg-surface-container-lowest border-b border-outline-variant select-none">
+<!-- Left Cluster: Gear + Time + Temp + Vehicle Info -->
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-space-sm">
+<span class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 flex items-center justify-center font-display-telematics text-title-cockpit font-bold">
+          P
+        </span>
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Chery Tiggo 8 MapControl</span>
+</div>
+<div class="h-5 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-space-md text-on-surface-variant font-diagnostic-code text-diagnostic-code">
+<span class="text-on-surface font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">&#xE8B5;</span>
+          14:32
+        </span>
+<span class="">18°C Dış</span>
+<span class="text-secondary font-semibold">516 km (%100)</span>
+<span class="flex items-center gap-1 text-emerald-400">
+<span class="material-symbols-outlined text-[16px]">&#xEBC8;</span>
+          TPMS OK (2,4 bar)
+        </span>
+</div>
+</div>
+<!-- Right Cluster: Network, Cloud, User, Recording indicator -->
+<div class="flex items-center gap-space-md font-diagnostic-code text-diagnostic-code">
+<!-- Recording Status Indicator Pill -->
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-error-container/40 border border-red-500/40 text-red-400 text-label-caps font-label-caps animate-pulse">
+<span class="w-2 h-2 rounded-full bg-red-500"></span>
+<span class="">● KAYIT DEVAM EDİYOR</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant px-2">
+<span class="material-symbols-outlined text-[20px]" title="4G LTE">&#xE1C8;</span>
+<span class="font-label-caps text-label-caps">4G LTE</span>
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: 'FILL' 1;" title="Bulut Aktif">&#xE2BF;</span>
+</div>
+<div class="h-5 w-[1px] bg-outline-variant"></div>
+<!-- Driver Profile Pill -->
+<div class="flex items-center gap-2 pl-1 pr-3 py-1 rounded-full bg-surface-container hover:bg-surface-container-high transition-colors">
+<div class="w-7 h-7 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center text-primary font-bold text-xs">
+          AY
+        </div>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Ahmet Y.</span>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(1024px-3.5rem)] mt-14 overflow-hidden" data-stitch-vh="h-[calc(1024px-3.5rem)]===h-[calc(100vh-3.5rem)]">
+<!-- LEFT NAVIGATION RAIL (SideNavBar) -->
+<aside class="w-60 bg-surface-container-low border-r border-outline-variant z-40 flex flex-col justify-between p-space-sm select-none shrink-0">
+<div class="flex flex-col gap-1 overflow-y-auto pr-1">
+<!-- Brand Header inside Rail -->
+<div class="px-space-md py-space-sm mb-2 border-b border-outline-variant/60 flex items-center justify-between">
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-primary">MapControl</div>
+<div class="text-on-surface-variant font-label-caps text-label-caps">Tiggo 8 Pro Max</div>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">&#xE531;</span>
+</div>
+<!-- Section: Daily -->
+<div class="px-space-md pt-2 pb-1 text-[11px] font-bold text-outline uppercase tracking-wider font-label-caps">Günlük</div>
+<a class="flex items-center gap-space-md bg-surface-container-high text-primary border-l-4 border-primary px-space-md py-3 rounded-r-lg font-title-cockpit text-title-cockpit transition-all min-h-[52px]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">&#xE88A;</span>
+<span class="text-sm font-semibold">Ana Sayfa</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE531;</span>
+<span class="text-sm font-medium">Araç</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE04B;</span>
+<span class="text-sm font-medium">Kamera 360</span>
+</a>
+<!-- Section: Konfor -->
+<div class="px-space-md pt-3 pb-1 text-[11px] font-bold text-outline uppercase tracking-wider font-label-caps">Konfor</div>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE636;</span>
+<span class="text-sm font-medium">Konfor</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE7FD;</span>
+<span class="text-sm font-medium">Sürücü</span>
+</a>
+<!-- Section: Araçlar -->
+<div class="px-space-md pt-3 pb-1 text-[11px] font-bold text-outline uppercase tracking-wider font-label-caps">Araçlar</div>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE63E;</span>
+<span class="text-sm font-medium">Bağlantı</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE2BD;</span>
+<span class="text-sm font-medium">Bulut</span>
+</a>
+<!-- Section: Sistem -->
+<div class="px-space-md pt-3 pb-1 text-[11px] font-bold text-outline uppercase tracking-wider font-label-caps">Sistem</div>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE869;</span>
+<span class="text-sm font-medium">Teşhis</span>
+</a>
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg font-title-cockpit text-title-cockpit transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined">&#xE8B8;</span>
+<span class="text-sm font-medium">Ayarlar</span>
+</a>
+</div>
+<!-- Footer Rail Actions -->
+<div class="pt-2 border-t border-outline-variant flex flex-col gap-2">
+<button class="w-full h-12 bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/40 rounded-xl font-label-caps text-label-caps flex items-center justify-center gap-2 transition-colors active:scale-98">
+<span class="material-symbols-outlined text-[20px]">e911_emergency</span>
+<span class="">Acil Durum SOS</span>
+</button>
+<button class="w-full h-11 text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md rounded-xl font-body-sm text-body-sm flex items-center justify-between transition-colors">
+<span class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">&#xE8AC;</span>
+<span class="">Çıkış</span>
+</span>
+<span class="text-[11px] text-outline font-diagnostic-code">v2.4.1</span>
+</button>
+</div>
+</aside>
+<!-- MAIN VIEWPORT CONTENT (12-Column Automotive Cockpit Layout) -->
+<main class="flex-1 overflow-y-auto p-margin bg-background">
+<div class="max-w-[1520px] mx-auto space-y-space-md">
+<!-- Top Greeting Bar + Live Safe Status -->
+<div class="flex items-center justify-between bg-surface-container-low border border-[#22272e] rounded-2xl px-space-lg py-3">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">&#xE766;</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface tracking-tight">İyi günler, Ahmet Y.</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="">Chery Tiggo 8 Pro Max</span>
+<span class="">•</span>
+<span class="text-primary font-medium">Şehir İçi Modu</span>
+<span class="">•</span>
+<span class="text-emerald-400 font-medium">Akıllı Güç Tasarrufu Aktif</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">&#xEA3F;</span>
+<div>
+<div class="font-label-caps text-[11px] tracking-wider uppercase text-emerald-400/80">Sürücü Puanı</div>
+<div class="font-headline-sm text-base font-bold">Efsane Şoför (100 Puan)</div>
+</div>
+</div>
+<div class="h-10 w-[1px] bg-outline-variant"></div>
+<div class="text-right">
+<div class="font-label-caps text-[11px] text-on-surface-variant">SİSTEM ZAMANI</div>
+<div class="font-diagnostic-code text-diagnostic-code text-on-surface font-semibold">14:32:08 TRT</div>
+</div>
+</div>
+</div>
+<!-- 12-Column Automotive Grid: Left 2/3 (8 cols) and Right 1/3 (4 cols) -->
+<div class="grid grid-cols-12 gap-space-md">
+<!-- LEFT 2/3 HERO & LIVE METRICS (Cols 1-8) -->
+<div class="col-span-8 flex flex-col gap-space-md">
+<!-- Hero Vehicle Wireframe Card -->
+<div class="relative bg-surface-container-low border border-[#22272e] rounded-2xl p-space-lg overflow-hidden">
+<!-- Background Ambient Gradient Glow -->
+<div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-secondary/5 pointer-events-none"></div>
+<!-- Vehicle Header Info -->
+<div class="flex items-center justify-between mb-4 relative z-10">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded-md bg-primary-container/20 text-primary border border-primary/30 font-label-caps text-label-caps font-bold">
+                    360° AKTİF İZLEME
+                  </span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">
+                    Telematik Veriyolu CAN-FD v2.2 Aktif
+                  </span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+<span class="font-label-caps text-label-caps text-emerald-400 font-semibold">SİSTEMLER HAZIR</span>
+</div>
+</div>
+<!-- Center Vehicle Silhouette & Tactical Indicators -->
+<div class="relative w-full h-72 bg-surface-container-lowest/80 border border-outline-variant/40 rounded-xl flex flex-col items-center justify-between p-4 overflow-hidden"><div class="absolute inset-0 opacity-15 bg-[radial-gradient(#4cd6fb_1px,transparent_1px)] [background-size:16px_16px]"></div><div class="absolute w-72 h-72 rounded-full border border-primary/20 pointer-events-none top-1/2 left-1/2 -translate-y-1/2"></div><div class="w-full flex items-center justify-between relative z-10"><div class="flex items-center gap-2 bg-surface-container-high/90 border border-emerald-400/50 px-3 py-1 rounded-full text-emerald-300 font-diagnostic-code text-xs"><span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="">Ön Radar: Normal</span></div><div class="flex items-center gap-2 bg-surface-container-high/90 border border-outline-variant px-3 py-1 rounded-full text-on-surface-variant font-diagnostic-code text-xs"><span class="material-symbols-outlined text-[16px] text-emerald-400">&#xE04B;</span><span class="">Geri Görüş &amp; Kör Nokta: Aktif</span></div></div><div class="w-full grid grid-cols-12 items-center gap-2 relative z-10 my-auto"><div class="col-span-3 flex flex-col gap-2"><div class="flex items-center gap-2 bg-surface-container/90 border border-outline-variant px-2.5 py-1.5 rounded-lg text-on-surface text-xs font-body-sm shadow-lg"><span class="material-symbols-outlined text-primary text-[18px]">&#xE897;</span><span class="font-semibold truncate">Kapılar Kilitli</span></div><div class="flex items-center gap-2 bg-surface-container/90 border border-outline-variant px-2.5 py-1.5 rounded-lg text-on-surface text-xs font-body-sm shadow-lg"><span class="material-symbols-outlined text-primary text-[18px]">&#xE430;</span><span class="truncate">Farlar Otomatik</span></div></div><div class="col-span-6 flex flex-col items-center justify-center"><svg class="w-full max-w-[280px] h-auto drop-shadow-[0_10px_20px_rgba(0,180,216,0.15)]" fill="none" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg"><rect fill="#272a2f" height="14" rx="4" stroke="#4cd6fb" stroke-width="1.5" width="36" x="52" y="10"></rect><rect fill="#272a2f" height="14" rx="4" stroke="#4cd6fb" stroke-width="1.5" width="36" x="232" y="10"></rect><rect fill="#272a2f" height="14" rx="4" stroke="#4cd6fb" stroke-width="1.5" width="36" x="52" y="106"></rect><rect fill="#272a2f" height="14" rx="4" stroke="#4cd6fb" stroke-width="1.5" width="36" x="232" y="106"></rect><path d="M26 65 C26 40 45 28 80 26 L230 26 C270 28 294 42 294 65 C294 88 270 102 230 104 L80 104 C45 102 26 90 26 65 Z" fill="#191c20" stroke="#869398" stroke-width="2"></path><path d="M90 35 L125 40 L125 90 L90 95 Z" fill="#272a2f" stroke="#4cd6fb" stroke-width="1.2"></path><rect fill="#1d2024" height="50" rx="4" stroke="#3d494d" stroke-width="1" width="70" x="135" y="40"></rect><path d="M215 40 L245 36 L245 94 L215 90 Z" fill="#272a2f" stroke="#4cd6fb" stroke-width="1.2"></path><line opacity="0.6" stroke="#4cd6fb" stroke-dasharray="4 4" stroke-width="1" x1="40" x2="280" y1="65" y2="65"></line><path d="M290 40 L315 30 M290 90 L315 100" opacity="0.8" stroke="#46eee0" stroke-width="2"></path><circle cx="282" cy="65" fill="#4cd6fb" r="4"></circle></svg></div><div class="col-span-3 flex flex-col gap-2 text-right"><div class="flex items-center justify-end gap-2 bg-surface-container/90 border border-outline-variant px-2.5 py-1.5 rounded-lg text-on-surface text-xs font-body-sm shadow-lg"><span class="truncate">Lastikler Dengeli</span><span class="material-symbols-outlined text-emerald-400 text-[18px]">&#xEF76;</span></div><div class="flex items-center justify-end gap-2 bg-surface-container/90 border border-outline-variant px-2.5 py-1.5 rounded-lg text-on-surface text-xs font-body-sm shadow-lg"><span class="truncate">Bagaj Kapalı</span><span class="material-symbols-outlined text-primary text-[18px]">&#xF1B5;</span></div></div></div><div class="relative z-10 font-diagnostic-code text-xs text-on-surface-variant flex items-center justify-center gap-2 bg-surface-container-high/80 border border-outline-variant/60 px-3 py-1 rounded-full"><span class="text-primary font-bold tracking-wider">CHERY TIGGO 8 PRO MAX</span><span class="">•</span><span class="text-emerald-400">AWD ŞASİ KALİBRASYONU TAM</span></div></div>
+<!-- Bottom vehicle control bar -->
+<div class="mt-4 pt-3 border-t border-outline-variant flex items-center justify-between text-xs text-on-surface-variant font-body-sm">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span class="">Sürüş Modu: <strong class="text-on-surface">Eco / Konfor</strong></span>
+</span>
+<span class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="">Süspansiyon: <strong class="text-on-surface">Standart Yükseklik</strong></span>
+</span>
+</div>
+<div class="text-primary font-semibold hover:underline cursor-pointer flex items-center gap-1">
+<span class="">3B Model Görünümünü Genişlet</span>
+<span class="material-symbols-outlined text-[16px]">&#xF1CE;</span>
+</div>
+</div>
+</div>
+<!-- Live Status Grid below vehicle: 4 prominent glanceable metrics -->
+<div class="grid grid-cols-4 gap-space-md"><div class="bg-surface-container-low border border-[#22272e] rounded-2xl p-space-md flex flex-col justify-between h-[152px] hover:border-primary/40 transition-colors"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-caps text-label-caps uppercase tracking-wider text-outline">Anlık Hız</span><span class="material-symbols-outlined text-primary text-[22px]">&#xE9E4;</span></div><div class="my-auto"><div class="font-display-telematics text-headline-lg text-on-surface font-bold leading-none tracking-tight">0 <span class="text-base font-normal text-on-surface-variant">km/s</span></div><div class="font-body-sm text-xs text-on-surface-variant mt-1.5">Aktif Sürüş Hızı</div></div><div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between"><span class="font-diagnostic-code text-xs text-emerald-400 font-semibold">Park Halinde</span><span class="w-2 h-2 rounded-full bg-emerald-400"></span></div></div><div class="bg-surface-container-low border border-[#22272e] rounded-2xl p-space-md flex flex-col justify-between h-[152px] hover:border-primary/40 transition-colors"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-caps text-label-caps uppercase tracking-wider text-outline">Yakıt &amp; Menzil</span><span class="material-symbols-outlined text-secondary text-[22px]">&#xE546;</span></div><div class="my-auto"><div class="font-display-telematics text-headline-lg text-secondary font-bold leading-none tracking-tight">516 <span class="text-base font-normal text-on-surface-variant">km</span></div><div class="font-body-sm text-xs text-on-surface-variant mt-1.5 flex items-center justify-between"><span class="">Depo: %100 Dolu</span><span class="text-secondary font-semibold">65 L</span></div></div><div class="w-full bg-surface-container-highest rounded-full h-1.5 overflow-hidden"><div class="bg-secondary h-1.5 rounded-full w-full"></div></div></div><div class="bg-surface-container-low border border-[#22272e] rounded-2xl p-space-md flex flex-col justify-between h-[152px] hover:border-primary/40 transition-colors"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-caps text-label-caps uppercase tracking-wider text-outline">Odometre</span><span class="material-symbols-outlined text-primary text-[22px]">&#xE55E;</span></div><div class="my-auto"><div class="font-display-telematics text-headline-lg text-on-surface font-bold leading-none tracking-tight">2.221 <span class="text-base font-normal text-on-surface-variant">km</span></div><div class="font-body-sm text-xs text-on-surface-variant mt-1.5">Toplam Kilometre</div></div><div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between text-xs text-on-surface-variant font-diagnostic-code"><span class="">Trip A: 42 km</span><span class="text-primary font-semibold">Servis: 7.779 km</span></div></div><div class="bg-surface-container-low border border-[#22272e] rounded-2xl p-space-md flex flex-col justify-between h-[152px] hover:border-primary/40 transition-colors"><div class="flex items-center justify-between text-on-surface-variant"><span class="font-label-caps text-label-caps uppercase tracking-wider text-outline">Lastik Basıncı</span><span class="material-symbols-outlined text-emerald-400 text-[22px]">&#xEBC8;</span></div><div class="my-auto"><div class="font-display-telematics text-headline-lg text-emerald-400 font-bold leading-none tracking-tight">2,4 <span class="text-base font-normal text-on-surface-variant">bar</span></div><div class="font-body-sm text-xs text-emerald-300/80 mt-1.5">4 Lastik Dengeli</div></div><div class="pt-2 border-t border-outline-variant/60 flex items-center justify-between text-xs font-diagnostic-code text-on-surface-variant"><span class="">Ö: 2.4 | 2.4</span><span class="">A: 2.4 | 2.4</span></div></div></div>
+<!-- Calm Warning / Info Banner -->
+<div class="bg-surface-container-low border border-outline-variant rounded-2xl px-space-lg py-3 flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-8 h-8 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">&#xE62A;</span>
+</div>
+<div>
+<div class="font-body-sm text-body-sm font-semibold text-on-surface">
+                    Sistem Durumu: Tüm sistemler hazır ve güncel (OTA v2.4.1)
+                  </div>
+<div class="text-xs text-on-surface-variant">
+                    Chery Lion 5.0 Akıllı Kokpit • En son güvenlik yaması 2 gün önce yüklendi.
+                  </div>
+</div>
+</div>
+<button class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high border border-outline-variant text-on-surface text-xs font-semibold transition-colors">
+                Detayları İncele
+              </button>
+</div>
+</div>
+<!-- RIGHT 1/3 QUICK ACTIONS & ACTIVE CARDS (Cols 9-12) -->
+<div class="col-span-4 flex flex-col gap-space-md">
+<!-- Active State Card: 360° Kayıt Aktif -->
+<div class="bg-surface-container-low border border-[#22272e] rounded-2xl p-space-md flex flex-col justify-between">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
+<span class="font-title-cockpit text-title-cockpit font-bold text-on-surface">360° Kayıt Aktif</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 font-label-caps text-[11px] font-semibold">
+                  CANLI DVR
+                </span>
+</div>
+<!-- Camera Preview Placeholder Box -->
+<div class="relative w-full h-36 rounded-xl bg-surface-container-lowest border border-outline-variant overflow-hidden group mb-3">
+<!-- Fallback automotive camera graphic representation -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/60 flex flex-col justify-between p-3">
+<div class="flex items-center justify-between text-[11px] font-diagnostic-code text-on-surface-variant">
+<span class="flex items-center gap-1 text-red-400 font-bold">
+<span class="w-2 h-2 rounded-full bg-red-500"></span> REC [CAM-01 Ön]
+                    </span>
+<span class="">1080P 60FPS</span>
+</div>
+<!-- Camera grid guideline crosshair -->
+<div class="self-center flex items-center justify-center text-primary/40 pointer-events-none">
+<span class="material-symbols-outlined text-[40px]">&#xE3DC;</span>
+</div>
+<div class="flex items-center justify-between text-[11px] font-diagnostic-code text-on-surface-variant">
+<span class="">4 Kanal Döngüsel Kayıt</span>
+<span class="text-emerald-400 font-medium">SD Kart: 118 GB Boş</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex-1 h-14 bg-surface-container-high hover:bg-surface-bright text-on-surface border border-outline-variant rounded-xl font-body-sm text-body-sm font-semibold flex items-center justify-center gap-2 transition-all active:scale-98">
+<span class="material-symbols-outlined text-primary text-[20px]">&#xE04B;</span>
+<span class="">Kamera Görüntüle</span>
+</button>
+<button class="h-14 w-14 bg-surface-container-high hover:bg-surface-bright text-red-400 border border-outline-variant rounded-xl flex items-center justify-center transition-all active:scale-98" title="Acil Durum Klipi Kilitle">
+<span class="material-symbols-outlined text-[24px]">&#xE866;</span>
+</button>
+</div>
+</div>
+<!-- Son Sürüş Özeti Card -->
+<div class="bg-surface-container-low border border-[#22272e] rounded-2xl p-space-md">
+<div class="flex items-center justify-between mb-3">
+<div>
+<div class="font-title-cockpit text-title-cockpit font-bold text-on-surface">Son Sürüş Özeti</div>
+<div class="font-diagnostic-code text-xs text-on-surface-variant">Bugün, 12:45 • Kadıköy - Levent</div>
+</div>
+<div class="w-12 h-12 rounded-full border-2 border-emerald-400 flex items-center justify-center font-bold text-emerald-400 font-headline-sm text-sm bg-emerald-500/10">
+                  100
+                </div>
+</div>
+<div class="grid grid-cols-3 gap-2 bg-surface-container-lowest/80 border border-outline-variant/60 rounded-xl p-3 mb-2 text-center">
+<div>
+<div class="font-label-caps text-[11px] text-on-surface-variant">Mesafe</div>
+<div class="font-title-cockpit text-base font-bold text-on-surface">42 km</div>
+</div>
+<div class="border-x border-outline-variant/60">
+<div class="font-label-caps text-[11px] text-on-surface-variant">Puan</div>
+<div class="font-title-cockpit text-base font-bold text-emerald-400">100 / 100</div>
+</div>
+<div>
+<div class="font-label-caps text-[11px] text-on-surface-variant">Tüketim</div>
+<div class="font-title-cockpit text-base font-bold text-secondary">6.8 lt</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant px-1 font-body-sm">
+<span class="flex items-center gap-1 text-emerald-400">
+<span class="material-symbols-outlined text-[16px]">&#xEA35;</span>
+<span class="">Çevre Dostu Hızlanma: Mükemmel</span>
+</span>
+<span class="font-diagnostic-code">34 dk</span>
+</div>
+</div>
+<!-- Hızlı Erişim (Quick Actions Touch Controls - Min 64px) -->
+<div class="bg-surface-container-low border border-[#22272e] rounded-2xl p-space-md flex-1 flex flex-col justify-between">
+<div class="font-label-caps text-label-caps uppercase tracking-wider text-outline mb-2">
+                Hızlı Erişim Kontrolleri
+              </div>
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Action 1: Kamera 360 -->
+<button class="h-16 bg-surface-container hover:bg-surface-container-high border border-outline-variant rounded-xl p-2.5 flex items-center gap-3 text-left transition-all active:scale-98">
+<div class="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">&#xE9FE;</span>
+</div>
+<div class="overflow-hidden">
+<div class="font-title-cockpit text-sm font-semibold text-on-surface truncate">Kamera 360</div>
+<div class="text-[11px] text-on-surface-variant truncate">Kuşbakışı Park</div>
+</div>
+</button>
+<!-- Action 2: Klima 22°C Auto -->
+<button class="h-16 bg-surface-container hover:bg-surface-container-high border border-outline-variant rounded-xl p-2.5 flex items-center gap-3 text-left transition-all active:scale-98">
+<div class="w-10 h-10 rounded-lg bg-secondary/20 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">&#xEB3B;</span>
+</div>
+<div class="overflow-hidden">
+<div class="font-title-cockpit text-sm font-semibold text-on-surface truncate">Klima 22°C</div>
+<div class="text-[11px] text-emerald-400 truncate">İki Bölge Auto</div>
+</div>
+</button>
+<!-- Action 3: Sürücü Koltuğu (Hafıza 1) -->
+<button class="h-16 bg-surface-container hover:bg-surface-container-high border border-outline-variant rounded-xl p-2.5 flex items-center gap-3 text-left transition-all active:scale-98">
+<div class="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">&#xE637;</span>
+</div>
+<div class="overflow-hidden">
+<div class="font-title-cockpit text-sm font-semibold text-on-surface truncate">Sürücü Koltuğu</div>
+<div class="text-[11px] text-on-surface-variant truncate">Hafıza 1 (Ahmet)</div>
+</div>
+</button>
+<!-- Action 4: Bulut Senkronize -->
+<button class="h-16 bg-surface-container hover:bg-surface-container-high border border-outline-variant rounded-xl p-2.5 flex items-center gap-3 text-left transition-all active:scale-98">
+<div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">&#xEB5A;</span>
+</div>
+<div class="overflow-hidden">
+<div class="font-title-cockpit text-sm font-semibold text-on-surface truncate">Bulut Senkron</div>
+<div class="text-[11px] text-on-surface-variant truncate">Tam Güncel</div>
+</div>
+</button>
+</div>
+<!-- Quick Master Climate Bar Inside Actions -->
+<div class="mt-3 pt-3 border-t border-outline-variant flex items-center justify-between"><div class="flex items-center gap-2"><button class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant text-on-surface flex items-center justify-center hover:bg-surface-bright active:scale-95 transition-all"><span class="material-symbols-outlined text-[20px]">&#xE15B;</span></button><div class="text-center px-3"><div class="font-headline-sm text-lg font-bold text-on-surface leading-none">22.0°C</div><div class="text-[10px] text-outline font-label-caps uppercase mt-0.5">Kokpit Isı</div></div><button class="w-10 h-10 rounded-lg bg-surface-container-high border border-outline-variant text-on-surface flex items-center justify-center hover:bg-surface-bright active:scale-95 transition-all"><span class="material-symbols-outlined text-[20px]">&#xE145;</span></button></div><button class="px-4 h-10 rounded-lg bg-primary text-on-primary font-bold text-xs flex items-center gap-1.5 active:scale-95 transition-all shadow-md"><span class="material-symbols-outlined text-[18px]">&#xE8AC;</span><span class="">Klima Açık</span></button></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+
+
+<div id="stitch-agent-cursor" data-stitch-injected="" style="left: -40px; top: -40px; display: none;">
+  <svg class="cursor-pointer" width="20" height="20" viewBox="0 0 34 34" fill="none">
+    <path d="M15.0624 32.3549L5.16251 5.48544L32.0324 15.3848L19.3046 19.6276L15.0624 32.3549Z" fill="#7168f6"></path>
+    <path d="M4.80877 5.13207C4.94657 4.99427 5.15206 4.94886 5.33496 5.01606L32.205 14.9156C32.4041 14.9889 32.5354 15.1799 32.5323 15.392C32.529 15.6043 32.392 15.7924 32.1905 15.8595L19.6994 20.0227L15.5369 32.5131C15.4697 32.7145 15.2824 32.8509 15.0701 32.8542C14.8578 32.8575 14.6664 32.7268 14.5929 32.5276L4.69276 5.65826L4.67343 5.5892C4.63863 5.42535 4.68814 5.25283 4.80877 5.13207Z" stroke="rgba(255,255,255,0.15)" stroke-linejoin="round"></path>
+  </svg>
+  <svg class="cursor-text" width="20" height="28" viewBox="0 0 20 28" fill="none">
+    <path d="M6 2h8M6 26h8M10 2v24" stroke="#7168f6" stroke-width="2.5" stroke-linecap="round"></path>
+  </svg>
+  <svg class="cursor-paint" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M18.5 1.5c.8-.8 2.1-.8 2.8 0 .8.8.8 2.1 0 2.8L11 14.5l-3.5 1 1-3.5L18.5 1.5z" fill="#7168f6" stroke="#4f44e1" stroke-width="1" stroke-linejoin="round"></path>
+    <path d="M7 14.5c-2 2-3.5 4-3.5 5.5 0 1.5 1 2.5 2.5 2.5 1.5 0 3.5-1.5 5.5-3.5" stroke="#7168f6" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M4 20c-.5.5-1.2 1-2 1.2" stroke="#6056f0" stroke-width="1" stroke-linecap="round"></path>
+  </svg>
+  <svg id="stitch-cursor-label" width="28" height="14" viewBox="0 0 28 14" fill="none">
+    <rect width="28" height="14" rx="7" fill="#7168f6"></rect>
+    <circle cx="10.5" cy="7" r="1.8" fill="white"></circle>
+    <circle cx="17.5" cy="7" r="1.8" fill="white"></circle>
+  </svg>
+</div>
+<script>
+(function(){
+  function go(v){ try{ if(window.Android && Android.navigate) Android.navigate(v); }catch(e){} }
+  function native(v){ try{ if(window.Android && Android.openNative) Android.openNative(v); }catch(e){} }
+  var rail={'Ana Sayfa':'home','Araç':'vehicle','Kamera 360':'camera','Konfor':'comfort','Sürücü':'driver','Bağlantı':'connectivity','Bulut':'cloud','Teşhis':'diagnostics','Ayarlar':'settings'};
+  document.addEventListener('click',function(ev){
+    var el=ev.target.closest('a,button');
+    if(!el) return;
+    var s=(el.innerText||'').replace(/\s+/g,' ').trim();
+    for (var k in rail) { if (s.indexOf(k) >= 0) { ev.preventDefault(); var v=rail[k]; if(v==='home'||v==='comfort'||v==='driver'||v==='diagnostics') go(v); else native(v); return; } }
+    if(s.indexOf('Kamera Görüntüle')>=0 || s.indexOf('Kamera 360')>=0){ ev.preventDefault(); native('camera'); return; }
+    if(s.indexOf('Tüm sürüşleri')>=0 || s.indexOf('Sürüş Karnesi')>=0){ ev.preventDefault(); native('driving'); return; }
+    if(s.indexOf('Araç Bilgisi')>=0 || s.indexOf('3B Model')>=0){ ev.preventDefault(); native('vehicle'); return; }
+    if(s.indexOf('Klima')>=0 || s.indexOf('Konfor')>=0){ ev.preventDefault(); go('comfort'); return; }
+    if(s.indexOf('Detayları İncele')>=0){ ev.preventDefault(); go('diagnostics'); return; }
+  },true);
+})();
+</script>
+<script>
+(function(){
+  var gaps={'gap-space-sm':'0.375rem','gap-space-md':'0.75rem','gap-space-lg':'1rem','gap-space-xl':'1.5rem','gap-1':'0.25rem','gap-2':'0.5rem','gap-3':'0.75rem','gap-4':'1rem','gap-6':'1.5rem'};
+  function fix(){
+    document.querySelectorAll('[class]').forEach(function(el){
+      var d=getComputedStyle(el).display;
+      if(d!=='flex') return;
+      var dir=getComputedStyle(el).flexDirection||'row';
+      var g=null;
+      for(var k in gaps){ if(el.classList.contains(k)){g=gaps[k];break;} }
+      if(!g) return;
+      var kids=el.children; var first=true;
+      for(var i=0;i<kids.length;i++){
+        var c=kids[i]; if(!c || c.nodeType!==1) continue;
+        var cs=getComputedStyle(c);
+        if(dir.indexOf('column')===0){ if(!first && cs.marginTop==='0px') c.style.marginTop=g; }
+        else { if(!first && cs.marginLeft==='0px') c.style.marginLeft=g; }
+        first=false;
+      }
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fix); else fix();
+  window.addEventListener('resize',fix);
+  setTimeout(fix,400); setTimeout(fix,1200);
+})();
+</script>
+</body><div data-stitch-injected="" style="position: fixed; inset: 0px; z-index: 2147483647; pointer-events: none; overflow: hidden; display: none;"><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 1; border-radius: 4px;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 2; border-radius: 4px; opacity: 1;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 1; border-radius: 4px;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 2; border-radius: 4px;"></div></div></html>

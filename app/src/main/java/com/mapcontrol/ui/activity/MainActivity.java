@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
     /** Yüzen yansıtma çubuğundan hedef uygulama seçiciyi açmak için {@link Intent} extra anahtarı. */
     public static final String EXTRA_OPEN_PROJECTION_TARGET_PICKER = "com.mapcontrol.extra.OPEN_PROJECTION_TARGET_PICKER";
     public static final String EXTRA_OPEN_LOG_TAB = "com.mapcontrol.extra.OPEN_LOG_TAB";
+    public static final String EXTRA_OPEN_TAB = "com.mapcontrol.extra.OPEN_TAB";
     private static final String EXTRA_OPEN_SETTINGS_AFTER_THEME = "com.mapcontrol.extra.OPEN_SETTINGS_AFTER_THEME";
     /** Araç Launcher Modu "Ana Ekran" karşılama sekmesinin {@code switchTab} indeksi. */
     private static final int TAB_LAUNCHER = 10;
@@ -1027,6 +1028,11 @@ public class MainActivity extends AppCompatActivity {
             getIntent().removeExtra(EXTRA_OPEN_SETTINGS_AFTER_THEME);
             switchTab(7);
         }
+        int requestedTab = getIntent().getIntExtra(EXTRA_OPEN_TAB, -1);
+        if (requestedTab >= 0) {
+            getIntent().removeExtra(EXTRA_OPEN_TAB);
+            switchTab(requestedTab);
+        }
         
         // Uygulamaları yükle
         if (appsTabBuilder != null) appsTabBuilder.loadAppsFromServer();
@@ -1812,6 +1818,13 @@ public class MainActivity extends AppCompatActivity {
             intent.removeExtra(EXTRA_OPEN_LOG_TAB);
             if (tabContentArea != null) {
                 switchTab(4);
+            }
+        }
+        if (intent != null && intent.hasExtra(EXTRA_OPEN_TAB)) {
+            int requestedTab = intent.getIntExtra(EXTRA_OPEN_TAB, -1);
+            intent.removeExtra(EXTRA_OPEN_TAB);
+            if (requestedTab >= 0 && tabContentArea != null) {
+                switchTab(requestedTab);
             }
         }
         // Cihaz Ana Ekran (Home) tuşuna basılıp uygulama zaten açıkken (singleTop) tekrar

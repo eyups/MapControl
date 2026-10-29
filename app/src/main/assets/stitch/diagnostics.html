@@ -1,0 +1,920 @@
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1024, initial-scale=1.0">
+<title>Chery Tiggo 8 Pro Max - Teşhis ve CAN-FD / ADAS Telematik</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+
+
+
+<!-- Material Symbols Outlined -->
+
+
+<!-- Tailwind CSS v3 -->
+
+
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Custom scrollbar for raw terminal log */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0e12;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3d494d;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4cd6fb;
+    }
+  </style>
+<style data-stitch-injected="">
+  /* Hide scrollbars on ALL elements (Webkit) */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbars on ALL elements (Firefox) */
+  * {
+    scrollbar-width: none;
+  }
+
+  /* Suppress horizontal overflow and legacy IE/Edge */
+  html, body {
+    overflow-x: hidden !important;
+    -ms-overflow-style: none;
+    min-height: auto !important;
+  }
+
+  /* Global text selection highlight color override inside all iframe modes */
+  ::selection {
+    background-color: rgba(96, 86, 240, 0.3) !important;
+    color: inherit !important;
+  }
+  ::-moz-selection {
+    background-color: rgba(96, 86, 240, 0.3) !important;
+    color: inherit !important;
+  }
+
+  /* Suppress browser default focus outlines and box-shadow glows globally */
+  *:focus, *:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+</style><style data-stitch-injected="">
+  /* ─── Animation styles ─── */
+  .stitch-anim-highlight {
+    outline: 2px solid #6056f080;
+    outline-offset: 2px;
+    border-radius: 4px;
+    transition: outline-color 0.4s ease;
+  }
+  .stitch-anim-highlight-fade {
+    outline-color: transparent;
+  }
+  @keyframes stitch-anim-fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes stitch-anim-pure-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .stitch-anim-fade-in {
+    animation: stitch-anim-fade-in 0.3s ease forwards;
+  }
+
+  /* ─── Drawing rectangle overlay ─── */
+  .stitch-anim-draw-overlay {
+    position: fixed;
+    border: 2px solid #6056f099;
+    border-radius: 6px;
+    pointer-events: none;
+    z-index: 998;
+    clip-path: polygon(
+      0% 0%, 0% 0%,
+      0% 0%, 0% 0%,
+      0% 0%, 0% 0%
+    );
+    animation: stitch-anim-draw-rect 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes stitch-anim-draw-rect {
+    0%   { clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%); }
+    30%  { clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 100% 0%, 0% 0%, 0% 0%); }
+    55%  { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 100% 100%, 0% 0%, 0% 0%); }
+    80%  { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 100%, 0% 0%); }
+    100% { clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 0% 0%); }
+  }
+  .stitch-anim-draw-overlay.fading {
+    animation: stitch-anim-border-fade 0.5s ease forwards;
+  }
+  @keyframes stitch-anim-border-fade {
+    to { opacity: 0; }
+  }
+  /* ─── Image reveal crossfade ─── */
+  .stitch-anim-img-dimming {
+    transition: opacity 0.2s ease !important;
+    opacity: 0.15 !important;
+  }
+  .stitch-anim-img-revealing {
+    transition: opacity 0.35s ease !important;
+    opacity: 1 !important;
+  }
+  .stitch-anim-cursor::after {
+    content: '|';
+    font-weight: 100;
+    animation: stitch-anim-blink 0.6s step-end infinite;
+    color: #6056f0B3;
+    margin-left: 1px;
+  }
+  @keyframes stitch-anim-blink {
+    50% { opacity: 0; }
+  }
+
+  /* ─── AI Agent Cursor ─── */
+  #stitch-agent-cursor {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-start;
+    gap: 0px;
+    transition: left 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                top 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.25s ease;
+    opacity: 0;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18));
+  }
+  #stitch-agent-cursor.working {
+    animation: stitch-anim-wobble 0.8s ease-in-out infinite;
+  }
+  #stitch-agent-cursor.drawing {
+    animation: none;
+    transition: left 0.12s linear, top 0.12s linear, opacity 0.25s ease;
+  }
+  @keyframes stitch-anim-wobble {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(1px, -1px) rotate(2deg); }
+    50%  { transform: translate(-1px, 1px) rotate(-1deg); }
+    75%  { transform: translate(1px, 0px) rotate(1deg); }
+  }
+  #stitch-agent-cursor .cursor-pointer {
+    display: block;
+  }
+  #stitch-agent-cursor .cursor-text,
+  #stitch-agent-cursor .cursor-paint {
+    display: none;
+  }
+  #stitch-agent-cursor.text-mode .cursor-pointer,
+  #stitch-agent-cursor.text-mode .cursor-paint {
+    display: none;
+  }
+  #stitch-agent-cursor.text-mode .cursor-text {
+    display: block;
+  }
+  #stitch-agent-cursor.paint-mode .cursor-pointer,
+  #stitch-agent-cursor.paint-mode .cursor-text {
+    display: none;
+  }
+  #stitch-agent-cursor.paint-mode .cursor-paint {
+    display: block;
+  }
+  #stitch-cursor-label {
+    margin-top: 14px;
+    margin-left: -3px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+  }
+
+  /* ─── Active Element Indicator (Multi-Select Outline & Aurora Glow) ─── */
+  @keyframes stitch-aurora-sweep {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  @keyframes stitch-indicator-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.78;
+    }
+  }
+  .stitch-active-indicator {
+    position: absolute;
+    box-sizing: border-box;
+    border-style: solid;
+    border-color: #6056f0;
+    background: transparent;
+    pointer-events: none;
+    z-index: 2;
+  }
+  .stitch-active-indicator.stitch-aurora,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"]) {
+    border: none !important;
+    border-radius: 4px;
+    background: linear-gradient(
+      135deg,
+      rgba(145, 84, 231, 0.10),
+      rgba(96, 86, 240, 0.08),
+      rgba(64, 217, 198, 0.08),
+      rgba(66, 133, 244, 0.10)
+    );
+    box-shadow: 0 2px 12px rgba(96, 86, 240, 0.22);
+    animation: stitch-indicator-pulse 3s ease-in-out infinite;
+    pointer-events: auto;
+    cursor: not-allowed;
+    z-index: 3;
+  }
+  .stitch-active-indicator.stitch-aurora::before,
+  .stitch-active-indicator.stitch-aurora::after,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::before,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::after {
+    content: '';
+    position: absolute;
+    border-radius: inherit;
+    background: linear-gradient(
+      120deg,
+      #9154E7 0%,
+      #6056F0 25%,
+      #40D9C6 50%,
+      #4285F4 75%,
+      #9154E7 100%
+    );
+    background-size: 300% 300%;
+    animation: stitch-aurora-sweep 4s linear infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .stitch-active-indicator.stitch-aurora::before,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::before {
+    inset: 0;
+    padding: 2px;
+  }
+  .stitch-active-indicator.stitch-aurora::after,
+  .stitch-active-indicator:not([data-stitch-indicator="pending"])::after {
+    inset: -3px;
+    padding: 3px;
+    filter: blur(6px);
+    opacity: 0.55;
+  }
+</style><style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}[type='text'],input:where(:not([type])),[type='email'],[type='url'],[type='password'],[type='number'],[type='date'],[type='datetime-local'],[type='month'],[type='search'],[type='tel'],[type='time'],[type='week'],[multiple],textarea,select{-webkit-appearance:none;appearance:none;background-color:#fff;border-color:#6b7280;border-width:1px;border-radius:0px;padding-top:0.5rem;padding-right:0.75rem;padding-bottom:0.5rem;padding-left:0.75rem;font-size:1rem;line-height:1.5rem;--tw-shadow:0 0 #0000;}[type='text']:focus, input:where(:not([type])):focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);border-color:#2563eb}input::placeholder,textarea::placeholder{color:#6b7280;opacity:1}::-webkit-datetime-edit-fields-wrapper{padding:0}::-webkit-date-and-time-value{min-height:1.5em;text-align:inherit}::-webkit-datetime-edit{display:inline-flex}::-webkit-datetime-edit,::-webkit-datetime-edit-year-field,::-webkit-datetime-edit-month-field,::-webkit-datetime-edit-day-field,::-webkit-datetime-edit-hour-field,::-webkit-datetime-edit-minute-field,::-webkit-datetime-edit-second-field,::-webkit-datetime-edit-millisecond-field,::-webkit-datetime-edit-meridiem-field{padding-top:0;padding-bottom:0}select{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");background-position:right 0.5rem center;background-repeat:no-repeat;background-size:1.5em 1.5em;padding-right:2.5rem;print-color-adjust:exact}[multiple],[size]:where(select:not([size="1"])){background-image:initial;background-position:initial;background-repeat:unset;background-size:initial;padding-right:0.75rem;print-color-adjust:unset}[type='checkbox'],[type='radio']{-webkit-appearance:none;appearance:none;padding:0;print-color-adjust:exact;display:inline-block;vertical-align:middle;background-origin:border-box;-webkit-user-select:none;user-select:none;flex-shrink:0;height:1rem;width:1rem;color:#2563eb;background-color:#fff;border-color:#6b7280;border-width:1px;--tw-shadow:0 0 #0000}[type='checkbox']{border-radius:0px}[type='radio']{border-radius:100%}[type='checkbox']:focus,[type='radio']:focus{outline:2px solid transparent;outline-offset:2px;--tw-ring-inset:var(--tw-empty,/*!*/ /*!*/);--tw-ring-offset-width:2px;--tw-ring-offset-color:#fff;--tw-ring-color:#2563eb;--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow)}[type='checkbox']:checked,[type='radio']:checked{border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat}[type='checkbox']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='checkbox']:checked{-webkit-appearance:auto;appearance:auto}}[type='radio']:checked{background-image:url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");}@media (forced-colors: active) {[type='radio']:checked{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:checked:hover,[type='checkbox']:checked:focus,[type='radio']:checked:hover,[type='radio']:checked:focus{border-color:transparent;background-color:currentColor}[type='checkbox']:indeterminate{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 16 16'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8h8'/%3e%3c/svg%3e");border-color:transparent;background-color:currentColor;background-size:100% 100%;background-position:center;background-repeat:no-repeat;}@media (forced-colors: active) {[type='checkbox']:indeterminate{-webkit-appearance:auto;appearance:auto}}[type='checkbox']:indeterminate:hover,[type='checkbox']:indeterminate:focus{border-color:transparent;background-color:currentColor}[type='file']{background:unset;border-color:inherit;border-width:0;border-radius:0;padding:0;font-size:unset;line-height:inherit}[type='file']:focus{outline:1px solid ButtonText;outline:1px auto -webkit-focus-ring-color}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.bottom-0{bottom:0px}.left-0{left:0px}.right-0{right:0px}.top-0{top:0px}.top-14{top:3.5rem}.top-2{top:0.5rem}.z-40{z-index:40}.z-50{z-index:50}.mb-1{margin-bottom:0.25rem}.mb-1\.5{margin-bottom:0.375rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.ml-24{margin-left:6rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-3{margin-top:0.75rem}.mt-4{margin-top:1rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-1\.5{height:0.375rem}.h-14{height:3.5rem}.h-16{height:4rem}.h-2{height:0.5rem}.h-24{height:6rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-full{height:100%}.max-h-48{max-height:12rem}.min-h-\[1024px\]{min-height:1024px}.min-h-\[36px\]{min-height:36px}.min-h-\[48px\]{min-height:48px}.min-h-\[52px\]{min-height:52px}.w-16{width:4rem}.w-2{width:0.5rem}.w-2\.5{width:0.625rem}.w-24{width:6rem}.w-32{width:8rem}.w-48{width:12rem}.w-7{width:1.75rem}.w-8{width:2rem}.w-full{width:100%}.w-px{width:1px}@keyframes bounce{0%, 100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(0.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,0.2,1)}}.animate-bounce{animation:bounce 1s infinite}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.cursor-text{cursor:text}.select-none{-webkit-user-select:none;user-select:none}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-1\.5{gap:0.375rem}.gap-2{gap:0.5rem}.gap-2\.5{gap:0.625rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-space-lg{gap:1.5rem}.gap-space-md{gap:1rem}.space-y-1\.5 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.375rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.375rem * var(--tw-space-y-reverse))}.space-y-2 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.5rem * var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.overflow-y-auto{overflow-y:auto}.overflow-x-hidden{overflow-x:hidden}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-sm{border-radius:0.125rem}.rounded-xl{border-radius:0.75rem}.rounded-r-lg{border-top-right-radius:0.5rem;border-bottom-right-radius:0.5rem}.rounded-t-full{border-top-left-radius:9999px;border-top-right-radius:9999px}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-l-2{border-left-width:2px}.border-l-4{border-left-width:4px}.border-r{border-right-width:1px}.border-r-2{border-right-width:2px}.border-t{border-top-width:1px}.border-t-2{border-top-width:2px}.border-error\/40{border-color:rgb(255 180 171 / 0.4)}.border-error\/50{border-color:rgb(255 180 171 / 0.5)}.border-outline{--tw-border-opacity:1;border-color:rgb(134 147 152 / var(--tw-border-opacity, 1))}.border-outline-variant{--tw-border-opacity:1;border-color:rgb(61 73 77 / var(--tw-border-opacity, 1))}.border-outline-variant\/60{border-color:rgb(61 73 77 / 0.6)}.border-primary{--tw-border-opacity:1;border-color:rgb(76 214 251 / var(--tw-border-opacity, 1))}.border-primary\/30{border-color:rgb(76 214 251 / 0.3)}.border-primary\/40{border-color:rgb(76 214 251 / 0.4)}.border-primary\/50{border-color:rgb(76 214 251 / 0.5)}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68 / var(--tw-border-opacity, 1))}.border-secondary\/30{border-color:rgb(70 238 224 / 0.3)}.border-secondary\/40{border-color:rgb(70 238 224 / 0.4)}.bg-error{--tw-bg-opacity:1;background-color:rgb(255 180 171 / var(--tw-bg-opacity, 1))}.bg-error-container\/30{background-color:rgb(147 0 10 / 0.3)}.bg-error-container\/40{background-color:rgb(147 0 10 / 0.4)}.bg-outline-variant{--tw-bg-opacity:1;background-color:rgb(61 73 77 / var(--tw-bg-opacity, 1))}.bg-primary{--tw-bg-opacity:1;background-color:rgb(76 214 251 / var(--tw-bg-opacity, 1))}.bg-secondary{--tw-bg-opacity:1;background-color:rgb(70 238 224 / var(--tw-bg-opacity, 1))}.bg-secondary-container{--tw-bg-opacity:1;background-color:rgb(0 210 196 / var(--tw-bg-opacity, 1))}.bg-surface-container{--tw-bg-opacity:1;background-color:rgb(29 32 36 / var(--tw-bg-opacity, 1))}.bg-surface-container-high{--tw-bg-opacity:1;background-color:rgb(39 42 47 / var(--tw-bg-opacity, 1))}.bg-surface-container-low{--tw-bg-opacity:1;background-color:rgb(25 28 32 / var(--tw-bg-opacity, 1))}.bg-surface-container-lowest{--tw-bg-opacity:1;background-color:rgb(11 14 18 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-space-md{padding:1rem}.p-space-sm{padding:0.5rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-2\.5{padding-left:0.625rem;padding-right:0.625rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-margin{padding-left:1.5rem;padding-right:1.5rem}.px-space-md{padding-left:1rem;padding-right:1rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-1\.5{padding-top:0.375rem;padding-bottom:0.375rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.py-space-sm{padding-top:0.5rem;padding-bottom:0.5rem}.pb-3{padding-bottom:0.75rem}.pb-6{padding-bottom:1.5rem}.pt-16{padding-top:4rem}.pt-2{padding-top:0.5rem}.pt-3{padding-top:0.75rem}.text-center{text-align:center}.font-body-md{font-family:Inter, sans-serif}.font-body-sm{font-family:Inter, sans-serif}.font-diagnostic-code{font-family:JetBrains Mono, monospace}.font-headline-sm{font-family:Inter, sans-serif}.font-label-caps{font-family:Inter, sans-serif}.font-title-cockpit{font-family:Inter, sans-serif}.text-2xl{font-size:1.5rem;line-height:2rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-base{font-size:1rem;line-height:1.5rem}.text-body-md{font-size:16px;line-height:24px;font-weight:400}.text-body-sm{font-size:15px;line-height:20px;font-weight:500}.text-diagnostic-code{font-size:15px;line-height:20px;font-weight:500}.text-headline-sm{font-size:22px;line-height:28px;font-weight:600}.text-label-caps{font-size:13px;line-height:16px;letter-spacing:0.06em;font-weight:700}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-title-cockpit{font-size:18px;line-height:24px;font-weight:600}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-normal{font-weight:400}.font-semibold{font-weight:600}.leading-3{line-height:.75rem}.leading-relaxed{line-height:1.625}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.text-black{--tw-text-opacity:1;color:rgb(0 0 0 / var(--tw-text-opacity, 1))}.text-error{--tw-text-opacity:1;color:rgb(255 180 171 / var(--tw-text-opacity, 1))}.text-on-primary{--tw-text-opacity:1;color:rgb(0 54 66 / var(--tw-text-opacity, 1))}.text-on-surface{--tw-text-opacity:1;color:rgb(225 226 232 / var(--tw-text-opacity, 1))}.text-on-surface-variant{--tw-text-opacity:1;color:rgb(188 201 206 / var(--tw-text-opacity, 1))}.text-outline{--tw-text-opacity:1;color:rgb(134 147 152 / var(--tw-text-opacity, 1))}.text-primary{--tw-text-opacity:1;color:rgb(76 214 251 / var(--tw-text-opacity, 1))}.text-secondary{--tw-text-opacity:1;color:rgb(70 238 224 / var(--tw-text-opacity, 1))}.text-secondary-container{--tw-text-opacity:1;color:rgb(0 210 196 / var(--tw-text-opacity, 1))}.text-secondary-fixed-dim{--tw-text-opacity:1;color:rgb(40 221 207 / var(--tw-text-opacity, 1))}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.selection\:bg-primary-container *::selection{--tw-bg-opacity:1;background-color:rgb(0 180 216 / var(--tw-bg-opacity, 1))}.selection\:text-on-primary *::selection{--tw-text-opacity:1;color:rgb(0 54 66 / var(--tw-text-opacity, 1))}.selection\:bg-primary-container::selection{--tw-bg-opacity:1;background-color:rgb(0 180 216 / var(--tw-bg-opacity, 1))}.selection\:text-on-primary::selection{--tw-text-opacity:1;color:rgb(0 54 66 / var(--tw-text-opacity, 1))}.hover\:border-primary\/50:hover{border-color:rgb(76 214 251 / 0.5)}.hover\:bg-error-container:hover{--tw-bg-opacity:1;background-color:rgb(147 0 10 / var(--tw-bg-opacity, 1))}.hover\:bg-surface-container:hover{--tw-bg-opacity:1;background-color:rgb(29 32 36 / var(--tw-bg-opacity, 1))}.hover\:bg-surface-container-high:hover{--tw-bg-opacity:1;background-color:rgb(39 42 47 / var(--tw-bg-opacity, 1))}.hover\:text-on-surface:hover{--tw-text-opacity:1;color:rgb(225 226 232 / var(--tw-text-opacity, 1))}@media (min-width: 640px){.sm\:flex-row{flex-direction:row}.sm\:items-center{align-items:center}}@media (min-width: 768px){.md\:col-span-2{grid-column:span 2 / span 2}.md\:ml-60{margin-left:15rem}.md\:inline{display:inline}.md\:flex{display:flex}.md\:w-60{width:15rem}.md\:grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.md\:justify-start{justify-content:flex-start}}@media (min-width: 1024px){.lg\:flex-row{flex-direction:row}.lg\:items-center{align-items:center}}@media (min-width: 1280px){.xl\:col-span-4{grid-column:span 4 / span 4}.xl\:col-span-8{grid-column:span 8 / span 8}.xl\:grid-cols-12{grid-template-columns:repeat(12, minmax(0, 1fr))}}</style><style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style><style data-stitch-injected="">*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"]),*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"])::before,*:not([data-stitch-injected]):not([data-stitch-injected] *):not([class*="stitch-anim-"]):not([class*="stitch-scan-"])::after{transition:none!important;animation:none!important}</style><style data-stitch-injected="">*:focus,*:focus-visible{outline:none!important;box-shadow:none!important}::selection{background-color:rgba(96, 86, 240, 0.3)!important;color:inherit!important}::-moz-selection{background-color:rgba(96, 86, 240, 0.3)!important;color:inherit!important}*{user-select:none!important;-webkit-user-select:none!important}.cursor-text,[contenteditable="true"]{cursor:text}[contenteditable="true"]:focus,input:focus,textarea:focus{user-select:text!important;-webkit-user-select:text!important;cursor:text!important}img{-webkit-user-drag:none!important;user-drag:none!important}@keyframes stitch-scan-flash{0%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}60%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}100%{outline:3px solid rgba(96, 86, 240, 0);outline-offset:4px}}@keyframes stitch-scan-flash-img{0%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}60%{outline:3px solid rgba(96, 86, 240, 0.9);outline-offset:-1px}100%{outline:3px solid rgba(96, 86, 240, 0);outline-offset:4px}}.stitch-scan-entry{animation:stitch-scan-flash 1.5s ease-out forwards}.stitch-scan-entry-img{animation:stitch-scan-flash-img 1.5s ease-out forwards}</style>  <link href="fonts.css" rel="stylesheet">
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary font-body-md text-body-md select-none">
+<!-- ========================================================================= -->
+<!-- TOP STATUS BAR (Shared Component: TopNavBar - Cockpit Status Bar)         -->
+<!-- ========================================================================= -->
+<header class="fixed top-0 left-0 right-0 h-14 z-50 flex items-center justify-between px-margin bg-surface-container-lowest border-b border-outline-variant">
+<!-- Brand / Model Identifier -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-6 bg-primary rounded-sm inline-block"></span>
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Chery Tiggo 8 MapControl</span>
+</div>
+<span class="px-2.5 py-1 bg-surface-container-high rounded text-primary font-diagnostic-code text-diagnostic-code border border-outline-variant">Tiggo 8 Pro Max AWD</span>
+</div>
+<!-- Center Driving Telematics Cluster -->
+<div class="flex items-center gap-space-lg font-title-cockpit text-title-cockpit">
+<!-- Transmission Gear Selection -->
+<div class="flex items-center gap-1.5 px-3 py-1 bg-surface-container rounded-lg border border-outline-variant">
+<span class="font-bold text-primary font-diagnostic-code text-diagnostic-code text-lg">P</span>
+<span class="text-on-surface-variant font-label-caps text-label-caps font-normal">PARK</span>
+</div>
+<!-- Clock & Exterior Temp -->
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary text-xl">&#xE8B5;</span>
+<span class="font-diagnostic-code text-diagnostic-code font-bold">14:32</span>
+<span class="text-on-surface-variant">•</span>
+<span class="font-diagnostic-code text-diagnostic-code text-on-surface-variant">18°C Dış</span>
+</div>
+<!-- EV / Fuel Range -->
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-secondary-container text-xl">&#xEB1C;</span>
+<span class="font-diagnostic-code text-diagnostic-code font-bold text-primary">516 km</span>
+<span class="font-diagnostic-code text-diagnostic-code text-on-surface-variant">(%100)</span>
+</div>
+<!-- TPMS Status -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container rounded border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-sm">&#xEBC8;</span>
+<span class="font-diagnostic-code text-diagnostic-code text-secondary font-bold">TPMS OK</span>
+<span class="text-on-surface-variant text-xs">(2.4 bar)</span>
+</div>
+<!-- Live Recording Persistent Badge -->
+<div class="flex items-center gap-2 px-3 py-1 bg-error-container/30 border border-error/50 rounded-full animate-pulse">
+<span class="w-2 h-2 rounded-full bg-error inline-block"></span>
+<span class="text-error font-label-caps text-label-caps tracking-wider">● KAYIT DEVAM EDİYOR</span>
+</div>
+</div>
+<!-- Trailing System Connectivity & Driver Profile -->
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-xl" title="Cloud Sync EOL">&#xE2BF;</span>
+<span class="material-symbols-outlined text-primary text-xl" title="4G LTE">&#xE1C8;</span>
+<span class="font-diagnostic-code text-diagnostic-code text-xs text-on-surface-variant">4G LTE</span>
+</div>
+<div class="h-5 w-px bg-outline-variant"></div>
+<!-- Profile Avatar -->
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-lg bg-surface-container border border-outline-variant">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-primary flex items-center justify-center text-primary font-bold text-xs">
+          AY
+        </div>
+<span class="font-label-caps text-label-caps text-on-surface">Ahmet Y.</span>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- LEFT NAVIGATION RAIL (Shared Component: SideNavBar)                      -->
+<!-- ========================================================================= -->
+<aside class="fixed left-0 top-14 bottom-0 z-40 flex flex-col justify-between p-space-sm w-24 md:w-60 bg-surface-container-low border-r border-outline-variant">
+<!-- Top Nav Domain Header & Primary Domains -->
+<div class="flex flex-col gap-1">
+<div class="hidden md:flex flex-col px-space-md py-space-sm mb-2 border-b border-outline-variant/60">
+<span class="font-label-caps text-label-caps text-on-surface-variant">KOKPİT SİSTEMİ</span>
+<span class="font-title-cockpit text-title-cockpit text-primary font-bold">MapControl OS</span>
+</div>
+<!-- Tab 1: Ana Sayfa -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE88A;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Ana Sayfa</span>
+</a>
+<!-- Tab 2: Araç -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE531;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Araç</span>
+</a>
+<!-- Tab 3: Kamera 360 -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE04B;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Kamera 360</span>
+</a>
+<!-- Tab 4: Konfor -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE636;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Konfor</span>
+</a>
+<!-- Tab 5: Sürücü -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE7FD;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Sürücü</span>
+</a>
+<!-- Tab 6: Bağlantı -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE63E;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Bağlantı</span>
+</a>
+<!-- Tab 7: Bulut -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE2BD;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Bulut</span>
+</a>
+<!-- Tab 8: Teşhis (ACTIVE NAVIGATION TAB) -->
+<a class="flex items-center gap-space-md bg-surface-container-high text-primary border-l-4 border-primary px-space-md py-3 rounded-r-lg shadow-sm min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl text-primary" style="font-variation-settings: 'FILL' 1;">&#xE869;</span>
+<div class="hidden md:flex flex-col">
+<span class="font-title-cockpit text-title-cockpit text-sm font-bold text-primary">Teşhis</span>
+<span class="font-label-caps text-[10px] text-secondary tracking-widest leading-3">CAN-FD / ADAS</span>
+</div>
+</a>
+<!-- Tab 9: Ayarlar -->
+<a class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-3 rounded-lg transition-colors min-h-[52px]" href="#">
+<span class="material-symbols-outlined text-2xl">&#xE8B8;</span>
+<span class="hidden md:inline font-title-cockpit text-title-cockpit text-sm font-medium">Ayarlar</span>
+</a>
+</div>
+<!-- Bottom Actions: SOS & Logout -->
+<div class="flex flex-col gap-2 pt-2 border-t border-outline-variant">
+<!-- SOS Button (ISO Safety Action) -->
+<button class="w-full flex items-center justify-center md:justify-start gap-space-md bg-error-container/40 hover:bg-error-container text-error px-space-md py-3 rounded-lg border border-error/40 transition-colors min-h-[52px]">
+<span class="material-symbols-outlined text-2xl text-error">&#xE1EB;</span>
+<span class="hidden md:inline font-label-caps text-label-caps text-error font-bold">Acil Durum SOS</span>
+</button>
+<!-- Çıkış -->
+<button class="flex items-center gap-space-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container px-space-md py-2.5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">&#xE8AC;</span>
+<span class="hidden md:inline font-label-caps text-label-caps">Çıkış</span>
+</button>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN VIEWPORT: TEŞHİS (CAN-FD & ADAS EOL ADVANCED DIAGNOSTICS)            -->
+<!-- ========================================================================= -->
+<main class="ml-24 md:ml-60 pt-16 p-space-md pb-6 min-h-[1024px] bg-surface-container-lowest" data-stitch-vh="min-h-[1024px]===min-h-screen">
+<!-- SECTION 1: HEADER & READ-ONLY SAFETY BANNER -->
+<section class="mb-4 bg-surface-container-low border border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+<!-- Title & Subtitle -->
+<div>
+<div class="flex items-center gap-3">
+<h1 class="font-headline-sm text-headline-sm font-bold text-on-surface tracking-tight">
+              Gelişmiş Araç Teşhisi ve Telematik
+            </h1>
+<span class="px-2.5 py-0.5 rounded bg-surface-container-high text-primary font-diagnostic-code text-diagnostic-code text-xs font-semibold border border-outline-variant">
+              CAN-FD / ADAS EOL
+            </span>
+</div>
+<p class="text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+            Chery Ar-Ge VDBus &amp; DesaySV Kokpit Teşhis Protokolü V4.18.2 • 28 ECU Düğümü Çevrimiçi
+          </p>
+</div>
+<!-- Read-Only & Security Telematics Badges -->
+<div class="flex flex-wrap items-center gap-2">
+<!-- Mandatory Read-Only Indicator -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high border border-outline text-on-surface">
+<span class="material-symbols-outlined text-secondary text-sm">&#xE897;</span>
+<span class="font-label-caps text-label-caps tracking-wider text-xs">GÜVENLİK DÜZEYİ: SALT OKUNUR (READ-ONLY)</span>
+</div>
+<!-- CAN-FD Bus Status -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high border border-secondary/30 text-secondary">
+<span class="material-symbols-outlined text-sm">&#xE51E;</span>
+<span class="font-label-caps text-label-caps text-xs">OBD-II / CAN-FD BUS: AKTİF</span>
+</div>
+<!-- Speed & Baudrate -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container border border-outline-variant text-primary font-diagnostic-code text-diagnostic-code text-xs">
+<span>CAN Hızı: 5 Mbps (Class A)</span>
+</div>
+<!-- DTC Nominal Badge -->
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high border border-secondary/40 text-secondary">
+<span class="material-symbols-outlined text-sm">&#xE86C;</span>
+<span class="font-label-caps text-label-caps text-xs">DTC Durumu: 0 Aktif Hata</span>
+</div>
+</div>
+</div>
+<!-- Horizontal Diagnostic Subtabs (Touch-friendly 48px-64px targets) -->
+<div class="flex items-center gap-2 mt-4 pt-3 border-t border-outline-variant/60 overflow-x-auto">
+<button class="flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-on-primary font-title-cockpit text-title-cockpit text-xs font-bold shadow transition-all min-h-[48px]">
+<span class="material-symbols-outlined text-lg">&#xF0C5;</span>
+<span>Genel Bakış &amp; DTC</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant font-title-cockpit text-title-cockpit text-xs font-semibold transition-all min-h-[48px]">
+<span class="material-symbols-outlined text-primary text-lg">&#xEB8E;</span>
+<span>CAN-FD Canlı Akış</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant font-title-cockpit text-title-cockpit text-xs font-semibold transition-all min-h-[48px]">
+<span class="material-symbols-outlined text-secondary text-lg">&#xE429;</span>
+<span>ADAS &amp; EOL Kalibrasyon (112/147)</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant font-title-cockpit text-title-cockpit text-xs font-semibold transition-all min-h-[48px]">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">&#xE565;</span>
+<span>Trafik İşareti &amp; Ön Nesne</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-3 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant font-title-cockpit text-title-cockpit text-xs font-semibold transition-all min-h-[48px]">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">&#xEAD3;</span>
+<span>VDBus Ham Kayıtlar</span>
+</button>
+</div>
+</section>
+<!-- SECTION 2 & 3: BENTO GRID ARCHITECTURE (2/3 Left-Center + 1/3 Right-Sidebar) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-md">
+<!-- ===================================================================== -->
+<!-- LEFT / CENTER COLUMN (8 of 12 Cols)                                   -->
+<!-- ===================================================================== -->
+<div class="xl:col-span-8 flex flex-col gap-space-md">
+<!-- MODULE 1: DTC & ECU SAĞLIK MATRİSİ -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md shadow-sm">
+<!-- Header and Progress Status -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-xl">&#xE322;</span>
+<h2 class="font-title-cockpit text-title-cockpit text-base font-bold text-on-surface">
+                ECU Sağlık &amp; DTC Durum Matrisi
+              </h2>
+</div>
+<span class="font-diagnostic-code text-diagnostic-code text-xs text-secondary bg-surface-container px-3 py-1 rounded border border-outline-variant">
+              Toplam 28 ECU Taraması Tamamlandı • 0 Hata (DTC Clean) • 2 Bilgilendirme Notu
+            </span>
+</div>
+<!-- ECU 6-Grid Cards -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
+<!-- ECU 1: ECM -->
+<div class="bg-surface-container p-3 rounded-lg border border-outline-variant hover:border-primary/50 transition-colors">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-xs text-on-surface-variant">ECM</span>
+<span class="flex items-center gap-1 text-[11px] text-secondary font-diagnostic-code font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span> NOMİNAL
+                </span>
+</div>
+<p class="font-title-cockpit text-title-cockpit text-sm font-semibold text-on-surface">Motor Kontrol</p>
+<div class="mt-2 pt-2 border-t border-outline-variant/60 flex items-center justify-between font-diagnostic-code text-diagnostic-code text-xs">
+<span class="text-on-surface-variant">DTC 0x0000</span>
+<span class="text-secondary">[Normal]</span>
+</div>
+</div>
+<!-- ECU 2: BCM -->
+<div class="bg-surface-container p-3 rounded-lg border border-outline-variant hover:border-primary/50 transition-colors">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-xs text-on-surface-variant">BCM</span>
+<span class="flex items-center gap-1 text-[11px] text-secondary font-diagnostic-code font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span> NOMİNAL
+                </span>
+</div>
+<p class="font-title-cockpit text-title-cockpit text-sm font-semibold text-on-surface">Gövde Kontrol</p>
+<div class="mt-2 pt-2 border-t border-outline-variant/60 flex items-center justify-between font-diagnostic-code text-diagnostic-code text-xs">
+<span class="text-on-surface-variant">DTC 0x0000</span>
+<span class="text-secondary">[Normal]</span>
+</div>
+</div>
+<!-- ECU 3: ADAS / IFC -->
+<div class="bg-surface-container p-3 rounded-lg border border-primary/40 bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-xs text-primary font-bold">ADAS / IFC</span>
+<span class="flex items-center gap-1 text-[11px] text-secondary font-diagnostic-code font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span> NOMİNAL
+                </span>
+</div>
+<p class="font-title-cockpit text-title-cockpit text-sm font-semibold text-on-surface">Ön Kamera &amp; Radar</p>
+<div class="mt-2 pt-2 border-t border-outline-variant/60 flex items-center justify-between font-diagnostic-code text-diagnostic-code text-xs">
+<span class="text-on-surface-variant">DTC 0x0000</span>
+<span class="text-secondary">[Normal]</span>
+</div>
+</div>
+<!-- ECU 4: EPS -->
+<div class="bg-surface-container p-3 rounded-lg border border-outline-variant hover:border-primary/50 transition-colors">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-xs text-on-surface-variant">EPS</span>
+<span class="flex items-center gap-1 text-[11px] text-secondary font-diagnostic-code font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span> NOMİNAL
+                </span>
+</div>
+<p class="font-title-cockpit text-title-cockpit text-sm font-semibold text-on-surface">Elektrikli Direksiyon</p>
+<div class="mt-2 pt-2 border-t border-outline-variant/60 flex items-center justify-between font-diagnostic-code text-diagnostic-code text-xs">
+<span class="text-on-surface-variant">DTC 0x0000</span>
+<span class="text-secondary">[Normal]</span>
+</div>
+</div>
+<!-- ECU 5: ESP / ABS -->
+<div class="bg-surface-container p-3 rounded-lg border border-outline-variant hover:border-primary/50 transition-colors">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-xs text-on-surface-variant">ESP / ABS</span>
+<span class="flex items-center gap-1 text-[11px] text-secondary font-diagnostic-code font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span> NOMİNAL
+                </span>
+</div>
+<p class="font-title-cockpit text-title-cockpit text-sm font-semibold text-on-surface">Fren &amp; Stabilite</p>
+<div class="mt-2 pt-2 border-t border-outline-variant/60 flex items-center justify-between font-diagnostic-code text-diagnostic-code text-xs">
+<span class="text-on-surface-variant">DTC 0x0000</span>
+<span class="text-secondary">[Normal]</span>
+</div>
+</div>
+<!-- ECU 6: TCU -->
+<div class="bg-surface-container p-3 rounded-lg border border-outline-variant hover:border-primary/50 transition-colors">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-caps text-label-caps text-xs text-on-surface-variant">TCU</span>
+<span class="flex items-center gap-1 text-[11px] text-secondary font-diagnostic-code font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block"></span> NOMİNAL
+                </span>
+</div>
+<p class="font-title-cockpit text-title-cockpit text-sm font-semibold text-on-surface">Şanzıman Kontrol</p>
+<div class="mt-2 pt-2 border-t border-outline-variant/60 flex items-center justify-between font-diagnostic-code text-diagnostic-code text-xs">
+<span class="text-on-surface-variant">DTC 0x0000</span>
+<span class="text-secondary">[Normal]</span>
+</div>
+</div>
+</div>
+</div>
+<!-- MODULE 2: ADAS EOL (END OF LINE) KONFİGÜRASYON MATRİSİ -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">&#xEF76;</span>
+<h2 class="font-title-cockpit text-title-cockpit text-base font-bold text-on-surface">
+                ADAS EOL (End of Line) Konfigürasyon Matrisi
+              </h2>
+</div>
+<!-- Progress indicator -->
+<div class="flex items-center gap-2 bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant">
+<span class="text-xs text-on-surface-variant">Doğrulanan Parametreler:</span>
+<span class="font-diagnostic-code text-diagnostic-code text-xs font-bold text-primary">112 / 147 (%76.2)</span>
+</div>
+</div>
+<!-- Parameter Progress Line -->
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden mt-3 mb-3">
+<div class="bg-primary h-full rounded-full" style="width: 76.2%"></div>
+</div>
+<!-- EOL Values Table / Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+<!-- EOL 1 -->
+<div class="flex items-start justify-between p-2.5 bg-surface-container rounded-lg border border-outline-variant">
+<div class="flex flex-col">
+<span class="font-diagnostic-code text-diagnostic-code text-xs text-primary font-bold">EOL 0x11: Şerit Takip Asistanı (LKA)</span>
+<span class="text-xs text-on-surface mt-0.5">Kodlu / Kalibre Edildi</span>
+</div>
+<span class="font-diagnostic-code text-[11px] text-secondary bg-surface-container-high px-2 py-0.5 rounded border border-outline-variant">
+                Tolerans: ±0.04°
+              </span>
+</div>
+<!-- EOL 2 -->
+<div class="flex items-start justify-between p-2.5 bg-surface-container rounded-lg border border-outline-variant">
+<div class="flex flex-col">
+<span class="font-diagnostic-code text-diagnostic-code text-xs text-primary font-bold">EOL 0x24: Adaptif Hız Sabitleme (ACC) Sürüm 3.4</span>
+<span class="text-xs text-on-surface mt-0.5">Aktif</span>
+</div>
+<span class="font-diagnostic-code text-[11px] text-secondary bg-surface-container-high px-2 py-0.5 rounded border border-outline-variant">
+                Eksen: 0.00°
+              </span>
+</div>
+<!-- EOL 3 -->
+<div class="flex items-start justify-between p-2.5 bg-surface-container rounded-lg border border-outline-variant">
+<div class="flex flex-col">
+<span class="font-diagnostic-code text-diagnostic-code text-xs text-primary font-bold">EOL 0x3F: Acil Fren (AEB) Yaya &amp; Araç</span>
+<span class="text-xs text-on-surface mt-0.5">Aktif</span>
+</div>
+<span class="font-diagnostic-code text-[11px] text-secondary bg-surface-container-high px-2 py-0.5 rounded border border-outline-variant">
+                Algılama: 150m
+              </span>
+</div>
+<!-- EOL 4 -->
+<div class="flex items-start justify-between p-2.5 bg-surface-container rounded-lg border border-outline-variant">
+<div class="flex flex-col">
+<span class="font-diagnostic-code text-diagnostic-code text-xs text-primary font-bold">EOL 0x58: Trafik İşareti Tanıma (TSR) V3</span>
+<span class="text-xs text-on-surface mt-0.5">EU/TR Harita Entegrasyonu Aktif</span>
+</div>
+<span class="font-diagnostic-code text-[11px] text-secondary bg-surface-container-high px-2 py-0.5 rounded border border-outline-variant">
+                ISO 2575 OK
+              </span>
+</div>
+<!-- EOL 5 -->
+<div class="flex items-start justify-between p-2.5 bg-surface-container rounded-lg border border-outline-variant md:col-span-2">
+<div class="flex flex-col">
+<span class="font-diagnostic-code text-diagnostic-code text-xs text-primary font-bold">EOL 0x7A: Çevre Görüş (AVM 360) Dikiş Algoritması</span>
+<span class="text-xs text-on-surface mt-0.5">Nominal Kalibrasyon Doğrulandı</span>
+</div>
+<span class="font-diagnostic-code text-[11px] text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded border border-outline-variant">
+                Son Kalibrasyon: Fabrika EOL
+              </span>
+</div>
+</div>
+</div>
+<!-- MODULE 3: CANLI CAN-FD / VDBUS HAM TELEMATİK AKIŞI (Terminal Card) -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-xl">&#xEB8E;</span>
+<div>
+<h2 class="font-title-cockpit text-title-cockpit text-base font-bold text-on-surface">
+                  CAN-FD / VDBus Ham Telematik Akışı
+                </h2>
+<span class="text-xs text-on-surface-variant">Salt Okunur Dinleme Modu (Promiscuous RX Only)</span>
+</div>
+</div>
+<!-- Terminal Visual Action Controls -->
+<div class="flex items-center gap-2">
+<!-- Filter chip -->
+<span class="font-diagnostic-code text-xs px-2.5 py-1 rounded bg-surface-container border border-outline-variant text-primary">
+                Filtre: 0x18F*
+              </span>
+<!-- Live Pause visual control -->
+<button class="flex items-center gap-1 px-3 py-1.5 bg-surface-container hover:bg-surface-container-high text-on-surface text-xs font-semibold rounded border border-outline-variant transition-colors min-h-[36px]">
+<span class="material-symbols-outlined text-sm text-secondary">&#xE034;</span>
+<span>Duraklat</span>
+</button>
+<!-- Log export control -->
+<button class="flex items-center gap-1 px-3 py-1.5 bg-surface-container hover:bg-surface-container-high text-primary text-xs font-semibold rounded border border-outline-variant transition-colors min-h-[36px]">
+<span class="material-symbols-outlined text-sm">&#xF090;</span>
+<span>Kayıt Al (.log)</span>
+</button>
+</div>
+</div>
+<!-- Monospace Terminal Window -->
+<div class="mt-3 p-3 bg-surface-container-lowest border border-outline-variant rounded-lg font-diagnostic-code text-diagnostic-code text-xs text-on-surface space-y-1.5 overflow-x-auto max-h-48 overflow-y-auto">
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface">
+<span class="text-outline">[14:32:08.412]</span>
+<span class="text-primary font-bold">CAN-FD ID: 0x18F00503</span>
+<span class="text-secondary">DLC: 64</span>
+<span class="text-on-surface-variant">DATA: 02 1A F8 40 FF 00 12 B9 ...</span>
+<span class="text-secondary-fixed-dim font-bold">[Hız: 0 km/h]</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface">
+<span class="text-outline">[14:32:08.435]</span>
+<span class="text-primary font-bold">CAN-FD ID: 0x0CFE6CEE</span>
+<span class="text-secondary">DLC: 32</span>
+<span class="text-on-surface-variant">DATA: 00 78 4B 12 AA 33 00 00 ...</span>
+<span class="text-secondary-fixed-dim font-bold">[Direksiyon Açısı: 0.0°]</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface">
+<span class="text-outline">[14:32:08.450]</span>
+<span class="text-primary font-bold">CAN-FD ID: 0x18FEF100</span>
+<span class="text-secondary">DLC: 64</span>
+<span class="text-on-surface-variant">DATA: 2B 44 01 00 00 FF EF 01 ...</span>
+<span class="text-secondary-fixed-dim font-bold">[Fren Basıncı: 0 bar]</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface">
+<span class="text-outline">[14:32:08.489]</span>
+<span class="text-primary font-bold">CAN-FD ID: 0x18EAFF00</span>
+<span class="text-secondary">DLC: 16</span>
+<span class="text-on-surface-variant">DATA: FF 00 2A 11 04 90 CC 00 ...</span>
+<span class="text-secondary-fixed-dim font-bold">[DMS Sürücü Durum: UYANIK]</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant hover:text-on-surface">
+<span class="text-outline">[14:32:08.512]</span>
+<span class="text-primary font-bold">CAN-FD ID: 0x18F00503</span>
+<span class="text-secondary">DLC: 64</span>
+<span class="text-on-surface-variant">DATA: 02 1A F8 40 FF 00 12 BA ...</span>
+<span class="text-secondary-fixed-dim font-bold">[ESC Tork Talep: 0 Nm]</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ===================================================================== -->
+<!-- RIGHT SIDEBAR PANEL (4 of 12 Cols)                                    -->
+<!-- ===================================================================== -->
+<div class="xl:col-span-4 flex flex-col gap-space-md">
+<!-- MODULE 4: GERÇEK ZAMANLI TRAFİK İŞARETİ & ÖN NESNE KEŞFİ -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">&#xF04E;</span>
+<h2 class="font-title-cockpit text-title-cockpit text-base font-bold text-on-surface">
+                Ön Nesne &amp; Sensör Keşfi
+              </h2>
+</div>
+<span class="font-label-caps text-label-caps text-xs text-secondary bg-surface-container px-2 py-0.5 rounded border border-outline-variant">
+              ADAS CANLI
+            </span>
+</div>
+<!-- Radar Wireframe / Sensor Graphic Area -->
+<div class="mt-3 bg-surface-container-lowest p-3 rounded-lg border border-outline-variant flex flex-col items-center justify-center relative overflow-hidden">
+<!-- Simulated sensor arc rings -->
+<div class="w-full flex items-center justify-center py-2 relative">
+<div class="w-48 h-24 border-t-2 border-l-2 border-r-2 border-primary/30 rounded-t-full flex items-end justify-center relative">
+<div class="w-32 h-16 border-t-2 border-l-2 border-r-2 border-primary/50 rounded-t-full flex items-end justify-center">
+<div class="w-16 h-8 border-t-2 border-l-2 border-r-2 border-primary rounded-t-full"></div>
+</div>
+<!-- Detected Lead Vehicle Marker -->
+<div class="absolute top-2 flex flex-col items-center">
+<span class="material-symbols-outlined text-secondary text-lg animate-bounce">&#xE531;</span>
+<span class="text-[10px] font-diagnostic-code text-secondary font-bold">12.4m</span>
+</div>
+</div>
+</div>
+<div class="w-full text-center mt-1 border-t border-outline-variant/60 pt-2 font-diagnostic-code text-diagnostic-code text-xs text-on-surface">
+              Öndeki Araç: Mesafe 12.4m • Bağıl Hız: 0 km/s
+            </div>
+</div>
+<!-- TSR (Traffic Sign Recognition) Live Feed -->
+<div class="mt-3">
+<span class="font-label-caps text-label-caps text-xs text-on-surface-variant block mb-2">
+              ALGILANAN TRAFİK LEVHALARI (TSR)
+            </span>
+<div class="grid grid-cols-2 gap-2">
+<!-- Speed Limit 50 -->
+<div class="flex items-center gap-2.5 p-2 bg-surface-container rounded-lg border border-outline-variant">
+<div class="w-8 h-8 rounded-full border-2 border-red-500 bg-white flex items-center justify-center text-black font-bold text-xs font-diagnostic-code">
+                  50
+                </div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">50 km/s</span>
+<span class="text-[10px] text-on-surface-variant">Hız Limiti</span>
+</div>
+</div>
+<!-- End of No Overtaking -->
+<div class="flex items-center gap-2.5 p-2 bg-surface-container rounded-lg border border-outline-variant">
+<div class="w-8 h-8 rounded-full border-2 border-outline-variant bg-surface-container-high flex items-center justify-center text-on-surface text-xs">
+<span class="material-symbols-outlined text-base text-secondary">&#xE644;</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface">Sollama</span>
+<span class="text-[10px] text-on-surface-variant">Yasağı Sonu</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sensor Health & Blind Spot Status -->
+<div class="mt-3 pt-3 border-t border-outline-variant space-y-2 text-xs">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">Kamera &amp; Lidar Optik Temizlik:</span>
+<span class="font-diagnostic-code text-secondary font-bold">%0 Kirlilik (Temiz)</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">77GHz Ön Radar Frekansı:</span>
+<span class="font-diagnostic-code text-primary font-bold">Mükemmel (Nominal)</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant">2MP Ön Akıllı Kamera Kare Hızı:</span>
+<span class="font-diagnostic-code text-primary font-bold">60.0 FPS Senkron</span>
+</div>
+</div>
+</div>
+<!-- MODULE 5: VDBUS, BELLEK & VERİYOLU YÜKÜ -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">&#xE640;</span>
+<h2 class="font-title-cockpit text-title-cockpit text-base font-bold text-on-surface">
+                Veriyolu &amp; Güvenlik Durumu
+              </h2>
+</div>
+<span class="font-diagnostic-code text-xs text-on-surface-variant">VDBus CAN-FD</span>
+</div>
+<!-- Bus Load Progress Gauge -->
+<div class="mt-3">
+<div class="flex items-center justify-between text-xs mb-1.5">
+<span class="text-on-surface-variant">CAN-FD Veriyolu Yükü:</span>
+<span class="font-diagnostic-code text-primary font-bold">%18.4 (120 μs Gecikme)</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 18.4%"></div>
+</div>
+</div>
+<!-- Network Metrics List -->
+<div class="mt-3 space-y-2 text-xs">
+<div class="flex items-center justify-between p-2 bg-surface-container rounded border border-outline-variant">
+<span class="text-on-surface-variant">Ağ Düşen Paket Oranı:</span>
+<span class="font-diagnostic-code text-secondary font-bold">%0.00 (Hatasız)</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container rounded border border-outline-variant">
+<span class="text-on-surface-variant">HSM Kripto Motoru:</span>
+<span class="font-diagnostic-code text-primary font-bold">AES-256 Aktif</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container rounded border border-outline-variant">
+<span class="text-on-surface-variant">Güvenli Önyükleme (Secure Boot):</span>
+<span class="font-diagnostic-code text-secondary font-bold">Doğrulandı (Valid)</span>
+</div>
+</div>
+<!-- Safety Lock Warning Card (Read-only reminder) -->
+<div class="mt-3 p-3 bg-surface-container border border-outline-variant rounded-lg flex items-start gap-2.5">
+<span class="material-symbols-outlined text-secondary text-lg mt-0.5">&#xE32A;</span>
+<p class="text-[11px] leading-relaxed text-on-surface-variant">
+<strong class="text-on-surface font-semibold">Güvenlik Uyarısı:</strong> Bu arayüz ISO 15005 standardı gereğince yalnızca teşhis amaçlı okuma yapar. Kontrol ünitelerine doğrudan komut yazma veya parametre değiştirme yetkisi donanımsal olarak kilitlidir.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<div id="stitch-agent-cursor" data-stitch-injected="" style="left: -40px; top: -40px; display: none;">
+  <svg class="cursor-pointer" width="20" height="20" viewBox="0 0 34 34" fill="none">
+    <path d="M15.0624 32.3549L5.16251 5.48544L32.0324 15.3848L19.3046 19.6276L15.0624 32.3549Z" fill="#7168f6"></path>
+    <path d="M4.80877 5.13207C4.94657 4.99427 5.15206 4.94886 5.33496 5.01606L32.205 14.9156C32.4041 14.9889 32.5354 15.1799 32.5323 15.392C32.529 15.6043 32.392 15.7924 32.1905 15.8595L19.6994 20.0227L15.5369 32.5131C15.4697 32.7145 15.2824 32.8509 15.0701 32.8542C14.8578 32.8575 14.6664 32.7268 14.5929 32.5276L4.69276 5.65826L4.67343 5.5892C4.63863 5.42535 4.68814 5.25283 4.80877 5.13207Z" stroke="rgba(255,255,255,0.15)" stroke-linejoin="round"></path>
+  </svg>
+  <svg class="cursor-text" width="20" height="28" viewBox="0 0 20 28" fill="none">
+    <path d="M6 2h8M6 26h8M10 2v24" stroke="#7168f6" stroke-width="2.5" stroke-linecap="round"></path>
+  </svg>
+  <svg class="cursor-paint" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M18.5 1.5c.8-.8 2.1-.8 2.8 0 .8.8.8 2.1 0 2.8L11 14.5l-3.5 1 1-3.5L18.5 1.5z" fill="#7168f6" stroke="#4f44e1" stroke-width="1" stroke-linejoin="round"></path>
+    <path d="M7 14.5c-2 2-3.5 4-3.5 5.5 0 1.5 1 2.5 2.5 2.5 1.5 0 3.5-1.5 5.5-3.5" stroke="#7168f6" stroke-width="1.5" stroke-linecap="round"></path>
+    <path d="M4 20c-.5.5-1.2 1-2 1.2" stroke="#6056f0" stroke-width="1" stroke-linecap="round"></path>
+  </svg>
+  <svg id="stitch-cursor-label" width="28" height="14" viewBox="0 0 28 14" fill="none">
+    <rect width="28" height="14" rx="7" fill="#7168f6"></rect>
+    <circle cx="10.5" cy="7" r="1.8" fill="white"></circle>
+    <circle cx="17.5" cy="7" r="1.8" fill="white"></circle>
+  </svg>
+</div>
+<script>
+(function(){
+  function go(v){ try{ if(window.Android && Android.navigate) Android.navigate(v); }catch(e){} }
+  function native(v){ try{ if(window.Android && Android.openNative) Android.openNative(v); }catch(e){} }
+  var rail={'Ana Sayfa':'home','Araç':'vehicle','Kamera 360':'camera','Konfor':'comfort','Sürücü':'driver','Bağlantı':'connectivity','Bulut':'cloud','Teşhis':'diagnostics','Ayarlar':'settings'};
+  document.addEventListener('click',function(ev){
+    var el=ev.target.closest('a,button');
+    if(!el) return;
+    var s=(el.innerText||'').replace(/\s+/g,' ').trim();
+    for (var k in rail) { if (s.indexOf(k) >= 0) { ev.preventDefault(); var v=rail[k]; if(v==='home'||v==='comfort'||v==='driver'||v==='diagnostics') go(v); else native(v); return; } }
+    if(s.indexOf('Kamera Görüntüle')>=0 || s.indexOf('Kamera 360')>=0){ ev.preventDefault(); native('camera'); return; }
+    if(s.indexOf('Tüm sürüşleri')>=0 || s.indexOf('Sürüş Karnesi')>=0){ ev.preventDefault(); native('driving'); return; }
+    if(s.indexOf('Araç Bilgisi')>=0 || s.indexOf('3B Model')>=0){ ev.preventDefault(); native('vehicle'); return; }
+    if(s.indexOf('Klima')>=0 || s.indexOf('Konfor')>=0){ ev.preventDefault(); go('comfort'); return; }
+    if(s.indexOf('Detayları İncele')>=0){ ev.preventDefault(); go('diagnostics'); return; }
+  },true);
+})();
+</script>
+<script>
+(function(){
+  var gaps={'gap-space-sm':'0.375rem','gap-space-md':'0.75rem','gap-space-lg':'1rem','gap-space-xl':'1.5rem','gap-1':'0.25rem','gap-2':'0.5rem','gap-3':'0.75rem','gap-4':'1rem','gap-6':'1.5rem'};
+  function fix(){
+    document.querySelectorAll('[class]').forEach(function(el){
+      var d=getComputedStyle(el).display;
+      if(d!=='flex') return;
+      var dir=getComputedStyle(el).flexDirection||'row';
+      var g=null;
+      for(var k in gaps){ if(el.classList.contains(k)){g=gaps[k];break;} }
+      if(!g) return;
+      var kids=el.children; var first=true;
+      for(var i=0;i<kids.length;i++){
+        var c=kids[i]; if(!c || c.nodeType!==1) continue;
+        var cs=getComputedStyle(c);
+        if(dir.indexOf('column')===0){ if(!first && cs.marginTop==='0px') c.style.marginTop=g; }
+        else { if(!first && cs.marginLeft==='0px') c.style.marginLeft=g; }
+        first=false;
+      }
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fix); else fix();
+  window.addEventListener('resize',fix);
+  setTimeout(fix,400); setTimeout(fix,1200);
+})();
+</script>
+</body><div data-stitch-injected="" style="position: fixed; inset: 0px; z-index: 2147483647; pointer-events: none; overflow: hidden; display: none;"><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 1; border-radius: 4px;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 2; border-radius: 4px; opacity: 1;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 1; border-radius: 4px;"></div><div style="position: absolute; pointer-events: none; display: none; box-sizing: border-box; border-style: solid; border-color: rgb(96, 86, 240); z-index: 2; border-radius: 4px;"></div></div></html>
