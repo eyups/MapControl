@@ -8,6 +8,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -58,6 +59,11 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private TextView fuelValue;
     private TextView rangeValue;
     private TextView odoValue;
+    private TextView heroStatusText;
+    private TextView heroSpeedValue;
+    private TextView heroRangeValue;
+    private TextView heroTireValue;
+    private TextView heroDriveValue;
     private LinearLayout lastDriveHost;
     private volatile boolean tabVisible;
 
@@ -105,9 +111,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         content.addView(buildHeader());
-        if (!prefs.getBoolean(KEY_ONBOARDING_DONE, false)) {
-            content.addView(buildOnboardingCard(), cardParams());
-        }
+        content.addView(buildCockpitHero(), cardParams());
         content.addView(buildQuickActions(), cardParams());
         content.addView(buildVehicleCard(), cardParams());
         lastDriveHost = new LinearLayout(context);
@@ -131,6 +135,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         subtitleLp.topMargin = dp(2);
         subtitleLp.bottomMargin = dp(4);
         header.addView(subtitle, subtitleLp);
+
+        header.addView(buildHeaderStatusRow());
 
         if (ValetModeManager.isActive(context)) {
             TextView valet = text("VALE MODU AKTİF · kişisel sekmeler gizli", 12,
@@ -199,6 +205,123 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         actions.addView(secondary, weighted(dp(4), 0));
         card.addView(actions);
         return card;
+    }
+
+    private View buildHeaderStatusRow() {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = dp(12);
+        lp.bottomMargin = dp(2);
+        row.setLayoutParams(lp);
+
+        LinearLayout score = new LinearLayout(context);
+        score.setOrientation(LinearLayout.HORIZONTAL);
+        score.setGravity(Gravity.CENTER_VERTICAL);
+        score.setPadding(dp(12), dp(7), dp(12), dp(7));
+        GradientDrawable scoreBg = rounded(0x1F22C55E, dp(12));
+        scoreBg.setStroke(Math.max(1, dp(1)), 0x5522C55E);
+        score.setBackground(scoreBg);
+
+        TextView scoreValue = text(String.valueOf(driverScore()), 18, R.color.buttonSuccessBright, true);
+        score.addView(scoreValue);
+        TextView scoreLabel = text("  SÜRÜCÜ PUANI", 10, R.color.textSecondary, true);
+        scoreLabel.setLetterSpacing(0.08f);
+        score.addView(scoreLabel);
+        row.addView(score);
+
+        View spacer = new View(context);
+        row.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+
+        TextView time = text(new SimpleDateFormat("HH:mm:ss", new Locale("tr", "TR")).format(new Date()),
+                12, R.color.textSecondary, false);
+        row.addView(time);
+        return row;
+    }
+
+    private View buildCockpitHero() {
+        LinearLayout card = card();
+        card.setPadding(dp(18), dp(16), dp(18), dp(16));
+
+        LinearLayout top = new LinearLayout(context);
+        top.setOrientation(LinearLayout.HORIZONTAL);
+        top.setGravity(Gravity.CENTER_VERTICAL);
+        TextView badge = text("360° AKTİF İZLEME", 10, R.color.oemAccent, true);
+        badge.setLetterSpacing(0.08f);
+        badge.setPadding(dp(9), dp(5), dp(9), dp(5));
+        GradientDrawable badgeBg = rounded(0x1F5EEAD4, dp(7));
+        badgeBg.setStroke(Math.max(1, dp(1)), 0x555EEAD4);
+        badge.setBackground(badgeBg);
+        top.addView(badge);
+
+        View spacer = new View(context);
+        top.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+        heroStatusText = text("Bağlantı bekleniyor", 10, R.color.textLoading, true);
+        top.addView(heroStatusText);
+        card.addView(top);
+
+        LinearLayout carRow = new LinearLayout(context);
+        carRow.setOrientation(LinearLayout.HORIZONTAL);
+        carRow.setGravity(Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams carLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(112));
+        carLp.topMargin = dp(8);
+        carRow.setLayoutParams(carLp);
+
+        ImageView carIcon = new ImageView(context);
+        carIcon.setImageResource(R.drawable.ic_mdi_car);
+        carIcon.setColorFilter(UiStyles.color(context, R.color.oemAccent));
+        carIcon.setAlpha(0.88f);
+        carIcon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+        carRow.addView(carIcon, new LinearLayout.LayoutParams(dp(118), dp(96)));
+
+        LinearLayout carText = new LinearLayout(context);
+        carText.setOrientation(LinearLayout.VERTICAL);
+        carText.setGravity(Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams carTextLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        carTextLp.setMarginStart(dp(16));
+        TextView model = text("CHERY TIGGO 8 PRO MAX", 15, R.color.textPrimary, true);
+        model.setLetterSpacing(0.04f);
+        carText.addView(model);
+        TextView telematics = text("CAN-FD Telematik • Tüm sistemler izleniyor", 12,
+                R.color.textSecondary, false);
+        LinearLayout.LayoutParams teleLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        teleLp.topMargin = dp(3);
+        carText.addView(telematics, teleLp);
+        heroDriveValue = text("Sürüş Modu: Eco / Konfor", 12, R.color.textSecondary, false);
+        LinearLayout.LayoutParams driveLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        driveLp.topMargin = dp(3);
+        carText.addView(heroDriveValue, driveLp);
+        carRow.addView(carText, carTextLp);
+        card.addView(carRow);
+
+        LinearLayout metrics = new LinearLayout(context);
+        metrics.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams metricsLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        metricsLp.topMargin = dp(4);
+        card.addView(metrics, metricsLp);
+        heroSpeedValue = metric(metrics, "ANLIK HIZ", "0 km/s");
+        heroRangeValue = metric(metrics, "MENZİL", "—");
+        heroTireValue = metric(metrics, "LASTİK", "TPMS OK");
+        return card;
+    }
+
+    private int driverScore() {
+        DrivingSessionRecorder recorder = DrivingSessionRecorder.get(context);
+        DrivingTrip trip = recorder.isActive() ? recorder.getDisplayTrip() : recorder.getLastTrip();
+        if (trip != null && trip.score > 0) {
+            return trip.score;
+        }
+        List<DrivingTrip> history = DrivingTripStore.loadHistory(context);
+        return history.isEmpty() ? 100 : history.get(0).score;
     }
 
     private View buildQuickActions() {
@@ -370,6 +493,10 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             fuelValue.setText("—");
             rangeValue.setText("—");
             odoValue.setText("—");
+            if (heroStatusText != null) heroStatusText.setText("Bağlantı bekleniyor");
+            if (heroSpeedValue != null) heroSpeedValue.setText("0 km/s");
+            if (heroRangeValue != null) heroRangeValue.setText("—");
+            if (heroTireValue != null) heroTireValue.setText("TPMS —");
             return;
         }
         statusText.setText("Bağlı");
@@ -377,6 +504,35 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         fuelValue.setText(formatter.formatDashboardFuel(snapshot));
         rangeValue.setText(formatter.formatDashboardRange(snapshot));
         odoValue.setText(formatter.formatDashboardOdo(snapshot));
+        if (heroStatusText != null) {
+            heroStatusText.setText("SİSTEMLER HAZIR");
+            heroStatusText.setTextColor(UiStyles.color(context, R.color.buttonSuccessBright));
+        }
+        if (heroSpeedValue != null) heroSpeedValue.setText(formatter.formatDashboardSpeed(snapshot));
+        if (heroRangeValue != null) heroRangeValue.setText(formatter.formatDashboardRange(snapshot));
+        if (heroTireValue != null) {
+            boolean warn = VehicleMetricsSnapshot.isValid(snapshot.tirePressureWarning)
+                    && snapshot.tirePressureWarning != 0;
+            heroTireValue.setText(warn ? "TPMS UYARI" : "TPMS OK");
+            heroTireValue.setTextColor(UiStyles.color(context,
+                    warn ? R.color.buttonDanger : R.color.textPrimary));
+        }
+        if (heroDriveValue != null) {
+            heroDriveValue.setText("Sürüş Modu: " + driveModeLabel(snapshot.driveMode));
+        }
+    }
+
+    private String driveModeLabel(int mode) {
+        switch (mode) {
+            case 0: return "Eco";
+            case 1: return "Normal";
+            case 2: return "Sport";
+            case 3: return "Kar";
+            case 4: return "Çamur";
+            case 5: return "Offroad";
+            case 7: return "Kum";
+            default: return "Konfor";
+        }
     }
 
     private void dismissOnboarding() {

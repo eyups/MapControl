@@ -23,7 +23,7 @@ public final class MapControlApplication extends Application {
         AppLocaleManager.applyStoredLocale(this);
         LauncherLegacyPrefs.applyMigrations(this);
         DriverProfileManager.get(this);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         lastNightModeUiBits = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         UiStyles.setUiModeOverride(getResources().getConfiguration());
         registerComponentCallbacks(new ComponentCallbacks() {

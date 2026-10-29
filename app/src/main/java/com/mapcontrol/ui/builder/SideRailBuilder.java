@@ -105,37 +105,31 @@ public class SideRailBuilder {
         sideRailTopBar.setGravity(Gravity.CENTER_VERTICAL);
         sideRailTopBar.setMinimumHeight((int) (64 * context.getResources().getDisplayMetrics().density));
 
+        LinearLayout brandBlock = new LinearLayout(context);
+        brandBlock.setOrientation(LinearLayout.VERTICAL);
+        brandBlock.setGravity(Gravity.CENTER_VERTICAL);
+
         appTitleText = new TextView(context);
-        try {
-            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            SpannableString spannableText = new SpannableString("MapControl by vNoisy (" + versionName + ")");
-            int vNoisyStart = spannableText.toString().indexOf("vNoisy");
-            int vNoisyEnd = vNoisyStart + "vNoisy".length();
-            if (vNoisyStart >= 0) {
-                spannableText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC),
-                        vNoisyStart, vNoisyEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            int versionStart = spannableText.toString().indexOf("(");
-            int versionEnd = spannableText.length();
-            if (versionStart >= 0) {
-                spannableText.setSpan(new RelativeSizeSpan(0.82f),
-                        versionStart, versionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            appTitleText.setText(spannableText);
-        } catch (PackageManager.NameNotFoundException e) {
-            SpannableString spannableText = new SpannableString("MapControl by vNoisy");
-            int vNoisyStart = spannableText.toString().indexOf("vNoisy");
-            int vNoisyEnd = vNoisyStart + "vNoisy".length();
-            if (vNoisyStart >= 0) {
-                spannableText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC),
-                        vNoisyStart, vNoisyEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-            appTitleText.setText(spannableText);
-        }
-        appTitleText.setTextSize(24);
-        appTitleText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        appTitleText.setText("MapControl");
+        appTitleText.setTextSize(22);
+        appTitleText.setTextColor(UiStyles.color(context, R.color.oemAccent));
         appTitleText.setTypeface(null, android.graphics.Typeface.BOLD);
-        sideRailTopBar.addView(appTitleText);
+        appTitleText.setLetterSpacing(0.01f);
+        brandBlock.addView(appTitleText);
+
+        TextView modelText = new TextView(context);
+        modelText.setText("Tiggo 8 Pro Max");
+        modelText.setTextSize(11);
+        modelText.setTextColor(UiStyles.color(context, R.color.textSecondary));
+        modelText.setLetterSpacing(0.04f);
+        LinearLayout.LayoutParams modelLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        modelLp.topMargin = (int) (2 * context.getResources().getDisplayMetrics().density);
+        brandBlock.addView(modelText, modelLp);
+
+        sideRailTopBar.addView(brandBlock, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         sideRail.addView(sideRailTopBar, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
