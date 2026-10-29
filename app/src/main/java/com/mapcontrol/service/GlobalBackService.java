@@ -32,10 +32,11 @@ public class GlobalBackService extends AccessibilityService {
     private static GlobalBackService instance = null;
     /**
      * Ayarlarda / shell'de kullanılacak tam bileşen (manifest: .service.GlobalBackService)
-     * Yanlış: com.mapcontrol/.GlobalBackService → sınıf com.mapcontrol.GlobalBackService (mevcut değil)
+     * Yanlış: <applicationId>/.GlobalBackService → sınıf com.mapcontrol.GlobalBackService (mevcut değil)
      */
     public static final String ACCESSIBILITY_FLAT_COMPONENT =
-            "com.mapcontrol/com.mapcontrol.service.GlobalBackService";
+            com.mapcontrol.BuildConfig.APPLICATION_ID
+                    + "/com.mapcontrol.service.GlobalBackService";
 
     /** Rehberlik varken iki okuma arası en kısa süre. */
     private static final long YANDEX_SCRAPE_GAP_ACTIVE_MS = 200L;

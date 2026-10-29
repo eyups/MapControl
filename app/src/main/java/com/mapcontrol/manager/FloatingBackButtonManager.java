@@ -866,7 +866,7 @@ public class FloatingBackButtonManager {
     private void simulateBackButton() {
         String foregroundPackage = getForegroundPackage();
 
-        if (foregroundPackage != null && foregroundPackage.equals("com.mapcontrol")) {
+        if (foregroundPackage != null && foregroundPackage.equals(com.mapcontrol.BuildConfig.APPLICATION_ID)) {
             handler.post(() -> {
                 if (com.mapcontrol.ui.activity.MainActivity.dispatchOverlayBack()) {
                     log("[SUCCESS] Floating Back: MapControl içinde geri");

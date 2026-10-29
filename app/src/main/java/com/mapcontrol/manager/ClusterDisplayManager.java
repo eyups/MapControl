@@ -57,10 +57,10 @@ public class ClusterDisplayManager {
             }
 
             String appOnDisplay2 = getAppOnDisplay2();
-            if (appOnDisplay2 != null && !appOnDisplay2.isEmpty() && !"com.mapcontrol".equals(appOnDisplay2)) {
+            if (appOnDisplay2 != null && !appOnDisplay2.isEmpty() && !com.mapcontrol.BuildConfig.APPLICATION_ID.equals(appOnDisplay2)) {
                 callback.log("Display 2'de açık uygulama bulundu: " + appOnDisplay2 + " - Display 0'a taşınıyor ve kapatılıyor");
                 try {
-                    if (appOnDisplay2 == null || appOnDisplay2.equals("com.mapcontrol")) {
+                    if (appOnDisplay2 == null || appOnDisplay2.equals(com.mapcontrol.BuildConfig.APPLICATION_ID)) {
                         callback.log("com.mapcontrol paketi taşınmayacak: " + appOnDisplay2);
                     } else {
                         PackageManager pm = context.getPackageManager();
@@ -79,7 +79,7 @@ public class ClusterDisplayManager {
                 homeIntent.addCategory(Intent.CATEGORY_HOME);
                 homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(homeIntent);
-            } else if ("com.mapcontrol".equals(appOnDisplay2)) {
+            } else if (com.mapcontrol.BuildConfig.APPLICATION_ID.equals(appOnDisplay2)) {
                 callback.log("Display 2'de com.mapcontrol bulundu - taşıma işlemi atlandı");
             }
 
@@ -189,7 +189,7 @@ public class ClusterDisplayManager {
                 callback.log("Google Maps hedefi: yalnızca VDBus kapatıldı, ana ekrana taşıma atlandı");
             } else if (targetPackage != null && !targetPackage.trim().isEmpty()) {
                 try {
-                    if (targetPackage.equals("com.mapcontrol")) {
+                    if (targetPackage.equals(com.mapcontrol.BuildConfig.APPLICATION_ID)) {
                         callback.log("com.mapcontrol paketi taşınmayacak: " + targetPackage);
                     } else {
                         PackageManager pm = context.getPackageManager();
@@ -235,7 +235,7 @@ public class ClusterDisplayManager {
                         if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
                                 && processInfo.pkgList != null && processInfo.pkgList.length > 0) {
                             String packageName = processInfo.pkgList[0];
-                            if (!"com.mapcontrol".equals(packageName) && !isSystemOrPrivApp(packageName)) {
+                            if (!com.mapcontrol.BuildConfig.APPLICATION_ID.equals(packageName) && !isSystemOrPrivApp(packageName)) {
                                 return packageName;
                             }
                         }
@@ -263,7 +263,7 @@ public class ClusterDisplayManager {
                     endIndex = line.length();
                 }
                 String packageName = line.substring(startIndex, endIndex).trim();
-                if (!"com.mapcontrol".equals(packageName) && !isSystemOrPrivApp(packageName)) {
+                if (!com.mapcontrol.BuildConfig.APPLICATION_ID.equals(packageName) && !isSystemOrPrivApp(packageName)) {
                     lastPackage = packageName;
                 }
             }
@@ -283,7 +283,7 @@ public class ClusterDisplayManager {
             if (packageName == null || packageName.isEmpty()) {
                 return true;
             }
-            if ("com.mapcontrol".equals(packageName)) {
+            if (com.mapcontrol.BuildConfig.APPLICATION_ID.equals(packageName)) {
                 return false;
             }
             PackageManager pm = context.getPackageManager();

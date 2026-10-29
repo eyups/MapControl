@@ -401,7 +401,7 @@ public class AppsTabBuilder {
         for (PackageInfo pkgInfo : pm.getInstalledPackages(0)) {
             try {
                 String packageName = pkgInfo.packageName;
-                if (packageName.equals("com.mapcontrol")) continue;
+                if (packageName.equals(com.mapcontrol.BuildConfig.APPLICATION_ID)) continue;
 
                 ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
                 if (callback.isSystemOrPrivApp(appInfo)) continue;
@@ -934,7 +934,7 @@ public class AppsTabBuilder {
         infoContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
 
         final boolean hasUpdate = isInstalled && !currentVersion.equals(version);
-        final boolean isLocked = packageName.equals("com.mapcontrol");
+        final boolean isLocked = packageName.equals(com.mapcontrol.BuildConfig.APPLICATION_ID);
         final boolean finalIsInstalled = isInstalled;
 
         TextView nameText = new TextView(context);
@@ -1223,7 +1223,7 @@ public class AppsTabBuilder {
                 return;
             }
 
-            if ("com.mapcontrol".equals(packageName)) {
+            if (com.mapcontrol.BuildConfig.APPLICATION_ID.equals(packageName)) {
                 callback.log("Bu uygulama silinemez: " + packageName);
                 return;
             }

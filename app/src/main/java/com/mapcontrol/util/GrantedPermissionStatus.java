@@ -19,7 +19,8 @@ import java.util.List;
 public final class GrantedPermissionStatus {
 
     private static final String NOTIFICATION_LISTENER =
-            "com.mapcontrol/com.mapcontrol.media.LauncherMediaNotificationListener";
+            com.mapcontrol.BuildConfig.APPLICATION_ID
+                    + "/com.mapcontrol.media.LauncherMediaNotificationListener";
 
     private static final String[] APP_OPS = {
             "SYSTEM_ALERT_WINDOW",

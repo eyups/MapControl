@@ -50,7 +50,7 @@ public final class ProjectionTargetApps {
             if (appInfo == null) {
                 return true;
             }
-            if ("com.mapcontrol".equals(appInfo.packageName)) {
+            if (com.mapcontrol.BuildConfig.APPLICATION_ID.equals(appInfo.packageName)) {
                 return false;
             }
             boolean isSystemApp = (appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
@@ -115,7 +115,7 @@ public final class ProjectionTargetApps {
                     continue;
                 }
                 String pkg = info.activityInfo.packageName;
-                if (pkg.isEmpty() || "com.mapcontrol".equals(pkg)) {
+                if (pkg.isEmpty() || com.mapcontrol.BuildConfig.APPLICATION_ID.equals(pkg)) {
                     continue;
                 }
                 ResolveInfo existing = bestByPackage.get(pkg);

@@ -50,7 +50,7 @@ public final class AppLaunchHelper {
      * Relaunch app on default display. Skips {@code com.mapcontrol}.
      */
     public static void moveAppToDefaultDisplay(Context context, String packageName) {
-        if (packageName == null || "com.mapcontrol".equals(packageName)) {
+        if (packageName == null || com.mapcontrol.BuildConfig.APPLICATION_ID.equals(packageName)) {
             return;
         }
         PackageManager pm = context.getPackageManager();
