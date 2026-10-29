@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.core.content.FileProvider;
 
@@ -216,6 +217,7 @@ final class ApkUpdater {
     }
 
     private void result(Callback callback, boolean ok, String message) {
+        Log.i("MapControlOta", ok ? "ok: " + message : "failed: " + message);
         mainHandler.post(() -> callback.onResult(ok, message));
     }
 
