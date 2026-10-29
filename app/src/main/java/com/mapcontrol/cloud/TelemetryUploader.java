@@ -179,7 +179,7 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
     }
 
     /** Kontak kapanışını 15 sn yükleme aralığını beklemeden yakalar. */
-    JSONObject captureFinal(long tsMs) {
+    JSONObject captureFinal(long tsMs, boolean serverAllowsLocation) {
         VehicleMetricsSnapshot snapshot = latest;
         if (snapshot == null) {
             return null;
@@ -196,7 +196,7 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         if (powerMode != 0 && powerMode != 1) {
             return null;
         }
-        return buildPayload(tsMs, false);
+        return buildPayload(tsMs, serverAllowsLocation);
     }
 
     /** Normal örneği tampona ekler; final örneğini hemen gönderilmek üzere döndürür. */

@@ -240,7 +240,7 @@ public final class CloudManager {
             return;
         }
         if (telemetry != null) {
-            JSONObject immediateFinal = telemetry.captureFinal(System.currentTimeMillis());
+            JSONObject immediateFinal = telemetry.captureFinal(System.currentTimeMillis(), serverShareLocation);
             if (immediateFinal != null) {
                 sendFinal(immediateFinal);
             }
