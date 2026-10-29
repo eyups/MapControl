@@ -602,7 +602,7 @@ public final class InstallerConfirmClicker {
             return false;
         }
         String name = packageName.toString().toLowerCase(Locale.ROOT);
-        if (name.contains("com.mapcontrol")) {
+        if (name.contains(com.mapcontrol.BuildConfig.APPLICATION_ID)) {
             return false;
         }
         return name.contains("packageinstaller") || name.contains("permissioncontroller");

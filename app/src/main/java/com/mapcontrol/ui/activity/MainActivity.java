@@ -1170,7 +1170,7 @@ public class MainActivity extends AppCompatActivity {
             }
             
             // com.mapcontrol hariç tut
-            if ("com.mapcontrol".equals(appInfo.packageName)) {
+            if (com.mapcontrol.BuildConfig.APPLICATION_ID.equals(appInfo.packageName)) {
                 return false;
             }
             
@@ -1211,7 +1211,7 @@ public class MainActivity extends AppCompatActivity {
             }
             
             // com.mapcontrol hariç tut
-            if (packageName.equals("com.mapcontrol")) {
+            if (packageName.equals(com.mapcontrol.BuildConfig.APPLICATION_ID)) {
                 return false;
             }
             

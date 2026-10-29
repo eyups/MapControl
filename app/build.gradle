@@ -33,7 +33,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.mapcontrol"
+        applicationId "com.eyups.roaddeck"
         minSdk 29
         targetSdk 28
         versionCode 17

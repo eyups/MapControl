@@ -1090,7 +1090,7 @@ public class WebServerManager {
                     JSONObject appObj = new JSONObject();
                     appObj.put("name", appName);
                     appObj.put("package", packageName);
-                    appObj.put("locked", "com.mapcontrol".equals(packageName));
+                    appObj.put("locked", com.mapcontrol.BuildConfig.APPLICATION_ID.equals(packageName));
                     appArray.put(appObj);
                 } catch (Exception e) {
                     // Uygulama bilgisi alınamazsa atla
@@ -1141,7 +1141,7 @@ public class WebServerManager {
             }
             
             // Güvenlik: com.mapcontrol silinemez
-            if ("com.mapcontrol".equals(packageName)) {
+            if (com.mapcontrol.BuildConfig.APPLICATION_ID.equals(packageName)) {
                 sendErrorResponse(output, 400, "Bu uygulama silinemez");
                 return;
             }
@@ -1249,7 +1249,7 @@ public class WebServerManager {
             }
             
             // com.mapcontrol hariç tut
-            if ("com.mapcontrol".equals(appInfo.packageName)) {
+            if (com.mapcontrol.BuildConfig.APPLICATION_ID.equals(appInfo.packageName)) {
                 return false;
             }
             

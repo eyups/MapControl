@@ -3,7 +3,7 @@ set -e
 
 # Uygulamayı kaldır
 echo "📱 Uygulama kaldırılıyor..."
-echo "pm uninstall com.mapcontrol" | adb shell
+echo "pm uninstall com.eyups.roaddeck" | adb shell
 
 # /data/local/tmp içindeki yüklenen APK'ları temizle
 # (wildcard'ı cihaz tarafında çalıştırmak için tek tırnak kullandık)

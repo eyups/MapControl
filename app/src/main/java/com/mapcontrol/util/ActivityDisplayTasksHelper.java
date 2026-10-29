@@ -62,7 +62,7 @@ public final class ActivityDisplayTasksHelper {
                 continue;
             }
             String pkg = e.getPackageName();
-            if (pkg == null || pkg.isEmpty() || "com.mapcontrol".equals(pkg)) {
+            if (pkg == null || pkg.isEmpty() || com.mapcontrol.BuildConfig.APPLICATION_ID.equals(pkg)) {
                 continue;
             }
             if (shouldSkipInstalledPackage(app, pkg)) {
