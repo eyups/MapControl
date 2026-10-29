@@ -124,9 +124,12 @@ final class ApkUpdater {
     }
 
     private boolean isParked() {
-        return ComfortCommands.isConnected()
-                && ComfortCommands.readSpeedKmh() == 0
-                && ComfortCommands.readGear() == 1;
+        if (!ComfortCommands.isConnected() || ComfortCommands.readGear() != 1) {
+            return false;
+        }
+        // Bazı araçlarda hız sinyali P'de geçersiz (-1) döner.
+        int speed = ComfortCommands.readSpeedKmh();
+        return speed == 0 || speed < 0;
     }
 
     private boolean verifyPackage(File apk, Info info) {
