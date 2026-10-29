@@ -190,6 +190,7 @@ public final class CloudManager {
             if (!running) {
                 return;
             }
+            ApkUpdater.reportInstalledIfNeeded(appContext, config, http);
             if (telemetry != null) {
                 telemetry.start();
             }

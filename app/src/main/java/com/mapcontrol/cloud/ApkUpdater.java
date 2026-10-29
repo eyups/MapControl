@@ -42,6 +42,9 @@ final class ApkUpdater {
     }
 
     private static final long MAX_APK_BYTES = 300L * 1024 * 1024;
+    private static final String PREFS = "MapControlPrefs";
+    private static final String KEY_PENDING_ID = "otaPendingReleaseId";
+    private static final String KEY_PENDING_VERSION = "otaPendingVersionCode";
     private final Context context;
     private final CloudConfig config;
     private final CloudHttp http;
@@ -111,6 +114,7 @@ final class ApkUpdater {
                     result(callback, false, "signature_mismatch");
                     return;
                 }
+                savePending(info);
                 sendResult(info, "verified", "");
                 mainHandler.post(() -> openInstaller(apk, callback));
             } catch (Exception error) {
@@ -166,6 +170,34 @@ final class ApkUpdater {
         } catch (Exception error) {
             result(callback, false, "installer_failed");
         }
+    }
+
+    static void reportInstalledIfNeeded(Context context, CloudConfig config, CloudHttp http) {
+        android.content.SharedPreferences prefs = context.getSharedPreferences(
+                PREFS, Context.MODE_PRIVATE);
+        String releaseId = prefs.getString(KEY_PENDING_ID, "");
+        int pendingVersion = prefs.getInt(KEY_PENDING_VERSION, 0);
+        if (releaseId.isEmpty() || pendingVersion <= 0
+                || BuildConfig.VERSION_CODE < pendingVersion) {
+            return;
+        }
+        try {
+            JSONObject body = new JSONObject();
+            body.put("status", "installed");
+            body.put("release_id", releaseId);
+            body.put("reason", "");
+            http.postJson("/api/v1/car/ota/result", config.token(), body, 2048);
+            prefs.edit().remove(KEY_PENDING_ID).remove(KEY_PENDING_VERSION).apply();
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void savePending(Info info) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .edit()
+                .putString(KEY_PENDING_ID, info.id)
+                .putInt(KEY_PENDING_VERSION, info.versionCode)
+                .apply();
     }
 
     private void sendResult(Info info, String status, String reason) {
