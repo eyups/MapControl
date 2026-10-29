@@ -16,6 +16,7 @@ def elevenLabsApiKey = localProps.getProperty('ELEVENLABS_API_KEY', '')
 def elevenLabsApiKeyEscaped = elevenLabsApiKey.replace('\\', '\\\\').replace('"', '\\"')
 def elevenLabsVoiceId = localProps.getProperty('ELEVENLABS_VOICE_ID', '')
 def elevenLabsVoiceIdEscaped = elevenLabsVoiceId.replace('\\', '\\\\').replace('"', '\\"')
+def otaSignerSha256 = localProps.getProperty('OTA_SIGNER_SHA256', 'c37dc301bd0f989c559e601e63002f6f377d591267e7733b4970c60911a576d1')
 
 android {
     namespace 'com.mapcontrol'
@@ -41,6 +42,7 @@ android {
         buildConfigField "String", "GLITCHTIP_SECRET", "\"${glitchTipSecret}\""
         buildConfigField "String", "ELEVENLABS_API_KEY", "\"${elevenLabsApiKeyEscaped}\""
         buildConfigField "String", "ELEVENLABS_VOICE_ID", "\"${elevenLabsVoiceIdEscaped}\""
+        buildConfigField "String", "OTA_SIGNER_SHA256", "\"${otaSignerSha256}\""
         ndk {
             abiFilters 'arm64-v8a'
         }

@@ -126,6 +126,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".cloud.CloudCommandActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog.Alert" />
+
         <!-- Araç Launcher Modu: varsayılan olarak KAPALI (enabled=false). Ayarlar > Araç Launcher
              Modu açıldığında LauncherModeManager bu bileşeni etkinleştirir; böylece MapControl,
              cihazın Ana Ekran (HOME) uygulaması olarak seçilebilir hale gelir. MainActivity'yi

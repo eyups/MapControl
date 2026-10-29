@@ -10,6 +10,9 @@ import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -87,6 +90,31 @@ public final class VehicleValueWatcher {
             new Item(RD, RadarID.ID_RADAR_RHMF, "radar sağ orta ön"),
             new Item(RD, RadarID.ID_RADAR_RHF, "radar sağ ön"),
     };
+
+    /** Seçili VDBus değerlerinin tek seferlik JSON anlık görüntüsü. */
+    public static JSONArray snapshotJson() {
+        JSONArray readings = new JSONArray();
+        try {
+            CarInfoProxy proxy = CarInfoProxy.getInstance();
+            for (Item item : ITEMS) {
+                int[] values = proxy.getItemValues(item.module, item.id);
+                JSONObject entry = new JSONObject();
+                entry.put("module", item.module);
+                entry.put("id", item.id);
+                entry.put("label", item.label);
+                JSONArray valueArray = new JSONArray();
+                if (values != null) {
+                    for (int value : values) {
+                        valueArray.put(value);
+                    }
+                }
+                entry.put("values", valueArray);
+                readings.put(entry);
+            }
+        } catch (Throwable ignored) {
+        }
+        return readings;
+    }
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final Map<String, String> last = new HashMap<>();

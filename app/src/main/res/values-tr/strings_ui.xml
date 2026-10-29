@@ -1163,4 +1163,73 @@ IDCU=%5$s   5GTBox=%6$s</string>
 <string name="gesture_owner_shade_close">Perdeyi kapat</string>
 <string name="sunroof_gesture_pick_title">Kaydırma: %1$s</string>
 <string name="sunroof_gesture_change">Hareketi değiştir</string>
+
+    <!-- Bulut -->
+    <string name="settings_cloud_title">Bulut</string>
+    <string name="settings_cloud_desc">Telemetri ve tamamlanan sürüşleri sunucuya gönderir. Yalnızca Başlat’a basınca çalışır.</string>
+    <string name="settings_cloud_status_unpaired">Eşleştirilmedi</string>
+    <string name="settings_cloud_status_ready">Hazır</string>
+    <string name="settings_cloud_status_pairing">Eşleştiriliyor…</string>
+    <string name="settings_cloud_status_running">Çalışıyor</string>
+    <string name="settings_cloud_status_error">Bulut hatası</string>
+    <string name="settings_cloud_pair_hint">Eşleştirme kodu</string>
+    <string name="settings_cloud_pair_action">Eşleştir</string>
+    <string name="settings_cloud_pairing">Eşleştiriliyor…</string>
+    <string name="settings_cloud_paired">Eşleştirildi</string>
+    <string name="settings_cloud_start">Başlat</string>
+    <string name="settings_cloud_stop">Durdur</string>
+    <string name="settings_cloud_running">Çalışıyor</string>
+    <string name="settings_cloud_ready">Eşleştirildi; başlatmaya hazır</string>
+    <string name="settings_cloud_share_location">Konum paylaş</string>
+    <string name="settings_cloud_invalid_code">8 karakterlik kodu girin.</string>
+    <string name="settings_cloud_revoked">Cihaz iptal edildi; yeniden eşleştirin.</string>
+    <string name="settings_cloud_pair_failed">Eşleştirme başarısız.</string>
+    <string name="settings_cloud_error">Bulut hatası.</string>
+
+
+    <string name="cloud_command_title">Bulut komutu</string>
+    <string name="cloud_command_message">“%1$s” hedefine navigasyon başlatılsın mı?</string>
+    <string name="cloud_command_accept">Başlat</string>
+    <string name="cloud_command_reject">Reddet</string>
+
+
+    <string name="settings_cloud_send_log">Log gönder</string>
+    <string name="settings_cloud_log_sent">Log gönderildi.</string>
+    <string name="settings_cloud_log_failed">Log gönderilemedi.</string>
+
+
+    <string name="cloud_command_tts_message">Araçta sesli okunsun mu: “%1$s”?</string>
+    <string name="cloud_command_tts_accept">Oku</string>
+
+
+    <string name="settings_cloud_vdbus_snapshot">VDBus anlık görüntüsü gönder</string>
+    <string name="settings_cloud_vdbus_sent">VDBus anlık görüntüsü gönderildi.</string>
+    <string name="settings_cloud_vdbus_failed">VDBus anlık görüntüsü gönderilemedi.</string>
+
+
+    <string name="cloud_command_scene_message">Araçta “%1$s” sahnesi uygulansın mı?</string>
+    <string name="cloud_command_scene_accept">Uygula</string>
+
+
+    <string name="settings_cloud_check_update">Güncelleme kontrol et</string>
+    <string name="settings_cloud_up_to_date">Roadmate güncel.</string>
+    <string name="settings_cloud_update_title">Güncelleme var</string>
+    <string name="settings_cloud_update_message">Sürüm %1$s (%2$d MB)
+
+%3$s</string>
+    <string name="settings_cloud_update_install">İndir ve kur</string>
+    <string name="settings_cloud_update_downloading">İndiriliyor ve doğrulanıyor…</string>
+    <string name="settings_cloud_update_ready">Kurulumu tamamlamak için kurulum ekranını aç.</string>
+    <string name="settings_cloud_update_failed">Güncelleme başlatılamadı.</string>
+
+
+    <string name="settings_cloud_backup">Profilleri yedekle</string>
+    <string name="settings_cloud_restore">Profilleri geri yükle</string>
+    <string name="settings_cloud_backup_done">Profil yedeği gönderildi.</string>
+    <string name="settings_cloud_backup_failed">Profil yedeği gönderilemedi.</string>
+    <string name="settings_cloud_restore_confirm">Profil ve sahne tercihleri son bulut yedeğiyle değiştirilecek. Devam edilsin mi?</string>
+    <string name="settings_cloud_restore_action">Geri yükle</string>
+    <string name="settings_cloud_restore_done">Yedek geri yüklendi. Arayüz için uygulamayı yeniden başlat.</string>
+    <string name="settings_cloud_restore_failed">Yedek geri yüklenemedi.</string>
+
 </resources>

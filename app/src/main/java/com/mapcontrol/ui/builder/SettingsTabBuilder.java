@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
 import com.mapcontrol.driving.DrivingCoach;
+import com.mapcontrol.cloud.CloudTabBuilder;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTestData;
 import com.mapcontrol.driving.DrivingTripStore;
@@ -66,6 +67,7 @@ public class SettingsTabBuilder {
     private UiStyles.BinarySegmentHandle launcherModeSegmentHandle;
     private UiStyles.BinarySegmentHandle languageSegmentHandle;
     private TextView launcherHomeSettingsLink;
+    private CloudTabBuilder cloudTabBuilder;
 
     public SettingsTabBuilder(Context context, SharedPreferences prefs, SettingsCallback callback) {
         this.context = context;
@@ -76,6 +78,10 @@ public class SettingsTabBuilder {
     }
 
     public ScrollView build() {
+        if (cloudTabBuilder != null) {
+            cloudTabBuilder.release();
+            cloudTabBuilder = null;
+        }
         scrollView = new ScrollView(context);
         scrollView.setBackgroundColor(Color.TRANSPARENT);
         scrollView.setPadding(0, 0, 0, 0);
@@ -125,6 +131,7 @@ public class SettingsTabBuilder {
             createDrivingTestDataSection(left);
             createAppInfoSection(left);
             createBootAutostartSection(left);
+            createCloudSection(left);
 
             createAdbSection(right);
             createSystemStatsSection(right);
@@ -147,6 +154,7 @@ public class SettingsTabBuilder {
         createDrivingTestDataSection(card);
         createAppInfoSection(card);
         createBootAutostartSection(card);
+        createCloudSection(card);
         createAdbSection(card);
         createSystemStatsSection(card);
         createPermissionsSection(card);
@@ -154,6 +162,14 @@ public class SettingsTabBuilder {
         createLauncherModeSection(card);
         createVehicleModelSection(card);
         parent.addView(card, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void createCloudSection(LinearLayout parentContainer) {
+        cloudTabBuilder = new CloudTabBuilder(context,
+                message -> callback.log("[Bulut] " + message));
+        parentContainer.addView(cloudTabBuilder.getView(), new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
     }
@@ -1217,6 +1233,10 @@ public class SettingsTabBuilder {
 
     public void release() {
         handler.removeCallbacksAndMessages(null);
+        if (cloudTabBuilder != null) {
+            cloudTabBuilder.release();
+            cloudTabBuilder = null;
+        }
     }
 
 }

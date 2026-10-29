@@ -1144,4 +1144,73 @@ IDCU=%5$s   5GTBox=%6$s</string>
 <string name="gesture_owner_shade_close">Close sunshade</string>
 <string name="sunroof_gesture_pick_title">Swipe for: %1$s</string>
 <string name="sunroof_gesture_change">Change swipe</string>
+
+    <!-- Bulut -->
+    <string name="settings_cloud_title">Cloud</string>
+    <string name="settings_cloud_desc">Sends telemetry and completed drives to the server. Starts only when you press Start.</string>
+    <string name="settings_cloud_status_unpaired">Not paired</string>
+    <string name="settings_cloud_status_ready">Ready</string>
+    <string name="settings_cloud_status_pairing">Pairing…</string>
+    <string name="settings_cloud_status_running">Running</string>
+    <string name="settings_cloud_status_error">Cloud error</string>
+    <string name="settings_cloud_pair_hint">Pairing code</string>
+    <string name="settings_cloud_pair_action">Pair</string>
+    <string name="settings_cloud_pairing">Pairing…</string>
+    <string name="settings_cloud_paired">Paired</string>
+    <string name="settings_cloud_start">Start</string>
+    <string name="settings_cloud_stop">Stop</string>
+    <string name="settings_cloud_running">Running</string>
+    <string name="settings_cloud_ready">Paired; ready to start</string>
+    <string name="settings_cloud_share_location">Share location</string>
+    <string name="settings_cloud_invalid_code">Enter the 8-character code.</string>
+    <string name="settings_cloud_revoked">Device revoked; pair again.</string>
+    <string name="settings_cloud_pair_failed">Pairing failed.</string>
+    <string name="settings_cloud_error">Cloud error.</string>
+
+
+    <string name="cloud_command_title">Cloud command</string>
+    <string name="cloud_command_message">Start navigation to “%1$s”?</string>
+    <string name="cloud_command_accept">Start</string>
+    <string name="cloud_command_reject">Reject</string>
+
+
+    <string name="settings_cloud_send_log">Send log</string>
+    <string name="settings_cloud_log_sent">Log uploaded.</string>
+    <string name="settings_cloud_log_failed">Log upload failed.</string>
+
+
+    <string name="cloud_command_tts_message">Read aloud in the vehicle: “%1$s”?</string>
+    <string name="cloud_command_tts_accept">Read</string>
+
+
+    <string name="settings_cloud_vdbus_snapshot">Send VDBus snapshot</string>
+    <string name="settings_cloud_vdbus_sent">VDBus snapshot uploaded.</string>
+    <string name="settings_cloud_vdbus_failed">VDBus snapshot failed.</string>
+
+
+    <string name="cloud_command_scene_message">Apply “%1$s” scene in the vehicle?</string>
+    <string name="cloud_command_scene_accept">Apply</string>
+
+
+    <string name="settings_cloud_check_update">Check for updates</string>
+    <string name="settings_cloud_up_to_date">Roadmate is up to date.</string>
+    <string name="settings_cloud_update_title">Update available</string>
+    <string name="settings_cloud_update_message">Version %1$s (%2$d MB)
+
+%3$s</string>
+    <string name="settings_cloud_update_install">Download and install</string>
+    <string name="settings_cloud_update_downloading">Downloading and verifying…</string>
+    <string name="settings_cloud_update_ready">Open the installer to finish the update.</string>
+    <string name="settings_cloud_update_failed">Update could not be started.</string>
+
+
+    <string name="settings_cloud_backup">Back up profiles</string>
+    <string name="settings_cloud_restore">Restore profiles</string>
+    <string name="settings_cloud_backup_done">Profile backup uploaded.</string>
+    <string name="settings_cloud_backup_failed">Profile backup failed.</string>
+    <string name="settings_cloud_restore_confirm">Profile and scene preferences will be replaced with the last cloud backup. Continue?</string>
+    <string name="settings_cloud_restore_action">Restore</string>
+    <string name="settings_cloud_restore_done">Backup restored. Restart MapControl to refresh the UI.</string>
+    <string name="settings_cloud_restore_failed">Backup could not be restored.</string>
+
 </resources>
