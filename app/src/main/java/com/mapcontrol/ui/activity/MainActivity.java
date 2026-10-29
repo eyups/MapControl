@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
@@ -79,6 +80,7 @@ import com.mapcontrol.ui.builder.DriveModeTabBuilder;
 import com.mapcontrol.service.DmsFaceRecognitionManager;
 import com.mapcontrol.ui.builder.Camera360TabBuilder;
 import com.mapcontrol.ui.builder.ClimateAutomationTabBuilder;
+import com.mapcontrol.ui.builder.SunroofAutomationTabBuilder;
 import com.mapcontrol.ui.builder.DmsFaceRecognitionTabBuilder;
 import com.mapcontrol.ui.builder.EqualizerTabBuilder;
 import com.mapcontrol.ui.builder.FileUploadTabBuilder;
@@ -91,6 +93,7 @@ import com.mapcontrol.ui.builder.LogTabBuilder;
 import com.mapcontrol.ui.builder.ProfileTabBuilder;
 import com.mapcontrol.ui.builder.ProjectionTabBuilder;
 import com.mapcontrol.ui.builder.SettingsTabBuilder;
+import com.mapcontrol.ui.builder.SplitScreenTabBuilder;
 import com.mapcontrol.ui.builder.SideRailBuilder;
 import com.mapcontrol.ui.builder.ValetTabBuilder;
 import com.mapcontrol.ui.builder.TopBarBuilder;
@@ -114,11 +117,13 @@ import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.widget.CyberScanlineView;
 import com.mapcontrol.ui.widget.MaxWidthFrameLayout;
 import com.mapcontrol.ui.widget.SystemStatsOverlay;
+import com.mapcontrol.util.SystemLogBuffer;
 
 public class MainActivity extends AppCompatActivity {
 
     /** Yüzen yansıtma çubuğundan hedef uygulama seçiciyi açmak için {@link Intent} extra anahtarı. */
     public static final String EXTRA_OPEN_PROJECTION_TARGET_PICKER = "com.mapcontrol.extra.OPEN_PROJECTION_TARGET_PICKER";
+    public static final String EXTRA_OPEN_LOG_TAB = "com.mapcontrol.extra.OPEN_LOG_TAB";
     private static final String EXTRA_OPEN_SETTINGS_AFTER_THEME = "com.mapcontrol.extra.OPEN_SETTINGS_AFTER_THEME";
     /** Araç Launcher Modu "Ana Ekran" karşılama sekmesinin {@code switchTab} indeksi. */
     private static final int TAB_LAUNCHER = 10;
@@ -131,9 +136,13 @@ public class MainActivity extends AppCompatActivity {
     public static final int TAB_CLIMATE_AUTOMATION = 18;
     public static final int TAB_FACE_RECOGNITION = 19;
     public static final int TAB_CAMERA_360 = 20;
+    public static final int TAB_SPLIT_SCREEN = 21;
+    public static final int TAB_SUNROOF_AUTOMATION = 22;
     private ScrollView climateAutomationScrollView;
     private ScrollView faceRecognitionScrollView;
+    private ScrollView sunroofAutomationScrollView;
     private ClimateAutomationTabBuilder climateAutomationTabBuilder;
+    private SunroofAutomationTabBuilder sunroofAutomationTabBuilder;
     private DmsFaceRecognitionTabBuilder dmsFaceRecognitionTabBuilder;
     private boolean faceRecognitionStatusBroadcastRegistered;
     private final BroadcastReceiver faceRecognitionStatusReceiver = new BroadcastReceiver() {
@@ -146,7 +155,9 @@ public class MainActivity extends AppCompatActivity {
     };
     private TextView tvLogs;
     private ScrollView scrollView;
-    private final StringBuilder logBuffer = new StringBuilder();
+    private final Handler systemLogHandler = new Handler(Looper.getMainLooper());
+    private final SystemLogBuffer.Listener systemLogListener = text ->
+            systemLogHandler.post(() -> renderSystemLogs(text));
     private Handler handler;
     private volatile boolean isNavigationOpen = false; // Navigasyon durumu
     private String targetPackage = ""; // Seçilen uygulama paketi
@@ -196,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
     private LogTabBuilder logTabBuilder;
     private Camera360TabBuilder camera360TabBuilder;
     private android.view.View camera360TabContent;
+    private SplitScreenTabBuilder splitScreenTabBuilder;
     /** Bu görev, Android'in Ana Ekran (HOME) isteğiyle mi başlatıldı? */
     private boolean launchedAsHome;
     private int currentTab = 17; // 17=Ana Sayfa, 0=Wi-Fi, 1=Web, 2=Profil, 3=Yansıtma, 4=LOG, 5=Uygulamalar, 6=Hafıza, 7=Ayarlar, 8=Açılış Sesi, 9=Araç Bilgi, 10=Ana Ekran (Launcher), 11=Ekolayzer
@@ -217,6 +229,16 @@ public class MainActivity extends AppCompatActivity {
     private ProfileApiService profileApiService; // API servisi
     private FrameLayout mainRootContainer;
     private SystemStatsOverlay systemStatsOverlay;
+    private TextView cameraRecordingBadge;
+    private final Runnable cameraRecordingBadgeTicker = new Runnable() {
+        @Override
+        public void run() {
+            updateCameraRecordingBadge();
+            if (handler != null) {
+                handler.postDelayed(this, 1000);
+            }
+        }
+    };
     /** Gece/gündüz uiMode — Activity recreate etmeden soft tema yenilemek için. */
     private int lastNightModeUiBits = -1;
     /** Son uygulanan yön; configChanges orientation activity'yi yeniden kurmaz. */
@@ -753,7 +775,7 @@ public class MainActivity extends AppCompatActivity {
         logTabBuilder = new LogTabBuilder(this, new LogTabBuilder.LogCallback() {
             @Override
             public void onClearLogs() {
-                logBuffer.setLength(0);
+                SystemLogBuffer.clear();
                 if (logTabBuilder != null && logTabBuilder.getLogsTextView() != null) {
                     logTabBuilder.getLogsTextView().setText("");
                 }
@@ -777,6 +799,8 @@ public class MainActivity extends AppCompatActivity {
         });
         logTabContent = logTabBuilder.getTabContent();
         tvLogs = logTabBuilder.getLogsTextView();
+        SystemLogBuffer.addListener(systemLogListener);
+        renderSystemLogs(SystemLogBuffer.snapshot());
         scrollView = logTabBuilder.getScrollView();
 
         welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
@@ -820,6 +844,9 @@ public class MainActivity extends AppCompatActivity {
         });
         camera360TabContent = camera360TabBuilder.getTabContent();
         camera360TabBuilder.setWideListener(this::setContentWide);
+
+        splitScreenTabBuilder = new SplitScreenTabBuilder(this,
+                msg -> MainActivity.this.log(msg));
 
         climateAutomationTabBuilder = new ClimateAutomationTabBuilder(this, prefs,
                 msg -> MainActivity.this.log(msg));
@@ -991,6 +1018,10 @@ public class MainActivity extends AppCompatActivity {
             applyLauncherChrome(false);
             switchTab(TAB_HOME);
         }
+        if (getIntent().getBooleanExtra(EXTRA_OPEN_LOG_TAB, false)) {
+            getIntent().removeExtra(EXTRA_OPEN_LOG_TAB);
+            switchTab(4);
+        }
 
         if (getIntent().getBooleanExtra(EXTRA_OPEN_SETTINGS_AFTER_THEME, false)) {
             getIntent().removeExtra(EXTRA_OPEN_SETTINGS_AFTER_THEME);
@@ -1025,6 +1056,58 @@ public class MainActivity extends AppCompatActivity {
                             android.view.ViewGroup.LayoutParams.MATCH_PARENT));
         }
         attachSystemStatsOverlay();
+        attachCameraRecordingBadge();
+    }
+
+    private int dp(int value) {
+        return Math.round(value * getResources().getDisplayMetrics().density);
+    }
+
+    /** Kamera kaydı başka sekmedeyken küçük bir hatırlatıcı gösterir. */
+    private void attachCameraRecordingBadge() {
+        if (mainRootContainer == null) {
+            return;
+        }
+        if (cameraRecordingBadge != null) {
+            updateCameraRecordingBadge();
+            return;
+        }
+        cameraRecordingBadge = new TextView(this);
+        cameraRecordingBadge.setText(R.string.camera360_recording_continues);
+        cameraRecordingBadge.setTextSize(11);
+        cameraRecordingBadge.setTypeface(null, android.graphics.Typeface.BOLD);
+        cameraRecordingBadge.setTextColor(android.graphics.Color.WHITE);
+        cameraRecordingBadge.setPadding(dp(12), dp(6), dp(12), dp(6));
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(0xE6C62828);
+        bg.setCornerRadius(dp(12));
+        cameraRecordingBadge.setBackground(bg);
+        cameraRecordingBadge.setVisibility(android.view.View.GONE);
+        cameraRecordingBadge.setClickable(false);
+        cameraRecordingBadge.setFocusable(false);
+        int margin = dp(16);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                android.view.Gravity.BOTTOM | android.view.Gravity.START);
+        lp.setMargins(margin, margin, margin, margin);
+        mainRootContainer.addView(cameraRecordingBadge, lp);
+        cameraRecordingBadge.bringToFront();
+        updateCameraRecordingBadge();
+    }
+
+    private void updateCameraRecordingBadge() {
+        if (cameraRecordingBadge == null) {
+            return;
+        }
+        boolean show = camera360TabBuilder != null
+                && camera360TabBuilder.isRecordingActive()
+                && currentTab != TAB_CAMERA_360;
+        cameraRecordingBadge.setVisibility(show
+                ? android.view.View.VISIBLE : android.view.View.GONE);
+        if (show) {
+            cameraRecordingBadge.bringToFront();
+        }
     }
 
     /** Tüm sekmelerin üzerinde duran sistem HUD'ını kök FrameLayout'a ekler. */
@@ -1280,6 +1363,7 @@ public class MainActivity extends AppCompatActivity {
         if (tabIndex == TAB_CAMERA_360 && camera360TabBuilder != null) {
             camera360TabBuilder.onTabVisible();
         }
+        updateCameraRecordingBadge();
     }
 
     /** İçeriği verilen parent'a ekler; başlık / top-bar chrome {@link #applyTabChrome} ile. */
@@ -1328,6 +1412,9 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_CLIMATE_AUTOMATION) {
             rebuildClimateAutomationTab();
             addTabChild(parent, climateAutomationScrollView, matchParent);
+        } else if (tabIndex == TAB_SUNROOF_AUTOMATION) {
+            rebuildSunroofAutomationTab();
+            addTabChild(parent, sunroofAutomationScrollView, matchParent);
         } else if (tabIndex == TAB_FACE_RECOGNITION) {
             addTabChild(parent, faceRecognitionScrollView, matchParent);
             if (dmsFaceRecognitionTabBuilder != null) {
@@ -1335,6 +1422,11 @@ public class MainActivity extends AppCompatActivity {
             }
         } else if (tabIndex == TAB_CAMERA_360) {
             addTabChild(parent, camera360TabContent, matchParent);
+        } else if (tabIndex == TAB_SPLIT_SCREEN) {
+            if (splitScreenTabBuilder != null) {
+                addTabChild(parent, splitScreenTabBuilder.getScrollView(), matchParent);
+                splitScreenTabBuilder.onTabVisible();
+            }
         } else if (tabIndex == TAB_LAUNCHER) {
             if (launcherScrollView != null) {
                 addTabChild(parent, launcherScrollView, matchParent);
@@ -1437,6 +1529,14 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_CAMERA_360) {
             if (topBarTitle != null) {
                 topBarTitle.setText(R.string.camera360_title);
+            }
+        } else if (tabIndex == TAB_SPLIT_SCREEN) {
+            if (topBarTitle != null) {
+                topBarTitle.setText(R.string.side_rail_split_screen);
+            }
+        } else if (tabIndex == TAB_SUNROOF_AUTOMATION) {
+            if (topBarTitle != null) {
+                topBarTitle.setText(R.string.sunroof_auto_title);
             }
         }
     }
@@ -1708,6 +1808,12 @@ public class MainActivity extends AppCompatActivity {
             intent.removeExtra(EXTRA_OPEN_PROJECTION_TARGET_PICKER);
             deferredOpenProjectionTargetPicker = true;
         }
+        if (intent != null && intent.getBooleanExtra(EXTRA_OPEN_LOG_TAB, false)) {
+            intent.removeExtra(EXTRA_OPEN_LOG_TAB);
+            if (tabContentArea != null) {
+                switchTab(4);
+            }
+        }
         // Cihaz Ana Ekran (Home) tuşuna basılıp uygulama zaten açıkken (singleTop) tekrar
         // çağrılırsa Araç Launcher karşılama ekranına dön.
         if (LauncherModeManager.isHomeIntent(intent)) {
@@ -1976,7 +2082,8 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT));
         }
         if (logTabBuilder != null) {
-            CharSequence logs = tvLogs != null ? tvLogs.getText() : logBuffer.toString();
+            CharSequence logs = tvLogs != null ? tvLogs.getText()
+                    : SystemLogBuffer.snapshot();
             logTabContent = logTabBuilder.build();
             tvLogs = logTabBuilder.getLogsTextView();
             scrollView = logTabBuilder.getScrollView();
@@ -2011,6 +2118,9 @@ public class MainActivity extends AppCompatActivity {
         if (climateAutomationTabBuilder != null) {
             rebuildClimateAutomationTab();
         }
+        if (sunroofAutomationTabBuilder != null) {
+            rebuildSunroofAutomationTab();
+        }
         if (vehicleInfoTabBuilder != null) {
             boolean listening = currentTab == 9;
             if (listening) {
@@ -2025,6 +2135,12 @@ public class MainActivity extends AppCompatActivity {
         if (drivingHistoryTabBuilder != null) {
             drivingHistoryTabBuilder.refresh();
         }
+        if (camera360TabBuilder != null) {
+            camera360TabContent = camera360TabBuilder.rebuildForUiMode();
+        }
+        if (splitScreenTabBuilder != null) {
+            splitScreenTabBuilder.rebuild();
+        }
     }
 
         private void rebuildClimateAutomationTab() {
@@ -2038,6 +2154,27 @@ public class MainActivity extends AppCompatActivity {
             climateAutomationScrollView.removeAllViews();
         }
         climateAutomationScrollView.addView(climateAutomationTabBuilder.build(),
+                new ScrollView.LayoutParams(
+                        ScrollView.LayoutParams.MATCH_PARENT,
+                        ScrollView.LayoutParams.WRAP_CONTENT));
+    }
+
+    /**
+     * Cam tavan otomasyonu yalnız kullanıcı sekmeyi açınca başlatılır; uygulama/servis
+     * açılışında otomatik VDBus/sensör aboneliği kurulmaz.
+     */
+    private void rebuildSunroofAutomationTab() {
+        if (sunroofAutomationTabBuilder == null) {
+            sunroofAutomationTabBuilder = new SunroofAutomationTabBuilder(this,
+                    msg -> MainActivity.this.log(msg));
+        }
+        if (sunroofAutomationScrollView == null) {
+            sunroofAutomationScrollView = new ScrollView(this);
+            sunroofAutomationScrollView.setFillViewport(true);
+        } else {
+            sunroofAutomationScrollView.removeAllViews();
+        }
+        sunroofAutomationScrollView.addView(sunroofAutomationTabBuilder.build(),
                 new ScrollView.LayoutParams(
                         ScrollView.LayoutParams.MATCH_PARENT,
                         ScrollView.LayoutParams.WRAP_CONTENT));
@@ -2109,10 +2246,18 @@ public class MainActivity extends AppCompatActivity {
         if (systemStatsOverlay != null) {
             systemStatsOverlay.setActive(true);
         }
+        if (handler != null) {
+            handler.removeCallbacks(cameraRecordingBadgeTicker);
+            handler.post(cameraRecordingBadgeTicker);
+        }
+        updateCameraRecordingBadge();
     }
 
     @Override
     protected void onPause() {
+        if (handler != null) {
+            handler.removeCallbacks(cameraRecordingBadgeTicker);
+        }
         if (systemStatsOverlay != null) {
             systemStatsOverlay.setActive(false);
         }
@@ -2129,9 +2274,10 @@ public class MainActivity extends AppCompatActivity {
         if (welcomeSoundTabBuilder != null) {
             welcomeSoundTabBuilder.onHostPause();
         }
-        // Kamera 360 arka planda akmaya devam etmesin (bant genisligi/CPU + ekran karincalanmasi)
+        // Kamera 360 arka planda akmaya devam etmesin; ancak SurfaceView'ı
+        // burada sökme (SurfaceFlinger producer/fence yarışı).
         if (currentTab == TAB_CAMERA_360 && camera360TabBuilder != null) {
-            camera360TabBuilder.onTabHidden();
+            camera360TabBuilder.onHostPause();
         }
         super.onPause();
     }
@@ -2302,8 +2448,19 @@ public class MainActivity extends AppCompatActivity {
             vdbusBridgeAcquired = false;
             MapControlVDBusKeyBridge.release(this);
         }
+        SystemLogBuffer.removeListener(systemLogListener);
         if (serviceInitializer != null) serviceInitializer.onDestroy();
         super.onDestroy();
+    }
+
+    private void renderSystemLogs(String text) {
+        if (tvLogs == null) {
+            return;
+        }
+        tvLogs.setText(text == null ? "" : text);
+        if (scrollView != null) {
+            scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
+        }
     }
 
     private void log(String msg) {
@@ -2324,21 +2481,7 @@ public class MainActivity extends AppCompatActivity {
             coloredLine = "[" + timestamp + "] DBG " + msg.replace("[DEBUG]", "").trim() + "\n";
         }
         
-        logBuffer.append(coloredLine);
-        // UI/log belleği sınırsız büyümesin.
-        if (logBuffer.length() > 200_000) {
-            logBuffer.delete(0, logBuffer.length() - 150_000);
-        }
-        handler.post(() -> {
-            // UI henüz kurulmadan (initializeApp başında) gelen loglar buffer'da kalır
-            if (tvLogs == null) {
-                return;
-            }
-            tvLogs.setText(logBuffer.toString());
-            if (scrollView != null) {
-                scrollView.post(() -> scrollView.fullScroll(View.FOCUS_DOWN));
-            }
-        });
+        SystemLogBuffer.append(coloredLine);
     }
 
     // App operations moved to `AppsTabBuilder`.

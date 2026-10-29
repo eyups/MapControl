@@ -23,10 +23,12 @@ object WelcomeTts {
         }
         val app = context.applicationContext
         val selected = MapControlSpeech.isElevenLabsSelected(app)
+        val iflytek = MapControlSpeech.isIflytekSelected(app)
         val hasKey = MapControlSpeech.hasApiKey(app)
         val online = MapControlSpeech.isOnline(app)
         Log.i("WelcomeTts", "motor=" + MapControlSpeech.engine(app)
-                + " selected=" + selected + " key=" + hasKey + " online=" + online)
+                + " selected=" + selected + " iflytek=" + iflytek
+                + " key=" + hasKey + " online=" + online)
         val eleven = selected && hasKey && online
         if (eleven) {
             try {
@@ -48,7 +50,10 @@ object WelcomeTts {
                 sherpa(app, localText, onSuccess, onError, t.javaClass.simpleName)
             }
         } else {
-            sherpa(app, localText, onSuccess, onError, "offline")
+            // iFlytek can speak live, but its service has no synthesize-to-file API.
+            // Welcome audio is stored as a file, so use the embedded Sherpa engine.
+            sherpa(app, localText, onSuccess, onError,
+                    if (iflytek) "iflytek-no-file-api" else "offline")
         }
     }
 

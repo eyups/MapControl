@@ -596,7 +596,10 @@ void CamClose(Session& s, CamStream& c) {
         memcpy(m, &t, 8);
         memcpy(m + 8, &c.token, 8);
         uint32_t ms = 0;
-        HabTransact(s.fd, s.chanA, m, 16, sizeof(m), 300, &ms);
+        uint64_t t0 = NowNs();
+        int r = HabTransact(s.fd, s.chanA, m, 16, sizeof(m), 300, &ms);
+        NLOG("CamClose tip8 id=%u ret=%d ms=%u elapsed=%llums", c.inputId, r, ms,
+             (unsigned long long)((NowNs() - t0) / 1000000ULL));
         c.started = false;
     }
     if (c.opened) {
@@ -605,13 +608,18 @@ void CamClose(Session& s, CamStream& c) {
         memcpy(m, &t, 8);
         memcpy(m + 8, &c.token, 8);
         uint32_t ms = 0;
-        HabTransact(s.fd, s.chanA, m, 16, sizeof(m), 300, &ms);
+        uint64_t t0 = NowNs();
+        int r = HabTransact(s.fd, s.chanA, m, 16, sizeof(m), 300, &ms);
+        NLOG("CamClose tip2 id=%u ret=%d ms=%u elapsed=%llums", c.inputId, r, ms,
+             (unsigned long long)((NowNs() - t0) / 1000000ULL));
         c.opened = false;
     }
     for (auto& b : c.bufs) {
         if (b.exported) {
             HabUnexportReq req{s.chanA, b.handle, 1};
-            ioctl(s.fd, kHabIoctlUnexport, &req);
+            errno = 0;
+            int r = ioctl(s.fd, kHabIoctlUnexport, &req);
+            NLOG("CamClose unexport handle=%u ret=%d errno=%d", b.handle, r, errno);
             b.exported = false;
         }
         if (b.ptr != nullptr) { munmap(b.ptr, c.allocSize); b.ptr = nullptr; }
@@ -1170,11 +1178,14 @@ void ZcDetach(int i) {
 }
 
 void ZcShutdown() {
+    // Tum EGLImage/texture kullanimlari bitmeden dma-buf fd'leri kapanmasin.
+    glFinish();
     for (int i = 0; i < 4; i++) {
         ZcDetach(i);
         std::lock_guard<std::mutex> h(gSlots[i].hold);
         ZcDestroyCam(gZc[i]);
     }
+    glFinish();
     gZcDisplay = EGL_NO_DISPLAY;
 }
 

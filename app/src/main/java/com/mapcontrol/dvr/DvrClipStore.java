@@ -20,14 +20,19 @@ import java.util.regex.Pattern;
 
 /**
  * Kayit klasorundeki MP4'leri kliplere gruplar (ayni zaman damgali 4 aci tek klip)
- * ve saklama kurallarini uygular: gun siniri, en eskiden silme, bos alan rezervi.
+ * ve saklama kurallarini uygular: bos alan rezervi korunamazsa en kucuk klip id'sinden
+ * (en eski) silme. Klip adlari zaman damgasi + "_id_N" icerir; id her yeni klipte artar.
  * Yazilmakta olan klip (exclude) hicbir zaman listelenmez/silinmez.
  */
 public final class DvrClipStore {
     private static final String TAG = "DvrClipStore";
     private static final String TIME = "(\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}-\\d{2})";
-    /** f_m_/r_m_/l_m_/b_m_ (ayri aci) veya s_ (tek dosya) + zaman. */
-    private static final Pattern NAME = Pattern.compile("^(?:([frlb])_m|s)_" + TIME + "\\.mp4$");
+    /**
+     * f_m_/r_m_/l_m_/b_m_ (ayri aci) veya s_ (tek dosya) + zaman + istege bagli _id_N.
+     * Id'siz (eski/USB) dosyalar id 0 sayilir ve silmede ilk sirada gider.
+     */
+    private static final Pattern NAME = Pattern.compile(
+            "^(?:([frlb])_m|s)_" + TIME + "(?:" + CameraRecorder.ID_TAG + "(\\d{1,18}))?\\.mp4$");
     /** Eski adlandirma: DVR_zaman[_ON|_SAG|_SOL|_ARKA]. */
     private static final Pattern LEGACY_NAME = Pattern.compile("^DVR_" + TIME + "(?:_([A-Z]+))?\\.mp4$");
 
@@ -36,15 +41,19 @@ public final class DvrClipStore {
 
     /** Ayni anda kaydedilmis dosya grubu. camFiles indeksi CameraRecorder.CAM_SUFFIX sirasidir. */
     public static final class Clip {
+        /** Ayni klibin dosyalarini birlestiren anahtar: zaman[_id_N]. */
         public final String base;
         public final long timeMs;
+        /** Klip sirasi (0: id'siz eski klip). Silme en kucuk id'den baslar. */
+        public final long id;
         public final File[] camFiles = new File[CameraRecorder.CAM_SUFFIX.length];
         public File mosaic;
         public long bytes;
 
-        Clip(String base, long timeMs) {
+        Clip(String base, long timeMs, long id) {
             this.base = base;
             this.timeMs = timeMs;
+            this.id = id;
         }
 
         public List<File> files() {
@@ -71,13 +80,37 @@ public final class DvrClipStore {
         }
     }
 
-    /** Ayni klibin dosyalarini birlestiren anahtar (zaman damgasi); taninmayan ad icin null. */
+    /** Ayni klibin dosyalarini birlestiren anahtar (zaman[_id_N]); taninmayan ad icin null. */
     public static String baseOf(File file) {
         if (file == null) return null;
         Matcher m = NAME.matcher(file.getName());
-        if (m.matches()) return m.group(2);
+        if (m.matches()) return m.group(3) != null ? m.group(2) + CameraRecorder.ID_TAG + m.group(3) : m.group(2);
         m = LEGACY_NAME.matcher(file.getName());
         return m.matches() ? m.group(1) : null;
+    }
+
+    /** Dosya adindaki klip id'si; id'siz veya taninmayan ad icin 0. */
+    private static long idOf(String name) {
+        Matcher m = NAME.matcher(name);
+        if (m.matches() && m.group(3) != null) {
+            try {
+                return Long.parseLong(m.group(3));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return 0;
+    }
+
+    /** Klasordeki en buyuk klip id'sinin bir fazlasi; hic id'li klip yoksa 1. */
+    public static long nextId(File dir) {
+        File[] files = dir != null ? dir.listFiles() : null;
+        long max = 0;
+        if (files != null) {
+            for (File f : files) {
+                max = Math.max(max, idOf(f.getName()));
+            }
+        }
+        return max + 1;
     }
 
     /** -2: taninmayan ad, -1: tek dosya (mozaik), aksi halde kamera indeksi. */
@@ -101,7 +134,7 @@ public final class DvrClipStore {
         return -2;
     }
 
-    /** Klasordeki klipler, en yenisi basta. */
+    /** Klasordeki klipler, en buyuk id (en yeni) basta; esit id'de zamana gore. */
     public static List<Clip> list(File dir, Set<String> excludeBases) {
         File[] files = dir != null ? dir.listFiles() : null;
         if (files == null) {
@@ -118,11 +151,11 @@ public final class DvrClipStore {
             if (clip == null) {
                 long t;
                 try {
-                    t = fmt.parse(base).getTime();
-                } catch (ParseException | NullPointerException e) {
+                    t = fmt.parse(base.substring(0, CameraRecorder.FILE_TIME_PATTERN.length())).getTime();
+                } catch (ParseException | RuntimeException e) {
                     t = f.lastModified();
                 }
-                clip = new Clip(base, t);
+                clip = new Clip(base, t, idOf(f.getName()));
                 clips.put(base, clip);
             }
             if (cam == -1) {
@@ -133,7 +166,10 @@ public final class DvrClipStore {
             clip.bytes += f.length();
         }
         List<Clip> out = new ArrayList<>(clips.values());
-        Collections.sort(out, (a, b) -> Long.compare(b.timeMs, a.timeMs));
+        Collections.sort(out, (a, b) -> {
+            int c = Long.compare(b.id, a.id);
+            return c != 0 ? c : Long.compare(b.timeMs, a.timeMs);
+        });
         return out;
     }
 
@@ -183,21 +219,9 @@ public final class DvrClipStore {
         return n;
     }
 
-    /** cutoffMs'den eski klipleri siler; silinen klip sayisini dondurur. */
-    public static int deleteOlderThan(File dir, long cutoffMs, Set<String> excludeBases) {
-        int deleted = 0;
-        for (Clip clip : list(dir, excludeBases)) {
-            if (clip.timeMs < cutoffMs) {
-                delete(clip);
-                deleted++;
-            }
-        }
-        if (deleted > 0) Log.i(TAG, deleted + " klip saklama suresi doldugu icin silindi");
-        return deleted;
-    }
-
     /**
-     * Bos alan minFreeBytes'in altindaysa en eski klipleri siler.
+     * Bos alan minFreeBytes'in altindaysa en kucuk id'li (en eski) klipten baslayarak
+     * yeterli yer acilana kadar siler, sonra durur.
      * @return islem sonrasi bos alan
      */
     public static long freeUpTo(File dir, long minFreeBytes, Set<String> excludeBases) {

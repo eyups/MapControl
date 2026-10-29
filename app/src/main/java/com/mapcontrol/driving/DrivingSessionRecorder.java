@@ -28,6 +28,8 @@ public final class DrivingSessionRecorder implements VehicleMetricsRepository.Li
     private static final long TICK_MS = 1000L;
     private static final long SAMPLE_MS = 2000L;
     private static final long AUTO_STOP_ZERO_MS = 180000L;
+    /** Araç P veya kontak kapalıyken kısa süre sonra kaydet (uzun yol kaybını önler). */
+    private static final long AUTO_SAVE_PARK_MS = 10000L;
     private static final double HARSH_BRAKE_MPS2 = -3.5;
     private static final double HARSH_ACCEL_MPS2 = 3.0;
     private static final long HARSH_COOLDOWN_MS = 4000L;
@@ -53,6 +55,7 @@ public final class DrivingSessionRecorder implements VehicleMetricsRepository.Li
     private long lastBrakeMs;
     private long lastHarshAccelMs;
     private long zeroSinceMs;
+    private long parkedSinceMs;
     private long lastSampleMs;
     private int lastSpeed;
     private int lastAccelSpeed;
@@ -208,8 +211,29 @@ public final class DrivingSessionRecorder implements VehicleMetricsRepository.Li
             maxSpeed = Math.max(maxSpeed, speed);
             if (speed > 0) {
                 zeroSinceMs = 0;
-            } else if (zeroSinceMs == 0) {
-                zeroSinceMs = now;
+                parkedSinceMs = 0;
+            } else {
+                if (zeroSinceMs == 0) {
+                    zeroSinceMs = now;
+                }
+                boolean parked = snapshot.gearSignal == 1 || snapshot.powerMode == 0;
+                if (parked) {
+                    if (parkedSinceMs == 0) {
+                        parkedSinceMs = now;
+                    }
+                } else {
+                    parkedSinceMs = 0;
+                }
+                long requiredParkMs = snapshot.powerMode == 0 ? 0L : AUTO_SAVE_PARK_MS;
+                if (parkedSinceMs > 0
+                        && now - parkedSinceMs >= requiredParkMs
+                        && distanceKm >= 0.05) {
+                    Log.i(TAG, "trip AUTO_SAVE parked/ignition-off dist="
+                            + String.format(java.util.Locale.US, "%.3f", distanceKm)
+                            + " gear=" + snapshot.gearSignal + " power=" + snapshot.powerMode);
+                    finishAndSave();
+                    return;
+                }
             }
         } catch (Throwable t) {
             Log.e(TAG, "metrics işlenemedi", t);
@@ -227,6 +251,7 @@ public final class DrivingSessionRecorder implements VehicleMetricsRepository.Li
         lastHarshAccelMs = 0;
         lastAccelWindowMs = now;
         zeroSinceMs = 0;
+        parkedSinceMs = 0;
         lastSampleMs = now;
         lastSpeed = snapshot != null ? snapshot.preferredSpeed() : 0;
         lastAccelSpeed = lastSpeed;
@@ -240,6 +265,7 @@ public final class DrivingSessionRecorder implements VehicleMetricsRepository.Li
         events.clear();
         startFuelUsedMl = repository.getCombined(ReadOnlyID.ID_SUM_FUEL);
         lastAverageConsumptionRaw = repository.getCombined(ReadOnlyID.ID_AVG_FUEL_CONS);
+        DrivingCoach.get(appContext).onTripStarted();
         Log.i(TAG, "trip START speed=" + lastSpeed + " fuelMl=" + startFuelUsedMl
                 + " avgFuelRaw=" + lastAverageConsumptionRaw);
     }
@@ -327,6 +353,7 @@ public final class DrivingSessionRecorder implements VehicleMetricsRepository.Li
         } else {
             Log.w(TAG, "trip DISCARDED dist=" + String.format(java.util.Locale.US, "%.3f", distanceKm));
         }
+        DrivingCoach.get(appContext).onTripEnded();
         active = false;
         return lastSaved;
     }
@@ -335,8 +362,10 @@ public final class DrivingSessionRecorder implements VehicleMetricsRepository.Li
         if (events.size() >= 200) {
             return;
         }
-        events.add(new DrivingEvent(type, Math.max(0L, now - startElapsedMs),
-                speed, (float) acceleration));
+        DrivingEvent event = new DrivingEvent(type, Math.max(0L, now - startElapsedMs),
+                speed, (float) acceleration);
+        events.add(event);
+        DrivingCoach.get(appContext).onDrivingEvent(event);
         Log.i(TAG, "event type=" + type + " elapsedMs=" + (now - startElapsedMs)
                 + " speed=" + speed + " accel=" + acceleration);
     }

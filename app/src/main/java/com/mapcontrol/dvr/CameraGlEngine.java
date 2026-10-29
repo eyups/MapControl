@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /**
  * Kamera 360 GPU motoru: tek EGL thread'i hem onizleme yuzeyine hem kayit
@@ -218,6 +219,8 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
     private boolean uploadFresh;
     private final int[] frameCounts = new int[CAM_COUNT];
     private long fpsWindowStart;
+    private final AtomicIntegerArray lastFps = new AtomicIntegerArray(CAM_COUNT);
+    private volatile long lastFpsAtMs;
     private final TextSprite[] labelSprites = new TextSprite[CAM_COUNT];
     private final TextSprite infoSprite = new TextSprite();
     private final TextSprite noSignalSprite = new TextSprite();
@@ -239,6 +242,16 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
 
     public int getBigCam() {
         return bigCam;
+    }
+
+    /**
+     * En son hesaplanan kamera FPS'i. Arayuz kendi ticker'i ile okur; FPS
+     * callback'i gecikse/kaybolsa bile deger bayatlamadan yenilenir.
+     */
+    public int getLastFps(int cam) {
+        if (cam < 0 || cam >= CAM_COUNT) return 0;
+        if (SystemClock.uptimeMillis() - lastFpsAtMs > 3000L) return 0;
+        return lastFps.get(cam);
     }
 
     public void setBigCam(int cam) {
@@ -406,7 +419,11 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
                     boolean recDue = record != null && now >= nextRecordNs;
                     boolean prevDue = previewEnabled && previewEgl != EGL14.EGL_NO_SURFACE
                             && (frameDirty || layoutDirty);
-                    if (recDue || prevDue) break;
+                    // Kare gelmese de FPS penceresini kapat; aksi halde ic dongu
+                    // 500 ms'lik wait'lerde kalip reportFps() hic cagrilmaz.
+                    boolean fpsDue = previewEnabled
+                            && SystemClock.uptimeMillis() - fpsWindowStart >= 1000L;
+                    if (recDue || prevDue || fpsDue) break;
                     long waitMs = record != null ? Math.max(1, (nextRecordNs - now) / 1_000_000L) : 500;
                     lock.wait(waitMs);
                 }
@@ -462,7 +479,11 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
         if (egl != null) {
             try {
                 egl.makeCurrentPbuffer();
-                if (zeroCopy) HabNative.zcShutdown();
+                if (zeroCopy) {
+                    GLES20.glFinish();
+                    HabNative.zcShutdown();
+                    GLES20.glFinish();
+                }
                 destroyRecordSurfaces();
                 if (previewEgl != EGL14.EGL_NO_SURFACE) egl.destroySurface(previewEgl);
                 for (TextSprite s : labelSprites) s.release();
@@ -515,8 +536,10 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
 
     private void disableZeroCopy() {
         Log.w(TAG, "sifir kopya kullanilamiyor, kopya yoluna geciliyor");
+        GLES20.glFinish();
         for (int i = 0; i < CAM_COUNT; i++) HabNative.zcDetach(i);
         HabNative.zcShutdown();
+        GLES20.glFinish();
         zeroCopy = false;
         camExt = null;
         demandSent = false;
@@ -885,10 +908,12 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             final int cam = i;
             final int fps = (int) (frameCounts[i] * 1000L / elapsed);
             frameCounts[i] = 0;
+            lastFps.set(i, fps);
             if (l != null) {
                 mainHandler.post(() -> l.onFps(cam, fps));
             }
         }
+        lastFpsAtMs = now;
         fpsWindowStart = now;
     }
 

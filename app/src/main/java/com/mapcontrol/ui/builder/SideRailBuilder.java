@@ -52,6 +52,8 @@ public class SideRailBuilder {
     private static final int TAB_CLIMATE_AUTOMATION = 18;
     private static final int TAB_FACE_RECOGNITION = 19;
     private static final int TAB_CAMERA_360 = 20;
+    private static final int TAB_SPLIT_SCREEN = 21;
+    private static final int TAB_SUNROOF_AUTOMATION = 22;
 
     private final Context context;
     private final SharedPreferences prefs;
@@ -66,10 +68,12 @@ public class SideRailBuilder {
     private LinearLayout menuDriveMode;
     private LinearLayout menuTest;
     private LinearLayout menuCamera360;
+    private LinearLayout menuSplitScreen;
     private LinearLayout menuWelcomeSound;
     private LinearLayout menuEqualizer;
     private LinearLayout menuDriverProfiles;
     private LinearLayout menuClimateAutomation;
+    private LinearLayout menuSunroofAutomation;
     private LinearLayout menuFaceRecognition;
     private LinearLayout menuProfile;
     private LinearLayout menuVehicleInfo;
@@ -164,10 +168,14 @@ public class SideRailBuilder {
                 t(R.string.side_rail_equalizer));
         menuClimateAutomation = createRailMenuItemView(R.drawable.ic_mdi_thermometer,
                 t(R.string.side_rail_climate_automation));
+        menuSunroofAutomation = createRailMenuItemView(R.drawable.ic_mdi_car_sunroof,
+                t(R.string.side_rail_sunroof_automation));
         menuFaceRecognition = createRailMenuItemView(R.drawable.ic_mdi_account,
                 t(R.string.side_rail_face_recognition));
         menuTest = createRailMenuItemView(R.drawable.ic_mdi_camera, t(R.string.side_rail_camera));
         menuCamera360 = createRailMenuItemView(R.drawable.ic_mdi_camera, t(R.string.camera360_title));
+        menuSplitScreen = createRailMenuItemView(R.drawable.ic_mdi_view_split,
+                t(R.string.side_rail_split_screen));
         menuProjection = createRailMenuItemView(R.drawable.ic_mdi_map, t(R.string.side_rail_projection));
         menuVehicleInfo = createRailMenuItemView(R.drawable.ic_mdi_speedometer,
                 t(R.string.side_rail_vehicle_info));
@@ -192,10 +200,12 @@ public class SideRailBuilder {
         menuContainer.addView(menuWelcomeSound);
         menuContainer.addView(menuEqualizer);
         menuContainer.addView(menuClimateAutomation);
+        menuContainer.addView(menuSunroofAutomation);
         menuContainer.addView(menuFaceRecognition);
         menuTest.setVisibility(View.GONE);
         menuContainer.addView(menuTest);
         menuContainer.addView(menuCamera360);
+        menuContainer.addView(menuSplitScreen);
         menuContainer.addView(menuProjection);
         menuContainer.addView(sectionHeader(R.string.nav_section_system));
         menuContainer.addView(menuSettings);
@@ -250,10 +260,14 @@ public class SideRailBuilder {
                 t(R.string.side_rail_equalizer));
         menuClimateAutomation = createPortraitRailItem(R.drawable.ic_mdi_thermometer,
                 t(R.string.side_rail_climate_automation));
+        menuSunroofAutomation = createPortraitRailItem(R.drawable.ic_mdi_car_sunroof,
+                t(R.string.side_rail_sunroof_automation));
         menuFaceRecognition = createPortraitRailItem(R.drawable.ic_mdi_account,
                 t(R.string.side_rail_face_recognition));
         menuTest = createPortraitRailItem(R.drawable.ic_mdi_camera, t(R.string.side_rail_camera));
         menuCamera360 = createPortraitRailItem(R.drawable.ic_mdi_camera, t(R.string.camera360_title));
+        menuSplitScreen = createPortraitRailItem(R.drawable.ic_mdi_view_split,
+                t(R.string.side_rail_split_screen));
         menuProjection = createPortraitRailItem(R.drawable.ic_mdi_map, t(R.string.side_rail_projection));
         menuVehicleInfo = createPortraitRailItem(R.drawable.ic_mdi_speedometer,
                 t(R.string.side_rail_vehicle_info));
@@ -272,10 +286,12 @@ public class SideRailBuilder {
         menuContainer.addView(menuWelcomeSound);
         menuContainer.addView(menuEqualizer);
         menuContainer.addView(menuClimateAutomation);
+        menuContainer.addView(menuSunroofAutomation);
         menuContainer.addView(menuFaceRecognition);
         menuTest.setVisibility(View.GONE);
         menuContainer.addView(menuTest);
         menuContainer.addView(menuCamera360);
+        menuContainer.addView(menuSplitScreen);
         menuContainer.addView(menuProjection);
         menuContainer.addView(menuVehicleInfo);
         menuContainer.addView(menuDrivingHistory);
@@ -377,6 +393,11 @@ public class SideRailBuilder {
                     updateMenuSelection(menuClimateAutomation);
                 }));
 
+        menuSunroofAutomation.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_SUNROOF_AUTOMATION, t(R.string.side_rail_sunroof_automation));
+            updateMenuSelection(menuSunroofAutomation);
+        });
+
         menuFaceRecognition.setOnClickListener(v -> openExperimentalMenu(
                 "dmsFaceBetaWarningSeen",
                 () -> {
@@ -387,6 +408,11 @@ public class SideRailBuilder {
         menuCamera360.setOnClickListener(v -> {
             callback.onTabSelected(TAB_CAMERA_360, t(R.string.camera360_title));
             updateMenuSelection(menuCamera360);
+        });
+
+        menuSplitScreen.setOnClickListener(v -> {
+            callback.onTabSelected(TAB_SPLIT_SCREEN, t(R.string.side_rail_split_screen));
+            updateMenuSelection(menuSplitScreen);
         });
     }
 
@@ -491,11 +517,17 @@ public class SideRailBuilder {
             case TAB_CLIMATE_AUTOMATION:
                 updateMenuSelection(menuClimateAutomation);
                 break;
+            case TAB_SUNROOF_AUTOMATION:
+                updateMenuSelection(menuSunroofAutomation);
+                break;
             case TAB_FACE_RECOGNITION:
                 updateMenuSelection(menuFaceRecognition);
                 break;
             case TAB_CAMERA_360:
                 updateMenuSelection(menuCamera360);
+                break;
+            case TAB_SPLIT_SCREEN:
+                updateMenuSelection(menuSplitScreen);
                 break;
             default:
                 break;
@@ -712,7 +744,7 @@ public class SideRailBuilder {
                 menuHome, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo,
                 menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound, menuEqualizer,
                 menuComfort, menuValet, menuDriverProfiles, menuDrivingHistory,
-                menuClimateAutomation, menuFaceRecognition, menuCamera360
+                menuClimateAutomation, menuSunroofAutomation, menuFaceRecognition, menuCamera360, menuSplitScreen
         };
     }
 

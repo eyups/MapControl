@@ -84,6 +84,7 @@ public class DrivingAnalysisActivity extends Activity {
     private LinearLayout actionsRow;
     private FloatingBackButtonManager floatingBackButton;
     private boolean floatingBackWasVisible;
+    private boolean ttsBusy;
 
     private final Runnable refreshLoop = new Runnable() {
         @Override
@@ -130,6 +131,7 @@ public class DrivingAnalysisActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        ttsBusy = false;
         MapControlSpeech.stop();
         handler.removeCallbacks(refreshLoop);
         if (floatingBackButton != null && floatingBackWasVisible) {
@@ -648,11 +650,24 @@ public class DrivingAnalysisActivity extends Activity {
 
     private void speakCurrentReport() {
         DrivingTrip trip = selectedTrip != null ? selectedTrip : recorder.getDisplayTrip();
-        if (trip == null) {
+        if (trip == null || ttsBusy || MapControlSpeech.isSpeaking()
+                || speakButton == null || !speakButton.isEnabled()) {
             return;
         }
+        ttsBusy = true;
+        speakButton.setEnabled(false);
+        speakButton.setText("SESLENDİRİLİYOR…");
         Toast.makeText(this, "Sesli özet hazırlanıyor...", Toast.LENGTH_SHORT).show();
-        MapControlSpeech.speak(this, spokenReport(trip), expressiveReport(trip), trip.id);
+        MapControlSpeech.speak(this, spokenReport(trip), expressiveReport(trip), trip.id,
+                () -> runOnUiThread(this::resetSpeakButton));
+    }
+
+    private void resetSpeakButton() {
+        ttsBusy = false;
+        if (speakButton != null) {
+            speakButton.setEnabled(true);
+            speakButton.setText("SESLİ ÖZET");
+        }
     }
 
     private String spokenReport(DrivingTrip trip) {

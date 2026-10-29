@@ -41,8 +41,9 @@ import java.util.function.Supplier;
  * </ul>
  * Arac ici mod acikken USB kaydi ve USB otomatik kayit kullanilamaz; USB otomatik
  * kayit acikken arac ici mod kullanilamaz. Arac ici modda bos alan her zaman en az
- * {@link #RESERVE_BYTES} kalir; asilirsa en eski klipler, gun siniri dolanlar da
- * duzenli olarak silinir.
+ * {@link #RESERVE_BYTES} kalir. Klipler zaman damgasi + artan "_id_N" ile adlandirilir
+ * (son id'den devam eder, yoksa 1); rezerv asilmaya basladiginda en kucuk id'li klipten
+ * baslanarak yer acilana kadar silinir. Tarihe gore silme yoktur.
  *
  * Tum durum main thread'de tutulur; dosya tarama/silme {@code dvr-io} thread'indedir.
  */
@@ -81,26 +82,25 @@ public final class DvrController {
     public static final String USB_DIR_NAME = "MapControl";
     public static final String USB_EXPORT_DIR_NAME = "Klipler";
     /** Arac ici kayitta her zaman bos birakilacak alan. */
-    public static final long RESERVE_BYTES = 5_000_000_000L;
+    public static final long RESERVE_BYTES = 2_000_000_000L;
     public static final long SEGMENT_MS = 3 * 60_000L;
-    public static final int[] RETENTION_DAYS = {1, 3, 7, 14, 30};
-    public static final int DEFAULT_RETENTION_DAYS = 7;
     public static final long MIN_USB_FIT_MINUTES = 10;
     /** Rezervin ustunde kayda baslamak icin gereken en az sure. */
     private static final long MIN_INTERNAL_START_MINUTES = 10;
-    /** Kayit surerken rezervin ustunde tutulan tampon (yazilmakta olan klip icin). */
+    /**
+     * Kayit surerken rezervin ustunde tutulan tampon: bir klibin (3 dk) + 1 dk boyutu.
+     * Sonraki klip acilmadan once bu kadar yer yoksa en kucuk id'li klipler silinir.
+     */
     private static final long HEADROOM_MINUTES = SEGMENT_MS / 60_000L + 1;
 
     public static final String PREFS = "camera360";
     private static final String KEY_AUTO_INTERNAL = "autoInternal";
     private static final String KEY_AUTO_USB = "autoUsb";
-    private static final String KEY_RETENTION = "retentionDays";
     private static final String KEY_RES_INDEX = "resIndex";
     private static final String KEY_SEPARATE = "separate";
     private static final String KEY_INTERNAL_MODE = "internalMode";
 
     private static final long TICK_MS = 10_000;
-    private static final long RETENTION_SWEEP_MS = 30 * 60_000L;
     private static final long RETRY_MS = 30_000;
     private static final String HUB_TAG_PROBE = "dvr-auto";
 
@@ -128,7 +128,7 @@ public final class DvrController {
         public int clipCount;
         public long oldestClipMs;
         /** Hesaplandigi andaki kayit modunun dakikalik boyutu. */
-        public long bytesPerMinute = InternalMode.QUALITY.bytesPerMinute();
+        public long bytesPerMinute = InternalMode.PERFORMANCE.bytesPerMinute();
 
         /** Klipler icin kullanilabilecek toplam alan: bos + mevcut klipler - rezerv. */
         public long recordBudgetBytes() {
@@ -164,7 +164,6 @@ public final class DvrController {
     private boolean suspended;
     private boolean starting;
     private long retryAfterMs;
-    private volatile long lastRetentionSweepMs;
     private AutoStatus autoStatus = AutoStatus.OFF;
     private String lastError;
     private volatile StorageInfo storage = new StorageInfo();
@@ -256,14 +255,6 @@ public final class DvrController {
         return prefs.getBoolean(KEY_AUTO_USB, false);
     }
 
-    public int getRetentionDays() {
-        int d = prefs.getInt(KEY_RETENTION, DEFAULT_RETENTION_DAYS);
-        for (int v : RETENTION_DAYS) {
-            if (v == d) return d;
-        }
-        return DEFAULT_RETENTION_DAYS;
-    }
-
     public boolean isCameraSupported() {
         return cameraSupported;
     }
@@ -282,7 +273,6 @@ public final class DvrController {
         if (enabled && !canEnableAutoInternal()) return false;
         prefs.edit().putBoolean(KEY_AUTO_INTERNAL, enabled).apply();
         if (enabled) {
-            lastRetentionSweepMs = 0;
             retryAfterMs = 0;
             suspended = false;
         } else if (source == Source.AUTO_INTERNAL) {
@@ -308,20 +298,11 @@ public final class DvrController {
         return true;
     }
 
-    public void setRetentionDays(int days) {
-        prefs.edit().putInt(KEY_RETENTION, days).apply();
-        lastRetentionSweepMs = 0;
-        if (isAutoInternalEnabled()) {
-            io.execute(this::sweepRetention);
-        }
-        notifyState();
-    }
-
     public InternalMode getInternalMode() {
         try {
-            return InternalMode.valueOf(prefs.getString(KEY_INTERNAL_MODE, InternalMode.QUALITY.name()));
+            return InternalMode.valueOf(prefs.getString(KEY_INTERNAL_MODE, InternalMode.PERFORMANCE.name()));
         } catch (IllegalArgumentException e) {
-            return InternalMode.QUALITY;
+            return InternalMode.PERFORMANCE;
         }
     }
 
@@ -394,12 +375,6 @@ public final class DvrController {
         return out;
     }
 
-    /** Klibin gun siniri dolunca silinecegi an (arac ici mod kapaliysa -1). */
-    public long deletionTimeMs(DvrClipStore.Clip clip) {
-        if (!isAutoInternalEnabled()) return -1;
-        return clip.timeMs + getRetentionDays() * 24L * 3600_000L;
-    }
-
     public long autoBytesPerMinute() {
         return getInternalMode().bytesPerMinute();
     }
@@ -466,10 +441,6 @@ public final class DvrController {
                 tryStartUsb();
             }
         }
-        if (isAutoInternalEnabled() && !busy
-                && SystemClock.elapsedRealtime() - lastRetentionSweepMs >= RETENTION_SWEEP_MS) {
-            io.execute(this::sweepRetention);
-        }
         updateAutoStatus();
     }
 
@@ -513,7 +484,6 @@ public final class DvrController {
                 main.post(() -> setFailure(AutoStatus.NOT_WRITABLE, internalDir.getAbsolutePath()));
                 return;
             }
-            sweepRetention();
             long need = RESERVE_BYTES + MIN_INTERNAL_START_MINUTES * autoBytesPerMinute();
             long free = DvrClipStore.freeUpTo(internalDir, need, null);
             refreshStorage();
@@ -565,15 +535,20 @@ public final class DvrController {
                 setFailure(AutoStatus.NO_CAMERA, null);
                 return;
             }
-            startRecorder(src, dir, w, h, sep, SEGMENT_MS);
+            startRecorder(src, dir, w, h, sep, SEGMENT_MS, src == Source.AUTO_INTERNAL);
             hub.release(HUB_TAG_PROBE);
         });
     }
 
     private void startRecorder(Source src, File dir, int w, int h, boolean sep, long segmentMs) {
+        startRecorder(src, dir, w, h, sep, segmentMs, false);
+    }
+
+    private void startRecorder(Source src, File dir, int w, int h, boolean sep, long segmentMs,
+                               boolean sequentialIds) {
         source = src;
         lastError = null;
-        recorder.start(dir, new RecorderCallbacks(src), w, h, sep, segmentMs);
+        recorder.start(dir, new RecorderCallbacks(src), w, h, sep, segmentMs, sequentialIds);
         Log.i(TAG, "kayit istendi: " + src + " -> " + dir + " " + w + "x" + h + (sep ? " ayri" : " mozaik"));
     }
 
@@ -596,9 +571,6 @@ public final class DvrController {
     private void enforceInternalSpace(Set<String> active) {
         long headroom = HEADROOM_MINUTES * autoBytesPerMinute();
         long free = DvrClipStore.freeUpTo(internalDir, RESERVE_BYTES + headroom, active);
-        if (SystemClock.elapsedRealtime() - lastRetentionSweepMs >= RETENTION_SWEEP_MS) {
-            sweepRetention(active);
-        }
         refreshStorage(active);
         if (free >= 0 && free < RESERVE_BYTES + headroom / 2) {
             main.post(() -> {
@@ -608,19 +580,6 @@ public final class DvrController {
                     setFailure(AutoStatus.LOW_SPACE, null);
                 }
             });
-        }
-    }
-
-    private void sweepRetention() {
-        sweepRetention(activeBases());
-    }
-
-    private void sweepRetention(Set<String> active) {
-        lastRetentionSweepMs = SystemClock.elapsedRealtime();
-        if (!isAutoInternalEnabled()) return;
-        long cutoff = System.currentTimeMillis() - getRetentionDays() * 24L * 3600_000L;
-        if (DvrClipStore.deleteOlderThan(internalDir, cutoff, active) > 0) {
-            refreshStorage(active);
         }
     }
 

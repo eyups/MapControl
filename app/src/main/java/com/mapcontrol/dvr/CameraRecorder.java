@@ -46,6 +46,8 @@ public class CameraRecorder {
     /** Tek dosya (mozaik) kayit oneki. */
     public static final String SINGLE_PREFIX = "s_";
     public static final String FILE_TIME_PATTERN = "yyyy-MM-dd_HH-mm-ss";
+    /** Siralı klip id'si eki: zaman + "_id_N" (arac ici kayit). */
+    public static final String ID_TAG = "_id_";
     private static final long OVERLAY_REFRESH_MS = 250;
     private static final long EOS_TIMEOUT_MS = 3000;
 
@@ -79,6 +81,9 @@ public class CameraRecorder {
     private File outDir;
     /** 0: tek dosya; >0: bu surede bir sonraki anahtar karede yeni dosyaya gecilir. */
     private long segmentMs;
+    /** true ise her klip adina DvrClipStore.nextId ile artan "_id_N" eklenir. */
+    private boolean sequentialIds;
+    private long lastClipId;
     private final List<File> outFiles = new ArrayList<>();
     /** Kapanmis segmentlerin toplam boyutu (getTotalBytes icin). */
     private volatile long closedBytes;
@@ -164,6 +169,15 @@ public class CameraRecorder {
      */
     public void start(File outDir, Listener listener, int width, int height, boolean separate,
                       long segmentMs) {
+        start(outDir, listener, width, height, separate, segmentMs, false);
+    }
+
+    /**
+     * @param sequentialIds true ise klip adlarina klasordeki son id'den devam eden "_id_N"
+     *                      eklenir (klasorde id'li klip yoksa 1'den baslar).
+     */
+    public void start(File outDir, Listener listener, int width, int height, boolean separate,
+                      long segmentMs, boolean sequentialIds) {
         if (recording || stopping) {
             return;
         }
@@ -176,6 +190,8 @@ public class CameraRecorder {
         separateMode = separate;
         this.outDir = outDir;
         this.segmentMs = Math.max(0, segmentMs);
+        this.sequentialIds = sequentialIds;
+        lastClipId = 0;
         closedBytes = 0;
         pendingFiles = null;
         rotationsPending = 0;
@@ -194,6 +210,10 @@ public class CameraRecorder {
 
     private List<File> buildFiles(Date when) {
         String time = new SimpleDateFormat(FILE_TIME_PATTERN, Locale.US).format(when);
+        if (sequentialIds) {
+            lastClipId = Math.max(DvrClipStore.nextId(outDir), lastClipId + 1);
+            time += ID_TAG + lastClipId;
+        }
         List<File> files = new ArrayList<>();
         if (separateMode) {
             for (String tag : CAM_FILE_TAG) {
@@ -253,23 +273,32 @@ public class CameraRecorder {
         boolean glPath = false;
         try {
             List<File> files = getOutFiles();
+            // Mozaik kayitta tek YUV encoder/CPU yolu kullan: 4 ayri surface
+            // encoder + QC2C2D RGBA8888_UBWC donusumu GPU/C2D yukunu artiriyor.
+            // Ayri (4 dosya) modunda GL surface yolu korunur.
             try {
-                for (File f : files) {
-                    sinks.add(createSink(f, true));
+                if (separateMode) {
+                    for (File f : files) {
+                        sinks.add(createSink(f, true));
+                    }
+                    Surface[] surfaces = new Surface[sinks.size()];
+                    for (int i = 0; i < surfaces.length; i++) {
+                        surfaces[i] = sinks.get(i).inputSurface;
+                    }
+                    glPath = engine.startRecording(new CameraGlEngine.RecordConfig(surfaces,
+                            recWidth, recHeight, true, CAM_SUFFIX, overlayProvider));
+                } else {
+                    Log.i(TAG, "mozaik kayit CPU/YUV yolu (tek encoder)");
                 }
-                Surface[] surfaces = new Surface[sinks.size()];
-                for (int i = 0; i < surfaces.length; i++) {
-                    surfaces[i] = sinks.get(i).inputSurface;
-                }
-                glPath = engine.startRecording(new CameraGlEngine.RecordConfig(surfaces,
-                        recWidth, recHeight, separateMode, CAM_SUFFIX, overlayProvider));
             } catch (Exception e) {
                 Log.w(TAG, "yuzey encoder kurulamadi", e);
             }
             if (!glPath) {
-                Log.w(TAG, "GL kayit yolu yok, CPU yoluna geciliyor");
-                releaseSinks(sinks);
-                sinks.clear();
+                if (!sinks.isEmpty()) {
+                    Log.w(TAG, "GL kayit yolu yok, CPU yoluna geciliyor");
+                    releaseSinks(sinks);
+                    sinks.clear();
+                }
                 for (File f : files) {
                     sinks.add(createSink(f, false));
                 }

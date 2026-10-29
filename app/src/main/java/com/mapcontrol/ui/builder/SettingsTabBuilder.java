@@ -25,6 +25,7 @@ import java.net.URL;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.driving.DrivingCoach;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTestData;
 import com.mapcontrol.driving.DrivingTripStore;
@@ -120,6 +121,7 @@ public class SettingsTabBuilder {
             createThemeSection(left);
             createLanguageSection(left);
             createTtsSection(left);
+            createDrivingCoachSection(left);
             createDrivingTestDataSection(left);
             createAppInfoSection(left);
             createBootAutostartSection(left);
@@ -141,6 +143,7 @@ public class SettingsTabBuilder {
         createThemeSection(card);
         createLanguageSection(card);
         createTtsSection(card);
+        createDrivingCoachSection(card);
         createDrivingTestDataSection(card);
         createAppInfoSection(card);
         createBootAutostartSection(card);
@@ -265,6 +268,39 @@ public class SettingsTabBuilder {
                 });
     }
 
+    private void createDrivingCoachSection(LinearLayout parentContainer) {
+        TextView title = new TextView(context);
+        title.setText(R.string.settings_driving_coach_title);
+        title.setTextSize(18);
+        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        title.setPadding(16, 24, 16, 8);
+        parentContainer.addView(title, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView desc = new TextView(context);
+        desc.setText(R.string.settings_driving_coach_desc);
+        desc.setTextSize(13);
+        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+        desc.setPadding(16, 0, 16, 12);
+        parentContainer.addView(desc, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        UiStyles.addBinarySegmentedControl(context, parentContainer, null,
+                context.getString(R.string.settings_driving_coach_off),
+                context.getString(R.string.settings_driving_coach_on),
+                context.getString(R.string.settings_driving_coach_off_help),
+                context.getString(R.string.settings_driving_coach_on_help),
+                !DrivingCoach.isEnabled(context),
+                enabledSelected -> {
+                    boolean enabled = !enabledSelected;
+                    DrivingCoach.setEnabled(context, enabled);
+                    callback.log("Sürüş koçu: " + (enabled ? "açık" : "kapalı"));
+                });
+    }
+
     private void createTtsSection(LinearLayout parentContainer) {
         TextView sectionTitle = new TextView(context);
         sectionTitle.setText(R.string.settings_tts_section_title);
@@ -286,21 +322,50 @@ public class SettingsTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         String engine = MapControlSpeech.engine(context);
-        boolean eleven = MapControlSpeech.ENGINE_ELEVENLABS.equals(engine);
-        UiStyles.addBinarySegmentedControl(context, parentContainer,
+        int engineMode = MapControlSpeech.ENGINE_IFLYTEK.equals(engine)
+                ? MapControlSpeech.ENGINE_MODE_IFLYTEK
+                : (MapControlSpeech.ENGINE_ELEVENLABS.equals(engine)
+                        ? MapControlSpeech.ENGINE_MODE_ELEVENLABS
+                        : MapControlSpeech.ENGINE_MODE_SHERPA);
+        UiStyles.addTernarySegmentedControl(context, parentContainer,
                 context.getString(R.string.settings_tts_engine_title),
-                context.getString(R.string.settings_tts_sherpa),
-                context.getString(R.string.settings_tts_elevenlabs),
-                context.getString(R.string.settings_tts_sherpa_help),
-                context.getString(R.string.settings_tts_elevenlabs_help),
-                !eleven,
-                elevenSelected -> {
-                    prefs.edit().putString(MapControlSpeech.KEY_ENGINE,
-                            elevenSelected ? MapControlSpeech.ENGINE_ELEVENLABS
-                                    : MapControlSpeech.ENGINE_SHERPA)
+                new String[]{
+                        context.getString(R.string.settings_tts_sherpa),
+                        context.getString(R.string.settings_tts_elevenlabs),
+                        context.getString(R.string.settings_tts_iflytek)
+                },
+                new String[]{
+                        context.getString(R.string.settings_tts_sherpa_help),
+                        context.getString(R.string.settings_tts_elevenlabs_help),
+                        context.getString(R.string.settings_tts_iflytek_help)
+                },
+                new int[]{
+                        MapControlSpeech.ENGINE_MODE_SHERPA,
+                        MapControlSpeech.ENGINE_MODE_ELEVENLABS,
+                        MapControlSpeech.ENGINE_MODE_IFLYTEK
+                },
+                engineMode,
+                selectedMode -> {
+                    String selectedEngine;
+                    String display;
+                    switch (selectedMode) {
+                        case MapControlSpeech.ENGINE_MODE_IFLYTEK:
+                            selectedEngine = MapControlSpeech.ENGINE_IFLYTEK;
+                            display = "iFlytek (Araç)";
+                            break;
+                        case MapControlSpeech.ENGINE_MODE_ELEVENLABS:
+                            selectedEngine = MapControlSpeech.ENGINE_ELEVENLABS;
+                            display = "ElevenLabs";
+                            break;
+                        default:
+                            selectedEngine = MapControlSpeech.ENGINE_SHERPA;
+                            display = "Sherpa-ONNX";
+                            break;
+                    }
+                    prefs.edit().putString(MapControlSpeech.KEY_ENGINE, selectedEngine)
                             .putBoolean(MapControlSpeech.KEY_ENGINE_CONFIGURED, true)
                             .apply();
-                    callback.log("TTS motoru: " + (elevenSelected ? "ElevenLabs" : "Sherpa-ONNX"));
+                    callback.log("TTS motoru: " + display);
                 });
 
         TextView keyLabel = new TextView(context);
@@ -562,7 +627,14 @@ public class SettingsTabBuilder {
 
     private void applyAdbSetting(boolean wifi, boolean on, UiStyles.BinarySegmentHandle handle) {
         String name = wifi ? "Wi-Fi ADB" : "USB ADB";
-        boolean ok = wifi ? AdbSettings.setWifiEnabled(context, on) : AdbSettings.setUsbEnabled(context, on);
+        boolean ok;
+        AdbSettings.UsbResult usbResult = null;
+        if (wifi) {
+            ok = AdbSettings.setWifiEnabled(context, on);
+        } else {
+            usbResult = AdbSettings.setUsbEnabled(context, on);
+            ok = usbResult.settingOk;
+        }
         if (!ok) {
             callback.log(name + ": değer yazılamadı (izin yok veya sistem reddetti)");
             if (handle != null) {
@@ -570,7 +642,13 @@ public class SettingsTabBuilder {
             }
             return;
         }
-        callback.log(name + ": " + (on ? "Açık" : "Kapalı"));
+        if (usbResult != null) {
+            callback.log(name + ": Android " + (on ? "açık" : "kapalı")
+                    + ", OEM USB=" + usbResult.oemState
+                    + (usbResult.oemSent ? " (AdbAdjustAction istendi)" : " (OEM kanalı yok)"));
+        } else {
+            callback.log(name + ": " + (on ? "Açık" : "Kapalı"));
+        }
         // OEM servisleri değeri kısa süre sonra geri alabilir.
         handler.postDelayed(() -> {
             boolean now = wifi ? AdbSettings.isWifiEnabled(context) : AdbSettings.isUsbEnabled(context);

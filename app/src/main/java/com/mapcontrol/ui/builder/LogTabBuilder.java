@@ -25,6 +25,9 @@ import com.mapcontrol.ui.activity.CameraActivity;
 import com.mapcontrol.ui.activity.DmsFaceProfileActivity;
 import com.mapcontrol.ui.activity.ClusterVDBusTestActivity;
 import com.mapcontrol.ui.activity.AdasProbeActivity;
+import com.mapcontrol.ui.activity.TrafficSignMonitorActivity;
+import com.mapcontrol.ui.activity.FrontObjectProbeActivity;
+import com.mapcontrol.tts.IflytekTts;
 import com.mapcontrol.ui.activity.IdDiscoveryActivity;
 import com.mapcontrol.vehicle.DriveFollowLogger;
 import com.mapcontrol.vehicle.VehicleValueWatcher;
@@ -221,6 +224,44 @@ public class LogTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         ttsButtons.addView(btnReadAloud, readParams);
+
+        Button btnIflytek = new Button(context);
+        btnIflytek.setText(R.string.log_iflytek_read);
+        btnIflytek.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        btnIflytek.setTextSize(15);
+        btnIflytek.setTypeface(null, Typeface.BOLD);
+        UiStyles.styleOemButton(btnIflytek, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnIflytek.setPadding(20, 12, 20, 12);
+        btnIflytek.setOnClickListener(v -> {
+            CharSequence cs = ttsInput.getText();
+            String t = cs != null ? cs.toString().trim() : "";
+            final String textToSpeak = t.isEmpty()
+                    ? "Merhaba, iFlytek TTS testi." : t;
+            IflytekTts.speak(context, textToSpeak, (ok, msg) -> {
+                callback.log(msg);
+                if (ok) callback.log("Metin: " + textToSpeak);
+            });
+        });
+        LinearLayout.LayoutParams iflytekParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        iflytekParams.setMarginStart(8);
+        ttsButtons.addView(btnIflytek, iflytekParams);
+
+        Button btnIflytekStop = new Button(context);
+        btnIflytekStop.setText(R.string.log_iflytek_stop);
+        btnIflytekStop.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        btnIflytekStop.setTextSize(15);
+        UiStyles.styleOemButton(btnIflytekStop, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnIflytekStop.setPadding(20, 12, 20, 12);
+        btnIflytekStop.setOnClickListener(v ->
+                IflytekTts.stop(context, (ok, msg) -> callback.log(msg)));
+        LinearLayout.LayoutParams iflytekStopParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        iflytekStopParams.setMarginStart(8);
+        ttsButtons.addView(btnIflytekStop, iflytekStopParams);
+
         ttsCard.addView(ttsButtons, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -272,12 +313,32 @@ public class LogTabBuilder {
 
         Button btnAdasProbe = new Button(context);
         btnAdasProbe.setText(R.string.log_adas_probe);
+        // ADAS/FCM kaynakları araçta güvenilir değil; kazara araç hattı okumayı önle.
+        btnAdasProbe.setVisibility(android.view.View.VISIBLE);
         btnAdasProbe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         btnAdasProbe.setTextColor(UiStyles.color(context, R.color.textPrimary));
         UiStyles.styleOemButton(btnAdasProbe, UiStyles.color(context, R.color.buttonSecondaryMuted));
         btnAdasProbe.setPadding(16, 12, 16, 12);
         btnAdasProbe.setOnClickListener(v ->
                 context.startActivity(new Intent(context, AdasProbeActivity.class)));
+
+        Button btnTsrMonitor = new Button(context);
+        btnTsrMonitor.setText(R.string.log_tsr_monitor);
+        btnTsrMonitor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        btnTsrMonitor.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.styleOemButton(btnTsrMonitor, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnTsrMonitor.setPadding(16, 12, 16, 12);
+        btnTsrMonitor.setOnClickListener(v ->
+                context.startActivity(new Intent(context, TrafficSignMonitorActivity.class)));
+
+        Button btnFrontProbe = new Button(context);
+        btnFrontProbe.setText(R.string.log_front_probe);
+        btnFrontProbe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        btnFrontProbe.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        UiStyles.styleOemButton(btnFrontProbe, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnFrontProbe.setPadding(16, 12, 16, 12);
+        btnFrontProbe.setOnClickListener(v ->
+                context.startActivity(new Intent(context, FrontObjectProbeActivity.class)));
 
         Button btnIdDiscovery = new Button(context);
         btnIdDiscovery.setText(R.string.log_id_discovery);
@@ -300,6 +361,8 @@ public class LogTabBuilder {
         upperColumn.addView(btnValueWatcher, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(btnDriveFollow, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(btnAdasProbe, new LinearLayout.LayoutParams(benchBtnLp));
+        upperColumn.addView(btnTsrMonitor, new LinearLayout.LayoutParams(benchBtnLp));
+        upperColumn.addView(btnFrontProbe, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(btnIdDiscovery, new LinearLayout.LayoutParams(benchBtnLp));
         upperColumn.addView(ttsCard, ttsCardParams);
         upperScroll.addView(upperColumn, new LinearLayout.LayoutParams(

@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.mapcontrol.BuildConfig;
@@ -15,6 +17,7 @@ import java.util.Locale;
  * TTS yönlendirici:
  * - Sherpa seçiliyse her zaman gömülü/offline motor.
  * - ElevenLabs seçiliyse internet + API key varsa ElevenLabs; yoksa/hata olursa Sherpa.
+ * - iFlytek seçiliyse aracın sistem TTS servisi; servis yoksa/başlatılamazsa Sherpa.
  */
 public final class MapControlSpeech {
     private static final String TAG = "MapControlSpeech";
@@ -25,9 +28,16 @@ public final class MapControlSpeech {
     public static final String KEY_ENGINE_CONFIGURED = "ttsEngineConfigured";
     public static final String ENGINE_SHERPA = "sherpa";
     public static final String ENGINE_ELEVENLABS = "elevenlabs";
+    public static final String ENGINE_IFLYTEK = "iflytek";
+    public static final int ENGINE_MODE_SHERPA = 0;
+    public static final int ENGINE_MODE_ELEVENLABS = 1;
+    public static final int ENGINE_MODE_IFLYTEK = 2;
     public static final String KEY_API_KEY = "elevenLabsApiKey";
     public static final String KEY_VOICE_ID = "elevenLabsVoiceId";
     public static final String DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // Rachel
+    private static final Handler MAIN = new Handler(Looper.getMainLooper());
+    private static Runnable finishRunnable;
+    private static boolean speaking;
 
     private MapControlSpeech() {
     }
@@ -47,7 +57,19 @@ public final class MapControlSpeech {
      */
     public static void speak(Context context, String plainText, String expressiveText,
                              long cacheId) {
+        speak(context, plainText, expressiveText, cacheId, null);
+    }
+
+    /**
+     * @param onFinished konuşma bitince/basarisiz olunca ana thread'de çalışır.
+     */
+    public static void speak(Context context, String plainText, String expressiveText,
+                             long cacheId, Runnable onFinished) {
         if (context == null || plainText == null || plainText.trim().isEmpty()) {
+            finish(onFinished);
+            return;
+        }
+        if (speaking) {
             return;
         }
         String localText = TurkishSpeechText.normalize(SpeechText.plain(plainText));
@@ -55,11 +77,26 @@ public final class MapControlSpeech {
                 (expressiveText == null || expressiveText.trim().isEmpty()
                         ? plainText : expressiveText).trim());
         if (localText.isEmpty() || cloudText.isEmpty()) {
+            finish(onFinished);
             return;
         }
         Log.i(TAG, "TTS metni: " + preview(localText));
         Context app = context.getApplicationContext();
         String engine = engine(app);
+        if (ENGINE_IFLYTEK.equals(engine)) {
+            speaking = true;
+            IflytekTts.speak(app, localText, (ok, message) -> {
+                if (!ok) {
+                    Log.w(TAG, "iFlytek TTS kullanılamadı (" + message
+                            + "); Sherpa'ya düşülüyor");
+                    MapControlTts.speak(app, localText);
+                }
+            }, () -> {
+                TtsAudioFocus.release();
+                finish(onFinished);
+            });
+            return;
+        }
         if (ENGINE_ELEVENLABS.equals(engine)) {
             String key = resolveApiKey(app);
             String voice = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
@@ -72,12 +109,16 @@ public final class MapControlSpeech {
             boolean online = isOnline(app);
             Log.i(TAG, "ElevenLabs isteği gönderiliyor: " + cloudText.length()
                     + " karakter, cacheId=" + cacheId + ", online=" + online);
+            speaking = true;
+            scheduleFinish(onFinished, localText);
             ElevenLabsTts.speak(app, cloudText, key.trim(), voice, cacheId, online, reason -> {
                 Log.w(TAG, "ElevenLabs başarısız (" + reason + "); Sherpa'ya düşülüyor");
                 MapControlTts.speak(app, localText);
             });
             return;
         }
+        speaking = true;
+        scheduleFinish(onFinished, localText);
         MapControlTts.speak(app, localText);
     }
 
@@ -86,12 +127,46 @@ public final class MapControlSpeech {
     }
 
     public static void stop() {
+        speaking = false;
+        if (finishRunnable != null) {
+            MAIN.removeCallbacks(finishRunnable);
+        }
+        finishRunnable = null;
+        IflytekTts.stop(null, null);
         ElevenLabsTts.stop();
         MapControlTts.stop();
     }
 
     public static boolean isElevenLabsSelected(Context context) {
         return ENGINE_ELEVENLABS.equals(engine(context));
+    }
+
+    public static boolean isIflytekSelected(Context context) {
+        return ENGINE_IFLYTEK.equals(engine(context));
+    }
+
+    public static boolean isSpeaking() {
+        return speaking;
+    }
+
+    private static void scheduleFinish(Runnable onFinished, String text) {
+        if (finishRunnable != null) {
+            MAIN.removeCallbacks(finishRunnable);
+        }
+        long durationMs = 1500L + Math.min(55000L, text.length() * 95L);
+        finishRunnable = () -> finish(onFinished);
+        MAIN.postDelayed(finishRunnable, durationMs);
+    }
+
+    private static void finish(Runnable onFinished) {
+        speaking = false;
+        if (finishRunnable != null) {
+            MAIN.removeCallbacks(finishRunnable);
+        }
+        finishRunnable = null;
+        if (onFinished != null) {
+            MAIN.post(onFinished);
+        }
     }
 
     /**

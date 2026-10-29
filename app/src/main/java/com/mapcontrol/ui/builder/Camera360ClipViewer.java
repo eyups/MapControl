@@ -82,7 +82,6 @@ final class Camera360ClipViewer {
     private ScrollView listScroll;
     private LinearLayout listColumn;
     private final List<View> rowViews = new ArrayList<>();
-    private final List<TextView> rowDeletion = new ArrayList<>();
     private final List<ImageView> rowChecks = new ArrayList<>();
 
     private ImageView selectButton;
@@ -111,8 +110,6 @@ final class Camera360ClipViewer {
 
     private TextView clipTitle;
     private TextView clipMeta;
-    private TextView deletionPill;
-    private GradientDrawable deletionDot;
     private Button deleteButton;
     private Button exportButton;
     private Button exportingButton;
@@ -510,13 +507,6 @@ final class Camera360ClipViewer {
         clipMeta.setSingleLine(true);
         texts.addView(clipMeta);
 
-        deletionPill = ui.statusPill();
-        deletionDot = ui.attachDot(deletionPill, Camera360Ui.COLOR_IDLE, 8);
-        LinearLayout.LayoutParams dp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        dp.setMarginEnd(ui.dp(10));
-        row.addView(deletionPill, dp);
-
         deleteButton = actionButton(R.drawable.ic_mdi_delete, Camera360Ui.COLOR_REC);
         deleteButton.setText(R.string.camera360_delete);
         deleteButton.setOnClickListener(v -> {
@@ -609,6 +599,14 @@ final class Camera360ClipViewer {
 
     // ---------- Yasam dongusu ----------
 
+    boolean isWide() {
+        return wide;
+    }
+
+    void restoreWide(boolean on) {
+        setWide(on);
+    }
+
     void onShow() {
         visible = true;
         usbPresent = DvrController.findUsbRoot(ui.context) != null;
@@ -626,12 +624,6 @@ final class Camera360ClipViewer {
         releasePlayers();
         playing = false;
         updatePlayButton();
-    }
-
-    /** Ayar (saklama suresi) degisince silinme bilgileri yenilenir. */
-    void onStateChanged() {
-        if (!visible) return;
-        refreshDeletionTexts();
     }
 
     // ---------- Klip listesi ----------
@@ -666,7 +658,6 @@ final class Camera360ClipViewer {
     private void buildList() {
         listColumn.removeAllViews();
         rowViews.clear();
-        rowDeletion.clear();
         rowChecks.clear();
         Set<String> present = new HashSet<>();
         for (DvrClipStore.Clip c : clips) present.add(c.base);
@@ -736,13 +727,6 @@ final class Camera360ClipViewer {
         meta.setText(metaText(c));
         meta.setSingleLine(true);
         texts.addView(meta);
-
-        TextView del = ui.text(12, R.color.textSecondaryCool, true);
-        del.setPadding(ui.dp(8), ui.dp(3), ui.dp(8), ui.dp(3));
-        del.setSingleLine(true);
-        row.addView(del);
-        rowDeletion.add(del);
-        applyShortDeletion(del, c);
 
         LinearLayout.LayoutParams p = ui.matchWrap();
         p.bottomMargin = ui.dp(4);
@@ -910,64 +894,6 @@ final class Camera360ClipViewer {
                     Toast.LENGTH_SHORT).show();
             if (visible) reloadClips(reselect);
         });
-    }
-
-    // ---------- Silinme bilgisi ----------
-
-    private int deletionColor(long remainMs) {
-        if (remainMs < 0) return Camera360Ui.COLOR_IDLE;
-        if (remainMs < 3600_000L) return Camera360Ui.COLOR_REC;
-        if (remainMs < 24 * 3600_000L) return Camera360Ui.COLOR_WAIT;
-        return ui.themeColor(R.color.textSecondaryCool);
-    }
-
-    /** -1: otomatik silme kapali. */
-    private long remainingMs(DvrClipStore.Clip c) {
-        long at = dvr.deletionTimeMs(c);
-        if (at < 0) return -1;
-        return Math.max(0, at - System.currentTimeMillis());
-    }
-
-    private void applyShortDeletion(TextView tv, DvrClipStore.Clip c) {
-        long remain = remainingMs(c);
-        if (remain < 0) {
-            tv.setVisibility(View.GONE);
-            return;
-        }
-        tv.setVisibility(View.VISIBLE);
-        long hours = remain / 3600_000L;
-        String text = hours >= 24
-                ? ui.context.getString(R.string.camera360_del_short_days, (int) (hours / 24))
-                : ui.context.getString(R.string.camera360_del_short_hours, (int) Math.max(1, hours));
-        int color = deletionColor(remain);
-        tv.setText(text);
-        tv.setTextColor(color);
-        tv.setBackground(ui.roundRect(Camera360Ui.withAlpha(color, 0x24), 10));
-    }
-
-    private void applyLongDeletion(DvrClipStore.Clip c) {
-        long remain = remainingMs(c);
-        String text;
-        if (remain < 0) {
-            text = ui.context.getString(R.string.camera360_del_off);
-        } else if (remain < 60_000L) {
-            text = ui.context.getString(R.string.camera360_del_soon);
-        } else {
-            long totalMin = remain / 60_000L;
-            long hours = totalMin / 60;
-            text = hours >= 24
-                    ? ui.context.getString(R.string.camera360_del_in_days, (int) (hours / 24), (int) (hours % 24))
-                    : ui.context.getString(R.string.camera360_del_in_hours, (int) hours, (int) (totalMin % 60));
-        }
-        deletionPill.setText(text);
-        ui.tintPill(deletionPill, deletionDot, deletionColor(remain));
-    }
-
-    private void refreshDeletionTexts() {
-        for (int i = 0; i < rowDeletion.size() && i < clips.size(); i++) {
-            applyShortDeletion(rowDeletion.get(i), clips.get(i));
-        }
-        if (current >= 0 && current < clips.size()) applyLongDeletion(clips.get(current));
     }
 
     // ---------- Oynatma ----------
@@ -1249,7 +1175,6 @@ final class Camera360ClipViewer {
                 updateExportButton();
             }
         }
-        if (tickCount % 120 == 0) refreshDeletionTexts();
     }
 
     private void updateTime(int posMs) {
@@ -1269,7 +1194,6 @@ final class Camera360ClipViewer {
         if (!has) {
             clipTitle.setText("");
             clipMeta.setText("");
-            deletionPill.setVisibility(View.GONE);
             seekBar.setProgress(0);
             durationMs = 0;
             updateTime(0);
@@ -1279,8 +1203,6 @@ final class Camera360ClipViewer {
         SimpleDateFormat timeFmt = new SimpleDateFormat("HH:mm:ss", locale);
         clipTitle.setText(dayLabel(c.timeMs) + " · " + timeFmt.format(new Date(c.timeMs)));
         clipMeta.setText(metaText(c));
-        deletionPill.setVisibility(View.VISIBLE);
-        applyLongDeletion(c);
         seekBar.setProgress(0);
         updateTime(0);
     }

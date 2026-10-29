@@ -95,6 +95,7 @@ public class Camera360TabBuilder {
     private View rootView;
     private LinearLayout menuView;
     private LinearLayout previewView;
+    private FrameLayout previewArea;
     private View recordView;
 
     private SurfaceView previewSurfaceView;
@@ -151,9 +152,18 @@ public class Camera360TabBuilder {
     private final CameraHub.StateListener camStateListener = (cam, state) -> updateCamIndicators();
     private final CameraGlEngine.FpsListener fpsListener = (cam, fps) -> {
         if (!previewRunning) return;
-        String text = fps + " fps";
-        setFpsText(fpsViews[cam], text);
-        if (engine.getBigCam() == cam) setFpsText(bigFps, text);
+        applyFps(cam, fps);
+    };
+    /** FPS callback'i gecikirse arayuzu motorun son degerinden yeniler. */
+    private final Runnable fpsTicker = new Runnable() {
+        @Override
+        public void run() {
+            if (!previewRunning) return;
+            for (int i = 0; i < CAM_COUNT; i++) {
+                applyFps(i, engine.getLastFps(i));
+            }
+            mainHandler.postDelayed(this, 1000);
+        }
     };
 
     private final java.util.function.Supplier<Integer> speedSupplier;
@@ -232,17 +242,117 @@ public class Camera360TabBuilder {
         root.addView(autoRoot, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
+        rootView = root;
+        return root;
+    }
+
+    /** Izleme ekrani yalnizca acildiginda kurulur; uygulama acilisinda 5 SurfaceView olusturulmaz. */
+    private void ensureClipViewer() {
+        if (clipViewer != null) {
+            return;
+        }
         clipViewer = new Camera360ClipViewer(ui, dvr, this::enterMenu, wide -> {
             java.util.function.Consumer<Boolean> l = wideListener;
             if (l != null) l.accept(wide);
         });
         viewerRoot = clipViewer.build();
         viewerRoot.setVisibility(View.GONE);
-        root.addView(viewerRoot, new FrameLayout.LayoutParams(
+        ((android.view.ViewGroup) rootView).addView(viewerRoot, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+    }
 
-        rootView = root;
-        return root;
+    private void attachViewerRoot() {
+        if (viewerRoot == null || rootView == null) {
+            return;
+        }
+        if (viewerRoot.getParent() == null) {
+            ((android.view.ViewGroup) rootView).addView(viewerRoot, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        }
+    }
+
+    private void detachViewerRoot() {
+        if (viewerRoot == null) {
+            return;
+        }
+        if (viewerRoot.getParent() instanceof android.view.ViewGroup) {
+            ((android.view.ViewGroup) viewerRoot.getParent()).removeView(viewerRoot);
+        }
+    }
+
+    /** Kayit devam ediyorsa sekme disinda kucuk bir gosterge icin. */
+    public boolean isRecordingActive() {
+        return recorder != null && recorder.isRecording();
+    }
+
+    private void attachPreviewSurface() {
+        if (previewArea == null || previewSurfaceView == null) {
+            return;
+        }
+        if (previewSurfaceView.getParent() == null) {
+            previewArea.addView(previewSurfaceView, new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        }
+    }
+
+    private void detachPreviewSurface() {
+        // Önce EGL/GL tarafını bırak; SurfaceView'ı önce kaldırmak producer'ı
+        // yok edip SurfaceFlinger'da "unrecognized IGraphicBufferProducer"
+        // / "updateAcquireFence: Did not find frame" üretebiliyor.
+        engine.clearPreviewSurface();
+        if (previewSurfaceView != null
+                && previewSurfaceView.getParent() instanceof android.view.ViewGroup) {
+            ((android.view.ViewGroup) previewSurfaceView.getParent()).removeView(previewSurfaceView);
+        }
+    }
+
+    /**
+     * Gece/gündüz değişince ağacı güncel paletle kurar. Kayıt sürer; açık mod korunur.
+     * Renkler build anında çözüldüğü için yeniden kurmadan butonlar eski temada kalır.
+     */
+    public View rebuildForUiMode() {
+        Mode keep = mode;
+        boolean active = tabActive;
+        boolean keepWide = clipViewer != null && clipViewer.isWide();
+        if (active) {
+            onTabHidden();
+        } else {
+            leaveCurrentMode();
+        }
+        if (recPulse != null) {
+            recPulse.cancel();
+            recPulse = null;
+        }
+        build();
+        showModeShell(keep);
+        if (active) {
+            onTabVisible();
+        }
+        if (keepWide && clipViewer != null) {
+            clipViewer.restoreWide(true);
+        }
+        return rootView;
+    }
+
+    private void showModeShell(Mode keep) {
+        mode = keep;
+        switch (keep) {
+            case PREVIEW:
+                showOnly(previewView);
+                break;
+            case RECORD:
+                showOnly(recordView);
+                break;
+            case AUTO:
+                showOnly(autoRoot);
+                break;
+            case VIEWER:
+                showOnly(viewerRoot);
+                break;
+            default:
+                showOnly(menuView);
+                break;
+        }
     }
 
     /** Izleme ekrani sol menunun gizlenmesini (true) / geri gelmesini (false) ister. */
@@ -596,6 +706,7 @@ public class Camera360TabBuilder {
         root.addView(header, headerP);
 
         FrameLayout area = new FrameLayout(context);
+        this.previewArea = area;
         area.setBackgroundColor(Color.BLACK);
         root.addView(area, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
@@ -1395,6 +1506,7 @@ public class Camera360TabBuilder {
         leaveCurrentMode();
         mode = Mode.PREVIEW;
         showOnly(previewView);
+        attachPreviewSurface();
         updateRecBadge();
         if (tabActive) {
             startPreview();
@@ -1413,6 +1525,8 @@ public class Camera360TabBuilder {
 
     private void enterViewer() {
         leaveCurrentMode();
+        ensureClipViewer();
+        attachViewerRoot();
         mode = Mode.VIEWER;
         showOnly(viewerRoot);
         if (tabActive) {
@@ -1456,6 +1570,12 @@ public class Camera360TabBuilder {
         mainHandler.removeCallbacks(autoTicker);
         if (autoView != null) autoView.onHide();
         if (clipViewer != null) clipViewer.onHide();
+        if (mode == Mode.VIEWER) {
+            detachViewerRoot();
+        }
+        if (mode == Mode.PREVIEW) {
+            detachPreviewSurface();
+        }
         // NOT: kayit ticker'i burada durdurulmaz; kayit suresince (hangi ekranda
         // olursa olsun) sure/boyut guncel kalir, onStopped/onError'da durur.
         // Kayit kendi hub referansini tutar; akislar kayit bitene kadar acik kalir.
@@ -1510,6 +1630,13 @@ public class Camera360TabBuilder {
 
     // ---------- Onizleme ----------
 
+    private void applyFps(int cam, int fps) {
+        if (cam < 0 || cam >= CAM_COUNT) return;
+        String text = Math.max(0, fps) + " fps";
+        setFpsText(fpsViews[cam], text);
+        if (engine.getBigCam() == cam) setFpsText(bigFps, text);
+    }
+
     private void startPreview() {
         if (previewRunning) {
             return;
@@ -1522,6 +1649,8 @@ public class Camera360TabBuilder {
         statusView.setText(R.string.camera360_working);
         engine.setFpsListener(fpsListener);
         engine.setPreviewEnabled(true);
+        mainHandler.removeCallbacks(fpsTicker);
+        mainHandler.post(fpsTicker);
         updateCamIndicators();
     }
 
@@ -1530,6 +1659,7 @@ public class Camera360TabBuilder {
             return;
         }
         previewRunning = false;
+        mainHandler.removeCallbacks(fpsTicker);
         engine.setPreviewEnabled(false);
         engine.setFpsListener(null);
         for (int i = 0; i < CAM_COUNT; i++) {
@@ -1704,7 +1834,6 @@ public class Camera360TabBuilder {
         public void onStateChanged() {
             syncRecordingUi();
             if (mode == Mode.AUTO) autoView.refresh();
-            if (mode == Mode.VIEWER) clipViewer.onStateChanged();
         }
     };
 
@@ -1918,6 +2047,8 @@ public class Camera360TabBuilder {
         }
         syncRecordingUi();
         if (mode == Mode.PREVIEW) {
+            showOnly(previewView);
+            attachPreviewSurface();
             startPreview();
         } else if (mode == Mode.RECORD) {
             ensureStreams(this::refreshCamStatusDots);
@@ -1926,8 +2057,24 @@ public class Camera360TabBuilder {
             autoView.onShow();
             startAutoTicker();
         } else if (mode == Mode.VIEWER) {
+            ensureClipViewer();
+            attachViewerRoot();
             clipViewer.onShow();
         }
+    }
+
+    /**
+     * Activity arka plana giderken: SurfaceView'ı sökme, yalnızca önizleme
+     * çizimini durdur. Surface sahipliği sistemin görünürlük yaşam döngüsünde
+     * kalsın; producer'ı erken yok etmek SurfaceFlinger/GSL fence hatası üretiyor.
+     */
+    public void onHostPause() {
+        if (!tabActive) {
+            return;
+        }
+        stopPreviewLoops();
+        hub.removeStateListener(camStateListener);
+        dvr.removeListener(dvrListener);
     }
 
     public void onTabHidden() {
@@ -1936,10 +2083,12 @@ public class Camera360TabBuilder {
         hub.removeStateListener(camStateListener);
         dvr.removeListener(dvrListener);
         syncRecordingUi();
-        // Mod secimi korunur; gorunume donunce kaldigi yerden devam eder.
-        if (mode == Mode.PREVIEW) {
-            previewView.setVisibility(View.VISIBLE);
+        detachPreviewSurface();
+        previewView.setVisibility(View.GONE);
+        if (mode == Mode.VIEWER) {
+            detachViewerRoot();
         }
+        // Mod secimi korunur; gorunume donunce kaldigi yerden devam eder.
     }
 
     /** Video uzerindeki yari saydam yuvarlak etiket. */

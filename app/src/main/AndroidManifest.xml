@@ -152,7 +152,9 @@
 
         <activity
             android:name=".ui.activity.DmsFaceProfileActivity"
-            android:label="@string/dms_face_title" />
+            android:label="@string/dms_face_title"
+            android:resizeableActivity="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|uiMode|smallestScreenSize|screenLayout" />
 
         <activity
             android:name=".ui.activity.CameraActivity"
@@ -164,6 +166,18 @@
             android:name=".ui.activity.AdasProbeActivity"
             android:label="ADAS diagnostics"
             android:exported="true"
+            android:theme="@style/Theme.MapControl"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.activity.TrafficSignMonitorActivity"
+            android:label="Traffic sign monitor"
+            android:exported="false"
+            android:theme="@style/Theme.MapControl"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.activity.FrontObjectProbeActivity"
+            android:label="Front object discovery"
+            android:exported="false"
             android:theme="@style/Theme.MapControl"
             android:screenOrientation="landscape" />
 

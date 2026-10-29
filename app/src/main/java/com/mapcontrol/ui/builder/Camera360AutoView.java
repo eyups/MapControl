@@ -19,7 +19,7 @@ import com.mapcontrol.ui.theme.UiStyles;
 
 /**
  * "Arac Ici Kayit" ekrani: Kalite/Performans modlu (3 dk klip) otomatik kayit,
- * saklama suresi, 5 GB rezervli depolama dagilimi ve canli durum.
+ * id sirali saklama aciklamasi, 2 GB rezervli depolama dagilimi ve canli durum.
  * Kayit mantigi {@link DvrController}'dadir; bu sinif yalnizca gosterir/ayarlar.
  */
 final class Camera360AutoView {
@@ -46,7 +46,6 @@ final class Camera360AutoView {
     private TextView blockedNote;
     private Camera360Ui.Choice modeChoice;
     private TextView modeDesc;
-    private Camera360Ui.Choice retentionChoice;
     private TextView retentionNote;
     private TextView statusText;
     private GradientDrawable statusDot;
@@ -335,20 +334,11 @@ final class Camera360AutoView {
         retTitle.setPadding(inset, ui.dp(16), inset, ui.dp(8));
         card.addView(retTitle);
 
-        String[] labels = new String[DvrController.RETENTION_DAYS.length];
-        int selected = 0;
-        for (int i = 0; i < labels.length; i++) {
-            labels[i] = ui.context.getString(R.string.camera360_days_short, DvrController.RETENTION_DAYS[i]);
-            if (DvrController.RETENTION_DAYS[i] == dvr.getRetentionDays()) selected = i;
-        }
-        retentionChoice = ui.choice(labels, selected, this::onRetentionPicked);
-        LinearLayout.LayoutParams rp = ui.matchWrap();
-        rp.leftMargin = inset;
-        rp.rightMargin = inset;
-        card.addView(retentionChoice.view, rp);
-
+        // Tarihe gore silme yok: kural sadece aciklama olarak gosterilir.
         retentionNote = ui.text(13, R.color.textSecondaryCool, false);
-        LinearLayout.LayoutParams np = ui.matchWrapTop(10);
+        retentionNote.setPadding(ui.dp(12), ui.dp(8), ui.dp(12), ui.dp(8));
+        retentionNote.setBackground(ui.roundRect(ui.themeColor(R.color.surfaceCardInner), 12));
+        LinearLayout.LayoutParams np = ui.matchWrap();
         np.leftMargin = inset;
         np.rightMargin = inset;
         card.addView(retentionNote, np);
@@ -376,7 +366,7 @@ final class Camera360AutoView {
         new AlertDialog.Builder(ui.context)
                 .setTitle(R.string.camera360_auto_consent_title)
                 .setMessage(ui.context.getString(R.string.camera360_auto_consent_msg,
-                        dvr.getInternalDir().getAbsolutePath(), dvr.getRetentionDays()))
+                        dvr.getInternalDir().getAbsolutePath()))
                 .setPositiveButton(R.string.camera360_auto_consent_ok, (d, w) -> {
                     if (!dvr.setAutoInternalEnabled(true)) {
                         enableSegment.syncVisualWithoutCommit(false);
@@ -396,24 +386,6 @@ final class Camera360AutoView {
 
     private void onModePicked(int index) {
         dvr.setInternalMode(DvrController.InternalMode.values()[index]);
-        refresh();
-    }
-
-    private void onRetentionPicked(int index) {
-        int days = DvrController.RETENTION_DAYS[index];
-        if (dvr.isAutoInternalEnabled() && days < dvr.getRetentionDays()) {
-            new AlertDialog.Builder(ui.context)
-                    .setTitle(R.string.camera360_auto_retention)
-                    .setMessage(ui.context.getString(R.string.camera360_auto_retention_confirm, days))
-                    .setPositiveButton(R.string.camera360_auto_consent_ok, (d, w) -> {
-                        dvr.setRetentionDays(days);
-                        refresh();
-                    })
-                    .setNegativeButton(R.string.camera360_cancel, null)
-                    .show();
-            return;
-        }
-        dvr.setRetentionDays(days);
         refresh();
     }
 
@@ -445,9 +417,6 @@ final class Camera360AutoView {
         enableSegment.setInteractionEnabled(!blocked);
         enableColumn.setAlpha(blocked ? 0.5f : 1f);
         blockedNote.setVisibility(blocked ? View.VISIBLE : View.GONE);
-        for (int i = 0; i < DvrController.RETENTION_DAYS.length; i++) {
-            if (DvrController.RETENTION_DAYS[i] == dvr.getRetentionDays()) retentionChoice.setSelected(i);
-        }
         DvrController.InternalMode mode = dvr.getInternalMode();
         modeChoice.setSelected(mode.ordinal());
         modeDesc.setText(ui.context.getString(mode.separate
@@ -468,7 +437,7 @@ final class Camera360AutoView {
         capacityValue.setText(ui.formatDuration(s.capacityMinutes()));
         freeValue.setText(s.freeBytes >= 0 ? Camera360Ui.formatSize(s.freeBytes) : "-");
         retentionNote.setText(ui.context.getString(R.string.camera360_auto_retention_note,
-                dvr.getRetentionDays(), ui.formatDuration(s.capacityMinutes())));
+                ui.formatDuration(s.capacityMinutes())));
 
         boolean lowSpace = s.freeBytes >= 0
                 && s.freeBytes + s.clipsBytes < DvrController.RESERVE_BYTES + 10 * dvr.autoBytesPerMinute();

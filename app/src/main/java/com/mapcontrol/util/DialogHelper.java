@@ -46,15 +46,62 @@ public class DialogHelper {
     }
 
     public static void showAppManagementDisclaimer(Context context, Runnable onAccept, Runnable onDecline) {
+        showResponsibilityDialog(
+                context,
+                context.getString(R.string.dialog_app_mgmt_title),
+                context.getString(R.string.dialog_app_mgmt_disclaimer),
+                onAccept,
+                onDecline);
+    }
+
+    /** Kamera 360, Otomasyon ve Yüz Tanıma için tek seferlik erken erişim onayı. */
+    public static void showEarlyAccessDisclaimer(Context context, String title, Runnable onAccept, Runnable onDecline) {
+        showResponsibilityDialog(
+                context,
+                title,
+                context.getString(R.string.dialog_early_access_disclaimer),
+                onAccept,
+                onDecline);
+    }
+
+    /**
+     * Seçilen kaydırma hareketi başka bir özellikte kullanıldığında uyarır.
+     *
+     * @param ownerLabelRes hareketi kullanan özelliğin ad kaynağı
+     */
+    public static void showGestureConflict(Context context, int ownerLabelRes) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LinearLayout mainContainer = createBaseContainer(context);
-        LinearLayout titleContainer = createTitleContainer(context,
-                context.getString(R.string.dialog_app_mgmt_title),
+        mainContainer.addView(createTitleContainer(context,
+                context.getString(R.string.gesture_conflict_title),
+                context.getString(R.string.gesture_conflict_subtitle)));
+
+        LinearLayout contentContainer = createContentContainer(context);
+        contentContainer.addView(createMessage(context,
+                context.getString(R.string.gesture_conflict_message, context.getString(ownerLabelRes))));
+        mainContainer.addView(contentContainer);
+
+        builder.setView(mainContainer);
+        builder.setPositiveButton(R.string.gesture_conflict_ok, (d, w) -> d.dismiss());
+        builder.setCancelable(true);
+        AlertDialog dialog = builder.create();
+        styleDialog(dialog);
+        dialog.show();
+    }
+
+    private static void showResponsibilityDialog(
+            Context context,
+            String title,
+            String disclaimerText,
+            Runnable onAccept,
+            Runnable onDecline) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LinearLayout mainContainer = createBaseContainer(context);
+        LinearLayout titleContainer = createTitleContainer(context, title,
                 context.getString(R.string.dialog_legal_subtitle));
         mainContainer.addView(titleContainer);
 
         LinearLayout contentContainer = createContentContainer(context);
-        String disclaimerText = context.getString(R.string.dialog_app_mgmt_disclaimer);
         TextView messageView = createMessage(context, disclaimerText);
         ScrollView scrollView = new ScrollView(context);
         scrollView.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
