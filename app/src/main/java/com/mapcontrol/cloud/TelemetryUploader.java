@@ -125,6 +125,10 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
                     payload.put("battery_raw", battery);
                 }
             }
+            if (snapshot.isValid(snapshot.tirePressureWarning)) {
+                payload.put("tpms_warning", CloudTelemetryPolicy.clamp(
+                        snapshot.tirePressureWarning, 0, 255));
+            }
 
             JSONObject doors = new JSONObject();
             putDoor(doors, "lf", snapshot.doorLf);

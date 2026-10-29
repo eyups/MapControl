@@ -55,6 +55,7 @@ public final class VehicleValueWatcher {
             new Item(RO, ReadOnlyID.ID_SYSTEM_POWER_MODE, "güç modu"),
             new Item(RO, ReadOnlyID.ID_RAIN_DETECTED, "yağmur algılandı"),
             new Item(RO, ReadOnlyID.ID_RAIN_FALL, "yağmur miktarı"),
+            new Item(RO, ReadOnlyID.ID_TIRE_PRESSURE_WARNING, "lastik basınç uyarısı"),
             new Item(HV, HvacID.ID_AC_CIRCULATION_MODE, "iç sirkülasyon"),
             new Item(HV, HvacID.ID_AC_WORKING, "klima çalışıyor"),
             new Item(HV, HvacID.ID_AC_STATE, "klima durumu"),

@@ -68,6 +68,7 @@ public final class VehicleMetricsRepository {
             ReadOnlyID.ID_ENGINE_RPM,
             ReadOnlyID.ID_WATER_TEMPERATURE,
             ReadOnlyID.ID_IBS_VOLTAGE,
+            ReadOnlyID.ID_TIRE_PRESSURE_WARNING,
             ReadOnlyID.ID_CAR_SPEED,
             ReadOnlyID.ID_SPEED_GAUGE_DISPLAY,
             ReadOnlyID.ID_GEARBOX_STATE,

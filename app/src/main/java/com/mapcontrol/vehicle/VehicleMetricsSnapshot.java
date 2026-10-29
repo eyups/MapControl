@@ -21,6 +21,8 @@ public final class VehicleMetricsSnapshot {
     public final int gearSignal;
     public final int powerMode;
     public final int batteryRaw;
+    /** TPMS uyarı bitmask'i (ReadOnly ID 95); 0 uyarı yok, INVALID bilinmiyor. */
+    public final int tirePressureWarning;
 
     /** Sol ön / sürücü kapısı ham sinyal ({@link VehicleMetricsCache#INVALID} = yok). */
     public final int doorLf;
@@ -76,6 +78,7 @@ public final class VehicleMetricsSnapshot {
             int gearSignal,
             int powerMode,
             int batteryRaw,
+            int tirePressureWarning,
             int doorLf,
             int doorRf,
             int doorLr,
@@ -97,6 +100,7 @@ public final class VehicleMetricsSnapshot {
         this.gearSignal = gearSignal;
         this.powerMode = powerMode;
         this.batteryRaw = batteryRaw;
+        this.tirePressureWarning = tirePressureWarning;
         this.doorLf = doorLf;
         this.doorRf = doorRf;
         this.doorLr = doorLr;
@@ -231,9 +235,8 @@ public final class VehicleMetricsSnapshot {
         return new VehicleMetricsSnapshot(
                 connected,
                 invalid, invalid, invalid, invalid, invalid, invalid, invalid, invalid,
-                invalid, invalid, invalid, invalid, invalid,
                 invalid, invalid, invalid, invalid, invalid, invalid,
-                invalid);
+                invalid, invalid, invalid, invalid, invalid, invalid, invalid);
     }
 
     public static VehicleMetricsSnapshot from(VehicleMetricsCache cache, boolean connected) {
@@ -247,6 +250,7 @@ public final class VehicleMetricsSnapshot {
                 cache.getCombined(ReadOnlyID.ID_GEARBOX_STATE),
                 cache.getCombined(ReadOnlyID.ID_SYSTEM_POWER_MODE),
                 cache.getCombined(ReadOnlyID.ID_IBS_VOLTAGE),
+                cache.getCombined(ReadOnlyID.ID_TIRE_PRESSURE_WARNING),
                 cache.getCombined(ReadOnlyID.ID_DRIVE_DOOR_STATE),
                 cache.getCombined(ReadOnlyID.ID_PASSENGER_DOOR_STATE),
                 cache.getCombined(ReadOnlyID.ID_LFFT_BEHIND_DOOR_STATE),
