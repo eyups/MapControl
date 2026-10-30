@@ -98,11 +98,6 @@ public class ProjectionTabBuilder {
 
         CockpitGrid projectionGrid = new CockpitGrid(context);
         LinearLayout leftCard = createSectionCard();
-        LinearLayout rightCard = createSectionCard();
-        rightCard.setBackgroundColor(Color.TRANSPARENT);
-        rightCard.setPadding(0, 0, 0, 0);
-        projectionGrid.add(leftCard, 8);
-        projectionGrid.add(rightCard, 8);
         projectionTabContent.addView(projectionGrid, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -320,9 +315,7 @@ public class ProjectionTabBuilder {
         mainGroupTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
         mainGroupTitle.setTypeface(null, Typeface.BOLD);
         mainGroupTitle.setPadding(16, 24, 16, 8);
-        rightCard.addView(mainGroupTitle, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        // mainGroupTitle kullanilmiyor: konu kartlari kendi basliklarini tasiyor.
 
         LinearLayout mainCardContainer = new LinearLayout(context);
         mainCardContainer.setOrientation(LinearLayout.VERTICAL);
@@ -704,9 +697,8 @@ public class ProjectionTabBuilder {
                 ClusterNavOverlayOffsets.Provider.YANDEX,
                 () -> YandexClusterNavOverlay.getInstance(context).applyStoredOffsets());
 
-        // Uzun navigasyon davranışı kartını konu kartlarına böl.
-        LinearLayout rightStack = new LinearLayout(context);
-        rightStack.setOrientation(LinearLayout.VERTICAL);
+        // Navigasyon davranışını konu kartlarına böl; Google/Yandex ayrı.
+        java.util.List<LinearLayout> topicCards = new java.util.ArrayList<>();
         LinearLayout topicCard = null;
         for (int i = 0; i < mainCardContainer.getChildCount(); ) {
             View child = mainCardContainer.getChildAt(i);
@@ -718,23 +710,35 @@ public class ProjectionTabBuilder {
                 topicCard = null;
                 continue;
             }
+            String text = child instanceof TextView
+                    ? ((TextView) child).getText().toString() : "";
+            boolean newTopic = (text.startsWith("Yandex") || text.startsWith("Google Maps"))
+                    && text.contains("Cluster")
+                    && topicCard != null && topicCard.getChildCount() > 0;
+            if (text.startsWith("Yandex") && topicCard != null
+                    && topicCard.getChildCount() > 0) {
+                newTopic = true; // Google ve Yandex ayri kart
+            }
+            if (newTopic) {
+                topicCard = null;
+            }
             if (topicCard == null) {
                 topicCard = new LinearLayout(context);
                 topicCard.setOrientation(LinearLayout.VERTICAL);
                 com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(topicCard);
-                LinearLayout.LayoutParams topicLp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                topicLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
-                rightStack.addView(topicCard, topicLp);
+                topicCards.add(topicCard);
             }
             mainCardContainer.removeViewAt(i);
             topicCard.addView(child);
         }
-        rightCard.addView(rightStack, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        projectionGrid.add(leftCard, 4);
+        for (int i = 0; i < topicCards.size(); i++) {
+            projectionGrid.add(topicCards.get(i), 4);
+        }
+        if (topicCards.size() % 2 == 1) {
+            projectionGrid.add(new View(context), 4);
+        }
         return scrollView;
     }
 
