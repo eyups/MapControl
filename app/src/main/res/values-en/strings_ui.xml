@@ -1194,4 +1194,25 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_configured">Configured</string>
     <string name="profiles_customized">Customized</string>
     <string name="profiles_summary_drive_mode">Drive mode</string>
+    <string name="ck_sunroof_manual_title">Roof control</string>
+    <string name="ck_sunroof_manual_open">Open</string>
+    <string name="ck_sunroof_manual_vent">Vent</string>
+    <string name="ck_sunroof_manual_shade">Shade</string>
+    <string name="ck_sunroof_manual_close">Close</string>
+    <string name="ck_sunroof_front">Front glass</string>
+    <string name="ck_sunroof_rear">Rear glass</string>
+    <string name="ck_sunroof_ready">Ready</string>
+    <string name="ck_sunroof_shade_ready">Ready</string>
+    <string name="ck_sunroof_opening">Opening</string>
+    <string name="ck_sunroof_venting">Venting</string>
+    <string name="ck_sunroof_shade_open">Shade open</string>
+    <string name="ck_sunroof_closing">Closing</string>
+    <string name="ck_sunroof_not_connected">Not connected</string>
+    <string name="ck_sunroof_live_title">Live weather and light</string>
+    <string name="ck_sunroof_canbus_online">CAN-BUS ONLINE</string>
+    <string name="ck_sunroof_open">Open</string>
+    <string name="ck_sunroof_closed">Closed</string>
+    <string name="ck_sunroof_shade_closed">Shade closed</string>
+    <string name="ck_sunroof_active">ACTIVE</string>
+    <string name="ck_sunroof_passive">PASSIVE</string>
 </resources>

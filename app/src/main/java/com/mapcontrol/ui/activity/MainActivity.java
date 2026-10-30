@@ -1495,7 +1495,7 @@ public class MainActivity extends AppCompatActivity {
         if (child.getParent() instanceof android.view.ViewGroup) {
             ((android.view.ViewGroup) child.getParent()).removeView(child);
         }
-        if (child == launcherScrollView || child == homeScrollView) {
+        if (child == launcherScrollView || child == homeScrollView || child == sunroofAutomationScrollView) {
             parent.addView(child, lp);
             return;
         }

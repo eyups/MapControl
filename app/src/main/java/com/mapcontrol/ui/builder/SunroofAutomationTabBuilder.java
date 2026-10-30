@@ -28,6 +28,8 @@ import com.mapcontrol.R;
 import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitToggle;
 import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.CockpitSegmented;
 import com.mapcontrol.ui.cockpit.StatusBadge;
 import com.mapcontrol.vehicle.ComfortCommands;
@@ -74,9 +76,13 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
     private TextView tvRainState;
     private TextView tvSpeed;
     private TextView tvStatusMessage;
+    private TextView tvManualFront;
+    private TextView tvManualRear;
+    private com.mapcontrol.ui.cockpit.StatusBadge liveBadge;
 
     // Ayar View'ları
     private CockpitToggle switchMaster;
+    private StatusBadge automationBadge;
     private CockpitToggle switchRainGuard;
     private CockpitToggle switchSpeedGuard;
     private CockpitToggle switchCloseAtNight;
@@ -113,50 +119,54 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         LinearLayout root = new LinearLayout(context);
         root.setOrientation(LinearLayout.VERTICAL);
         int pagePadding = dp(compactLayout ? 12 : 20, density);
-        root.setPadding(pagePadding, dp(8, density), pagePadding, dp(32, density));
+        root.setPadding(pagePadding, dp(12, density), pagePadding, dp(32, density));
 
-        // 1. Header (Chery / Jaecoo Uyumlu)
-        root.addView(buildHeader(density, compactLayout));
-        root.addView(buildStartupGrid(), new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        if (isPortrait) {
+            root.addView(buildLiveConditionCard(density));
+            root.addView(buildManualSunroofCard(density));
+            root.addView(buildAutomationModeCard(density));
+            root.addView(buildQuickControlsCard(density));
+            root.addView(buildSafetyCard(density));
+        } else {
+            LinearLayout columns = new LinearLayout(context);
+            columns.setOrientation(LinearLayout.HORIZONTAL);
+            columns.setBaselineAligned(false);
 
-        if (!isPortrait) {
-            // YATAY EKRAN (Chery Tiggo 7/8, Omoda 5 vb.): 2 Sütunlu Dengeli Kokpit Grid
-            LinearLayout twoColRow = new LinearLayout(context);
-            twoColRow.setOrientation(LinearLayout.HORIZONTAL);
-            twoColRow.setBaselineAligned(false);
-
-            // Sol Sütun: Canlı Durum & Işık Ölçümü (Üst) + Otomatik Cam Tavan (Alt)
             LinearLayout colLeft = new LinearLayout(context);
             colLeft.setOrientation(LinearLayout.VERTICAL);
             colLeft.addView(buildLiveConditionCard(density));
-            colLeft.addView(buildAutomationModeCard(density));
+            colLeft.addView(buildManualSunroofCard(density));
 
-            // Sağ Sütun: Hızlı Kaydırma Kumandası (Üst) + Emniyet ve Entegrasyon (Alt)
+            LinearLayout colCenter = new LinearLayout(context);
+            colCenter.setOrientation(LinearLayout.VERTICAL);
+            colCenter.addView(buildAutomationModeCard(density));
+
             LinearLayout colRight = new LinearLayout(context);
             colRight.setOrientation(LinearLayout.VERTICAL);
             colRight.addView(buildQuickControlsCard(density));
             colRight.addView(buildSafetyCard(density));
 
-            LinearLayout.LayoutParams lpLeft = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            lpLeft.rightMargin = dp(10, density);
-            twoColRow.addView(colLeft, lpLeft);
-
-            LinearLayout.LayoutParams lpRight = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            lpRight.leftMargin = dp(10, density);
-            twoColRow.addView(colRight, lpRight);
-
-            root.addView(twoColRow);
-        } else {
-            // DİKEY EKRAN (Jaecoo 7 vb.): Dikey sıralı akış
-            root.addView(buildLiveConditionCard(density));
-            root.addView(buildQuickControlsCard(density));
-            root.addView(buildAutomationModeCard(density));
-            root.addView(buildSafetyCard(density));
+            columns.addView(colLeft, weightedColumn(0, dp(10, density)));
+            columns.addView(colCenter, weightedColumn(dp(10, density), dp(10, density)));
+            columns.addView(colRight, weightedColumn(dp(10, density), 0));
+            root.addView(columns);
         }
+
+        LinearLayout.LayoutParams startupLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        startupLp.topMargin = dp(12, density);
+        root.addView(buildStartupGrid(), startupLp);
 
         engine.addListener(this);
         return root;
+    }
+
+    private LinearLayout.LayoutParams weightedColumn(int left, int right) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        lp.leftMargin = left;
+        lp.rightMargin = right;
+        return lp;
     }
 
     private View buildStartupGrid() {
@@ -249,6 +259,92 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         return titleRow;
     }
 
+    private View buildManualSunroofCard(float density) {
+        LinearLayout card = createPanelCard(density);
+        card.addView(createSectionTitle(context.getString(R.string.ck_sunroof_manual_title), density));
+
+        LinearLayout visual = new LinearLayout(context);
+        visual.setOrientation(LinearLayout.HORIZONTAL);
+        visual.setPadding(dp(10, density), dp(10, density), dp(10, density), dp(10, density));
+        CockpitSurfaces.level2(visual);
+        LinearLayout.LayoutParams visualLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(92, density));
+        visualLp.bottomMargin = dp(10, density);
+        card.addView(visual, visualLp);
+
+        tvManualFront = manualStatePanel(
+                context.getString(R.string.ck_sunroof_front), context.getString(R.string.ck_sunroof_ready));
+        tvManualRear = manualStatePanel(
+                context.getString(R.string.ck_sunroof_rear), context.getString(R.string.ck_sunroof_shade_ready));
+        visual.addView(tvManualFront, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+        LinearLayout.LayoutParams rearLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
+        rearLp.leftMargin = dp(8, density);
+        visual.addView(tvManualRear, rearLp);
+
+        LinearLayout actions = new LinearLayout(context);
+        actions.setOrientation(LinearLayout.HORIZONTAL);
+        actions.setBaselineAligned(false);
+        actions.addView(manualButton(context.getString(R.string.ck_sunroof_manual_open), () -> {
+            if (sunroofController.openSunroof(true)) {
+                tvManualFront.setText(context.getString(R.string.ck_sunroof_front) + "\n"
+                        + context.getString(R.string.ck_sunroof_opening));
+            }
+        }, density), new LinearLayout.LayoutParams(0, dp(56, density), 1f));
+        actions.addView(manualButton(context.getString(R.string.ck_sunroof_manual_vent), () -> {
+            if (sunroofController.tiltSunroof()) {
+                tvManualFront.setText(context.getString(R.string.ck_sunroof_front) + "\n"
+                        + context.getString(R.string.ck_sunroof_venting));
+            }
+        }, density), new LinearLayout.LayoutParams(0, dp(56, density), 1f));
+        actions.addView(manualButton(context.getString(R.string.ck_sunroof_manual_shade), () -> {
+            if (sunroofController.openSunshadeOnly()) {
+                tvManualRear.setText(context.getString(R.string.ck_sunroof_rear) + "\n"
+                        + context.getString(R.string.ck_sunroof_shade_open));
+            }
+        }, density), new LinearLayout.LayoutParams(0, dp(56, density), 1f));
+        actions.addView(manualButton(context.getString(R.string.ck_sunroof_manual_close), () -> {
+            if (sunroofController.closeSunroof(true)) {
+                tvManualFront.setText(context.getString(R.string.ck_sunroof_front) + "\n"
+                        + context.getString(R.string.ck_sunroof_closing));
+            }
+        }, density), new LinearLayout.LayoutParams(0, dp(56, density), 1f));
+        card.addView(actions);
+        return card;
+    }
+
+    private TextView manualStatePanel(String label, String value) {
+        TextView view = new TextView(context);
+        CockpitTokens.bodySm(view);
+        view.setText(label + "\n" + value);
+        view.setGravity(Gravity.CENTER);
+        view.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        CockpitSurfaces.level1(view);
+        return view;
+    }
+
+    private Button manualButton(String label, Runnable action, float density) {
+        Button button = new Button(context);
+        button.setText(label);
+        button.setTextSize(12);
+        button.setAllCaps(false);
+        button.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        button.setMinHeight(dp(56, density));
+        button.setPadding(dp(4, density), 0, dp(4, density), 0);
+        button.setBackground(CockpitSurfaces.rounded(context,
+                CockpitTokens.color(context, R.color.ck_surface_2),
+                context.getResources().getDisplayMetrics().density * 12f));
+        button.setOnClickListener(v -> {
+            if (!sunroofController.isConnected()) {
+                Toast.makeText(context, R.string.ck_sunroof_not_connected, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            action.run();
+            callback.log("Cam tavan kumandası: " + label);
+        });
+        return button;
+    }
+
     /**
      * Canlı Durum Kartı: İnsani durum göstergesi + ANLIK LUX DEĞERİ + Entegre Kompakt Araç Rozetleri.
      */
@@ -259,18 +355,21 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         conditionBox.setOrientation(LinearLayout.VERTICAL);
         conditionBox.setPadding(dp(14, density), dp(12, density), dp(14, density), dp(12, density));
 
-        GradientDrawable condBg = new GradientDrawable();
-        condBg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
-        condBg.setCornerRadius(dp(16, density));
-        condBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
-        conditionBox.setBackground(condBg);
+        CockpitSurfaces.level2(conditionBox);
+        conditionBox.setPadding(dp(16, density), dp(14, density), dp(16, density), dp(14, density));
 
+        LinearLayout conditionHeader = new LinearLayout(context);
+        conditionHeader.setOrientation(LinearLayout.HORIZONTAL);
+        conditionHeader.setGravity(Gravity.CENTER_VERTICAL);
         TextView tvCondLabel = new TextView(context);
-        tvCondLabel.setText("ANLIK HAVA VE IŞIK DURUMU");
-        tvCondLabel.setTextSize(10);
-        tvCondLabel.setTypeface(null, Typeface.BOLD);
-        tvCondLabel.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-        conditionBox.addView(tvCondLabel);
+        tvCondLabel.setText(context.getString(R.string.ck_sunroof_live_title));
+        CockpitTokens.labelCaps(tvCondLabel);
+        tvCondLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        conditionHeader.addView(tvCondLabel, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        liveBadge = StatusBadge.neutral(context, context.getString(R.string.ck_sunroof_not_connected));
+        conditionHeader.addView(liveBadge);
+        conditionBox.addView(conditionHeader);
 
         tvConditionTitle = new TextView(context);
         tvConditionTitle.setTextSize(20);
@@ -341,10 +440,8 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         badge.setPadding(dp(6, density), dp(6, density), dp(6, density), dp(6, density));
 
         GradientDrawable bg = new GradientDrawable();
-        bg.setColor(0x221E293B);
-        bg.setCornerRadius(dp(10, density));
-        bg.setStroke(dp(1, density), 0x3338BDF8);
-        badge.setBackground(bg);
+        CockpitSurfaces.level2(badge);
+        badge.setMinimumHeight(dp(56, density));
 
         TextView tvLabel = new TextView(context);
         tvLabel.setText(label);
@@ -398,10 +495,24 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
         masterRow.addView(masterTextCol, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
+        boolean autoEnabled = prefs.getBoolean(SunroofAutomationEngine.KEY_ENABLED, false);
+        automationBadge = StatusBadge.neutral(context, context.getString(autoEnabled
+                ? R.string.ck_sunroof_active : R.string.ck_sunroof_passive));
+        automationBadge.setLevel(autoEnabled ? StatusBadge.NOMINAL : StatusBadge.NEUTRAL);
+        LinearLayout.LayoutParams autoBadgeLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        autoBadgeLp.rightMargin = dp(10, density);
+        masterRow.addView(automationBadge, autoBadgeLp);
+
         switchMaster = new CockpitToggle(context);
-        switchMaster.setChecked(prefs.getBoolean(SunroofAutomationEngine.KEY_ENABLED, false), false);
+        switchMaster.setChecked(autoEnabled, false);
         switchMaster.setOnCheckedChangeListener((btn, isChecked) -> {
             prefs.edit().putBoolean(SunroofAutomationEngine.KEY_ENABLED, isChecked).apply();
+            if (automationBadge != null) {
+                automationBadge.setLevel(isChecked ? StatusBadge.NOMINAL : StatusBadge.NEUTRAL);
+                automationBadge.setText(context.getString(isChecked
+                        ? R.string.ck_sunroof_active : R.string.ck_sunroof_passive));
+            }
             callback.log(isChecked ? "Cam tavan otomasyonu açıldı" : "Cam tavan otomasyonu kapatıldı");
         });
         masterRow.addView(switchMaster);
@@ -827,6 +938,21 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             if (tvConditionTitle != null) {
                 tvConditionTitle.setText(status.conditionTitle);
             }
+            if (liveBadge != null) {
+                liveBadge.setLevel(status.connected ? StatusBadge.NOMINAL : StatusBadge.ADVISORY);
+                liveBadge.setText(context.getString(status.connected
+                        ? R.string.ck_sunroof_canbus_online : R.string.ck_sunroof_not_connected));
+            }
+            if (tvManualFront != null && status.sunroofOpen != null) {
+                tvManualFront.setText(context.getString(R.string.ck_sunroof_front) + "\n"
+                        + context.getString(status.sunroofOpen
+                        ? R.string.ck_sunroof_open : R.string.ck_sunroof_closed));
+            }
+            if (tvManualRear != null) {
+                tvManualRear.setText(context.getString(R.string.ck_sunroof_rear) + "\n"
+                        + context.getString(status.sunshadeOpen
+                        ? R.string.ck_sunroof_shade_open : R.string.ck_sunroof_shade_closed));
+            }
             if (tvLiveLux != null) {
                 if (status.currentLux < 0) {
                     tvLiveLux.setText("Ölçülen Işık: Bekleniyor...");
@@ -896,12 +1022,8 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(dp(16, density), dp(14, density), dp(16, density), dp(14, density));
 
-        GradientDrawable bg = new GradientDrawable();
-        bg.setColor(UiStyles.color(context, R.color.automationPanel));
-        bg.setCornerRadius(dp(18, density));
-        bg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
-        card.setBackground(bg);
-        card.setElevation(dp(2, density));
+        CockpitSurfaces.level1(card);
+        card.setElevation(dp(1, density));
 
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
