@@ -101,6 +101,7 @@ import com.mapcontrol.ui.builder.WifiTabBuilder;
 import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitModal;
 import com.mapcontrol.ui.cockpit.CockpitNavModel;
+import com.mapcontrol.ui.cockpit.CockpitPageHeader;
 import com.mapcontrol.ui.cockpit.CockpitSubTabBar;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.util.DialogHelper;
@@ -1381,34 +1382,34 @@ public class MainActivity extends AppCompatActivity {
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
         if (tabIndex == 0) {
-            addTabChild(parent, wifiTabContent, matchParent);
+            addTabChildWithHeader(parent, wifiTabContent, matchParent, tabIndex);
         } else if (tabIndex == 1) {
-            addTabChild(parent, fileUploadScrollView, matchParent);
+            addTabChildWithHeader(parent, fileUploadScrollView, matchParent, tabIndex);
         } else if (tabIndex == 3) {
-            addTabChild(parent, projectionScrollView, matchParent);
+            addTabChildWithHeader(parent, projectionScrollView, matchParent, tabIndex);
         } else if (tabIndex == 4) {
-            addTabChild(parent, logTabContent, matchParent);
+            addTabChildWithHeader(parent, logTabContent, matchParent, tabIndex);
         } else if (tabIndex == 5) {
-            addTabChild(parent, appsTabContent, matchParent);
+            addTabChildWithHeader(parent, appsTabContent, matchParent, tabIndex);
         } else if (tabIndex == 6) {
             addTabChild(parent, driveModeScrollView, matchParent);
         } else if (tabIndex == 7) {
-            addTabChild(parent, settingsScrollView, matchParent);
+            addTabChildWithHeader(parent, settingsScrollView, matchParent, tabIndex);
         } else if (tabIndex == 8) {
             addTabChild(parent, welcomeSoundTabBuilder.getScrollView(), matchParent);
         } else if (tabIndex == 9) {
             addTabChild(parent, vehicleInfoScrollView, matchParent);
         } else if (tabIndex == TAB_EQUALIZER) {
-            addTabChild(parent, equalizerTabBuilder.getScrollView(), matchParent);
+            addTabChildWithHeader(parent, equalizerTabBuilder.getScrollView(), matchParent, tabIndex);
         } else if (tabIndex == TAB_DRIVER_PROFILES) {
-            addTabChild(parent, driverProfilesTabBuilder.getScrollView(), matchParent);
+            addTabChildWithHeader(parent, driverProfilesTabBuilder.getScrollView(), matchParent, tabIndex);
         } else if (tabIndex == TAB_VALET) {
-            addTabChild(parent, valetTabBuilder.getScrollView(), matchParent);
+            addTabChildWithHeader(parent, valetTabBuilder.getScrollView(), matchParent, tabIndex);
         } else if (tabIndex == TAB_HOME) {
             addTabChild(parent, homeScrollView, matchParent);
         } else if (tabIndex == TAB_DRIVING_HISTORY) {
             drivingHistoryTabBuilder.onTabVisible();
-            addTabChild(parent, drivingHistoryScrollView, matchParent);
+            addTabChildWithHeader(parent, drivingHistoryScrollView, matchParent, tabIndex);
         } else if (tabIndex == TAB_CLIMATE_AUTOMATION) {
             rebuildClimateAutomationTab();
             addTabChild(parent, climateAutomationScrollView, matchParent);
@@ -1418,7 +1419,7 @@ public class MainActivity extends AppCompatActivity {
             rebuildSunroofAutomationTab();
             addTabChild(parent, sunroofAutomationScrollView, matchParent);
         } else if (tabIndex == TAB_FACE_RECOGNITION) {
-            addTabChild(parent, faceRecognitionScrollView, matchParent);
+            addTabChildWithHeader(parent, faceRecognitionScrollView, matchParent, tabIndex);
             if (dmsFaceRecognitionTabBuilder != null) {
                 dmsFaceRecognitionTabBuilder.refresh();
             }
@@ -1426,12 +1427,12 @@ public class MainActivity extends AppCompatActivity {
             addTabChild(parent, camera360TabContent, matchParent);
         } else if (tabIndex == TAB_SPLIT_SCREEN) {
             if (splitScreenTabBuilder != null) {
-                addTabChild(parent, splitScreenTabBuilder.getScrollView(), matchParent);
+                addTabChildWithHeader(parent, splitScreenTabBuilder.getScrollView(), matchParent, tabIndex);
                 splitScreenTabBuilder.onTabVisible();
             }
         } else if (tabIndex == CockpitNavModel.TAB_ROADMATE) {
             if (roadmateTabBuilder != null) {
-                addTabChild(parent, roadmateTabBuilder.getView(), matchParent);
+                addTabChildWithHeader(parent, roadmateTabBuilder.getView(), matchParent, tabIndex);
             }
         } else if (tabIndex == TAB_LAUNCHER) {
             if (launcherScrollView != null) {
@@ -1440,6 +1441,47 @@ public class MainActivity extends AppCompatActivity {
             if (launcherTabBuilder != null) {
                 launcherTabBuilder.onTabVisible();
             }
+        }
+    }
+
+    private void addTabChildWithHeader(FrameLayout parent, View child,
+            FrameLayout.LayoutParams lp, int tabIndex) {
+        if (child == null) {
+            return;
+        }
+        LinearLayout shell = new LinearLayout(this);
+        shell.setOrientation(LinearLayout.VERTICAL);
+        shell.addView(new CockpitPageHeader(this, pageTitle(tabIndex), pageSubtitle(tabIndex)),
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+        shell.addView(child, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
+        addTabChild(parent, shell, lp);
+    }
+
+    private CharSequence pageTitle(int tabIndex) {
+        if (tabIndex == CockpitNavModel.TAB_SETTINGS) {
+            return getString(R.string.ck_domain_settings);
+        }
+        return CockpitNavModel.title(this, tabIndex);
+    }
+
+    private CharSequence pageSubtitle(int tabIndex) {
+        switch (tabIndex) {
+            case CockpitNavModel.TAB_APPS: return getString(R.string.ck_page_apps_sub);
+            case CockpitNavModel.TAB_WIFI: return getString(R.string.ck_page_wifi_sub);
+            case CockpitNavModel.TAB_FILE: return getString(R.string.ck_page_web_sub);
+            case CockpitNavModel.TAB_PROJECTION: return getString(R.string.ck_page_projection_sub);
+            case CockpitNavModel.TAB_SPLIT_SCREEN: return getString(R.string.ck_page_split_sub);
+            case CockpitNavModel.TAB_EQUALIZER: return getString(R.string.ck_page_equalizer_sub);
+            case CockpitNavModel.TAB_DRIVER_PROFILES: return getString(R.string.ck_page_driver_profiles_sub);
+            case CockpitNavModel.TAB_FACE_RECOGNITION: return getString(R.string.ck_page_face_sub);
+            case CockpitNavModel.TAB_DRIVING_HISTORY: return getString(R.string.ck_page_history_sub);
+            case CockpitNavModel.TAB_VALET: return getString(R.string.ck_page_valet_sub);
+            case CockpitNavModel.TAB_ROADMATE: return getString(R.string.ck_page_roadmate_sub);
+            case CockpitNavModel.TAB_LOG: return getString(R.string.ck_page_log_sub);
+            case CockpitNavModel.TAB_SETTINGS: return getString(R.string.ck_page_settings_sub);
+            default: return "";
         }
     }
 

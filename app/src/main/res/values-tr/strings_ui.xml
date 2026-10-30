@@ -1381,4 +1381,17 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_face_add">Yüz Ekle</string>
     <string name="profiles_face_update">Yüzü Güncelle</string>
     <string name="ck_profile_chip">PROFİL: %1$s</string>
+    <string name="ck_page_apps_sub">Uygulama kurulumunu ve yerel uygulamaları yönetin.</string>
+    <string name="ck_page_wifi_sub">Wi-Fi ve kullanılabilir ağları yönetin.</string>
+    <string name="ck_page_web_sub">Dosya yükleyin ve yerel web sunucusunu yönetin.</string>
+    <string name="ck_page_projection_sub">Ekran yansıtma ve hedef uygulamaları yapılandırın.</string>
+    <string name="ck_page_split_sub">İki uygulamayı yan yana veya alt alta açın.</string>
+    <string name="ck_page_equalizer_sub">Ses hazır ayarlarını ve ekolayzer bantlarını ayarlayın.</string>
+    <string name="ck_page_driver_profiles_sub">Sürücü profillerini ve yüz kaydını yönetin.</string>
+    <string name="ck_page_face_sub">Yüz tanıma ve koltuk hafızası eşleştirmesini yönetin.</string>
+    <string name="ck_page_history_sub">Kayıtlı sürüşleri ve sürüş puanlarını inceleyin.</string>
+    <string name="ck_page_valet_sub">Vale modu sınırlarını ve PIN ayarlarını yönetin.</string>
+    <string name="ck_page_roadmate_sub">Telemetri ve sürüş senkronizasyonunu yönetin.</string>
+    <string name="ck_page_log_sub">Sistem kayıtlarını ve tanılama araçlarını inceleyin.</string>
+    <string name="ck_page_settings_sub">Dil, tema, TTS ve sistem ayarları.</string>
 </resources>

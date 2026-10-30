@@ -1362,4 +1362,17 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_face_add">Add face</string>
     <string name="profiles_face_update">Update face</string>
     <string name="ck_profile_chip">PROFILE: %1$s</string>
+    <string name="ck_page_apps_sub">Manage application installation and local apps.</string>
+    <string name="ck_page_wifi_sub">Manage Wi-Fi and available networks.</string>
+    <string name="ck_page_web_sub">Upload files and manage the local web server.</string>
+    <string name="ck_page_projection_sub">Configure display projection and target apps.</string>
+    <string name="ck_page_split_sub">Open two apps side by side or stacked.</string>
+    <string name="ck_page_equalizer_sub">Adjust audio presets and equalizer bands.</string>
+    <string name="ck_page_driver_profiles_sub">Manage driver profiles and face enrollment.</string>
+    <string name="ck_page_face_sub">Manage face recognition and seat memory matching.</string>
+    <string name="ck_page_history_sub">Review saved drives and driving scores.</string>
+    <string name="ck_page_valet_sub">Manage valet mode limits and PIN settings.</string>
+    <string name="ck_page_roadmate_sub">Manage telemetry and drive synchronization.</string>
+    <string name="ck_page_log_sub">Inspect system logs and diagnostic tools.</string>
+    <string name="ck_page_settings_sub">Language, theme, TTS and system settings.</string>
 </resources>
