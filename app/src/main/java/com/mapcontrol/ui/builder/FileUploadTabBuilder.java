@@ -23,6 +23,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.mapcontrol.R;
 import com.mapcontrol.manager.WebServerManager;
+import com.mapcontrol.ui.cockpit.CockpitButton;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 public class FileUploadTabBuilder {
@@ -50,89 +54,36 @@ public class FileUploadTabBuilder {
 
         fileUploadTabContent = new LinearLayout(context);
         fileUploadTabContent.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        fileUploadTabContent.setPadding(margin, margin, margin, margin);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        fileUploadTabContent.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_md),
+                margin, margin);
 
-        if (context.getResources().getConfiguration().screenWidthDp >= 1000) {
-            LinearLayout columns = new LinearLayout(context);
-            columns.setOrientation(LinearLayout.HORIZONTAL);
-            columns.setBaselineAligned(false);
+        CockpitGrid grid = new CockpitGrid(context);
+        fileUploadTabContent.addView(grid, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            LinearLayout left = createCard();
-            addControlPanel(left);
-            LinearLayout right = createCard();
-            addStatusPanel(right);
-
-            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
-            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            leftLp.setMarginEnd(gutter / 2);
-            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            rightLp.setMarginStart(gutter / 2);
-            columns.addView(left, leftLp);
-            columns.addView(right, rightLp);
-            fileUploadTabContent.addView(columns, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-        } else {
-            LinearLayout card = createCard();
-            addControlPanel(card);
-            addStatusPanel(card);
-            fileUploadTabContent.addView(card, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
-
-        scrollView.addView(fileUploadTabContent, new ScrollView.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        return scrollView;
-    }
-
-    private LinearLayout createCard() {
-        LinearLayout card = new LinearLayout(context);
-        card.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
-        return card;
-    }
-
-    private void addControlPanel(LinearLayout card) {
-        TextView fileUploadTitle = new TextView(context);
-        fileUploadTitle.setText(R.string.web_mgmt_title);
-        fileUploadTitle.setTextSize(18);
-        fileUploadTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        fileUploadTitle.setTypeface(null, Typeface.BOLD);
-        fileUploadTitle.setPadding(16, 8, 16, 8);
-        card.addView(fileUploadTitle, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        TextView fileUploadDesc = new TextView(context);
-        fileUploadDesc.setText(R.string.web_mgmt_desc);
-        fileUploadDesc.setTextSize(13);
-        fileUploadDesc.setTextColor(UiStyles.color(context, R.color.textHint));
-        fileUploadDesc.setPadding(16, 0, 16, 16);
-        card.addView(fileUploadDesc, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        CockpitCard control = new CockpitCard(context, context.getString(R.string.web_mgmt_title)).span(4);
+        TextView desc = new TextView(context);
+        CockpitTokens.bodySm(desc);
+        desc.setText(R.string.web_mgmt_desc);
+        desc.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        control.addContent(desc);
 
         btnWebServerToggle = new Button(context);
         btnWebServerToggle.setText(R.string.web_server_start);
-        btnWebServerToggle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        btnWebServerToggle.setAllCaps(false);
         btnWebServerToggle.setTextSize(16);
-        btnWebServerToggle.setTypeface(null, Typeface.BOLD);
-        UiStyles.styleOemButton(btnWebServerToggle, UiStyles.color(context, R.color.buttonPrimary));
-        btnWebServerToggle.setPadding(16, 20, 16, 20);
-        LinearLayout.LayoutParams webServerToggleParams = new LinearLayout.LayoutParams(
+        btnWebServerToggle.setTypeface(CockpitTokens.inter(context,
+                CockpitTokens.WEIGHT_SEMIBOLD));
+        btnWebServerToggle.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
+        UiStyles.styleOemButton(btnWebServerToggle,
+                CockpitTokens.color(context, R.color.ck_accent));
+        btnWebServerToggle.setPadding(16, 16, 16, 16);
+        LinearLayout.LayoutParams toggleLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        webServerToggleParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.spacing_medium));
-        card.addView(btnWebServerToggle, webServerToggleParams);
-
+        toggleLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        control.addContent(btnWebServerToggle, toggleLp);
         btnWebServerToggle.setOnClickListener(v -> {
             if (webServerManager.isRunning()) {
                 webServerManager.stopServer();
@@ -140,37 +91,39 @@ public class FileUploadTabBuilder {
                 webServerManager.startServer();
             }
         });
-    }
-
-    private void addStatusPanel(LinearLayout card) {
-        LinearLayout urlQrContainer = new LinearLayout(context);
-        urlQrContainer.setOrientation(LinearLayout.VERTICAL);
-        urlQrContainer.setGravity(Gravity.CENTER);
-        urlQrContainer.setPadding(16, 16, 16, 16);
 
         webServerStatusText = new TextView(context);
+        CockpitTokens.mono(webServerStatusText);
         webServerStatusText.setText(R.string.web_server_stopped);
-        webServerStatusText.setTextSize(20);
-        webServerStatusText.setTextColor(UiStyles.color(context, R.color.textHint));
         webServerStatusText.setGravity(Gravity.CENTER);
-        webServerStatusText.setPadding(16, 16, 16, 16);
-        webServerStatusText.setTypeface(null, Typeface.BOLD);
-        urlQrContainer.addView(webServerStatusText, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        webServerStatusText.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_sm), 0,
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        control.addContent(webServerStatusText);
+        grid.add(control, 4);
 
+        CockpitCard qrCard = new CockpitCard(context, context.getString(R.string.web_qr_title)).span(4);
         qrCodeImageView = new ImageView(context);
         qrCodeImageView.setVisibility(View.GONE);
         qrCodeImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        qrCodeImageView.setPadding(16, 16, 16, 16);
-        int qrSize = (int) (200 * context.getResources().getDisplayMetrics().density);
+        int qrSize = CockpitTokens.dp(context, 240);
         LinearLayout.LayoutParams qrParams = new LinearLayout.LayoutParams(qrSize, qrSize);
-        qrParams.gravity = Gravity.CENTER;
-        urlQrContainer.addView(qrCodeImageView, qrParams);
+        qrParams.gravity = Gravity.CENTER_HORIZONTAL;
+        qrCard.addContent(qrCodeImageView, qrParams);
+        grid.add(qrCard, 4);
 
-        card.addView(urlQrContainer, new LinearLayout.LayoutParams(
+        CockpitCard hint = new CockpitCard(context, "Talimatlar").span(8);
+        TextView hintBody = new TextView(context);
+        CockpitTokens.bodySm(hintBody);
+        hintBody.setText(R.string.ck_web_hint);
+        hintBody.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        hint.addContent(hintBody);
+        grid.add(hint, 8);
+
+        scrollView.addView(fileUploadTabContent, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        return scrollView;
     }
 
     public LinearLayout getFileUploadTabContent() {
