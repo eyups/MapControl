@@ -1294,17 +1294,21 @@ public final class LauncherDashboardBuilder implements
         if (musicTabSelected) {
             UiStyles.setBackgroundRes(musicTab, R.drawable.bg_segment_thumb);
             musicTab.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            musicTab.setTypeface(null, Typeface.BOLD);
+            musicTab.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(context,
+                    com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM));
             driveTab.setBackgroundColor(android.graphics.Color.TRANSPARENT);
             driveTab.setTextColor(UiStyles.color(context, R.color.textSecondary));
-            driveTab.setTypeface(null, Typeface.NORMAL);
+            driveTab.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(context,
+                    com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM));
         } else {
             UiStyles.setBackgroundRes(driveTab, R.drawable.bg_segment_thumb);
             driveTab.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            driveTab.setTypeface(null, Typeface.BOLD);
+            driveTab.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(context,
+                    com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM));
             musicTab.setBackgroundColor(android.graphics.Color.TRANSPARENT);
             musicTab.setTextColor(UiStyles.color(context, R.color.textSecondary));
-            musicTab.setTypeface(null, Typeface.NORMAL);
+            musicTab.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(context,
+                    com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM));
         }
     }
 

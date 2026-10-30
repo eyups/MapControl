@@ -229,7 +229,8 @@ public class DriverProfilesTabBuilder {
         name.setText(profile.name);
         name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
         name.setTextColor(UiStyles.color(context, isActive ? R.color.oemAccent : R.color.textPrimary));
-        name.setTypeface(null, isActive ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+        name.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(context,
+                com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM));
         row.addView(name, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         if (isActive) {

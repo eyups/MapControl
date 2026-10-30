@@ -670,7 +670,7 @@ public final class WelcomeSoundScreenBuilder {
                     UiStyles.color(context, selected ? R.color.oemAccent : R.color.outline));
             rows[i].setBackground(bg);
             TextView title = (TextView) rows[i].getChildAt(0);
-            title.setTypeface(null, selected ? Typeface.BOLD : Typeface.NORMAL);
+            title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
             title.setTextColor(UiStyles.color(context,
                     selected ? R.color.textPrimary : R.color.textSecondary));
         }
