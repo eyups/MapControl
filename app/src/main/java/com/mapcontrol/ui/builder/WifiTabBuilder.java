@@ -26,6 +26,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitEmptyState;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 public class WifiTabBuilder {
@@ -412,31 +414,11 @@ public class WifiTabBuilder {
             wifiListContainer.removeAllViews();
 
             if (scanResults == null || scanResults.isEmpty()) {
-                LinearLayout emptyCard = new LinearLayout(context);
-                emptyCard.setOrientation(LinearLayout.VERTICAL);
-                emptyCard.setGravity(android.view.Gravity.CENTER);
-                emptyCard.setPadding(32, 48, 32, 48);
-
-                AppCompatImageView emptyIcon = new AppCompatImageView(context);
-                emptyIcon.setImageResource(R.drawable.ic_mdi_wifi);
-                emptyIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                int emptyIconPx = Math.round(48 * context.getResources().getDisplayMetrics().density);
-                emptyIcon.setLayoutParams(new LinearLayout.LayoutParams(emptyIconPx, emptyIconPx));
-                emptyIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textMuted)));
-                emptyCard.addView(emptyIcon);
-
-                TextView noNetworks = new TextView(context);
-                noNetworks.setText(R.string.wifi_scan_empty);
-                noNetworks.setTextColor(UiStyles.color(context, R.color.textMuted));
-                noNetworks.setTextSize(15);
-                noNetworks.setGravity(android.view.Gravity.CENTER);
-                LinearLayout.LayoutParams noNetLp = new LinearLayout.LayoutParams(
+                CockpitEmptyState emptyCard = new CockpitEmptyState(context,
+                        R.drawable.ic_mdi_wifi, context.getString(R.string.wifi_scan_empty));
+                wifiListContainer.addView(emptyCard, new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                noNetLp.topMargin = Math.round(16 * context.getResources().getDisplayMetrics().density);
-                emptyCard.addView(noNetworks, noNetLp);
-
-                wifiListContainer.addView(emptyCard);
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
                 callback.log("Wi-Fi ağı bulunamadı");
                 return;
             }
@@ -463,7 +445,10 @@ public class WifiTabBuilder {
     private void addWifiNetworkItem(ScanResult result, boolean isConnected) {
         LinearLayout wifiCard = new LinearLayout(context);
         wifiCard.setOrientation(LinearLayout.HORIZONTAL);
-        wifiCard.setPadding(20, 20, 20, 20);
+        wifiCard.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
         wifiCard.setGravity(android.view.Gravity.CENTER_VERTICAL);
         wifiCard.setClickable(true);
         wifiCard.setFocusable(true);
@@ -475,13 +460,13 @@ public class WifiTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         cardParams.setMargins(0, 0, 0, 12);
-        wifiCard.setMinimumHeight((int) (130 * context.getResources().getDisplayMetrics().density));
+        wifiCard.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
 
         LinearLayout iconContainer = new LinearLayout(context);
         iconContainer.setOrientation(LinearLayout.VERTICAL);
         iconContainer.setGravity(android.view.Gravity.CENTER);
 
-        int listIconPx = Math.round(40 * context.getResources().getDisplayMetrics().density);
+        int listIconPx = CockpitTokens.dp(context, 32);
         AppCompatImageView iconImg = new AppCompatImageView(context);
         iconImg.setImageResource(R.drawable.ic_mdi_wifi);
         iconImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
