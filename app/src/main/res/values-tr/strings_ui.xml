@@ -1210,25 +1210,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_configured">Ayarlandı</string>
     <string name="profiles_customized">Özel</string>
     <string name="profiles_summary_drive_mode">Sürüş modu</string>
-    <string name="ck_sunroof_manual_title">Cam Tavan Kontrolü</string>
-    <string name="ck_sunroof_manual_open">Tam Aç</string>
-    <string name="ck_sunroof_manual_vent">Havalandır</string>
-    <string name="ck_sunroof_manual_shade">Gölge</string>
-    <string name="ck_sunroof_manual_close">Tam Kapat</string>
-    <string name="ck_sunroof_front">Ön cam</string>
-    <string name="ck_sunroof_rear">Arka cam</string>
-    <string name="ck_sunroof_ready">Hazır</string>
-    <string name="ck_sunroof_shade_ready">Hazır</string>
-    <string name="ck_sunroof_opening">Açılıyor</string>
-    <string name="ck_sunroof_venting">Havalandırılıyor</string>
-    <string name="ck_sunroof_shade_open">Gölge açık</string>
-    <string name="ck_sunroof_closing">Kapanıyor</string>
     <string name="ck_sunroof_not_connected">Bağlı değil</string>
     <string name="ck_sunroof_live_title">Anlık hava ve ışık</string>
     <string name="ck_sunroof_canbus_online">CAN-BUS ONLINE</string>
-    <string name="ck_sunroof_open">Açık</string>
-    <string name="ck_sunroof_closed">Kapalı</string>
-    <string name="ck_sunroof_shade_closed">Güneşlik kapalı</string>
     <string name="ck_sunroof_active">AKTİF</string>
     <string name="ck_sunroof_passive">PASİF</string>
 </resources>
