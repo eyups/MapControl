@@ -84,11 +84,11 @@ public class CockpitSegmented extends LinearLayout {
                 seg.setBackground(CockpitSurfaces.rounded(c,
                         CockpitTokens.color(c, R.color.ck_accent), 10f));
                 seg.setTextColor(CockpitTokens.color(c, R.color.ck_on_accent));
-                seg.setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_BOLD));
+                seg.setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_SEMIBOLD));
             } else {
                 seg.setBackground(null);
                 seg.setTextColor(CockpitTokens.color(c, R.color.ck_text_medium));
-                seg.setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_MEDIUM));
+                seg.setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_SEMIBOLD));
             }
         }
     }

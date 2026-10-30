@@ -45,8 +45,12 @@ public final class CockpitTokens {
             return cached;
         }
         int res;
-        if (weight >= WEIGHT_SEMIBOLD) {
+        if (weight >= WEIGHT_BOLD) {
+            res = R.font.inter_bold;
+        } else if (weight >= WEIGHT_SEMIBOLD) {
             res = R.font.inter_semibold;
+        } else if (weight >= WEIGHT_MEDIUM) {
+            res = R.font.inter_medium;
         } else {
             res = R.font.inter_regular;
         }

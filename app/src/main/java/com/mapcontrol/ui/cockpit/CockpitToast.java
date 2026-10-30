@@ -46,7 +46,7 @@ public final class CockpitToast {
 
         TextView dot = new TextView(c);
         dot.setText("●");
-        dot.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 14);
+        dot.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15);
         dot.setTextColor(level == StatusBadge.NOMINAL
                 ? CockpitTokens.color(c, R.color.ck_nominal)
                 : level == StatusBadge.ADVISORY

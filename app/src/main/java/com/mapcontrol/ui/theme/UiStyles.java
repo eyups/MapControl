@@ -432,7 +432,6 @@ public final class UiStyles {
         for (int i = 0; i < 3; i++) {
             TextView tv = new TextView(context);
             tv.setText(labels[i]);
-            tv.setTextSize(14);
             tv.setGravity(Gravity.CENTER);
             tv.setTextSize(16);
             tv.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));

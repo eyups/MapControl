@@ -153,7 +153,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView tagsLabel = new TextView(context);
         tagsLabel.setText(R.string.welcome_tts_tags_label);
-        tagsLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        tagsLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         tagsLabel.setTextColor(secondary);
         tagsLabel.setPadding(0, 0, 0, 6);
         ttsCard.addView(tagsLabel);
@@ -173,7 +173,7 @@ public final class WelcomeSoundScreenBuilder {
         for (String tag : tags) {
             TextView chip = new TextView(context);
             chip.setText(tag);
-            chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             chip.setTextColor(primary);
             chip.setPadding(chipPadX, chipPadY, chipPadX, chipPadY);
             GradientDrawable chipBg = new GradientDrawable();
@@ -197,7 +197,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView tagsHelp = new TextView(context);
         tagsHelp.setText(R.string.welcome_tts_tags_help);
-        tagsHelp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+        tagsHelp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         tagsHelp.setTextColor(UiStyles.color(context, R.color.textHint));
         tagsHelp.setPadding(0, 6, 0, 10);
         ttsCard.addView(tagsHelp);
@@ -211,7 +211,7 @@ public final class WelcomeSoundScreenBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         ttsCard.addView(ttsGenerateRow, ttsGenLp);
         TextView ttsStatus = new TextView(context);
-        ttsStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        ttsStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         ttsStatus.setTextColor(UiStyles.color(context, R.color.textHint));
         ttsStatus.setPadding(0, 8, 0, 0);
         ttsCard.addView(ttsStatus);
@@ -224,14 +224,14 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView filePathLabel = new TextView(context);
         filePathLabel.setText(R.string.welcome_sound_selected_label);
-        filePathLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        filePathLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         filePathLabel.setTextColor(secondary);
         filePathLabel.setPadding(0, 0, 0, 6);
         sourceCard.addView(filePathLabel);
 
         TextView tvFilePath = new TextView(context);
         tvFilePath.setText(R.string.welcome_sound_no_file_yet);
-        tvFilePath.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        tvFilePath.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         tvFilePath.setTextColor(primary);
         tvFilePath.setPadding(14, 12, 14, 12);
         tvFilePath.setBackground(fieldBackground(context));
@@ -268,7 +268,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView usbTitle = new TextView(context);
         usbTitle.setText(R.string.welcome_sound_usb_title);
-        usbTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        usbTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         usbTitle.setTextColor(primary);
         usbTitle.setTypeface(null, android.graphics.Typeface.BOLD);
         usbTitle.setPadding(0, 16, 0, 4);
@@ -276,7 +276,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView usbStatus = new TextView(context);
         usbStatus.setText(R.string.welcome_sound_usb_absent);
-        usbStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        usbStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         usbStatus.setTextColor(UiStyles.color(context, R.color.textHint));
         usbStatus.setPadding(0, 0, 0, 6);
         sourceCard.addView(usbStatus);
@@ -290,7 +290,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView steps = new TextView(context);
         steps.setText(R.string.welcome_sound_steps);
-        steps.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        steps.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         steps.setTextColor(UiStyles.color(context, R.color.textHint));
         steps.setLineSpacing(0f, 1.2f);
         steps.setPadding(0, 8, 0, 0);
@@ -383,7 +383,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView desc = new TextView(context);
         desc.setText(descRes);
-        desc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        desc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         desc.setTextColor(UiStyles.color(context, R.color.textHint));
         desc.setPadding(0, 4, 0, 12);
         card.addView(desc);
@@ -451,7 +451,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView sectionDesc = new TextView(context);
         sectionDesc.setText(R.string.welcome_design_section_desc);
-        sectionDesc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        sectionDesc.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
         sectionDesc.setPadding(0, 0, 0, 12);
         parent.addView(sectionDesc);
@@ -490,7 +490,7 @@ public final class WelcomeSoundScreenBuilder {
 
             TextView help = new TextView(context);
             help.setText(design.helpRes());
-            help.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+            help.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             help.setTextColor(secondary);
             help.setPadding(0, 4, 0, 0);
             row.addView(help);
@@ -528,7 +528,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView lineLabel = new TextView(context);
         lineLabel.setText(R.string.welcome_custom_text_label);
-        lineLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        lineLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         lineLabel.setTextColor(secondary);
         lineLabel.setPadding(0, 16, 0, 8);
         parent.addView(lineLabel);
@@ -575,7 +575,7 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView lineHelp = new TextView(context);
         lineHelp.setText(R.string.welcome_custom_text_help);
-        lineHelp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        lineHelp.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         lineHelp.setTextColor(UiStyles.color(context, R.color.textHint));
         lineHelp.setPadding(0, 0, 0, 8);
         parent.addView(lineHelp);
@@ -599,7 +599,7 @@ public final class WelcomeSoundScreenBuilder {
     private static void addTurkishCharacterRow(Context context, LinearLayout parent, EditText input) {
         TextView label = new TextView(context);
         label.setText(R.string.welcome_turkish_chars_label);
-        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         label.setTextColor(UiStyles.color(context, R.color.textHint));
         label.setPadding(0, 2, 0, 6);
         parent.addView(label);

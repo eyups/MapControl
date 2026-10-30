@@ -1073,8 +1073,9 @@ public class MainActivity extends AppCompatActivity {
         }
         cameraRecordingBadge = new TextView(this);
         cameraRecordingBadge.setText(R.string.camera360_recording_continues);
-        cameraRecordingBadge.setTextSize(11);
-        cameraRecordingBadge.setTypeface(null, android.graphics.Typeface.BOLD);
+        cameraRecordingBadge.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 13);
+        cameraRecordingBadge.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(
+                this, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
         cameraRecordingBadge.setTextColor(android.graphics.Color.WHITE);
         cameraRecordingBadge.setPadding(dp(12), dp(6), dp(12), dp(6));
         GradientDrawable bg = new GradientDrawable();

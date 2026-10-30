@@ -33,7 +33,7 @@ public class CockpitButton extends AppCompatTextView {
         int h = CockpitTokens.dim(context, R.dimen.ck_space_lg);
         setPadding(h, CockpitTokens.dim(context, R.dimen.ck_space_sm), h,
                 CockpitTokens.dim(context, R.dimen.ck_space_sm));
-        setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 17);
+        setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18);
         setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
         setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
         applyStyle(STYLE_SECONDARY);
@@ -84,7 +84,7 @@ public class CockpitButton extends AppCompatTextView {
                     CockpitTokens.color(c, R.color.ck_accent_active),
                     CockpitTokens.color(c, R.color.ck_surface_2), 16f));
             setTextColor(CockpitTokens.color(c, R.color.ck_on_accent));
-            setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_BOLD));
+            setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_SEMIBOLD));
             setMinHeight(CockpitTokens.dim(c, R.dimen.ck_touch_primary));
         } else if (style == STYLE_HAZARD) {
             setBackground(CockpitSurfaces.stateFill(c,
@@ -92,7 +92,7 @@ public class CockpitButton extends AppCompatTextView {
                     CockpitSurfaces.alpha(CockpitTokens.color(c, R.color.ck_critical), 0.82f),
                     CockpitTokens.color(c, R.color.ck_surface_2), 16f));
             setTextColor(0xFFFFFFFF);
-            setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_BOLD));
+            setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_SEMIBOLD));
         } else {
             setBackground(CockpitSurfaces.stateOutlined(c, 16f));
             setTextColor(new ColorStateList(

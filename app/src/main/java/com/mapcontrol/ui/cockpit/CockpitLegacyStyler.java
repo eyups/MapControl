@@ -54,8 +54,34 @@ public final class CockpitLegacyStyler {
         }
     }
 
+    private static boolean isAllCaps(CharSequence text) {
+        if (text == null || text.length() == 0) {
+            return false;
+        }
+        boolean hasLetter = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (Character.isLetter(c)) {
+                hasLetter = true;
+                if (Character.isLowerCase(c)) {
+                    return false;
+                }
+            }
+        }
+        return hasLetter;
+    }
+
     private static void styleText(TextView view) {
         Typeface current = view.getTypeface();
+        float sp = view.getTextSize() / view.getResources().getDisplayMetrics().scaledDensity;
+        boolean caps = view.isAllCaps() || isAllCaps(view.getText());
+        if (caps && sp <= 16f && !(view instanceof EditText)) {
+            CockpitTokens.labelCaps(view);
+            return;
+        }
+        if (!(view instanceof EditText) && !(view instanceof StatusBadge) && sp < 15f) {
+            view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15f);
+        }
         // Log/terminal ve açıkça monospace bırakılan alanları koru.
         if (current != null && current.equals(Typeface.MONOSPACE)) {
             view.setTypeface(CockpitTokens.mono(view.getContext()),
@@ -63,6 +89,7 @@ public final class CockpitLegacyStyler {
             return;
         }
         if (view instanceof EditText) {
+            view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16f);
             view.setTypeface(CockpitTokens.inter(view.getContext(), CockpitTokens.WEIGHT_REGULAR));
             return;
         }

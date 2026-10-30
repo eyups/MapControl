@@ -16,7 +16,7 @@ public class CockpitInput extends AppCompatEditText {
         super(context);
         setSingleLine(true);
         setGravity(Gravity.CENTER_VERTICAL);
-        setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 17);
+        setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16);
         setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_REGULAR));
         setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         setHintTextColor(CockpitTokens.color(context, R.color.ck_text_medium));

@@ -43,7 +43,7 @@ public class CockpitChip extends AppCompatTextView {
                     CockpitTokens.color(c, R.color.ck_surface_2),
                     CockpitTokens.color(c, R.color.ck_accent), 24f));
             setTextColor(CockpitTokens.color(c, R.color.ck_text_high));
-            setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_SEMIBOLD));
+            setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_MEDIUM));
         } else {
             setBackground(CockpitSurfaces.outlined(c,
                     CockpitTokens.color(c, R.color.ck_surface_1),

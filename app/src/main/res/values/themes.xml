@@ -7,6 +7,7 @@
         <item name="android:windowBackground">@color/ck_bg_base</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="android:fontFamily">@font/inter</item>
 
         <item name="android:statusBarColor">@color/ck_bg_base</item>
         <item name="android:navigationBarColor">@color/ck_bg_base</item>
@@ -116,7 +117,9 @@
     <style name="CustomAlertDialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/ck_accent</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 
     <!-- Cockpit typography roles (F1) -->
@@ -128,9 +131,9 @@
 
     <style name="TextAppearance.Cockpit.Display">
         <item name="android:textSize">48sp</item>
+        <item name="android:lineHeight">56sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">700</item>
-        <item name="android:lineSpacingExtra">2dp</item>
         <item name="android:letterSpacing">-0.02</item>
         <item name="android:textColor">@color/ck_text_high</item>
         <item name="android:includeFontPadding">false</item>
@@ -138,6 +141,7 @@
 
     <style name="TextAppearance.Cockpit.HeadlineLg">
         <item name="android:textSize">36sp</item>
+        <item name="android:lineHeight">44sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">600</item>
         <item name="android:letterSpacing">-0.01</item>
@@ -147,6 +151,7 @@
 
     <style name="TextAppearance.Cockpit.HeadlineMd">
         <item name="android:textSize">28sp</item>
+        <item name="android:lineHeight">36sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">600</item>
         <item name="android:textColor">@color/ck_text_high</item>
@@ -155,6 +160,7 @@
 
     <style name="TextAppearance.Cockpit.HeadlineSm">
         <item name="android:textSize">22sp</item>
+        <item name="android:lineHeight">28sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">600</item>
         <item name="android:textColor">@color/ck_text_high</item>
@@ -163,6 +169,7 @@
 
     <style name="TextAppearance.Cockpit.Title">
         <item name="android:textSize">18sp</item>
+        <item name="android:lineHeight">24sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">600</item>
         <item name="android:textColor">@color/ck_text_high</item>
@@ -171,6 +178,7 @@
 
     <style name="TextAppearance.Cockpit.BodyLg">
         <item name="android:textSize">18sp</item>
+        <item name="android:lineHeight">26sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textColor">@color/ck_text_high</item>
@@ -179,6 +187,7 @@
 
     <style name="TextAppearance.Cockpit.BodyMd">
         <item name="android:textSize">16sp</item>
+        <item name="android:lineHeight">24sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textColor">@color/ck_text_high</item>
@@ -187,6 +196,7 @@
 
     <style name="TextAppearance.Cockpit.BodySm">
         <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight">20sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/ck_text_medium</item>
@@ -195,6 +205,7 @@
 
     <style name="TextAppearance.Cockpit.LabelCaps">
         <item name="android:textSize">13sp</item>
+        <item name="android:lineHeight">16sp</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textFontWeight">700</item>
         <item name="android:letterSpacing">0.06</item>
@@ -204,6 +215,7 @@
 
     <style name="TextAppearance.Cockpit.Mono">
         <item name="android:textSize">15sp</item>
+        <item name="android:lineHeight">20sp</item>
         <item name="android:fontFamily">@font/jetbrains_mono</item>
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/ck_text_medium</item>
