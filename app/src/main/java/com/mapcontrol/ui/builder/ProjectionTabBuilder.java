@@ -34,6 +34,7 @@ import com.mapcontrol.nav.GoogleMapsNavSnapshot;
 import com.mapcontrol.nav.YandexClusterNavCoordinator;
 import com.mapcontrol.nav.YandexClusterNavOverlay;
 import com.mapcontrol.service.GlobalBackService;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
@@ -92,9 +93,16 @@ public class ProjectionTabBuilder {
 
         projectionTabContent = new LinearLayout(context);
         projectionTabContent.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        projectionTabContent.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(projectionTabContent);
+        projectionTabContent.setPadding(0, 0, 0, 0);
+        projectionTabContent.setBackgroundColor(Color.TRANSPARENT);
+
+        CockpitGrid projectionGrid = new CockpitGrid(context);
+        LinearLayout leftCard = createSectionCard();
+        LinearLayout rightCard = createSectionCard();
+        projectionGrid.add(leftCard, 4);
+        projectionGrid.add(rightCard, 4);
+        projectionTabContent.addView(projectionGrid, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         outer.addView(projectionTabContent, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -109,7 +117,7 @@ public class ProjectionTabBuilder {
         projectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
         projectionTitle.setTypeface(null, Typeface.BOLD);
         projectionTitle.setPadding(16, 16, 16, 8);
-        projectionTabContent.addView(projectionTitle, new LinearLayout.LayoutParams(
+        leftCard.addView(projectionTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -119,7 +127,7 @@ public class ProjectionTabBuilder {
         projectionStatus.setTextColor(UiStyles.color(context, R.color.textHint));
         projectionStatus.setPadding(16, 0, 16, 16);
         projectionStatus.setId(View.generateViewId());
-        projectionTabContent.addView(projectionStatus, new LinearLayout.LayoutParams(
+        leftCard.addView(projectionStatus, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         projectionStatusText = projectionStatus;
@@ -157,7 +165,7 @@ public class ProjectionTabBuilder {
         btnClose.setId(View.generateViewId());
         controlButtonContainer.addView(btnClose, closeParams);
 
-        projectionTabContent.addView(controlButtonContainer, new LinearLayout.LayoutParams(
+        leftCard.addView(controlButtonContainer, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -185,7 +193,7 @@ public class ProjectionTabBuilder {
         appTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
         appTitle.setTypeface(null, Typeface.BOLD);
         appTitle.setPadding(16, 16, 16, 8);
-        projectionTabContent.addView(appTitle, new LinearLayout.LayoutParams(
+        leftCard.addView(appTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -298,7 +306,7 @@ public class ProjectionTabBuilder {
         });
 
         appCard.addView(appButtons);
-        projectionTabContent.addView(appCard, appCardParams);
+        leftCard.addView(appCard, appCardParams);
 
         TextView mainGroupTitle = new TextView(context);
         mainGroupTitle.setText(R.string.projection_nav_behavior);
@@ -306,7 +314,7 @@ public class ProjectionTabBuilder {
         mainGroupTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
         mainGroupTitle.setTypeface(null, Typeface.BOLD);
         mainGroupTitle.setPadding(16, 24, 16, 8);
-        projectionTabContent.addView(mainGroupTitle, new LinearLayout.LayoutParams(
+        rightCard.addView(mainGroupTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -690,7 +698,7 @@ public class ProjectionTabBuilder {
                 ClusterNavOverlayOffsets.Provider.YANDEX,
                 () -> YandexClusterNavOverlay.getInstance(context).applyStoredOffsets());
 
-        projectionTabContent.addView(mainCardContainer, mainCardParams);
+        rightCard.addView(mainCardContainer, mainCardParams);
 
         return scrollView;
     }
@@ -1119,6 +1127,15 @@ public class ProjectionTabBuilder {
             callback.log("selectTargetApp hatası: " + e.getMessage());
             Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private LinearLayout createSectionCard() {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        int inner = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        card.setPadding(inner, inner, inner, inner);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(card);
+        return card;
     }
 
     public ScrollView getScrollView() {
