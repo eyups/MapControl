@@ -20,6 +20,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitGrid;
 import com.mapcontrol.ui.cockpit.CockpitToggle;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.CockpitToggleRow;
 import com.mapcontrol.ui.cockpit.StatusBadge;
 import com.mapcontrol.vehicle.RecirculationAutomation;
@@ -471,67 +472,43 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         applyCardBackground(card, rule.enabled, density);
         card.setElevation(dp(2, density));
 
-        final int accentColor = accentFor(id);
-        View accentStrip = new View(context);
-        GradientDrawable stripBg = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[]{accentColor, (accentColor & 0x00FFFFFF) | 0x33000000});
-        stripBg.setCornerRadius(dp(3, density));
-        accentStrip.setBackground(stripBg);
-        LinearLayout.LayoutParams stripLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(4, density));
-        stripLp.bottomMargin = dp(8, density);
-        card.addView(accentStrip, stripLp);
-
         LinearLayout header = new LinearLayout(context);
-        header.setOrientation(LinearLayout.VERTICAL);
-        header.setGravity(Gravity.CENTER_HORIZONTAL);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
 
         AppCompatImageView icon = new AppCompatImageView(context);
         icon.setImageResource(getRuleIconResource(id, rule.tempC, iconRes));
         icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        int iconPx = dp(compactLayout ? 36 : 40, density);
-        int badgePx = dp(compactLayout ? 64 : 72, density);
+        int iconPx = dp(compactLayout ? 24 : 28, density);
+        int badgePx = dp(compactLayout ? 40 : 44, density);
         FrameLayout iconBadge = new FrameLayout(context);
-        GradientDrawable iconBackground = new GradientDrawable();
-        iconBackground.setColor(UiStyles.color(context, R.color.automationIconSurface));
-        iconBackground.setCornerRadius(dp(16, density));
-        iconBackground.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
-        iconBadge.setBackground(iconBackground);
+        iconBadge.setBackground(com.mapcontrol.ui.cockpit.CockpitSurfaces.rounded(context,
+                CockpitTokens.color(context, R.color.ck_surface_2), 12f));
         icon.setImageTintList(null);
         iconBadge.addView(icon, new FrameLayout.LayoutParams(iconPx, iconPx, Gravity.CENTER));
         LinearLayout.LayoutParams iconBadgeLp = new LinearLayout.LayoutParams(badgePx, badgePx);
-        iconBadgeLp.gravity = Gravity.CENTER_HORIZONTAL;
-        iconBadgeLp.bottomMargin = dp(8, density);
+        iconBadgeLp.rightMargin = dp(10, density);
         header.addView(iconBadge, iconBadgeLp);
 
         TextView name = new TextView(context);
         name.setText(titleRes);
-        name.setTextSize(13);
-        name.setTypeface(null, Typeface.BOLD);
-        name.setTextColor(UiStyles.color(context, R.color.automationText));
-        name.setGravity(Gravity.CENTER);
-        name.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        name.setTextSize(16);
+        name.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        name.setTextColor(UiStyles.color(context, R.color.ck_text_high));
         name.setMaxLines(2);
-        LinearLayout.LayoutParams nameLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        header.addView(name, nameLp);
+        header.addView(name, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         CockpitToggle ruleSwitch = new CockpitToggle(context);
         ruleSwitch.setChecked(rule.enabled, false);
-        LinearLayout switchRow = new LinearLayout(context);
-        switchRow.setGravity(Gravity.CENTER);
-        switchRow.setPadding(0, dp(6, density), 0, 0);
-        switchRow.addView(ruleSwitch, new LinearLayout.LayoutParams(
+        header.addView(ruleSwitch, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        header.addView(switchRow, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         card.addView(header);
 
         TextView delayLabel = new TextView(context);
         delayLabel.setTextSize(11);
-        delayLabel.setTextColor(UiStyles.color(context, R.color.automationTextMuted));
-        delayLabel.setGravity(Gravity.CENTER);
-        delayLabel.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        delayLabel.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
+        delayLabel.setGravity(Gravity.START);
         delayLabel.setPadding(0, dp(8, density), 0, 0);
         delayLabel.setText(formatDelay(rule.delayMinutes));
         card.addView(delayLabel);
@@ -546,6 +523,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         compareRow.setGravity(Gravity.CENTER_VERTICAL);
         compareRow.setPadding(0, dp(8, density), 0, 0);
 
+        int accentColor = CockpitTokens.color(context, R.color.ck_accent);
         TextView compareChip = new TextView(context);
         compareChip.setTextSize(14);
         compareChip.setTypeface(null, Typeface.BOLD);
@@ -765,16 +743,10 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
     }
 
     private void applyCardBackground(LinearLayout card, boolean enabled, float density) {
-        GradientDrawable bg = new GradientDrawable();
-        bg.setCornerRadius(dp(18, density));
-        if (enabled) {
-            bg.setColor(UiStyles.color(context, R.color.automationCardSurface));
-            bg.setStroke(dp(2, density), UiStyles.color(context, R.color.oemAccent));
-        } else {
-            bg.setColor(UiStyles.color(context, R.color.automationCardSurface));
-            bg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
-        }
-        card.setBackground(bg);
+        card.setBackground(com.mapcontrol.ui.cockpit.CockpitSurfaces.outlined(context,
+                CockpitTokens.color(context, enabled ? R.color.ck_surface_2 : R.color.ck_surface_1),
+                CockpitTokens.color(context, enabled ? R.color.ck_accent : R.color.ck_stroke), 16f));
+        card.setElevation(0f);
     }
 
     private GradientDrawable createCardBackground(int fill, int stroke, float density, int radiusDp) {
