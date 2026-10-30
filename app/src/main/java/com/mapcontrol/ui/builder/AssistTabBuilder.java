@@ -93,6 +93,18 @@ public class AssistTabBuilder {
         note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         cpd.addContent(note);
         grid.add(cpd, 4);
+        final CockpitCard cpdToggleCard = holders[ASSIST_CARDS.length - 1] != null
+                ? holders[ASSIST_CARDS.length - 1].card : null;
+        if (cpdToggleCard != null) {
+            cpd.addOnLayoutChangeListener((v, left, top, right, bottom,
+                    oldLeft, oldTop, oldRight, oldBottom) -> {
+                int targetHeight = v.getHeight();
+                if (targetHeight > 0
+                        && cpdToggleCard.getMinimumHeight() < targetHeight) {
+                    cpdToggleCard.setMinimumHeight(targetHeight);
+                }
+            });
+        }
 
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
