@@ -12,10 +12,13 @@ import android.location.LocationManager;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitListRow;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.CockpitToggleRow;
 import android.widget.TextView;
@@ -69,15 +72,11 @@ public class ValetTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        if (!ValetModeManager.hasPin(context)) {
-            buildPinSetup(outer);
+        ValetSession session = ValetModeManager.getSession(context);
+        if (session.active) {
+            buildActive(outer, session);
         } else {
-            ValetSession session = ValetModeManager.getSession(context);
-            if (session.active) {
-                buildActive(outer, session);
-            } else {
-                buildSettings(outer, session);
-            }
+            buildSettings(outer, session);
         }
     }
 
@@ -175,7 +174,12 @@ public class ValetTabBuilder {
         Button startBtn = button("Vale Modu'nu başlat", true);
         startBtn.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         startBtn.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
-        startBtn.setOnClickListener(v -> new AlertDialog.Builder(context)
+        startBtn.setOnClickListener(v -> {
+            if (!ValetModeManager.hasPin(context)) {
+                showPinSetupDialog();
+                return;
+            }
+            new AlertDialog.Builder(context)
                 .setTitle("Vale Modu başlatılsın mı?")
                 .setMessage("Araç park hâlinde olmalı. Modu bitirmek için PIN gerekir; "
                         + "hız ve alan sınırı uyarıları cihazda tutulur.")
@@ -193,22 +197,14 @@ public class ValetTabBuilder {
                     rebuild();
                 })
                 .setNegativeButton("Vazgeç", null)
-                .show());
+                .show();
+        });
         LinearLayout.LayoutParams startLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         startLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         left.addView(startBtn, startLp);
 
-        Button changePin = button("PIN değiştir", false);
-        changePin.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
-        changePin.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
-        changePin.setOnClickListener(v -> showPinSetupDialog());
-        LinearLayout.LayoutParams pinLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        pinLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
-        left.addView(changePin, pinLp);
 
         LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -221,6 +217,22 @@ public class ValetTabBuilder {
         parent.addView(columns, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        CockpitGrid pinGrid = new CockpitGrid(context);
+        CockpitListRow pinRow = new CockpitListRow(context, R.drawable.ic_mdi_shield_car,
+                "PIN değiştir", "Vale modunu bitirmek için kullanılır");
+        TextView pinChevron = new TextView(context);
+        CockpitTokens.headlineSm(pinChevron);
+        pinChevron.setText("›");
+        pinChevron.setTextColor(CockpitTokens.color(context, R.color.ck_text_muted));
+        pinRow.trailing(pinChevron);
+        pinRow.clickRow(v -> showPinSetupDialog());
+        pinGrid.add(pinRow, 4);
+        pinGrid.add(new View(context), 4);
+        LinearLayout.LayoutParams pinGridLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pinGridLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        parent.addView(pinGrid, pinGridLp);
     }
 
     private void buildActive(LinearLayout parent, ValetSession session) {
