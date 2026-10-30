@@ -8,6 +8,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
+import android.util.SparseArray;
+import android.view.MotionEvent;
+import android.view.ViewConfiguration;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -47,6 +50,13 @@ public final class VehicleModelHostView extends FrameLayout {
 
     private boolean active;
     private boolean oemAssetsLoaded;
+    private String spinPrefix;
+    private int spinLastFrame;
+    private int spinFrame;
+    private float spinDownX;
+    private int spinDownFrame;
+    private boolean spinning;
+    private final SparseArray<Bitmap> spinCache = new SparseArray<>();
     private ViewMode currentMode = ViewMode.NORMAL;
 
     public VehicleModelHostView(@NonNull Context context) {
@@ -82,6 +92,68 @@ public final class VehicleModelHostView extends FrameLayout {
         fallbackView.setClickable(false);
         fallbackView.setContentDescription(context.getString(R.string.launcher_dashboard_vehicle_tap_select));
         addView(fallbackView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+        setOnTouchListener(this::handleSpinTouch);
+    }
+
+    private boolean handleSpinTouch(View view, MotionEvent event) {
+        if (spinPrefix == null || spinLastFrame <= 0) {
+            return false; // dokunma -> normal click / araç seçimi
+        }
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                spinDownX = event.getX();
+                spinDownFrame = spinFrame;
+                spinning = false;
+                return true;
+            case MotionEvent.ACTION_MOVE: {
+                float dx = event.getX() - spinDownX;
+                int slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+                if (Math.abs(dx) > slop) {
+                    spinning = true;
+                }
+                if (spinning) {
+                    float travel = getWidth() * 0.85f;
+                    int delta = Math.round(dx / Math.max(1f, travel) * spinLastFrame);
+                    int next = Math.floorMod(spinDownFrame + delta, spinLastFrame + 1);
+                    if (next != spinFrame) {
+                        showSpinFrame(next);
+                    }
+                }
+                return true;
+            }
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if (!spinning) {
+                    performClick();
+                }
+                spinning = false;
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    private void showSpinFrame(int index) {
+        if (spinPrefix == null) {
+            return;
+        }
+        Bitmap frame = spinCache.get(index);
+        if (frame == null) {
+            frame = resources.loadFrame(spinPrefix, index);
+            if (frame == null) {
+                return;
+            }
+            if (spinCache.size() >= 10) {
+                spinCache.remove(spinCache.keyAt(0));
+            }
+            spinCache.put(index, frame);
+        }
+        spinFrame = index;
+        carImageView.setImageBitmap(frame);
+        carImageView.setVisibility(VISIBLE);
+        fallbackView.setVisibility(GONE);
+        animationView.setVisibility(GONE);
     }
 
     @Override
@@ -203,6 +275,15 @@ public final class VehicleModelHostView extends FrameLayout {
         Bitmap carBitmap = resources.loadCarModelBitmap();
         if (carBitmap != null) {
             oemAssetsLoaded = true;
+            String base = resources.getCarDrawableBaseName();
+            if (base != null && base.startsWith("car_model_face1")) {
+                int last = resources.findLastFrameIndex("car_model_face1", 30);
+                spinPrefix = last > 1 ? "car_model_face1" : null;
+                spinLastFrame = Math.max(0, last);
+                spinFrame = 0;
+            } else {
+                spinPrefix = null;
+            }
             carImageView.setImageBitmap(carBitmap);
             carImageView.setVisibility(VISIBLE);
             fallbackView.setVisibility(GONE);
