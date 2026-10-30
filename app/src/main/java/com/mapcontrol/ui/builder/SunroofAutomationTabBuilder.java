@@ -128,9 +128,9 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
         if (isPortrait) {
             root.addView(buildLiveConditionCard(density));
-            root.addView(buildQuickControlsCard(density));
-            root.addView(buildAutomationModeCard(density));
             root.addView(buildSafetyCard(density));
+            root.addView(buildAutomationModeCard(density));
+            root.addView(buildQuickControlsCard(density));
         } else {
             LinearLayout columns = new LinearLayout(context);
             columns.setOrientation(LinearLayout.HORIZONTAL);
@@ -139,12 +139,12 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             LinearLayout leftColumn = new LinearLayout(context);
             leftColumn.setOrientation(LinearLayout.VERTICAL);
             leftColumn.addView(buildLiveConditionCard(density));
-            leftColumn.addView(buildQuickControlsCard(density));
+            leftColumn.addView(buildSafetyCard(density));
 
             LinearLayout rightColumn = new LinearLayout(context);
             rightColumn.setOrientation(LinearLayout.VERTICAL);
             rightColumn.addView(buildAutomationModeCard(density));
-            rightColumn.addView(buildSafetyCard(density));
+            rightColumn.addView(buildQuickControlsCard(density));
 
             columns.addView(leftColumn, weightedCard(0, dp(8, density)));
             columns.addView(rightColumn, weightedCard(dp(8, density), 0));
