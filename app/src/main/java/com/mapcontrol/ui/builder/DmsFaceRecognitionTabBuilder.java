@@ -14,7 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mapcontrol.ui.cockpit.CockpitButton;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitToggle;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
@@ -79,92 +84,62 @@ public final class DmsFaceRecognitionTabBuilder {
      * Completely clean standalone screen with only the mode selection cards in the dead center.
      */
     private View buildSelectionScreen() {
-        LinearLayout centerWrapper = new LinearLayout(activity);
-        centerWrapper.setOrientation(LinearLayout.VERTICAL);
-        centerWrapper.setGravity(Gravity.CENTER);
-        centerWrapper.setPadding(dp(24), dp(40), dp(24), dp(40));
-        centerWrapper.setMinimumHeight(dp(620));
-
-        LinearLayout centerCard = new LinearLayout(activity);
-        centerCard.setOrientation(LinearLayout.VERTICAL);
-        centerCard.setGravity(Gravity.CENTER_HORIZONTAL);
-        centerCard.setPadding(dp(36), dp(36), dp(36), dp(36));
-        UiStyles.setGlassCardBackground(centerCard);
-        centerWrapper.addView(centerCard, new LinearLayout.LayoutParams(
-                dp(680), LinearLayout.LayoutParams.WRAP_CONTENT));
+        android.widget.ScrollView scroll = new android.widget.ScrollView(activity);
+        scroll.setFillViewport(true);
+        scroll.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        LinearLayout content = new LinearLayout(activity);
+        content.setOrientation(LinearLayout.VERTICAL);
+        int margin = CockpitTokens.dim(activity, R.dimen.ck_margin);
+        content.setPadding(margin, CockpitTokens.dim(activity, R.dimen.ck_space_lg),
+                margin, CockpitTokens.dim(activity, R.dimen.ck_space_lg));
+        scroll.addView(content, new android.widget.ScrollView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         TextView title = new TextView(activity);
         title.setText("Koltuk Hafıza Tipi Seçimi");
-        title.setTextSize(22);
-        title.setTypeface(null, Typeface.BOLD);
-        title.setTextColor(UiStyles.color(activity, R.color.textPrimary));
-        title.setGravity(Gravity.CENTER);
-        centerCard.addView(title);
+        CockpitTokens.headlineMd(title);
+        content.addView(title);
 
         TextView subtitle = new TextView(activity);
         subtitle.setText("Lütfen aracınızın koltuk hafıza donanım tipini seçin:");
-        subtitle.setTextSize(14);
-        subtitle.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
-        subtitle.setGravity(Gravity.CENTER);
+        CockpitTokens.bodySm(subtitle);
+        subtitle.setTextColor(CockpitTokens.color(activity, R.color.ck_text_medium));
         LinearLayout.LayoutParams subLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        subLp.topMargin = dp(6);
-        subLp.bottomMargin = dp(28);
-        centerCard.addView(subtitle, subLp);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        subLp.topMargin = CockpitTokens.dim(activity, R.dimen.ck_space_sm);
+        subLp.bottomMargin = CockpitTokens.dim(activity, R.dimen.ck_space_md);
+        content.addView(subtitle, subLp);
 
-        // Selection Cards Row
-        LinearLayout optionsRow = new LinearLayout(activity);
-        optionsRow.setOrientation(LinearLayout.HORIZONTAL);
-        optionsRow.setGravity(Gravity.CENTER);
-        centerCard.addView(optionsRow, new LinearLayout.LayoutParams(
+        CockpitGrid grid = new CockpitGrid(activity);
+        content.addView(grid, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        // Option 1: Multimedya Ekranı Üzerinde
-        LinearLayout screenCard = new LinearLayout(activity);
-        screenCard.setOrientation(LinearLayout.VERTICAL);
-        screenCard.setGravity(Gravity.CENTER);
-        screenCard.setPadding(dp(20), dp(24), dp(20), dp(24));
-        UiStyles.applySolidRoundedBackgroundDp(screenCard, 0xFF1E293B, 14f);
+        CockpitCard screenCard = new CockpitCard(activity,
+                "Multimedya Ekranı Üzerinde");
+        TextView screenDesc = new TextView(activity);
+        screenDesc.setText("Koltuk hafızasını multimedya ekranından yönetin.");
+        CockpitTokens.bodySm(screenDesc);
+        screenDesc.setTextColor(CockpitTokens.color(activity, R.color.ck_text_medium));
+        screenCard.addContent(screenDesc);
         screenCard.setClickable(true);
         screenCard.setFocusable(true);
-
-        TextView screenTitle = new TextView(activity);
-        screenTitle.setText("Multimedya Ekranı Üzerinde");
-        screenTitle.setTextSize(18);
-        screenTitle.setTypeface(null, Typeface.BOLD);
-        screenTitle.setTextColor(0xFFFFFFFF);
-        screenTitle.setGravity(Gravity.CENTER);
-        screenCard.addView(screenTitle);
-
         screenCard.setOnClickListener(v -> selectModeAndProceed(CarSeatMemoryManager.MODE_SCREEN));
+        grid.add(screenCard, 4);
 
-        LinearLayout.LayoutParams opt1Lp = new LinearLayout.LayoutParams(0, dp(110), 1f);
-        opt1Lp.rightMargin = dp(14);
-        optionsRow.addView(screenCard, opt1Lp);
-
-        // Option 2: Araç Kapısı Üzerinde
-        LinearLayout doorCard = new LinearLayout(activity);
-        doorCard.setOrientation(LinearLayout.VERTICAL);
-        doorCard.setGravity(Gravity.CENTER);
-        doorCard.setPadding(dp(20), dp(24), dp(20), dp(24));
-        UiStyles.applySolidRoundedBackgroundDp(doorCard, 0xFF1E293B, 14f);
+        CockpitCard doorCard = new CockpitCard(activity,
+                "Araç Kapısı Üzerinde");
+        TextView doorDesc = new TextView(activity);
+        doorDesc.setText("Koltuk hafızasını kapıdaki kumandalardan yönetin.");
+        CockpitTokens.bodySm(doorDesc);
+        doorDesc.setTextColor(CockpitTokens.color(activity, R.color.ck_text_medium));
+        doorCard.addContent(doorDesc);
         doorCard.setClickable(true);
         doorCard.setFocusable(true);
-
-        TextView doorTitle = new TextView(activity);
-        doorTitle.setText("Araç Kapısı Üzerinde");
-        doorTitle.setTextSize(18);
-        doorTitle.setTypeface(null, Typeface.BOLD);
-        doorTitle.setTextColor(0xFFFFFFFF);
-        doorTitle.setGravity(Gravity.CENTER);
-        doorCard.addView(doorTitle);
-
         doorCard.setOnClickListener(v -> selectModeAndProceed(CarSeatMemoryManager.MODE_DOOR));
+        grid.add(doorCard, 4);
 
-        LinearLayout.LayoutParams opt2Lp = new LinearLayout.LayoutParams(0, dp(110), 1f);
-        optionsRow.addView(doorCard, opt2Lp);
-
-        return centerWrapper;
+        return scroll;
     }
 
     private void selectModeAndProceed(int mode) {
@@ -185,79 +160,67 @@ public final class DmsFaceRecognitionTabBuilder {
     private LinearLayout buildNormalContent() {
         LinearLayout content = new LinearLayout(activity);
         content.setOrientation(LinearLayout.VERTICAL);
-        int padding = dp(20);
-        content.setPadding(padding, dp(16), padding, dp(24));
+        int padding = CockpitTokens.dim(activity, R.dimen.ck_margin);
+        content.setPadding(padding, CockpitTokens.dim(activity, R.dimen.ck_space_sm),
+                padding, CockpitTokens.dim(activity, R.dimen.ck_space_md));
 
         // Top Status Bar: shows active memory mode and a button to switch back to the selection screen
         LinearLayout topBar = new LinearLayout(activity);
         topBar.setOrientation(LinearLayout.HORIZONTAL);
         topBar.setGravity(Gravity.CENTER_VERTICAL);
-        topBar.setPadding(dp(16), dp(10), dp(16), dp(10));
-        UiStyles.applySolidRoundedBackgroundDp(
-                topBar, UiStyles.color(activity, R.color.automationCardSurface), 12f);
+        topBar.setPadding(CockpitTokens.dim(activity, R.dimen.ck_space_md),
+                CockpitTokens.dim(activity, R.dimen.ck_space_sm),
+                CockpitTokens.dim(activity, R.dimen.ck_space_md),
+                CockpitTokens.dim(activity, R.dimen.ck_space_sm));
+        CockpitSurfaces.level2(topBar);
         LinearLayout.LayoutParams topBarLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         topBarLp.bottomMargin = dp(14);
         content.addView(topBar, topBarLp);
 
         activeModeLabel = new TextView(activity);
-        activeModeLabel.setTextSize(14);
-        activeModeLabel.setTypeface(null, Typeface.BOLD);
-        activeModeLabel.setTextColor(0xFF60A5FA);
+        CockpitTokens.bodySm(activeModeLabel);
+        activeModeLabel.setTextColor(CockpitTokens.color(activity, R.color.ck_accent));
         topBar.addView(activeModeLabel, new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        Button changeModeBtn = new Button(activity);
-        changeModeBtn.setText("Hafıza Tipini Değiştir");
-        changeModeBtn.setAllCaps(false);
-        changeModeBtn.setTextSize(12);
-        changeModeBtn.setTextColor(0xFFFFFFFF);
-        changeModeBtn.setPadding(dp(12), dp(6), dp(12), dp(6));
-        UiStyles.applySolidRoundedBackgroundDp(changeModeBtn, 0xFF334155, 8f);
+        CockpitButton changeModeBtn = CockpitButton.secondary(activity,
+                "Hafıza Tipini Değiştir");
         changeModeBtn.setOnClickListener(v -> {
             normalContentContainer.setVisibility(View.GONE);
             selectionScreenView.setVisibility(View.VISIBLE);
         });
         topBar.addView(changeModeBtn, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, dp(36)));
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Header Card
-        LinearLayout mainCard = new LinearLayout(activity);
-        mainCard.setOrientation(LinearLayout.VERTICAL);
-        mainCard.setPadding(dp(18), dp(16), dp(18), dp(18));
-        UiStyles.setGlassCardBackground(mainCard);
+        CockpitCard mainCard = new CockpitCard(activity,
+                activity.getString(R.string.dms_recognition_title));
         content.addView(mainCard, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        TextView title = new TextView(activity);
-        title.setText(R.string.dms_recognition_title);
-        title.setTextSize(22);
-        title.setTextColor(UiStyles.color(activity, R.color.textPrimary));
-        title.setTypeface(null, Typeface.BOLD);
-        mainCard.addView(title);
-
         description = new TextView(activity);
-        description.setTextSize(14);
-        description.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
+        CockpitTokens.bodySm(description);
+        description.setTextColor(CockpitTokens.color(activity, R.color.ck_text_medium));
         LinearLayout.LayoutParams descriptionLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        descriptionLp.topMargin = dp(8);
-        mainCard.addView(description, descriptionLp);
+        mainCard.addContent(description, descriptionLp);
 
         LinearLayout toggleRow = new LinearLayout(activity);
         toggleRow.setGravity(Gravity.CENTER_VERTICAL);
-        toggleRow.setPadding(dp(14), dp(12), dp(14), dp(12));
-        UiStyles.applySolidRoundedBackgroundDp(
-                toggleRow, UiStyles.color(activity, R.color.automationCardSurface), 12f);
+        toggleRow.setPadding(CockpitTokens.dim(activity, R.dimen.ck_space_md),
+                CockpitTokens.dim(activity, R.dimen.ck_space_sm),
+                CockpitTokens.dim(activity, R.dimen.ck_space_md),
+                CockpitTokens.dim(activity, R.dimen.ck_space_sm));
+        CockpitSurfaces.level2(toggleRow);
         LinearLayout.LayoutParams toggleRowLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        toggleRowLp.topMargin = dp(16);
-        mainCard.addView(toggleRow, toggleRowLp);
+        toggleRowLp.topMargin = CockpitTokens.dim(activity, R.dimen.ck_space_md);
+        mainCard.addContent(toggleRow, toggleRowLp);
 
         toggleLabel = new TextView(activity);
-        toggleLabel.setTextSize(15);
-        toggleLabel.setTypeface(null, Typeface.BOLD);
-        toggleLabel.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+        CockpitTokens.title(toggleLabel);
         toggleRow.addView(toggleLabel, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         applySeatMemoryCopy();
@@ -285,50 +248,33 @@ public final class DmsFaceRecognitionTabBuilder {
         });
 
         status = new TextView(activity);
-        status.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
-        status.setTextSize(14);
+        CockpitTokens.bodySm(status);
+        status.setTextColor(CockpitTokens.color(activity, R.color.ck_text_medium));
         LinearLayout.LayoutParams statusLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        statusLp.topMargin = dp(14);
-        mainCard.addView(status, statusLp);
+        statusLp.topMargin = CockpitTokens.dim(activity, R.dimen.ck_space_md);
+        mainCard.addContent(status, statusLp);
 
-        Button profilesButton = new Button(activity);
-        profilesButton.setText(R.string.dms_recognition_manage_profiles);
-        profilesButton.setAllCaps(false);
-        profilesButton.setTextSize(15);
-        profilesButton.setTypeface(null, Typeface.BOLD);
-        profilesButton.setTextColor(0xFFFFFFFF);
-        UiStyles.applySolidRoundedBackgroundDp(profilesButton, 0xFF2563EB, 12f);
+        CockpitButton profilesButton = CockpitButton.primary(activity,
+                activity.getString(R.string.dms_recognition_manage_profiles));
         profilesButton.setOnClickListener(v ->
                 activity.startActivity(new Intent(activity, DmsFaceProfileActivity.class)));
         LinearLayout.LayoutParams profilesLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, dp(48));
-        profilesLp.topMargin = dp(16);
-        mainCard.addView(profilesButton, profilesLp);
+        profilesLp.topMargin = CockpitTokens.dim(activity, R.dimen.ck_space_md);
+        mainCard.addContent(profilesButton, profilesLp);
 
         // Saved Profiles Summary Card
-        LinearLayout profilesCard = new LinearLayout(activity);
-        profilesCard.setOrientation(LinearLayout.VERTICAL);
-        profilesCard.setPadding(dp(18), dp(14), dp(18), dp(16));
-        UiStyles.setGlassCardBackground(profilesCard);
+        CockpitCard profilesCard = new CockpitCard(activity,
+                activity.getString(R.string.log_dms_face_profiles));
         LinearLayout.LayoutParams profilesCardLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        profilesCardLp.topMargin = dp(14);
+        profilesCardLp.topMargin = CockpitTokens.dim(activity, R.dimen.ck_space_md);
         content.addView(profilesCard, profilesCardLp);
-
-        TextView profilesTitle = new TextView(activity);
-        profilesTitle.setText(R.string.log_dms_face_profiles);
-        profilesTitle.setTextSize(16);
-        profilesTitle.setTypeface(null, Typeface.BOLD);
-        profilesTitle.setTextColor(UiStyles.color(activity, R.color.textPrimary));
-        profilesCard.addView(profilesTitle);
 
         savedProfilesContainer = new LinearLayout(activity);
         savedProfilesContainer.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams containerLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        containerLp.topMargin = dp(8);
-        profilesCard.addView(savedProfilesContainer, containerLp);
+        profilesCard.addContent(savedProfilesContainer);
 
         return content;
     }
@@ -414,8 +360,8 @@ public final class DmsFaceRecognitionTabBuilder {
             empty.setText(CarSeatMemoryManager.isSeatMemoryAvailable(activity)
                     ? R.string.dms_face_no_profiles
                     : R.string.dms_face_no_profiles_no_memory);
-            empty.setTextSize(14);
-            empty.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
+            CockpitTokens.bodySm(empty);
+            empty.setTextColor(CockpitTokens.color(activity, R.color.ck_text_medium));
             savedProfilesContainer.addView(empty);
             return;
         }
@@ -424,9 +370,11 @@ public final class DmsFaceRecognitionTabBuilder {
             LinearLayout row = new LinearLayout(activity);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setGravity(Gravity.CENTER_VERTICAL);
-            row.setPadding(dp(12), dp(10), dp(12), dp(10));
-            UiStyles.applySolidRoundedBackgroundDp(
-                    row, UiStyles.color(activity, R.color.automationCardSurface), 10f);
+            row.setPadding(CockpitTokens.dim(activity, R.dimen.ck_space_sm),
+                    CockpitTokens.dim(activity, R.dimen.ck_space_sm),
+                    CockpitTokens.dim(activity, R.dimen.ck_space_sm),
+                    CockpitTokens.dim(activity, R.dimen.ck_space_sm));
+            CockpitSurfaces.level2(row);
             LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if (i > 0) {
@@ -435,9 +383,7 @@ public final class DmsFaceRecognitionTabBuilder {
 
             TextView nameTv = new TextView(activity);
             nameTv.setText((i + 1) + ". " + p.name);
-            nameTv.setTextSize(15);
-            nameTv.setTypeface(null, Typeface.BOLD);
-            nameTv.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+            CockpitTokens.title(nameTv);
             row.addView(nameTv, new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
@@ -449,9 +395,8 @@ public final class DmsFaceRecognitionTabBuilder {
                 } else {
                     badge.setText("Koltuk Hafızası " + p.seatMemory);
                 }
-                badge.setTextSize(12);
-                badge.setTypeface(null, Typeface.BOLD);
-                badge.setTextColor(UiStyles.color(activity, R.color.textAccent));
+                CockpitTokens.labelCaps(badge);
+                badge.setTextColor(CockpitTokens.color(activity, R.color.ck_accent));
                 badge.setGravity(Gravity.END);
                 row.addView(badge);
             }
