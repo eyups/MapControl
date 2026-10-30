@@ -65,7 +65,6 @@ import com.desaysv.ivi.extra.project.carinfo.CarSettingID;
 import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import android.content.pm.PackageManager;
 import com.mapcontrol.R;
-import com.mapcontrol.api.ProfileApiService;
 import com.mapcontrol.manager.ClusterDisplayManager;
 import com.mapcontrol.manager.MapControlVDBusKeyBridge;
 import com.mapcontrol.util.AlertSoundHelper;
@@ -89,7 +88,6 @@ import com.mapcontrol.ui.builder.LauncherTabBuilder;
 import com.mapcontrol.ui.builder.DriverProfilesTabBuilder;
 import com.mapcontrol.ui.builder.DrivingHistoryTabBuilder;
 import com.mapcontrol.ui.builder.LogTabBuilder;
-import com.mapcontrol.ui.builder.ProfileTabBuilder;
 import com.mapcontrol.ui.builder.ProjectionTabBuilder;
 import com.mapcontrol.ui.builder.SettingsTabBuilder;
 import com.mapcontrol.ui.builder.SplitScreenTabBuilder;
@@ -203,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
     private ScrollView launcherScrollView; // Araç Launcher Modu "Ana Ekran" karşılama sekmesi
     private LauncherTabBuilder launcherTabBuilder;
     private SettingsTabBuilder settingsTabBuilder;
-    private ProfileTabBuilder profileTabBuilder;
     private DriveModeTabBuilder driveModeTabBuilder;
     private AssistTabBuilder assistTabBuilder;
     private LogTabBuilder logTabBuilder;
@@ -227,8 +224,6 @@ public class MainActivity extends AppCompatActivity {
     private String pendingTtsText;
     private LinearLayout topBarButtonsContainer; // Üst bar'daki buton container'ı (dinamik)
     private TextView topBarTitle; // Üst bar başlığı (dinamik)
-    private ScrollView profileScrollView; // Profil tab ScrollView
-    private ProfileApiService profileApiService; // API servisi
     private FrameLayout mainRootContainer;
     private SystemStatsOverlay systemStatsOverlay;
     private TextView cameraRecordingBadge;
@@ -393,18 +388,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MapControlPrefs", MODE_PRIVATE);
         railExpanded = prefs.getBoolean(CockpitNavModel.PREF_RAIL_EXPANDED, false);
         
-        // ProfileApiService'i başlat
-        profileApiService = new ProfileApiService(this);
-
-        // Profil tab içeriği (Builder)
-        profileTabBuilder = new ProfileTabBuilder(this, prefs, profileApiService,
-                new ProfileTabBuilder.ProfileCallback() {
-                    @Override
-                    public void log(String msg) {
-                        MainActivity.this.log(msg);
-                    }
-                });
-        profileScrollView = profileTabBuilder.build();
         
         // SharedPreferences'tan targetPackage'ı yükle
         loadTargetPackage();
@@ -1397,8 +1380,6 @@ public class MainActivity extends AppCompatActivity {
             addTabChild(parent, wifiTabContent, matchParent);
         } else if (tabIndex == 1) {
             addTabChild(parent, fileUploadScrollView, matchParent);
-        } else if (tabIndex == 2) {
-            addTabChild(parent, profileScrollView, matchParent);
         } else if (tabIndex == 3) {
             addTabChild(parent, projectionScrollView, matchParent);
         } else if (tabIndex == 4) {
@@ -2108,9 +2089,6 @@ public class MainActivity extends AppCompatActivity {
 
     /** Launcher dışındaki sekmeleri taze renklerle yeniden kurar. */
     private void rebuildNonLauncherTabsForUiMode() {
-        if (profileTabBuilder != null) {
-            profileScrollView = profileTabBuilder.build();
-        }
         if (wifiTabBuilder != null) {
             wifiTabContent = wifiTabBuilder.build();
         }

@@ -13,7 +13,6 @@ public final class CockpitNavModel {
 
     public static final int TAB_WIFI = 0;
     public static final int TAB_FILE = 1;
-    public static final int TAB_PROFILE = 2;
     public static final int TAB_PROJECTION = 3;
     public static final int TAB_LOG = 4;
     public static final int TAB_APPS = 5;
@@ -120,8 +119,7 @@ public final class CockpitNavModel {
             list.add(new Domain(4, R.string.ck_domain_apps, R.drawable.ic_mdi_package_variant)
                     .add(TAB_APPS, R.string.side_rail_apps, R.drawable.ic_mdi_cellphone)
                     .add(TAB_WIFI, R.string.side_rail_wifi, R.drawable.ic_mdi_wifi)
-                    .add(TAB_FILE, R.string.side_rail_web, R.drawable.ic_mdi_web)
-                    .add(TAB_PROFILE, R.string.side_rail_profile, R.drawable.ic_mdi_account));
+                    .add(TAB_FILE, R.string.side_rail_web, R.drawable.ic_mdi_web));
 
             list.add(new Domain(5, R.string.ck_domain_settings, R.drawable.ic_mdi_cog)
                     .add(TAB_SETTINGS, R.string.ck_sub_general, R.drawable.ic_mdi_cog)
