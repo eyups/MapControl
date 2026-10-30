@@ -99,8 +99,10 @@ public class ProjectionTabBuilder {
         CockpitGrid projectionGrid = new CockpitGrid(context);
         LinearLayout leftCard = createSectionCard();
         LinearLayout rightCard = createSectionCard();
-        projectionGrid.add(leftCard, 4);
-        projectionGrid.add(rightCard, 4);
+        rightCard.setBackgroundColor(Color.TRANSPARENT);
+        rightCard.setPadding(0, 0, 0, 0);
+        projectionGrid.add(leftCard, 8);
+        projectionGrid.add(rightCard, 8);
         projectionTabContent.addView(projectionGrid, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -265,9 +267,11 @@ public class ProjectionTabBuilder {
         btnSelectApp.setTypeface(null, Typeface.NORMAL);
         UiStyles.styleOemButton(btnSelectApp, UiStyles.color(context, R.color.surfaceCardInner));
         btnSelectApp.setPadding(16, 14, 16, 14);
+        btnSelectApp.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        btnSelectApp.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams selectParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        selectParams.setMargins(0, 0, 6, 0);
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        selectParams.setMargins(0, 0, 8, 0);
         appButtons.addView(btnSelectApp, selectParams);
         btnSelectApp.setOnClickListener(v -> selectTargetApp());
 
@@ -278,9 +282,11 @@ public class ProjectionTabBuilder {
         btnLaunchOnCluster.setTypeface(null, Typeface.BOLD);
         UiStyles.styleOemButton(btnLaunchOnCluster, UiStyles.color(context, R.color.buttonPrimary));
         btnLaunchOnCluster.setPadding(16, 14, 16, 14);
+        btnLaunchOnCluster.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        btnLaunchOnCluster.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams launchParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        launchParams.setMargins(6, 0, 0, 0);
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        launchParams.setMargins(0, 0, 0, 0);
         appButtons.addView(btnLaunchOnCluster, launchParams);
         btnLaunchOnCluster.setOnClickListener(v -> {
             String pkg = callback.getTargetPackage();
@@ -698,7 +704,36 @@ public class ProjectionTabBuilder {
                 ClusterNavOverlayOffsets.Provider.YANDEX,
                 () -> YandexClusterNavOverlay.getInstance(context).applyStoredOffsets());
 
-        rightCard.addView(mainCardContainer, mainCardParams);
+        // Uzun navigasyon davranışı kartını konu kartlarına böl.
+        LinearLayout rightStack = new LinearLayout(context);
+        rightStack.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout topicCard = null;
+        for (int i = 0; i < mainCardContainer.getChildCount(); ) {
+            View child = mainCardContainer.getChildAt(i);
+            boolean divider = !(child instanceof android.view.ViewGroup)
+                    && child.getLayoutParams() != null
+                    && child.getLayoutParams().height == 1;
+            if (divider) {
+                mainCardContainer.removeViewAt(i);
+                topicCard = null;
+                continue;
+            }
+            if (topicCard == null) {
+                topicCard = new LinearLayout(context);
+                topicCard.setOrientation(LinearLayout.VERTICAL);
+                com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(topicCard);
+                LinearLayout.LayoutParams topicLp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                topicLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+                rightStack.addView(topicCard, topicLp);
+            }
+            mainCardContainer.removeViewAt(i);
+            topicCard.addView(child);
+        }
+        rightCard.addView(rightStack, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         return scrollView;
     }
