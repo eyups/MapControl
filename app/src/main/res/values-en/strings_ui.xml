@@ -1311,6 +1311,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_settings_cat_system">System</string>
     <string name="ck_settings_cat_vehicle">Vehicle</string>
     <string name="ck_settings_cat_app">App</string>
+    <string name="web_qr_placeholder">Start the server to create a QR code</string>
+    <string name="web_qr_caption">Scan with your phone camera</string>
     <string name="web_qr_title">Connect via QR</string>
     <string name="ck_web_hint">Connect from your phone or computer on the same network. Scan the QR code or type the address in a browser. The upload page is local-network only.</string>
     <string name="ck_roadmate_title">Roadmate</string>

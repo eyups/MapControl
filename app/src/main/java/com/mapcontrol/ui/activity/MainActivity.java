@@ -548,8 +548,8 @@ public class MainActivity extends AppCompatActivity {
                         webServerStatusText.setText(R.string.web_server_stopped);
                         webServerStatusText.setTextColor(UiStyles.color(MainActivity.this, R.color.textDialogButtonSecondary));
                     }
-                    if (qrCodeImageView != null) {
-                        qrCodeImageView.setVisibility(android.view.View.GONE);
+                    if (fileUploadTabBuilder != null) {
+                        fileUploadTabBuilder.setQrVisible(false);
                     }
                     if (btnWebServerToggle != null) {
                         btnWebServerToggle.setText(R.string.web_server_start);

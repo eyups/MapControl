@@ -38,6 +38,8 @@ public class FileUploadTabBuilder {
     private Button btnWebServerToggle;
     private TextView webServerStatusText;
     private ImageView qrCodeImageView;
+    private TextView qrCaption;
+    private TextView qrPlaceholder;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     public FileUploadTabBuilder(Context context, WebServerManager webServerManager) {
@@ -101,8 +103,6 @@ public class FileUploadTabBuilder {
         webServerStatusText.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_sm), 0,
                 CockpitTokens.dim(context, R.dimen.ck_space_sm));
         control.addContent(webServerStatusText);
-        grid.add(control, 4);
-
         CockpitCard qrCard = new CockpitCard(context, context.getString(R.string.web_qr_title)).span(4);
         qrCodeImageView = new ImageView(context);
         qrCodeImageView.setVisibility(View.GONE);
@@ -111,15 +111,60 @@ public class FileUploadTabBuilder {
         LinearLayout.LayoutParams qrParams = new LinearLayout.LayoutParams(qrSize, qrSize);
         qrParams.gravity = Gravity.CENTER_HORIZONTAL;
         qrCard.addContent(qrCodeImageView, qrParams);
-        grid.add(qrCard, 4);
 
-        CockpitCard hint = new CockpitCard(context, "Talimatlar").span(8);
+        qrCaption = new TextView(context);
+        CockpitTokens.bodySm(qrCaption);
+        qrCaption.setText(R.string.web_qr_caption);
+        qrCaption.setGravity(Gravity.CENTER);
+        qrCaption.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams captionLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        captionLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        qrCard.addContent(qrCaption, captionLp);
+        qrCaption.setVisibility(View.GONE);
+
+        qrPlaceholder = new TextView(context);
+        CockpitTokens.bodySm(qrPlaceholder);
+        qrPlaceholder.setText(R.string.web_qr_placeholder);
+        qrPlaceholder.setGravity(Gravity.CENTER);
+        qrPlaceholder.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams placeholderLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        placeholderLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        qrCard.addContent(qrPlaceholder, placeholderLp);
+
+        CockpitCard hint = new CockpitCard(context, "Talimatlar").span(4);
         TextView hintBody = new TextView(context);
         CockpitTokens.bodySm(hintBody);
         hintBody.setText(R.string.ck_web_hint);
         hintBody.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         hint.addContent(hintBody);
-        grid.add(hint, 8);
+
+        LinearLayout columns = new LinearLayout(context);
+        columns.setOrientation(LinearLayout.HORIZONTAL);
+        columns.setBaselineAligned(false);
+        LinearLayout leftColumn = new LinearLayout(context);
+        leftColumn.setOrientation(LinearLayout.VERTICAL);
+        leftColumn.addView(control, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams hintLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        hintLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+        leftColumn.addView(hint, hintLp);
+
+        LinearLayout rightColumn = new LinearLayout(context);
+        rightColumn.setOrientation(LinearLayout.VERTICAL);
+        rightColumn.addView(qrCard, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 4f);
+        LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 4f);
+        rightLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+        columns.addView(leftColumn, leftLp);
+        columns.addView(rightColumn, rightLp);
+        grid.addRow(columns);
 
         scrollView.addView(fileUploadTabContent, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -151,6 +196,18 @@ public class FileUploadTabBuilder {
         return qrCodeImageView;
     }
 
+    public void setQrVisible(boolean visible) {
+        if (qrCodeImageView != null) {
+            qrCodeImageView.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+        if (qrCaption != null) {
+            qrCaption.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+        if (qrPlaceholder != null) {
+            qrPlaceholder.setVisibility(visible ? View.GONE : View.VISIBLE);
+        }
+    }
+
     public void generateQRCode(String url) {
         new Thread(() -> {
             try {
@@ -173,7 +230,7 @@ public class FileUploadTabBuilder {
                 handler.post(() -> {
                     if (qrCodeImageView != null) {
                         qrCodeImageView.setImageBitmap(bitmap);
-                        qrCodeImageView.setVisibility(View.VISIBLE);
+                        setQrVisible(true);
                     }
                 });
             } catch (WriterException ignored) {
