@@ -816,7 +816,7 @@ public class Camera360TabBuilder {
 
         statusView = new TextView(context);
         statusView.setText(R.string.camera360_hint);
-        statusView.setTextSize(13);
+        CockpitTokens.bodySm(statusView);
         statusView.setMaxLines(2);
         statusView.setEllipsize(TextUtils.TruncateAt.END);
         statusView.setTextColor(themeColor(R.color.textSecondaryCool));
@@ -940,14 +940,12 @@ public class Camera360TabBuilder {
 
         TextView heroTitle = new TextView(context);
         heroTitle.setText(R.string.camera360_usb_title2);
-        heroTitle.setTextSize(17);
-        heroTitle.setTypeface(null, Typeface.BOLD);
-        heroTitle.setTextColor(themeColor(R.color.textPrimary));
+        CockpitTokens.title(heroTitle);
         titles.addView(heroTitle);
 
         usbPathView = new TextView(context);
-        usbPathView.setTextSize(12);
-        usbPathView.setTextColor(themeColor(R.color.textSecondary));
+        CockpitTokens.mono(usbPathView);
+        usbPathView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         usbPathView.setSingleLine(true);
         usbPathView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
         LinearLayout.LayoutParams pathP = new LinearLayout.LayoutParams(
@@ -969,8 +967,7 @@ public class Camera360TabBuilder {
         statePill.addView(usbDot, dotP);
 
         usbStateView = new TextView(context);
-        usbStateView.setTextSize(13);
-        usbStateView.setTypeface(null, Typeface.BOLD);
+        CockpitTokens.labelCaps(usbStateView);
         statePill.addView(usbStateView);
         setDot(COLOR_IDLE);
 
@@ -1023,7 +1020,7 @@ public class Camera360TabBuilder {
         setPressableBackground(signalsRefresh, oval(themeColor(R.color.surfaceCardInner)), 19);
         signalsRefresh.setContentDescription(context.getString(R.string.camera360_refresh));
         signalsRefresh.setOnClickListener(v -> recheckCameras());
-        head.addView(signalsRefresh, new LinearLayout.LayoutParams(dp(38), dp(38)));
+        head.addView(signalsRefresh, new LinearLayout.LayoutParams(dp(44), dp(44)));
 
         LinearLayout camRow = new LinearLayout(context);
         camRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -1058,16 +1055,13 @@ public class Camera360TabBuilder {
 
             TextView label = new TextView(context);
             label.setText(camShortName(cam));
-            label.setTextSize(15);
-            label.setTypeface(null, Typeface.BOLD);
-            label.setTextColor(themeColor(R.color.textPrimary));
+            CockpitTokens.title(label);
             label.setSingleLine(true);
             top.addView(label);
 
             TextView state = new TextView(context);
             state.setText(R.string.camera360_sig_wait);
-            state.setTextSize(12);
-            state.setTextColor(themeColor(R.color.textSecondary));
+            CockpitTokens.bodySm(state);
             state.setSingleLine(true);
             state.setEllipsize(TextUtils.TruncateAt.END);
             LinearLayout.LayoutParams stateP = new LinearLayout.LayoutParams(
@@ -1081,7 +1075,6 @@ public class Camera360TabBuilder {
 
     private LinearLayout buildSettingsCard(boolean wide) {
         LinearLayout card = card();
-        card.setPadding(dp(2), dp(16), dp(2), dp(14));
         TextView label = sectionLabel(R.string.camera360_settings_title);
         int labelInset = UiStyles.dimenPx(context, R.dimen.spacing_medium);
         label.setPadding(labelInset, 0, labelInset, 0);
@@ -1154,8 +1147,7 @@ public class Camera360TabBuilder {
         hideSegmentHelp(sepColumn);
 
         estimateView = new TextView(context);
-        estimateView.setTextSize(13);
-        estimateView.setTextColor(themeColor(R.color.textSecondaryCool));
+        CockpitTokens.bodySm(estimateView);
         estimateView.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams estP = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -1180,13 +1172,14 @@ public class Camera360TabBuilder {
         hideSegmentHelp(usbAutoColumn);
         TextView autoNote = new TextView(context);
         autoNote.setText(R.string.camera360_usb_auto_note);
-        autoNote.setTextSize(12);
-        autoNote.setTextColor(themeColor(R.color.textSecondaryCool));
+        CockpitTokens.bodySm(autoNote);
+        autoNote.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         autoNote.setPadding(labelInset, dp(6), labelInset, 0);
         usbAutoColumn.addView(autoNote);
         usbAutoStatus = new TextView(context);
-        usbAutoStatus.setTextSize(13);
-        usbAutoStatus.setTypeface(null, Typeface.BOLD);
+        CockpitTokens.bodySm(usbAutoStatus);
+        usbAutoStatus.setTypeface(CockpitTokens.inter(context,
+                CockpitTokens.WEIGHT_SEMIBOLD));
         usbAutoStatus.setPadding(labelInset, dp(6), labelInset, 0);
         usbAutoStatus.setVisibility(View.GONE);
         usbAutoColumn.addView(usbAutoStatus);
@@ -1223,8 +1216,8 @@ public class Camera360TabBuilder {
 
         recButton = new Button(context);
         recButton.setAllCaps(false);
-        recButton.setTextSize(17);
-        recButton.setTypeface(null, Typeface.BOLD);
+        recButton.setTextSize(18);
+        recButton.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
         recButton.setTextColor(new ColorStateList(
                 new int[][]{{-android.R.attr.state_enabled}, {}},
                 new int[]{0x99FFFFFF, Color.WHITE}));
@@ -1241,12 +1234,12 @@ public class Camera360TabBuilder {
         setRecButtonRecording(false);
         recButton.setOnClickListener(v -> toggleRecording());
         card.addView(recButton, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, dp(60)));
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                CockpitTokens.dim(context, R.dimen.ck_touch_primary)));
 
         usbBlockedNote = new TextView(context);
         usbBlockedNote.setText(R.string.camera360_usb_blocked_internal);
-        usbBlockedNote.setTextSize(13);
-        usbBlockedNote.setTypeface(null, Typeface.BOLD);
+        CockpitTokens.bodySm(usbBlockedNote);
         usbBlockedNote.setGravity(Gravity.CENTER);
         usbBlockedNote.setTextColor(COLOR_WAIT);
         usbBlockedNote.setPadding(dp(12), dp(8), dp(12), dp(8));
@@ -1259,7 +1252,7 @@ public class Camera360TabBuilder {
 
         recStatusView = new TextView(context);
         recStatusView.setText(R.string.camera360_rec_hint);
-        recStatusView.setTextSize(14);
+        CockpitTokens.bodySm(recStatusView);
         recStatusView.setGravity(Gravity.CENTER);
         recStatusView.setTextColor(themeColor(R.color.textPrimary));
         LinearLayout.LayoutParams rsp = new LinearLayout.LayoutParams(
@@ -1270,15 +1263,16 @@ public class Camera360TabBuilder {
         Button refresh = new Button(context);
         refresh.setText(R.string.camera360_refresh);
         refresh.setAllCaps(false);
-        refresh.setTextSize(14);
-        refresh.setTextColor(themeColor(R.color.textPrimary));
-        UiStyles.styleOemButton(refresh, themeColor(R.color.buttonSecondaryMuted));
+        refresh.setTextSize(15);
+        refresh.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(refresh, CockpitTokens.color(context, R.color.ck_surface_2));
         UiStyles.setButtonStartIconTinted(refresh, R.drawable.ic_mdi_refresh,
                 themeColor(R.color.textPrimary), dp(8));
         refresh.setStateListAnimator(null);
         refresh.setPadding(dp(16), 0, dp(20), 0);
         LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, dp(44));
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                CockpitTokens.dim(context, R.dimen.ck_touch_min));
         rp.setMargins(0, dp(12), 0, 0);
         refresh.setOnClickListener(v -> refreshUsbInfo());
         card.addView(refresh, rp);
@@ -1313,19 +1307,14 @@ public class Camera360TabBuilder {
         parent.addView(box, boxP);
         TextView value = new TextView(context);
         value.setText("-");
-        value.setTextSize(19);
-        value.setTypeface(null, Typeface.BOLD);
+        CockpitTokens.headlineSm(value);
         value.setGravity(Gravity.CENTER);
         value.setSingleLine(true);
-        value.setTextColor(themeColor(R.color.textPrimary));
         box.addView(value);
         TextView label = new TextView(context);
         label.setText(labelRes);
-        label.setTextSize(11);
-        label.setAllCaps(true);
-        label.setLetterSpacing(0.06f);
+        CockpitTokens.labelCaps(label);
         label.setGravity(Gravity.CENTER);
-        label.setTextColor(themeColor(R.color.textSecondaryCool));
         box.addView(label);
         return value;
     }
