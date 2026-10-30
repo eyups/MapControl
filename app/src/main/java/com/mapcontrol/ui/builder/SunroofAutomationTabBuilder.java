@@ -25,6 +25,12 @@ import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatImageView;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitToggle;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSegmented;
+import com.mapcontrol.ui.cockpit.StatusBadge;
+import com.mapcontrol.vehicle.ComfortCommands;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.DialogHelper;
 import com.mapcontrol.util.GestureConflicts;
@@ -70,10 +76,10 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
     private TextView tvStatusMessage;
 
     // Ayar View'ları
-    private Switch switchMaster;
-    private Switch switchRainGuard;
-    private Switch switchSpeedGuard;
-    private Switch switchCloseAtNight;
+    private CockpitToggle switchMaster;
+    private CockpitToggle switchRainGuard;
+    private CockpitToggle switchSpeedGuard;
+    private CockpitToggle switchCloseAtNight;
 
     // Seçilebilir Mod Kartları
     private LinearLayout cardModeSmart;
@@ -111,6 +117,8 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
         // 1. Header (Chery / Jaecoo Uyumlu)
         root.addView(buildHeader(density, compactLayout));
+        root.addView(buildStartupGrid(), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         if (!isPortrait) {
             // YATAY EKRAN (Chery Tiggo 7/8, Omoda 5 vb.): 2 Sütunlu Dengeli Kokpit Grid
@@ -149,6 +157,58 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
         engine.addListener(this);
         return root;
+    }
+
+    private View buildStartupGrid() {
+        CockpitGrid grid = new CockpitGrid(context);
+
+        CockpitCard sunroof = new CockpitCard(context,
+                context.getString(R.string.settings_comfort_sunroof_title)).span(4);
+        int sunroofMode = prefs.getInt(ComfortCommands.PREF_SUNROOF, -1);
+        sunroof.status(sunroofMode == -1
+                ? StatusBadge.neutral(context, context.getString(R.string.drive_mode_none))
+                : StatusBadge.nominal(context, context.getString(sunroofMode == ComfortCommands.SUNROOF_VENT
+                ? R.string.settings_comfort_sunroof_vent : R.string.settings_comfort_sunroof_open)));
+        int[] sunroofModes = {-1, ComfortCommands.SUNROOF_VENT, ComfortCommands.SUNROOF_OPEN};
+        CockpitSegmented sunroofSeg = new CockpitSegmented(context, java.util.Arrays.asList(
+                context.getString(R.string.drive_mode_none),
+                context.getString(R.string.settings_comfort_sunroof_vent),
+                context.getString(R.string.settings_comfort_sunroof_open)),
+                indexOfMode(sunroofMode, sunroofModes), index -> {
+                    prefs.edit().putInt(ComfortCommands.PREF_SUNROOF, sunroofModes[index]).apply();
+                    callback.log("Cam tavan açılış ayarı: " + sunroofModes[index]);
+                });
+        sunroof.addContent(sunroofSeg);
+        grid.add(sunroof, 4);
+
+        CockpitCard shade = new CockpitCard(context,
+                context.getString(R.string.settings_comfort_sunshade_title)).span(4);
+        int shadeMode = prefs.getInt(ComfortCommands.PREF_SUNSHADE, -1);
+        shade.status(shadeMode == -1
+                ? StatusBadge.neutral(context, context.getString(R.string.drive_mode_none))
+                : StatusBadge.nominal(context, context.getString(shadeMode == ComfortCommands.SUNSHADE_OPEN
+                ? R.string.settings_comfort_sunshade_open : R.string.settings_comfort_sunshade_close)));
+        int[] shadeModes = {-1, ComfortCommands.SUNSHADE_OPEN, ComfortCommands.SUNSHADE_CLOSE};
+        CockpitSegmented shadeSeg = new CockpitSegmented(context, java.util.Arrays.asList(
+                context.getString(R.string.drive_mode_none),
+                context.getString(R.string.settings_comfort_sunshade_open),
+                context.getString(R.string.settings_comfort_sunshade_close)),
+                indexOfMode(shadeMode, shadeModes), index -> {
+                    prefs.edit().putInt(ComfortCommands.PREF_SUNSHADE, shadeModes[index]).apply();
+                    callback.log("Güneşlik açılış ayarı: " + shadeModes[index]);
+                });
+        shade.addContent(shadeSeg);
+        grid.add(shade, 4);
+        return grid;
+    }
+
+    private static int indexOfMode(int mode, int[] modes) {
+        for (int i = 0; i < modes.length; i++) {
+            if (modes[i] == mode) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private View buildHeader(float density, boolean compactLayout) {
@@ -342,8 +402,8 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
         masterRow.addView(masterTextCol, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        switchMaster = new Switch(context);
-        switchMaster.setChecked(prefs.getBoolean(SunroofAutomationEngine.KEY_ENABLED, false));
+        switchMaster = new CockpitToggle(context);
+        switchMaster.setChecked(prefs.getBoolean(SunroofAutomationEngine.KEY_ENABLED, false), false);
         switchMaster.setOnCheckedChangeListener((btn, isChecked) -> {
             prefs.edit().putBoolean(SunroofAutomationEngine.KEY_ENABLED, isChecked).apply();
             callback.log(isChecked ? "Cam tavan otomasyonu açıldı" : "Cam tavan otomasyonu kapatıldı");
@@ -937,7 +997,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         return btn;
     }
 
-    private Switch createSwitchRow(LinearLayout parent, String title, String desc,
+    private CockpitToggle createSwitchRow(LinearLayout parent, String title, String desc,
                                    String prefKey, boolean defaultVal, float density) {
         LinearLayout row = new LinearLayout(context);
         row.setOrientation(LinearLayout.HORIZONTAL);
@@ -963,8 +1023,8 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
         row.addView(textCol, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        Switch sw = new Switch(context);
-        sw.setChecked(prefs.getBoolean(prefKey, defaultVal));
+        CockpitToggle sw = new CockpitToggle(context);
+        sw.setChecked(prefs.getBoolean(prefKey, defaultVal), false);
         sw.setOnCheckedChangeListener((btn, isChecked) -> {
             prefs.edit().putBoolean(prefKey, isChecked).apply();
             callback.log(title + ": " + (isChecked ? "Açık" : "Kapalı"));

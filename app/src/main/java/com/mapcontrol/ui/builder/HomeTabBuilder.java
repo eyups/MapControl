@@ -16,6 +16,7 @@ import com.mapcontrol.driving.DrivingTripStore;
 import com.mapcontrol.ui.cockpit.CockpitButton;
 import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitNavModel;
 import com.mapcontrol.ui.cockpit.CockpitSectionHeader;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;

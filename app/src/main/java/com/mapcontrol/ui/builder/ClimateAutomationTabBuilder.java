@@ -17,6 +17,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.SwitchCompat;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitToggle;
+import com.mapcontrol.ui.cockpit.CockpitToggleRow;
+import com.mapcontrol.ui.cockpit.StatusBadge;
+import com.mapcontrol.vehicle.RecirculationAutomation;
 
 import com.mapcontrol.R;
 import com.mapcontrol.ui.theme.UiStyles;
@@ -184,15 +190,8 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         masterTitle.setTypeface(null, Typeface.BOLD);
         masterTitle.setTextColor(UiStyles.color(context, R.color.automationText));
         masterText.addView(masterTitle);
-        SwitchCompat masterSwitch = new SwitchCompat(context);
-        masterSwitch.setShowText(false);
-        masterSwitch.setChecked(ClimateAutomationStore.isMasterEnabled(prefs));
-        masterSwitch.setThumbTintList(createSwitchTint(
-                UiStyles.color(context, R.color.oemAccent),
-                UiStyles.color(context, R.color.outlineMuted)));
-        masterSwitch.setTrackTintList(createSwitchTint(
-                UiStyles.color(context, R.color.assistStrokeActive),
-                UiStyles.color(context, R.color.outline)));
+        CockpitToggle masterSwitch = new CockpitToggle(context);
+        masterSwitch.setChecked(ClimateAutomationStore.isMasterEnabled(prefs), false);
         masterRow.addView(masterSwitch, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         masterSwitch.setOnCheckedChangeListener((button, enabled) -> {
@@ -223,6 +222,29 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
 
         // SECTION 3: OTHER CONTROLS (CAM & DİREKSİYON) - Direksiyon, Ön Cam, Arka Cam
         root.addView(buildOtherControlsCard(density, compactLayout));
+
+        CockpitGrid bottomGrid = new CockpitGrid(context);
+        CockpitCard recircCard = new CockpitCard(context,
+                context.getString(R.string.settings_comfort_recirc_title)).span(4);
+        boolean recircOn = prefs.getBoolean(RecirculationAutomation.PREF_ENABLED, false);
+        recircCard.status(recircOn
+                ? StatusBadge.nominal(context, context.getString(R.string.common_on))
+                : StatusBadge.neutral(context, context.getString(R.string.common_off)));
+        CockpitToggleRow recircRow = new CockpitToggleRow(context,
+                R.drawable.ic_mdi_car_defrost,
+                context.getString(R.string.settings_comfort_recirc_title),
+                context.getString(recircOn ? R.string.settings_comfort_recirc_help_on
+                        : R.string.settings_comfort_recirc_help_off), recircOn);
+        recircRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
+            prefs.edit().putBoolean(RecirculationAutomation.PREF_ENABLED, checked).apply();
+            recircRow.subtitle(context.getString(checked
+                    ? R.string.settings_comfort_recirc_help_on
+                    : R.string.settings_comfort_recirc_help_off));
+            callback.log("Trafikte otomatik iç sirkülasyon: " + (checked ? "Açık" : "Kapalı"));
+        });
+        recircCard.addContent(recircRow);
+        bottomGrid.add(recircCard, 4);
+        root.addView(bottomGrid);
 
         engine.addListener(this);
         return root;
@@ -486,15 +508,8 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         header.addView(name, nameLp);
 
-        SwitchCompat ruleSwitch = new SwitchCompat(context);
-        ruleSwitch.setShowText(false);
-        ruleSwitch.setChecked(rule.enabled);
-        ruleSwitch.setThumbTintList(createSwitchTint(
-                UiStyles.color(context, R.color.oemAccent),
-                UiStyles.color(context, R.color.outlineMuted)));
-        ruleSwitch.setTrackTintList(createSwitchTint(
-                UiStyles.color(context, R.color.assistStrokeActive),
-                UiStyles.color(context, R.color.outline)));
+        CockpitToggle ruleSwitch = new CockpitToggle(context);
+        ruleSwitch.setChecked(rule.enabled, false);
         LinearLayout switchRow = new LinearLayout(context);
         switchRow.setGravity(Gravity.CENTER);
         switchRow.setPadding(0, dp(6, density), 0, 0);
