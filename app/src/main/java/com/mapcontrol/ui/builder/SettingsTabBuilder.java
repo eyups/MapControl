@@ -31,6 +31,7 @@ import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTestData;
 import com.mapcontrol.driving.DrivingTripStore;
 import com.mapcontrol.tts.MapControlSpeech;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitListRow;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
@@ -140,6 +141,9 @@ public class SettingsTabBuilder {
             createPermissionsSection(system);
             createFloatingBackButtonSection(system);
 
+            CockpitLegacyStyler.applySectionHeadings(general);
+            CockpitLegacyStyler.applySectionHeadings(system);
+
             LinearLayout vehicle = sectionGroup();
             createLauncherModeSection(vehicle);
             createVehicleModelSection(vehicle);
@@ -149,6 +153,8 @@ public class SettingsTabBuilder {
             createBootAutostartSection(app);
             createCloudSection(app);
 
+            CockpitLegacyStyler.applySectionHeadings(vehicle);
+            CockpitLegacyStyler.applySectionHeadings(app);
             final LinearLayout[] groups = {general, system, vehicle, app};
             final CockpitListRow[] selectedRow = {null};
             int[] icons = {R.drawable.ic_mdi_cog, R.drawable.ic_mdi_cellphone,
