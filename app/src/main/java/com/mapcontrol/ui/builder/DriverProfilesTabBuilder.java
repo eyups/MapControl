@@ -523,6 +523,12 @@ public class DriverProfilesTabBuilder {
             chip.setSelectedState(profile.seatSlot == slot);
             chip.setOnClickListener(v -> {
                 manager.setSeatSlot(profile.id, value);
+                for (int i = 0; i < chips.getChildCount(); i++) {
+                    View child = chips.getChildAt(i);
+                    if (child instanceof CockpitChip) {
+                        ((CockpitChip) child).setSelectedState(i == value);
+                    }
+                }
                 rebuild();
             });
             chips.addView(chip, wrap(0, 0, 8, 0));
