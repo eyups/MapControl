@@ -150,14 +150,15 @@ public class DrivingAnalysisActivity extends Activity {
     }
 
     private void initPalette() {
-        BG = color(R.color.ck_bg_base);
-        CARD = color(R.color.ck_surface_1);
-        BORDER = color(R.color.ck_stroke);
-        AMBER = color(R.color.ck_accent);
-        CYAN = color(R.color.ck_accent);
-        TEXT = color(R.color.ck_text_high);
-        MUTED = color(R.color.ck_text_medium);
-        RED_EVENT = color(R.color.ck_critical);
+        // Redesign öncesi sıcak rapor paleti.
+        BG = 0xFF0F1216;
+        CARD = 0xFF1D242C;
+        BORDER = 0xFF2D3748;
+        AMBER = 0xFFF59E0B;
+        CYAN = 0xFF00B4D8;
+        TEXT = 0xFFF8FAFC;
+        MUTED = 0xFF94A3B8;
+        RED_EVENT = 0xFFEF4444;
     }
 
     private int color(int resId) {
@@ -166,7 +167,10 @@ public class DrivingAnalysisActivity extends Activity {
 
     private void buildUi() {
         FrameLayout root = new FrameLayout(this);
-        root.setBackgroundColor(BG);
+        GradientDrawable background = new GradientDrawable(
+                GradientDrawable.Orientation.TL_BR,
+                new int[]{0xFF0F1216, 0xFF161B22, 0xFF0F1216});
+        root.setBackground(background);
 
         LinearLayout shell = new LinearLayout(this);
         shell.setOrientation(LinearLayout.VERTICAL);
@@ -197,6 +201,12 @@ public class DrivingAnalysisActivity extends Activity {
         hero.setOrientation(isWide() ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
         hero.setGravity(isWide() ? Gravity.CENTER_VERTICAL : Gravity.CENTER_HORIZONTAL);
         hero.setPadding(0, dp(12), 0, dp(12));
+        GradientDrawable heroGlow = new GradientDrawable();
+        heroGlow.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+        heroGlow.setColors(new int[]{0x26FFB000, 0x00000000});
+        heroGlow.setGradientCenter(0.28f, 0.42f);
+        heroGlow.setGradientRadius(dp(330));
+        hero.setBackground(heroGlow);
 
         scoreRing = new DrivingScoreRingView(this);
         scoreRing.setTypeface(displayTypeface);
@@ -999,7 +1009,7 @@ public class DrivingAnalysisActivity extends Activity {
         background.setCornerRadius(dp(10));
         if (primary) {
             background.setColor(AMBER);
-            button.setTextColor(color(R.color.ck_on_accent));
+            button.setTextColor(Color.BLACK);
         } else {
             background.setColor(color(R.color.ck_surface_2));
             background.setStroke(Math.max(1, Math.round(dp(1))), BORDER);
