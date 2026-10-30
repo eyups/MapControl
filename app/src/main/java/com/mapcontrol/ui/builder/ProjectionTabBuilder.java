@@ -98,9 +98,6 @@ public class ProjectionTabBuilder {
 
         CockpitGrid projectionGrid = new CockpitGrid(context);
         LinearLayout leftCard = createSectionCard();
-        projectionTabContent.addView(projectionGrid, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-
         outer.addView(projectionTabContent, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -728,10 +725,42 @@ public class ProjectionTabBuilder {
             target.addView(child);
         }
 
-        projectionGrid.add(leftCard, 4);
-        projectionGrid.add(googleCard, 4);
-        projectionGrid.add(yandexCard, 4);
-        projectionGrid.add(advancedCard, 4);
+        LinearLayout columns = new LinearLayout(context);
+        columns.setOrientation(LinearLayout.HORIZONTAL);
+        columns.setBaselineAligned(false);
+        LinearLayout leftStack = new LinearLayout(context);
+        leftStack.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout rightStack = new LinearLayout(context);
+        rightStack.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        leftStack.addView(leftCard, cardLp);
+        leftStack.addView(yandexCard, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        rightStack.addView(googleCard, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams advLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        advLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        rightStack.addView(advancedCard, advLp);
+
+        LinearLayout.LayoutParams leftColLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        leftColLp.setMarginEnd(8);
+        LinearLayout.LayoutParams rightColLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        rightColLp.setMarginStart(8);
+        columns.addView(leftStack, leftColLp);
+        columns.addView(rightStack, rightColLp);
+        projectionTabContent.addView(columns, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         return scrollView;
     }
 
