@@ -145,7 +145,7 @@ public class ProjectionTabBuilder {
         btnClose.setTextColor(UiStyles.color(context, R.color.textPrimary));
         btnClose.setTextSize(16);
         btnClose.setTypeface(null, Typeface.BOLD);
-        UiStyles.styleOemButton(btnClose, UiStyles.color(context, R.color.statusErrorBright));
+        UiStyles.styleOemButton(btnClose, UiStyles.color(context, R.color.surfaceCardInner));
         btnClose.setPadding(16, 20, 16, 20);
         LinearLayout.LayoutParams closeParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);

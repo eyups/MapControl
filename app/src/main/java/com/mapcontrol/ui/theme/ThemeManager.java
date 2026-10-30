@@ -56,17 +56,8 @@ public final class ThemeManager {
     }
 
     public static boolean isCyber(Context context) {
-        if (context == null) {
-            return false;
-        }
-        Boolean cached = cyberCache;
-        if (cached == null) {
-            SharedPreferences prefs = context.getApplicationContext()
-                    .getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-            cached = THEME_CYBER.equals(prefs.getString(PREF_THEME, THEME_MODERN));
-            cyberCache = cached;
-        }
-        return cached;
+        // K1: Cyber yolu kaldırıldı. Pref okunur ama yok sayılır; tek Cockpit teması.
+        return false;
     }
 
     public static void setCyber(Context context, boolean cyber) {
@@ -79,7 +70,7 @@ public final class ThemeManager {
     }
 
     public static int activityThemeRes(Context context) {
-        return isCyber(context) ? R.style.Theme_MapControl_Cyber : R.style.Theme_MapControl;
+        return R.style.Theme_MapControl;
     }
 
     public static void applyActivityTheme(Activity activity) {

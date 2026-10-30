@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 
 import java.util.function.Consumer;
 
@@ -136,7 +137,10 @@ public final class UiStyles {
     }
 
     public static void styleOemButton(Button button, int backgroundColorArgb) {
-        applySolidRoundedBackground(button, backgroundColorArgb);
+        applySolidRoundedBackgroundDp(button, backgroundColorArgb, 16f);
+        button.setMinHeight(dimenPx(button.getContext(), R.dimen.ck_touch_min));
+        button.setAllCaps(false);
+        button.setTypeface(CockpitTokens.inter(button.getContext(), CockpitTokens.WEIGHT_SEMIBOLD));
         if (ThemeManager.isCyber(button.getContext())) {
             boolean bright = Color.luminance(backgroundColorArgb) > 0.45f;
             button.setTextColor(bright
@@ -150,9 +154,7 @@ public final class UiStyles {
      * Prefer glass drawables for content-heavy regions — blur affects descendants.
      */
     public static void applyOptionalBackdropBlur(View view, float radiusPx) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            view.setRenderEffect(RenderEffect.createBlurEffect(radiusPx, radiusPx, Shader.TileMode.CLAMP));
-        }
+        // Cockpit tasarımı blur kullanmaz; geriye dönük API uyumluluğu için no-op.
     }
 
     public static void clearRenderEffect(View view) {
@@ -258,9 +260,9 @@ public final class UiStyles {
         if (title != null && !title.isEmpty()) {
             TextView rowTitle = new TextView(context);
             rowTitle.setText(title);
-            rowTitle.setTextSize(16);
+            rowTitle.setTextSize(18);
             rowTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            rowTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+            rowTitle.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
             int hPad = dimenPx(context, R.dimen.spacing_medium);
             rowTitle.setPadding(hPad, dimenPx(context, R.dimen.spacing_medium), hPad,
                     dimenPx(context, R.dimen.spacing_small));
@@ -272,23 +274,27 @@ public final class UiStyles {
         LinearLayout track = new LinearLayout(context);
         track.setOrientation(LinearLayout.HORIZONTAL);
         setBackgroundRes(track, R.drawable.bg_segment_track);
-        int tpad = dimenPx(context, R.dimen.spacing_tiny);
+        track.setMinimumHeight(dimenPx(context, R.dimen.ck_touch_min));
+        int tpad = dimenPx(context, R.dimen.ck_space_xs);
         track.setPadding(tpad, tpad, tpad, tpad);
 
         TextView left = new TextView(context);
         TextView right = new TextView(context);
         left.setText(leftLabel);
         right.setText(rightLabel);
-        left.setTextSize(15);
-        right.setTextSize(15);
+        left.setTextSize(16);
+        right.setTextSize(16);
         left.setGravity(Gravity.CENTER);
         right.setGravity(Gravity.CENTER);
+        left.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
+        right.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
         left.setMinHeight(dimenPx(context, R.dimen.button_height));
         right.setMinHeight(dimenPx(context, R.dimen.button_height));
 
         TextView help = new TextView(context);
-        help.setTextSize(13);
-        help.setTextColor(UiStyles.color(context, R.color.textHint));
+        help.setTextSize(15);
+        help.setTextColor(UiStyles.color(context, R.color.textSecondary));
+        help.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_REGULAR));
         int hPad = dimenPx(context, R.dimen.spacing_medium);
         help.setPadding(hPad, dimenPx(context, R.dimen.spacing_small), hPad,
                 dimenPx(context, R.dimen.spacing_medium));
@@ -424,9 +430,9 @@ public final class UiStyles {
         if (title != null && !title.isEmpty()) {
             TextView rowTitle = new TextView(context);
             rowTitle.setText(title);
-            rowTitle.setTextSize(16);
+            rowTitle.setTextSize(18);
             rowTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            rowTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+            rowTitle.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
             int hPad = dimenPx(context, R.dimen.spacing_medium);
             rowTitle.setPadding(hPad, dimenPx(context, R.dimen.spacing_medium), hPad,
                     dimenPx(context, R.dimen.spacing_small));
@@ -447,14 +453,17 @@ public final class UiStyles {
             tv.setText(labels[i]);
             tv.setTextSize(14);
             tv.setGravity(Gravity.CENTER);
+            tv.setTextSize(16);
+            tv.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
             tv.setMinHeight(dimenPx(context, R.dimen.button_height));
             tv.setMaxLines(2);
             segs[i] = tv;
         }
 
         TextView help = new TextView(context);
-        help.setTextSize(13);
-        help.setTextColor(UiStyles.color(context, R.color.textHint));
+        help.setTextSize(15);
+        help.setTextColor(UiStyles.color(context, R.color.textSecondary));
+        help.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_REGULAR));
         int hPad = dimenPx(context, R.dimen.spacing_medium);
         help.setPadding(hPad, dimenPx(context, R.dimen.spacing_small), hPad,
                 dimenPx(context, R.dimen.spacing_medium));

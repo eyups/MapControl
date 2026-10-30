@@ -40,8 +40,8 @@
     <color name="cluster_nav_card_stroke">#2D3748</color>
     <color name="cluster_nav_maneuver_start">#00B4D8</color>
     <color name="cluster_nav_maneuver_end">#00D2C4</color>
-    <color name="cluster_nav_maneuver_text">#0F1216</color>
-    <color name="cluster_nav_maneuver_subtext">#003642</color>
+    <color name="cluster_nav_maneuver_text">#F8FAFC</color>
+    <color name="cluster_nav_maneuver_subtext">#94A3B8</color>
     <color name="cluster_nav_eta_fill">#1D242C</color>
     <color name="cluster_nav_eta_stroke">#2D3748</color>
     <color name="cardColor">#1D242C</color>

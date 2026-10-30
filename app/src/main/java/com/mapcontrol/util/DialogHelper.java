@@ -18,7 +18,7 @@ public class DialogHelper {
     }
 
     public static void showLegalDisclaimer(Context context, Runnable onAccept, Runnable onDecline) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialog);
         LinearLayout mainContainer = createBaseContainer(context);
         LinearLayout titleContainer = createTitleContainer(context,
                 context.getString(R.string.dialog_welcome_title),
@@ -70,7 +70,7 @@ public class DialogHelper {
      * @param ownerLabelRes hareketi kullanan özelliğin ad kaynağı
      */
     public static void showGestureConflict(Context context, int ownerLabelRes) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialog);
         LinearLayout mainContainer = createBaseContainer(context);
         mainContainer.addView(createTitleContainer(context,
                 context.getString(R.string.gesture_conflict_title),
@@ -95,7 +95,7 @@ public class DialogHelper {
             String disclaimerText,
             Runnable onAccept,
             Runnable onDecline) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialog);
         LinearLayout mainContainer = createBaseContainer(context);
         LinearLayout titleContainer = createTitleContainer(context, title,
                 context.getString(R.string.dialog_legal_subtitle));
@@ -126,7 +126,7 @@ public class DialogHelper {
                 : context.getString(R.string.dialog_safety_aeb_title);
         String message = context.getString(R.string.dialog_safety_message);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialog);
         LinearLayout dialogLayout = new LinearLayout(context);
         dialogLayout.setOrientation(LinearLayout.VERTICAL);
         dialogLayout.setPadding(48, 40, 48, 24);
@@ -170,7 +170,7 @@ public class DialogHelper {
             Runnable onAutoSelect,
             Runnable onClear
     ) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.CustomAlertDialog);
         builder.setTitle(titleText);
 
         android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<String>(

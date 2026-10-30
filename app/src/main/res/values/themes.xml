@@ -29,14 +29,14 @@
 
     <!-- Dedicated dark report surface for the drive score screen. -->
     <style name="Theme.MapControl.Driving" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:windowBackground">#080A0A</item>
-        <item name="android:statusBarColor">#080A0A</item>
-        <item name="android:navigationBarColor">#080A0A</item>
+        <item name="android:windowBackground">@color/ck_bg_base</item>
+        <item name="android:statusBarColor">@color/ck_bg_base</item>
+        <item name="android:navigationBarColor">@color/ck_bg_base</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
-        <item name="android:colorBackground">#080A0A</item>
-        <item name="android:textColorPrimary">#F4F7F7</item>
-        <item name="colorAccent">#FFB000</item>
+        <item name="android:colorBackground">@color/ck_bg_base</item>
+        <item name="android:textColorPrimary">@color/ck_text_high</item>
+        <item name="colorAccent">@color/ck_accent</item>
     </style>
 
     <!-- Terminal CLI skin: dark-only, phosphor green, monospace, square panes. -->
@@ -94,9 +94,15 @@
     <style name="CustomAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@color/surfaceColor</item>
         <item name="android:background">@color/surfaceColor</item>
-        <item name="colorAccent">@color/accentColor</item>
-        <item name="android:textColorPrimary">@color/textPrimary</item>
-        <item name="android:textColorSecondary">@color/textSecondary</item>
+        <item name="colorAccent">@color/ck_accent</item>
+        <item name="android:colorAccent">@color/ck_accent</item>
+        <item name="colorPrimary">@color/ck_accent</item>
+        <item name="colorPrimaryVariant">@color/ck_accent_active</item>
+        <item name="colorOnPrimary">@color/ck_on_accent</item>
+        <item name="colorSecondary">@color/ck_accent</item>
+        <item name="colorOnSecondary">@color/ck_on_accent</item>
+        <item name="android:textColorPrimary">@color/ck_text_high</item>
+        <item name="android:textColorSecondary">@color/ck_text_medium</item>
         <item name="buttonBarPositiveButtonStyle">@style/CustomAlertDialogButton</item>
         <item name="buttonBarNegativeButtonStyle">@style/CustomAlertDialogButton</item>
         <item name="buttonBarNeutralButtonStyle">@style/CustomAlertDialogButton</item>
@@ -108,7 +114,7 @@
     </style>
 
     <style name="CustomAlertDialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:textColor">@color/ck_accent</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>

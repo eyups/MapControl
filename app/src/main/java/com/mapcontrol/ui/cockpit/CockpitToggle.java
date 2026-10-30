@@ -31,7 +31,7 @@ public class CockpitToggle extends View {
         super(context);
         setClickable(true);
         setFocusable(true);
-        setContentDescription("Kapalı");
+        setContentDescription(context.getString(R.string.ck_common_off));
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener l) {
@@ -53,7 +53,7 @@ public class CockpitToggle extends View {
             return;
         }
         checked = value;
-        setContentDescription(value ? "Açık" : "Kapalı");
+        setContentDescription(getContext().getString(value ? R.string.ck_common_on : R.string.ck_common_off));
         if (!animate) {
             thumbProgress = value ? 1f : 0f;
             invalidate();
@@ -129,7 +129,7 @@ public class CockpitToggle extends View {
         info.setChecked(checked);
         info.setClassName("android.widget.Switch");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            info.setStateDescription(checked ? "Açık" : "Kapalı");
+            info.setStateDescription(getContext().getString(checked ? R.string.ck_common_on : R.string.ck_common_off));
         }
     }
 }

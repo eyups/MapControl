@@ -85,8 +85,8 @@ public class AssistTabBuilder {
             grid.add(buildCard(i), 2);
         }
 
-        CockpitCard cpd = new CockpitCard(context, "CPD Notu").span(8);
-        cpd.status(StatusBadge.advisory(context, "Donanıma bağlı"));
+        CockpitCard cpd = new CockpitCard(context, context.getString(R.string.ck_assist_cpd_note)).span(8);
+        cpd.status(StatusBadge.advisory(context, context.getString(R.string.ck_assist_hardware_dep)));
         TextView note = new TextView(context);
         CockpitTokens.bodySm(note);
         note.setText(R.string.assist_cpd_disclaimer);

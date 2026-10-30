@@ -48,14 +48,14 @@ public class DrivingAnalysisActivity extends Activity {
     public static final String EXTRA_SPEAK_TEXT = "com.mapcontrol.extra.SPEAK_TEXT";
     public static final String EXTRA_SPEAK_CACHE_ID = "com.mapcontrol.extra.SPEAK_CACHE_ID";
 
-    private static final int BG = 0xFF080A0A;
-    private static final int CARD = 0xFF0E1414;
-    private static final int BORDER = 0xFF1E2B2B;
-    private static final int AMBER = 0xFFFFB000;
-    private static final int CYAN = 0xFF35D8EA;
-    private static final int TEXT = 0xFFF4F7F7;
-    private static final int MUTED = 0xFF829394;
-    private static final int RED_EVENT = 0xFFFF3B4D;
+    private static final int BG = 0xFF0F1216;
+    private static final int CARD = 0xFF1D242C;
+    private static final int BORDER = 0xFF2D3748;
+    private static final int AMBER = 0xFFF59E0B;
+    private static final int CYAN = 0xFF00B4D8;
+    private static final int TEXT = 0xFFF8FAFC;
+    private static final int MUTED = 0xFF94A3B8;
+    private static final int RED_EVENT = 0xFFEF4444;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private DrivingSessionRecorder recorder;
@@ -154,7 +154,7 @@ public class DrivingAnalysisActivity extends Activity {
         FrameLayout root = new FrameLayout(this);
         GradientDrawable background = new GradientDrawable(
                 GradientDrawable.Orientation.TL_BR,
-                new int[]{0xFF070909, 0xFF0C0C08, 0xFF070A0A});
+                new int[]{0xFF0F1216, 0xFF161B22, 0xFF0F1216});
         root.setBackground(background);
 
         ScrollView scroll = new ScrollView(this);
@@ -218,7 +218,7 @@ public class DrivingAnalysisActivity extends Activity {
         scoreGrade.setLetterSpacing(0.16f);
         copy.addView(scoreGrade);
 
-        scoreSummary = text("", 16, 0xFFD5DBDB, false);
+        scoreSummary = text("", 16, 0xFFBCC9CE, false);
         scoreSummary.setLineSpacing(dp(5), 1f);
         scoreSummary.setMaxWidth(dp(720));
         LinearLayout.LayoutParams summaryLp = new LinearLayout.LayoutParams(
@@ -308,7 +308,7 @@ public class DrivingAnalysisActivity extends Activity {
         TextView insightTitle = text("AKILLI ANALİZ", 13, TEXT, true);
         insightTitle.setLetterSpacing(0.12f);
         insightCard.addView(insightTitle);
-        insightText = text("", 15, 0xFFD5DBDB, false);
+        insightText = text("", 15, 0xFFBCC9CE, false);
         insightText.setLineSpacing(dp(5), 1f);
         LinearLayout.LayoutParams insightLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -471,12 +471,12 @@ public class DrivingAnalysisActivity extends Activity {
         back.setOnClickListener(v -> finish());
         header.addView(back, new LinearLayout.LayoutParams(dp(32), dp(44)));
 
-        TextView title = text("MAPCONTROL", 13, 0xFFAAB4B4, true);
+        TextView title = text("MAPCONTROL", 13, 0xFF94A3B8, true);
         title.setLetterSpacing(0.22f);
         header.addView(title, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        TextView close = text("KAPAT", 12, 0xFFAAB4B4, true);
+        TextView close = text("KAPAT", 12, 0xFF94A3B8, true);
         close.setLetterSpacing(0.16f);
         close.setPadding(dp(16), dp(8), dp(16), dp(8));
         close.setOnClickListener(v -> finish());
@@ -775,17 +775,17 @@ public class DrivingAnalysisActivity extends Activity {
         }
         switch (grade) {
             case "A":
-                return 0xFF2E7D32;
+                return 0xFF10B981;
             case "B":
-                return 0xFF558B2F;
+                return 0xFF00B4D8;
             case "C":
-                return 0xFFF9A825;
+                return 0xFFF59E0B;
             case "D":
-                return 0xFFEF6C00;
+                return 0xFFF97316;
             case "E":
                 return 0xFFD84315;
             case "F":
-                return 0xFFC62828;
+                return 0xFFEF4444;
             default:
                 return MUTED;
         }
@@ -938,8 +938,8 @@ public class DrivingAnalysisActivity extends Activity {
             background.setColor(AMBER);
             button.setTextColor(Color.BLACK);
         } else {
-            background.setColor(0xFF111717);
-            background.setStroke(Math.max(1, Math.round(dp(1))), 0xFF344141);
+            background.setColor(0xFF252E38);
+            background.setStroke(Math.max(1, Math.round(dp(1))), 0xFF2D3748);
             button.setTextColor(TEXT);
         }
         button.setBackground(background);

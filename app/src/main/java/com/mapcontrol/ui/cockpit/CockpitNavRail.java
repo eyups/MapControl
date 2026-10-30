@@ -85,7 +85,8 @@ public class CockpitNavRail extends LinearLayout {
             addView(items, new LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT));
         } else {
-            addView(items, new LayoutParams(LayoutParams.MATCH_PARENT, 0, 1f));
+            addView(items, new LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT));
         }
 
         for (CockpitNavModel.Domain domain : CockpitNavModel.domains()) {

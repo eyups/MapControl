@@ -131,6 +131,7 @@ public final class DisplayHelper {
         ImageView halo = new ImageView(ctx);
         halo.setId(R.id.preparing_halo);
         halo.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.bg_global_wifi_toast_halo_preparing));
+        halo.setVisibility(View.GONE);
         FrameLayout.LayoutParams haloLp = new FrameLayout.LayoutParams(wrapSize, wrapSize);
         haloLp.gravity = Gravity.CENTER;
         spinnerWrap.addView(halo, haloLp);

@@ -69,7 +69,8 @@ public final class LauncherLitePanelView extends LinearLayout implements OpenMet
         clockView.setFormat12Hour("HH:mm");
         clockView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.launcher_lite_clock));
-        clockView.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+        clockView.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(getContext(), com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
+        clockView.setFontFeatureSettings("tnum");
         clockView.setTextColor(UiStyles.color(getContext(), R.color.textPrimary));
         clockView.setGravity(Gravity.CENTER);
         clockView.setIncludeFontPadding(false);
@@ -79,7 +80,7 @@ public final class LauncherLitePanelView extends LinearLayout implements OpenMet
         dateView = new TextView(getContext());
         dateView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.launcher_lite_date));
-        dateView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+        dateView.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(getContext(), com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM));
         dateView.setTextColor(UiStyles.color(getContext(), R.color.textMuted));
         dateView.setGravity(Gravity.CENTER);
         dateView.setIncludeFontPadding(false);
@@ -111,7 +112,7 @@ public final class LauncherLitePanelView extends LinearLayout implements OpenMet
         weatherTempView = new TextView(getContext());
         weatherTempView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.launcher_lite_weather_temp));
-        weatherTempView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+        weatherTempView.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(getContext(), com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
         weatherTempView.setTextColor(UiStyles.color(getContext(), R.color.textPrimary));
         weatherTempView.setIncludeFontPadding(false);
         LinearLayout.LayoutParams tempLp = wrapContent();
@@ -121,7 +122,7 @@ public final class LauncherLitePanelView extends LinearLayout implements OpenMet
         weatherLabelView = new TextView(getContext());
         weatherLabelView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.launcher_lite_weather_label));
-        weatherLabelView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+        weatherLabelView.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(getContext(), com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_REGULAR));
         weatherLabelView.setTextColor(UiStyles.color(getContext(), R.color.textSecondary));
         weatherLabelView.setIncludeFontPadding(false);
         weatherRow.addView(weatherLabelView, wrapContent());
@@ -168,7 +169,8 @@ public final class LauncherLitePanelView extends LinearLayout implements OpenMet
         value.setText("—");
         value.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.launcher_lite_stat_value));
-        value.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+        value.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(getContext(), com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
+        value.setFontFeatureSettings("tnum");
         value.setTextColor(UiStyles.color(getContext(), R.color.textPrimary));
         value.setGravity(Gravity.CENTER);
         value.setIncludeFontPadding(false);
@@ -178,7 +180,7 @@ public final class LauncherLitePanelView extends LinearLayout implements OpenMet
         caption.setText(label);
         caption.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimension(R.dimen.launcher_lite_stat_label));
-        caption.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+        caption.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(getContext(), com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_REGULAR));
         caption.setTextColor(UiStyles.color(getContext(), R.color.textMuted));
         caption.setGravity(Gravity.CENTER);
         caption.setIncludeFontPadding(false);

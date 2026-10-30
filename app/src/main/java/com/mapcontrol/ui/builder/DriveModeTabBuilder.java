@@ -38,8 +38,7 @@ public class DriveModeTabBuilder {
     private StatusBadge currentBadge;
     private int selectedIndex;
 
-    private static final String[] MODE_NAMES = {"Hiçbiri", "Eco", "Normal", "Sport", "Snow",
-            "Mud", "Offroad", "Sand"};
+    private final String[] modeNames = new String[8];
     private static final int[] MODE_VALUES = {-1, 0, 1, 2, 3, 4, 5, 7};
     private static final int[] MODE_ICONS = {R.drawable.ic_mdi_radiobox_blank,
             R.drawable.ic_mdi_leaf, R.drawable.ic_mdi_car, R.drawable.ic_mdi_car_sports,
@@ -57,6 +56,15 @@ public class DriveModeTabBuilder {
         scrollView = new ScrollView(context);
         scrollView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         scrollView.setFillViewport(true);
+
+        modeNames[0] = context.getString(R.string.ck_drive_none);
+        modeNames[1] = context.getString(R.string.ck_drive_eco);
+        modeNames[2] = context.getString(R.string.ck_drive_normal);
+        modeNames[3] = context.getString(R.string.ck_drive_sport);
+        modeNames[4] = context.getString(R.string.ck_drive_snow);
+        modeNames[5] = context.getString(R.string.ck_drive_mud);
+        modeNames[6] = context.getString(R.string.ck_drive_offroad);
+        modeNames[7] = context.getString(R.string.ck_drive_sand);
 
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
@@ -81,7 +89,7 @@ public class DriveModeTabBuilder {
 
         TextView subtitle = new TextView(context);
         CockpitTokens.bodySm(subtitle);
-        subtitle.setText("Hafıza modu aracın sürüş karakterini belirler. 'Hiçbiri' otomatik ayarlama yapmaz.");
+        subtitle.setText(context.getString(R.string.ck_drive_subtitle));
         LinearLayout.LayoutParams subLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         subLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
@@ -93,20 +101,19 @@ public class DriveModeTabBuilder {
 
         int savedMode = prefs.getInt("driveModeSetting", -1);
         selectedIndex = indexForMode(savedMode);
-        for (int i = 0; i < MODE_NAMES.length; i++) {
+        for (int i = 0; i < modeNames.length; i++) {
             grid.add(buildModeCard(i), 2);
         }
         refreshSelection();
         if (currentBadge != null) {
             currentBadge.setLevel(StatusBadge.NOMINAL);
-            currentBadge.setText(MODE_NAMES[selectedIndex]);
+            currentBadge.setText(modeNames[selectedIndex]);
         }
 
-        CockpitCard hint = new CockpitCard(context, "Hafıza Modu").span(8);
+        CockpitCard hint = new CockpitCard(context, context.getString(R.string.ck_drive_memory)).span(8);
         TextView body = new TextView(context);
         CockpitTokens.bodySm(body);
-        body.setText("Seçim prefs'e yazılır ve servis aynı değeri yeniden uygular. "
-                + "Hiçbiri seçildiğinde araç ayarlarına yazılmaz.");
+        body.setText(context.getString(R.string.ck_drive_memory_body));
         body.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         hint.addContent(body);
         grid.add(hint, 8);
@@ -127,7 +134,7 @@ public class DriveModeTabBuilder {
                 CockpitTokens.dim(context, R.dimen.ck_space_md),
                 CockpitTokens.dim(context, R.dimen.ck_space_md),
                 CockpitTokens.dim(context, R.dimen.ck_space_md));
-        card.setContentDescription(MODE_NAMES[index]);
+        card.setContentDescription(modeNames[index]);
 
         ImageView icon = new ImageView(context);
         icon.setImageResource(MODE_ICONS[index]);
@@ -138,7 +145,7 @@ public class DriveModeTabBuilder {
 
         TextView label = new TextView(context);
         CockpitTokens.title(label);
-        label.setText(MODE_NAMES[index]);
+        label.setText(modeNames[index]);
         label.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -171,12 +178,12 @@ public class DriveModeTabBuilder {
         callback.onModeSelected(mode);
         refreshSelection();
         if (currentBadge != null) {
-            currentBadge.setText(MODE_NAMES[index]);
+            currentBadge.setText(modeNames[index]);
         }
         if (mode == -1) {
             callback.log("Hafıza modu seçildi: Hiçbiri (Otomatik ayarlama yapılmayacak)");
         } else {
-            callback.log("Hafıza modu seçildi: " + MODE_NAMES[index] + " (Mode: " + mode + ")");
+            callback.log("Hafıza modu seçildi: " + modeNames[index] + " (Mode: " + mode + ")");
             applyDriveMode(mode);
         }
     }

@@ -3,12 +3,12 @@ package com.mapcontrol.ui.cockpit;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.Gravity;
-import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.mapcontrol.R;
 
 /** 48dp filter / sub-tab chip. */
-public class CockpitChip extends TextView {
+public class CockpitChip extends AppCompatTextView {
 
     private boolean selectedState;
 

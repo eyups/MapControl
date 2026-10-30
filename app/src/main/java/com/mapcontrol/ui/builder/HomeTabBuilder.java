@@ -133,7 +133,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
         TextView subtitle = new TextView(context);
         CockpitTokens.bodySm(subtitle);
-        subtitle.setText("Tiggo 8 · canlı araç durumu ve hızlı işlemler");
+        subtitle.setText(context.getString(R.string.ck_home_subtitle));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
@@ -142,16 +142,16 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     }
 
     private CockpitCard buildVehicleCard() {
-        CockpitCard card = new CockpitCard(context, "Araç Durumu").span(4);
-        statusBadge = StatusBadge.neutral(context, "Bağlantı bekleniyor");
+        CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_vehicle_card)).span(4);
+        statusBadge = StatusBadge.neutral(context, context.getString(R.string.ck_home_connecting));
         card.status(statusBadge);
 
         LinearLayout metrics = new LinearLayout(context);
         metrics.setOrientation(LinearLayout.HORIZONTAL);
         metrics.setGravity(Gravity.BOTTOM);
-        fuelValue = new MetricView(context, "Yakıt");
-        rangeValue = new MetricView(context, "Menzil");
-        odoValue = new MetricView(context, "Odometre");
+        fuelValue = new MetricView(context, context.getString(R.string.ck_home_fuel));
+        rangeValue = new MetricView(context, context.getString(R.string.ck_home_range));
+        odoValue = new MetricView(context, context.getString(R.string.ck_home_odo));
         metrics.addView(fuelValue, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         metrics.addView(rangeValue, new LinearLayout.LayoutParams(0,
@@ -160,22 +160,22 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         card.addContent(metrics);
 
-        CockpitButton detail = CockpitButton.secondary(context, "Araç bilgisini aç");
-        detail.setOnClickListener(v -> callback.onNavigate(TAB_VEHICLE_INFO, "Araç Bilgisi"));
+        CockpitButton detail = CockpitButton.secondary(context, context.getString(R.string.ck_home_open_vehicle));
+        detail.setOnClickListener(v -> callback.onNavigate(TAB_VEHICLE_INFO, context.getString(R.string.ck_home_vehicle_info)));
         card.addAction(detail);
         return card;
     }
 
     private CockpitCard buildQuickActions() {
-        CockpitCard card = new CockpitCard(context, "Hızlı İşlemler").span(4);
+        CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_quick)).span(4);
         LinearLayout row1 = new LinearLayout(context);
         row1.setOrientation(LinearLayout.HORIZONTAL);
-        row1.addView(quick("Araç Bilgisi", TAB_VEHICLE_INFO, "Araç Bilgisi"),
+        row1.addView(quick(context.getString(R.string.ck_home_vehicle_info), TAB_VEHICLE_INFO, context.getString(R.string.ck_home_vehicle_info)),
                 new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         LinearLayout.LayoutParams gap1 = new LinearLayout.LayoutParams(
                 CockpitTokens.dim(context, R.dimen.ck_space_sm), 1);
         row1.addView(new View(context), gap1);
-        row1.addView(quick("Sürüş Karnesi", TAB_DRIVING_HISTORY, "Sürüş Karnesi"),
+        row1.addView(quick(context.getString(R.string.ck_home_drive_report), TAB_DRIVING_HISTORY, context.getString(R.string.ck_home_drive_report)),
                 new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         card.addContent(row1);
 
@@ -185,11 +185,11 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         row2Lp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         card.addContent(row2, row2Lp);
-        row2.addView(quick("Konfor", TAB_COMFORT, "Konfor"),
+        row2.addView(quick(context.getString(R.string.ck_home_comfort), TAB_COMFORT, context.getString(R.string.ck_home_comfort)),
                 new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         row2.addView(new View(context), new LinearLayout.LayoutParams(
                 CockpitTokens.dim(context, R.dimen.ck_space_sm), 1));
-        row2.addView(quick("Vale Modu", TAB_VALET, "Vale Modu"),
+        row2.addView(quick(context.getString(R.string.ck_home_valet), TAB_VALET, context.getString(R.string.ck_home_valet)),
                 new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         return card;
     }
@@ -206,19 +206,19 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         if (!ValetModeManager.isActive(context)) {
             return new View(context);
         }
-        CockpitCard card = new CockpitCard(context, "Vale Modu").span(8);
-        card.status(StatusBadge.advisory(context, "Aktif"));
+        CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_valet)).span(8);
+        card.status(StatusBadge.advisory(context, context.getString(R.string.ck_home_active)));
         TextView body = new TextView(context);
         CockpitTokens.bodyMd(body);
-        body.setText("Kişisel sekmeler gizli. Hız, alan ve saat sınırları uygulanıyor.");
+        body.setText(context.getString(R.string.ck_home_valet_body));
         body.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         card.addContent(body);
         return card;
     }
 
     private CockpitCard buildOnboardingCard() {
-        onboardingCard = new CockpitCard(context, "RoadDeck'e hoş geldin").span(8);
-        onboardingCard.status(StatusBadge.nominal(context, "Kurulum"));
+        onboardingCard = new CockpitCard(context, context.getString(R.string.ck_home_onboarding_title)).span(8);
+        onboardingCard.status(StatusBadge.nominal(context, context.getString(R.string.ck_home_setup)));
         if (prefs.getBoolean(KEY_ONBOARDING_DONE, false)) {
             onboardingCard.setVisibility(View.GONE);
             return onboardingCard;
@@ -227,8 +227,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         TextView body = new TextView(context);
         CockpitTokens.bodyMd(body);
         body.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        body.setText("Önce canlı araç verisini doğrula, sonra sürüşünü analiz et. "
-                + "Wi-Fi, konfor ve vale ayarları hazır olduğunda tek dokunuşla açılır.");
+        body.setText(context.getString(R.string.ck_home_onboarding_body));
         onboardingCard.addContent(body);
 
         LinearLayout actions = new LinearLayout(context);
@@ -238,14 +237,14 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         actionsLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         onboardingCard.addContent(actions, actionsLp);
 
-        CockpitButton vehicle = CockpitButton.primary(context, "Araç Bilgisi");
+        CockpitButton vehicle = CockpitButton.primary(context, context.getString(R.string.ck_home_vehicle_info));
         vehicle.setOnClickListener(v -> {
             dismissOnboarding();
-            callback.onNavigate(TAB_VEHICLE_INFO, "Araç Bilgisi");
+            callback.onNavigate(TAB_VEHICLE_INFO, context.getString(R.string.ck_home_vehicle_info));
         });
         actions.addView(vehicle, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        CockpitButton start = CockpitButton.secondary(context, "Başla");
+        CockpitButton start = CockpitButton.secondary(context, context.getString(R.string.ck_home_start));
         start.setOnClickListener(v -> dismissOnboarding());
         LinearLayout.LayoutParams startLp = new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -270,7 +269,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     }
 
     private CockpitCard buildLastDriveCard() {
-        CockpitCard card = new CockpitCard(context, "Son Sürüş").span(8);
+        CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_last_drive)).span(8);
         DrivingSessionRecorder recorder = DrivingSessionRecorder.get(context);
         DrivingTrip trip = recorder.isActive() ? recorder.getDisplayTrip() : recorder.getLastTrip();
         if (trip == null) {
@@ -280,19 +279,19 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             }
         }
         if (trip == null) {
-            card.status(StatusBadge.neutral(context, "Kayıt yok"));
+            card.status(StatusBadge.neutral(context, context.getString(R.string.ck_home_no_record)));
             TextView empty = new TextView(context);
             CockpitTokens.bodySm(empty);
-            empty.setText("Henüz kayıtlı sürüş yok. İlk yolculuktan sonra puan ve yakıt analizi burada görünür.");
+            empty.setText(context.getString(R.string.ck_home_no_drive));
             card.addContent(empty);
             return card;
         }
 
-        card.status(StatusBadge.nominal(context, recorder.isActive() ? "Devam ediyor" : "Tamamlandı"));
+        card.status(StatusBadge.nominal(context, recorder.isActive() ? context.getString(R.string.ck_home_in_progress) : context.getString(R.string.ck_home_completed)));
         LinearLayout row = new LinearLayout(context);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        MetricView score = new MetricView(context, "Puan").value(String.valueOf(trip.score));
+        MetricView score = new MetricView(context, context.getString(R.string.ck_home_score)).value(String.valueOf(trip.score));
         score.setMinimumWidth(CockpitTokens.dp(context, 160));
         row.addView(score);
 
@@ -305,7 +304,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
         TextView title = new TextView(context);
         CockpitTokens.title(title);
-        title.setText(trip.title.isEmpty() ? "Sürüş" : trip.title);
+        title.setText(trip.title.isEmpty() ? context.getString(R.string.ck_home_drive) : trip.title);
         info.addView(title);
 
         SimpleDateFormat fmt = new SimpleDateFormat("d MMM · HH:mm", new Locale("tr", "TR"));
@@ -323,8 +322,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         }
         card.addContent(row);
 
-        CockpitButton open = CockpitButton.secondary(context, "Tüm sürüşleri gör");
-        open.setOnClickListener(v -> callback.onNavigate(TAB_DRIVING_HISTORY, "Sürüş Karnesi"));
+        CockpitButton open = CockpitButton.secondary(context, context.getString(R.string.ck_home_view_all));
+        open.setOnClickListener(v -> callback.onNavigate(TAB_DRIVING_HISTORY, context.getString(R.string.ck_home_drive_report)));
         card.addAction(open);
         return card;
     }
@@ -337,7 +336,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         if (!snapshot.connected) {
             if (statusBadge != null) {
                 statusBadge.setLevel(StatusBadge.ADVISORY);
-                statusBadge.setText("Bağlantı bekleniyor");
+                statusBadge.setText(context.getString(R.string.ck_home_connecting));
             }
             fuelValue.value("—");
             rangeValue.value("—");
@@ -366,9 +365,9 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
     private String greeting() {
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        if (hour < 6) return "İyi geceler";
-        if (hour < 12) return "Günaydın";
-        if (hour < 18) return "İyi günler";
-        return "İyi akşamlar";
+        if (hour < 6) return context.getString(R.string.ck_home_greeting_night);
+        if (hour < 12) return context.getString(R.string.ck_home_greeting_morning);
+        if (hour < 18) return context.getString(R.string.ck_home_greeting_day);
+        return context.getString(R.string.ck_home_greeting_evening);
     }
 }

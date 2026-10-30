@@ -188,59 +188,23 @@ public class SettingsTabBuilder {
         sectionTitle.setText(R.string.settings_theme_section_title);
         sectionTitle.setTextSize(18);
         sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        sectionTitle.setTypeface(android.graphics.Typeface.MONOSPACE,
-                android.graphics.Typeface.BOLD);
+        sectionTitle.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(
+                context, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
         sectionTitle.setPadding(16, 24, 16, 8);
         parentContainer.addView(sectionTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         TextView sectionDesc = new TextView(context);
-        sectionDesc.setText(R.string.settings_theme_section_desc);
-        sectionDesc.setTextSize(13);
-        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
-        sectionDesc.setPadding(16, 0, 16, 12);
+        sectionDesc.setText(R.string.ck_theme_locked_desc);
+        sectionDesc.setTextSize(15);
+        sectionDesc.setTextColor(UiStyles.color(context, R.color.textSecondary));
+        sectionDesc.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(
+                context, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_REGULAR));
+        sectionDesc.setPadding(16, 0, 16, 16);
         parentContainer.addView(sectionDesc, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        boolean cyber = ThemeManager.isCyber(context);
-        UiStyles.addBinarySegmentedControl(context, parentContainer,
-                null,
-                context.getString(R.string.settings_theme_modern),
-                context.getString(R.string.settings_theme_cyber),
-                context.getString(R.string.settings_theme_modern_help),
-                context.getString(R.string.settings_theme_cyber_help),
-                !cyber,
-                modernSelected -> {
-                    boolean targetCyber = !modernSelected;
-                    if (targetCyber == ThemeManager.isCyber(context)) {
-                        return;
-                    }
-                    ThemeManager.setCyber(context, targetCyber);
-                    callback.log("[Tema] " + (targetCyber ? "Cyber" : "Modern"));
-                    callback.onThemeChanged();
-                });
-
-        if (cyber) {
-            TextView preview = new TextView(context);
-            preview.setText("+-- DISPLAY PROFILE --+\n"
-                    + "| > CYBER / 0x33FF00  |\n"
-                    + "| scanlines: ON       |\n"
-                    + "+---------------------+");
-            preview.setTextSize(12);
-            preview.setTypeface(android.graphics.Typeface.MONOSPACE);
-            preview.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            int pad = UiStyles.dimenPx(context, R.dimen.spacing_medium);
-            preview.setPadding(pad, pad, pad, pad);
-            UiStyles.applySolidRoundedBackground(preview,
-                    UiStyles.color(context, R.color.surfaceCard));
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(pad, 0, pad, pad);
-            parentContainer.addView(preview, lp);
-        }
     }
 
     private void createLanguageSection(LinearLayout parentContainer) {

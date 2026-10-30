@@ -24,7 +24,7 @@ import com.mapcontrol.vehicle.VehicleMetricsRepository;
 import com.mapcontrol.vehicle.VehicleMetricsSnapshot;
 
 /**
- * Araç bilgisi — canlı VDBus verisi. Glanceable metrik kartları + "Gelişmiş" ham veri kartı.
+ * Araç bilgisi — canlı VDBus verisi. Glanceable metrik kartları + uiContext.getString(R.string.ck_vi_advanced) ham veri kartı.
  */
 public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener {
 
@@ -178,12 +178,12 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         outer.addView(grid, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        CockpitCard drive = new CockpitCard(uiContext, "Sürüş").span(4);
+        CockpitCard drive = new CockpitCard(uiContext, uiContext.getString(R.string.ck_vi_drive)).span(4);
         LinearLayout driveRow = new LinearLayout(uiContext);
         driveRow.setOrientation(LinearLayout.HORIZONTAL);
-        speedMetric = metric("Hız");
-        gearMetric = metric("Vites");
-        rpmMetric = metric("Devir");
+        speedMetric = metric(uiContext.getString(R.string.ck_vi_speed));
+        gearMetric = metric(uiContext.getString(R.string.ck_vi_gear));
+        rpmMetric = metric(uiContext.getString(R.string.ck_vi_rpm));
         driveRow.addView(speedMetric, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         driveRow.addView(gearMetric, new LinearLayout.LayoutParams(0,
@@ -193,12 +193,12 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         drive.addContent(driveRow);
         grid.add(drive, 4);
 
-        CockpitCard fuel = new CockpitCard(uiContext, "Yakıt").span(4);
+        CockpitCard fuel = new CockpitCard(uiContext, uiContext.getString(R.string.ck_vi_fuel)).span(4);
         LinearLayout fuelRow = new LinearLayout(uiContext);
         fuelRow.setOrientation(LinearLayout.HORIZONTAL);
-        fuelMetric = metric("Seviye");
-        rangeMetric = metric("Menzil");
-        consMetric = metric("Ort. tüketim");
+        fuelMetric = metric(uiContext.getString(R.string.ck_vi_level));
+        rangeMetric = metric(uiContext.getString(R.string.ck_vi_range));
+        consMetric = metric(uiContext.getString(R.string.ck_vi_avg_consumption));
         fuelRow.addView(fuelMetric, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         fuelRow.addView(rangeMetric, new LinearLayout.LayoutParams(0,
@@ -208,12 +208,12 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         fuel.addContent(fuelRow);
         grid.add(fuel, 4);
 
-        CockpitCard motor = new CockpitCard(uiContext, "Motor").span(4);
+        CockpitCard motor = new CockpitCard(uiContext, uiContext.getString(R.string.ck_vi_motor)).span(4);
         LinearLayout motorRow = new LinearLayout(uiContext);
         motorRow.setOrientation(LinearLayout.HORIZONTAL);
-        coolantMetric = metric("Soğutma");
-        batteryMetric = metric("Akü");
-        avgSpeedMetric = metric("Ort. hız");
+        coolantMetric = metric(uiContext.getString(R.string.ck_vi_coolant));
+        batteryMetric = metric(uiContext.getString(R.string.ck_vi_battery));
+        avgSpeedMetric = metric(uiContext.getString(R.string.ck_vi_avg_speed));
         motorRow.addView(coolantMetric, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         motorRow.addView(batteryMetric, new LinearLayout.LayoutParams(0,
@@ -223,12 +223,12 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         motor.addContent(motorRow);
         grid.add(motor, 4);
 
-        CockpitCard distance = new CockpitCard(uiContext, "Mesafe").span(4);
+        CockpitCard distance = new CockpitCard(uiContext, uiContext.getString(R.string.ck_vi_distance)).span(4);
         LinearLayout distRow = new LinearLayout(uiContext);
         distRow.setOrientation(LinearLayout.HORIZONTAL);
-        odoMetric = metric("Odometre");
-        tripMetric = metric("Yolculuk");
-        sinceStartMetric = metric("Son çalıştırma");
+        odoMetric = metric(uiContext.getString(R.string.ck_vi_odo));
+        tripMetric = metric(uiContext.getString(R.string.ck_vi_trip));
+        sinceStartMetric = metric(uiContext.getString(R.string.ck_vi_since_start));
         distRow.addView(odoMetric, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         distRow.addView(tripMetric, new LinearLayout.LayoutParams(0,
@@ -238,13 +238,13 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         distance.addContent(distRow);
         grid.add(distance, 4);
 
-        advancedCard = new CockpitCard(uiContext, "Gelişmiş").span(8);
-        advancedCard.status(StatusBadge.neutral(uiContext, "Ham VDBus"));
-        final CockpitButton toggle = CockpitButton.secondary(uiContext, "Göster");
+        advancedCard = new CockpitCard(uiContext, uiContext.getString(R.string.ck_vi_advanced)).span(8);
+        advancedCard.status(StatusBadge.neutral(uiContext, uiContext.getString(R.string.ck_vi_raw_vdbus)));
+        final CockpitButton toggle = CockpitButton.secondary(uiContext, uiContext.getString(R.string.ck_vi_show));
         toggle.setOnClickListener(v -> {
             advancedShown = !advancedShown;
             advancedRows.setVisibility(advancedShown ? View.VISIBLE : View.GONE);
-            toggle.setText(advancedShown ? "Gizle" : "Göster");
+            toggle.setText(advancedShown ? uiContext.getString(R.string.ck_vi_hide) : uiContext.getString(R.string.ck_vi_show));
             if (advancedShown) {
                 repository.refresh();
             }

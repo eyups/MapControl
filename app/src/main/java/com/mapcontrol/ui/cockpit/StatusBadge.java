@@ -2,12 +2,12 @@ package com.mapcontrol.ui.cockpit;
 
 import android.content.Context;
 import android.view.Gravity;
-import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.mapcontrol.R;
 
 /** Nominal / advisory / critical capsule. */
-public class StatusBadge extends TextView {
+public class StatusBadge extends AppCompatTextView {
 
     public static final int NOMINAL = 0;
     public static final int ADVISORY = 1;
