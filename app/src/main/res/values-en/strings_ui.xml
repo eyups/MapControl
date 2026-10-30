@@ -1357,4 +1357,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_face_none">Not registered</string>
     <string name="profiles_sync_apply_short">Sync</string>
     <string name="profiles_activate_short">Switch</string>
+    <string name="profiles_max_reached">Maximum 3 profiles are supported.</string>
 </resources>

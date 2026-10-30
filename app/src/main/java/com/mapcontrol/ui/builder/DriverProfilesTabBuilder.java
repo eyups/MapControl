@@ -89,7 +89,8 @@ public class DriverProfilesTabBuilder {
         cards.setBaselineAligned(false);
 
         java.util.List<DriverProfileManager.Profile> profiles = manager.getProfiles();
-        for (int i = 0; i < profiles.size(); i++) {
+        int shown = Math.min(profiles.size(), 3);
+        for (int i = 0; i < shown; i++) {
             DriverProfileManager.Profile profile = profiles.get(i);
             CockpitCard card = buildProfileCard(profile, profile == active, i);
             if (wide) {
@@ -105,6 +106,7 @@ public class DriverProfilesTabBuilder {
             }
         }
 
+        if (profiles.size() < 3) {
         CockpitCard newCard = buildNewProfileCard();
         if (wide) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -116,6 +118,7 @@ public class DriverProfilesTabBuilder {
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.topMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
             cards.addView(newCard, lp);
+        }
         }
         outer.addView(cards, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -272,7 +275,7 @@ public class DriverProfilesTabBuilder {
         header.addView(icon, new LinearLayout.LayoutParams(dp(64), dp(64)));
         TextView label = new TextView(context);
         label.setText(context.getString(R.string.profiles_new_card_title));
-        CockpitTokens.headlineSm(label);
+        CockpitTokens.title(label);
         LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         labelLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
@@ -343,6 +346,10 @@ public class DriverProfilesTabBuilder {
             }
         }
         if (guest == null) {
+            if (manager.getProfiles().size() >= 3) {
+                toast(R.string.profiles_max_reached);
+                return;
+            }
             guest = manager.create(guestName, false);
         }
         manager.activate(guest.id);
@@ -687,6 +694,10 @@ public class DriverProfilesTabBuilder {
     }
 
     private void createProfile(EditText input, boolean copy, int avatar) {
+        if (manager.getProfiles().size() >= 3) {
+            toast(R.string.profiles_max_reached);
+            return;
+        }
         String name = input.getText().toString().trim();
         if (name.isEmpty()) {
             toast(R.string.profiles_name_required);

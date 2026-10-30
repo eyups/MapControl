@@ -1376,4 +1376,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_face_none">Kayıtlı değil</string>
     <string name="profiles_sync_apply_short">Eşitle</string>
     <string name="profiles_activate_short">Geçiş Yap</string>
+    <string name="profiles_max_reached">En fazla 3 sürücü profili destekleniyor.</string>
 </resources>
