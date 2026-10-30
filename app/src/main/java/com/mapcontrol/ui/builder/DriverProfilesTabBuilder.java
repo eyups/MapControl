@@ -25,6 +25,11 @@ import com.mapcontrol.R;
 import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.profile.ProfileAvatars;
+import com.mapcontrol.ui.cockpit.CockpitChip;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitToggleRow;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
+import com.mapcontrol.ui.cockpit.StatusBadge;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.vehicle.ComfortCommands;
 import com.mapcontrol.vehicle.IdScanner;
@@ -134,9 +139,11 @@ public class DriverProfilesTabBuilder {
 
         Button btnNew = button(R.string.profiles_new, R.color.buttonPrimary);
         btnNew.setOnClickListener(v -> showNewProfileDialog());
+        btnNew.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        btnNew.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         card.addView(btnNew, lp);
     }
 
@@ -182,12 +189,15 @@ public class DriverProfilesTabBuilder {
         rename.setOnClickListener(v -> showEditProfileDialog(active));
         Button delete = button(R.string.profiles_delete, R.color.buttonDestructiveBg);
         delete.setOnClickListener(v -> confirmDelete(active));
+        rename.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        rename.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
+        delete.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        delete.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams renameLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        renameLp.setMarginEnd(UiStyles.dimenPx(context, R.dimen.spacing_small));
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        renameLp.setMarginEnd(CockpitTokens.dim(context, R.dimen.ck_space_sm));
         LinearLayout.LayoutParams deleteLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        deleteLp.setMarginStart(UiStyles.dimenPx(context, R.dimen.spacing_small));
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         actions.addView(rename, renameLp);
         actions.addView(delete, deleteLp);
         LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(
@@ -207,17 +217,13 @@ public class DriverProfilesTabBuilder {
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setClickable(true);
         row.setFocusable(true);
-        row.setPadding(0, 8, 8, 8);
-        UiStyles.applySolidRoundedBackgroundDp(row, UiStyles.color(context,
-                isActive ? R.color.assistCardActive : R.color.transparent), 12f);
-
-        android.view.View accent = new android.view.View(context);
-        accent.setBackgroundColor(UiStyles.color(context,
-                isActive ? R.color.oemAccent : R.color.transparent));
-        LinearLayout.LayoutParams accentLp = new LinearLayout.LayoutParams(
-                Math.round(4 * density), Math.round(40 * density));
-        accentLp.setMarginEnd(Math.round(10 * density));
-        row.addView(accent, accentLp);
+        row.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        row.setBackground(CockpitSurfaces.outlined(context,
+                CockpitTokens.color(context, isActive ? R.color.ck_surface_2 : R.color.ck_surface_1),
+                CockpitTokens.color(context, isActive ? R.color.ck_accent : R.color.ck_stroke), 12f));
 
         FrameLayout avatar = createAvatar(profile.avatar, 40, false);
         LinearLayout.LayoutParams avatarLp = new LinearLayout.LayoutParams(
@@ -228,18 +234,14 @@ public class DriverProfilesTabBuilder {
         TextView name = new TextView(context);
         name.setText(profile.name);
         name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
-        name.setTextColor(UiStyles.color(context, isActive ? R.color.oemAccent : R.color.textPrimary));
+        name.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         name.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(context,
                 com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM));
         row.addView(name, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         if (isActive) {
-            TextView badge = new TextView(context);
-            badge.setText(R.string.profiles_active_badge);
-            badge.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            badge.setTextColor(UiStyles.color(context, R.color.oemAccent));
-            badge.setTypeface(null, android.graphics.Typeface.BOLD);
-            row.addView(badge);
+            row.addView(StatusBadge.nominal(context,
+                    context.getString(R.string.profiles_active_badge)));
         }
 
         row.setOnClickListener(v -> {
@@ -265,13 +267,10 @@ public class DriverProfilesTabBuilder {
         chips.setOrientation(LinearLayout.HORIZONTAL);
         for (int slot = 0; slot <= ComfortCommands.SEAT_MEMORY_SLOTS; slot++) {
             final int value = slot;
-            Button chip = new Button(context);
-            chip.setText(slot == 0 ? context.getString(R.string.profiles_slot_none)
-                    : context.getString(R.string.profiles_slot_n, slot));
-            chip.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            UiStyles.styleOemButton(chip, UiStyles.color(context,
-                    profile.seatSlot == slot ? R.color.buttonPrimary : R.color.buttonSecondaryMuted));
+            String label = slot == 0 ? context.getString(R.string.profiles_slot_none)
+                    : context.getString(R.string.profiles_slot_n, slot);
+            CockpitChip chip = new CockpitChip(context, label);
+            chip.setSelectedState(profile.seatSlot == slot);
             chip.setOnClickListener(v -> {
                 manager.setSeatSlot(profile.id, value);
                 rebuild();
@@ -283,24 +282,31 @@ public class DriverProfilesTabBuilder {
         LinearLayout actions = new LinearLayout(context);
         actions.setOrientation(LinearLayout.HORIZONTAL);
         Button save = button(R.string.profiles_seat_save, R.color.buttonSecondaryMuted);
+        save.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        save.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         save.setOnClickListener(v -> confirmSaveSeat(profile));
         actions.addView(save, wrap(0, 0, 8, 0));
         Button applyNow = button(R.string.profiles_seat_apply_now, R.color.buttonPrimary);
+        applyNow.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        applyNow.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         applyNow.setOnClickListener(v -> executor.execute(() ->
                 DriverProfileApplier.applyNow(context, log)));
         actions.addView(applyNow, wrap(0, 0, 8, 0));
         parent.addView(actions, wrap(0, 0, 0, 8));
 
-        UiStyles.addBinarySegmentedControl(context, parent,
-                context.getString(R.string.profiles_apply_on_start_title),
-                context.getString(R.string.common_on), context.getString(R.string.common_off),
-                context.getString(R.string.profiles_apply_on_start_on),
-                context.getString(R.string.profiles_apply_on_start_off),
-                profile.applyOnStart,
-                on -> {
-                    manager.setApplyOnStart(profile.id, on);
-                    log.accept("[Profil] " + profile.name + " kontakta uygula: " + (on ? "Açık" : "Kapalı"));
-                });
+        CockpitToggleRow applyOnStart = new CockpitToggleRow(context,
+                R.drawable.ic_mdi_car, context.getString(R.string.profiles_apply_on_start_title),
+                context.getString(profile.applyOnStart
+                        ? R.string.profiles_apply_on_start_on
+                        : R.string.profiles_apply_on_start_off), profile.applyOnStart);
+        applyOnStart.getToggle().setOnCheckedChangeListener((toggle, on) -> {
+            manager.setApplyOnStart(profile.id, on);
+            applyOnStart.subtitle(context.getString(on
+                    ? R.string.profiles_apply_on_start_on
+                    : R.string.profiles_apply_on_start_off));
+            log.accept("[Profil] " + profile.name + " kontakta uygula: " + (on ? "Açık" : "Kapalı"));
+        });
+        parent.addView(applyOnStart, wrap(0, 8, 0, 8));
     }
 
     private void addAdvancedItems(LinearLayout parent, DriverProfileManager.Profile profile) {
@@ -320,8 +326,7 @@ public class DriverProfilesTabBuilder {
         TextView label = new TextView(context);
         label.setText(context.getString(R.string.profiles_advanced_items, profile.items.size()));
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        label.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        label.setTypeface(null, android.graphics.Typeface.BOLD);
+        label.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         toggle.addView(label, new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
@@ -488,8 +493,7 @@ public class DriverProfilesTabBuilder {
         TextView label = new TextView(context);
         label.setText(R.string.profiles_avatar_title);
         label.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        label.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        label.setTypeface(null, android.graphics.Typeface.BOLD);
+        label.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         label.setPadding(0, pad, 0, UiStyles.dimenPx(context, R.dimen.spacing_small));
         content.addView(label);
         content.addView(createAvatarPicker(selectedAvatar));
