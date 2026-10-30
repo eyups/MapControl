@@ -227,9 +227,10 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         CockpitCard recircCard = new CockpitCard(context,
                 context.getString(R.string.settings_comfort_recirc_title)).span(4);
         boolean recircOn = prefs.getBoolean(RecirculationAutomation.PREF_ENABLED, false);
-        recircCard.status(recircOn
+        StatusBadge recircBadge = recircOn
                 ? StatusBadge.nominal(context, context.getString(R.string.common_on))
-                : StatusBadge.neutral(context, context.getString(R.string.common_off)));
+                : StatusBadge.neutral(context, context.getString(R.string.common_off));
+        recircCard.status(recircBadge);
         CockpitToggleRow recircRow = new CockpitToggleRow(context,
                 R.drawable.ic_mdi_car_defrost,
                 context.getString(R.string.settings_comfort_recirc_title),
@@ -240,6 +241,9 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
             recircRow.subtitle(context.getString(checked
                     ? R.string.settings_comfort_recirc_help_on
                     : R.string.settings_comfort_recirc_help_off));
+            recircBadge.setLevel(checked ? StatusBadge.NOMINAL : StatusBadge.NEUTRAL);
+            recircBadge.setText(context.getString(checked
+                    ? R.string.common_on : R.string.common_off));
             callback.log("Trafikte otomatik iç sirkülasyon: " + (checked ? "Açık" : "Kapalı"));
         });
         recircCard.addContent(recircRow);

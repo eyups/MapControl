@@ -22,6 +22,7 @@ import android.widget.Toast;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.driving.DrivingEvent;
 import com.mapcontrol.driving.DrivingScore;
 import com.mapcontrol.driving.DrivingPenaltyBarsView;
@@ -452,6 +453,8 @@ public class DrivingAnalysisActivity extends Activity {
         footerLp.topMargin = dp(12);
         content.addView(footer, footerLp);
 
+        CockpitLegacyStyler.apply(root);
+        CockpitLegacyStyler.applySectionHeadings(root);
         setContentView(root);
         scroll.postDelayed(() -> scroll.scrollTo(0, 0), 120L);
     }

@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Switch;
+import com.mapcontrol.ui.cockpit.CockpitToggleRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -140,7 +140,7 @@ public class ValetTabBuilder {
         card.addView(fieldLabel("Alan sınırı yarıçapı (metre)"));
         card.addView(radius);
 
-        Switch curfew = switchRow("Saat kısıtı uyarısı", session.curfewEnabled);
+        CockpitToggleRow curfew = switchRow("Saat kısıtı uyarısı", session.curfewEnabled);
         card.addView(curfew);
         LinearLayout timeRow = new LinearLayout(context);
         timeRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -154,7 +154,7 @@ public class ValetTabBuilder {
         timeRow.addView(end, endLp);
         card.addView(timeRow);
 
-        Switch hidePersonal = switchRow("Kişisel menüleri gizle", session.hidePersonal);
+        CockpitToggleRow hidePersonal = switchRow("Kişisel menüleri gizle", session.hidePersonal);
         card.addView(hidePersonal);
 
         TextView note = smallText("Konum izni yoksa yalnızca hız ve saat kısıtı izlenir. Veriler cihazda kalır.");
@@ -172,10 +172,10 @@ public class ValetTabBuilder {
                 .setPositiveButton("Başlat", (dialog, which) -> {
                     session.speedLimitKmh = parseRange(speed, 30, 200, 120);
                     session.geofenceRadiusM = parseRange(radius, 50, 5000, 500);
-                    session.curfewEnabled = curfew.isChecked();
+                    session.curfewEnabled = curfew.getToggle().isChecked();
                     session.curfewStartMinute = parseTime(start, 22 * 60);
                     session.curfewEndMinute = parseTime(end, 6 * 60);
-                    session.hidePersonal = hidePersonal.isChecked();
+                    session.hidePersonal = hidePersonal.getToggle().isChecked();
                     ValetModeManager.startSession(context, session, currentLocation());
                     ValetMonitor.get(context).start();
                     log.accept("Vale Modu başlatıldı.");
@@ -448,14 +448,15 @@ public class ValetTabBuilder {
         input.setLayoutParams(lp);
     }
 
-    private Switch switchRow(String label, boolean checked) {
-        Switch toggle = new Switch(context);
-        toggle.setText(label);
-        toggle.setTextSize(14);
-        toggle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        toggle.setChecked(checked);
-        toggle.setPadding(0, dp(8), 0, dp(8));
-        return toggle;
+    private CockpitToggleRow switchRow(String label, boolean checked) {
+        CockpitToggleRow row = new CockpitToggleRow(context,
+                R.drawable.ic_mdi_shield_car, label, null, checked);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = dp(8);
+        row.setLayoutParams(lp);
+        return row;
     }
 
     private Button button(String text, boolean primary) {

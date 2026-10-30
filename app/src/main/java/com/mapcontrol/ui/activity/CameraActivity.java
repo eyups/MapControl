@@ -32,6 +32,7 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 
 public class CameraActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener {
     private static final String TAG = CameraActivity.class.getSimpleName();
@@ -309,6 +310,7 @@ public class CameraActivity extends AppCompatActivity implements TextureView.Sur
     protected void onCreate(@Nullable Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_camera);
+        CockpitLegacyStyler.apply(findViewById(R.id.root_view));
         setTitle(R.string.camera_test_title);
         
         // findViewById ile view'ları al

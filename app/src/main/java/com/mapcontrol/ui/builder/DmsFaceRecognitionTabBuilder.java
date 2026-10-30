@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.SwitchCompat;
+import com.mapcontrol.ui.cockpit.CockpitToggle;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
@@ -42,7 +42,7 @@ public final class DmsFaceRecognitionTabBuilder {
     private LinearLayout normalContentContainer;
     private TextView activeModeLabel;
 
-    private SwitchCompat enabledSwitch;
+    private CockpitToggle enabledSwitch;
     private TextView description;
     private TextView toggleLabel;
     private TextView status;
@@ -262,8 +262,8 @@ public final class DmsFaceRecognitionTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         applySeatMemoryCopy();
 
-        enabledSwitch = new SwitchCompat(activity);
-        enabledSwitch.setChecked(DmsFaceRecognitionManager.isEnabled(activity));
+        enabledSwitch = new CockpitToggle(activity);
+        enabledSwitch.setChecked(DmsFaceRecognitionManager.isEnabled(activity), false);
         toggleRow.addView(enabledSwitch);
         enabledSwitch.setOnCheckedChangeListener((button, enabled) -> {
             if (suppressSwitchCallback) {
@@ -339,7 +339,7 @@ public final class DmsFaceRecognitionTabBuilder {
         }
         pendingEnable = false;
         if (granted) {
-            enabledSwitch.setChecked(true);
+            enabledSwitch.setChecked(true, false);
         } else {
             Toast.makeText(activity, R.string.dms_face_camera_permission, Toast.LENGTH_LONG).show();
         }
@@ -384,7 +384,7 @@ public final class DmsFaceRecognitionTabBuilder {
             enabledSwitch.setEnabled(profileCount > 0 || isServiceEnabled);
             if (enabledSwitch.isChecked() != isServiceEnabled && !pendingEnable) {
                 suppressSwitchCallback = true;
-                enabledSwitch.setChecked(isServiceEnabled);
+                enabledSwitch.setChecked(isServiceEnabled, false);
                 suppressSwitchCallback = false;
             }
         }

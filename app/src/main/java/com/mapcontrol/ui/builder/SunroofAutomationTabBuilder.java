@@ -165,10 +165,11 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         CockpitCard sunroof = new CockpitCard(context,
                 context.getString(R.string.settings_comfort_sunroof_title)).span(4);
         int sunroofMode = prefs.getInt(ComfortCommands.PREF_SUNROOF, -1);
-        sunroof.status(sunroofMode == -1
+        StatusBadge sunroofBadge = sunroofMode == -1
                 ? StatusBadge.neutral(context, context.getString(R.string.drive_mode_none))
                 : StatusBadge.nominal(context, context.getString(sunroofMode == ComfortCommands.SUNROOF_VENT
-                ? R.string.settings_comfort_sunroof_vent : R.string.settings_comfort_sunroof_open)));
+                ? R.string.settings_comfort_sunroof_vent : R.string.settings_comfort_sunroof_open));
+        sunroof.status(sunroofBadge);
         int[] sunroofModes = {-1, ComfortCommands.SUNROOF_VENT, ComfortCommands.SUNROOF_OPEN};
         CockpitSegmented sunroofSeg = new CockpitSegmented(context, java.util.Arrays.asList(
                 context.getString(R.string.drive_mode_none),
@@ -176,6 +177,12 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
                 context.getString(R.string.settings_comfort_sunroof_open)),
                 indexOfMode(sunroofMode, sunroofModes), index -> {
                     prefs.edit().putInt(ComfortCommands.PREF_SUNROOF, sunroofModes[index]).apply();
+                    sunroofBadge.setLevel(index == 0 ? StatusBadge.NEUTRAL : StatusBadge.NOMINAL);
+                    sunroofBadge.setText(index == 0
+                            ? context.getString(R.string.drive_mode_none)
+                            : context.getString(index == 1
+                            ? R.string.settings_comfort_sunroof_vent
+                            : R.string.settings_comfort_sunroof_open));
                     callback.log("Cam tavan açılış ayarı: " + sunroofModes[index]);
                 });
         sunroof.addContent(sunroofSeg);
@@ -184,10 +191,11 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         CockpitCard shade = new CockpitCard(context,
                 context.getString(R.string.settings_comfort_sunshade_title)).span(4);
         int shadeMode = prefs.getInt(ComfortCommands.PREF_SUNSHADE, -1);
-        shade.status(shadeMode == -1
+        StatusBadge shadeBadge = shadeMode == -1
                 ? StatusBadge.neutral(context, context.getString(R.string.drive_mode_none))
                 : StatusBadge.nominal(context, context.getString(shadeMode == ComfortCommands.SUNSHADE_OPEN
-                ? R.string.settings_comfort_sunshade_open : R.string.settings_comfort_sunshade_close)));
+                ? R.string.settings_comfort_sunshade_open : R.string.settings_comfort_sunshade_close));
+        shade.status(shadeBadge);
         int[] shadeModes = {-1, ComfortCommands.SUNSHADE_OPEN, ComfortCommands.SUNSHADE_CLOSE};
         CockpitSegmented shadeSeg = new CockpitSegmented(context, java.util.Arrays.asList(
                 context.getString(R.string.drive_mode_none),
@@ -195,6 +203,12 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
                 context.getString(R.string.settings_comfort_sunshade_close)),
                 indexOfMode(shadeMode, shadeModes), index -> {
                     prefs.edit().putInt(ComfortCommands.PREF_SUNSHADE, shadeModes[index]).apply();
+                    shadeBadge.setLevel(index == 0 ? StatusBadge.NEUTRAL : StatusBadge.NOMINAL);
+                    shadeBadge.setText(index == 0
+                            ? context.getString(R.string.drive_mode_none)
+                            : context.getString(index == 1
+                            ? R.string.settings_comfort_sunshade_open
+                            : R.string.settings_comfort_sunshade_close));
                     callback.log("Güneşlik açılış ayarı: " + shadeModes[index]);
                 });
         shade.addContent(shadeSeg);

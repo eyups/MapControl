@@ -29,7 +29,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.SwitchCompat;
+import com.mapcontrol.ui.cockpit.CockpitToggle;
 
 import com.mapcontrol.R;
 import com.mapcontrol.dvr.CameraGlEngine;
@@ -70,7 +70,7 @@ final class Camera360ClipViewer {
     private final Runnable onBack;
     /** true: sol menu gizlensin (tam genislik), false: geri gelsin. */
     private final Consumer<Boolean> onWide;
-    private SwitchCompat wideSwitch;
+    private CockpitToggle wideSwitch;
     private boolean wide;
     private final Handler main = new Handler(Looper.getMainLooper());
     private final Locale locale;
@@ -210,18 +210,14 @@ final class Camera360ClipViewer {
         label.setText(R.string.camera360_viewer_wide);
         label.setSingleLine(true);
         box.addView(label);
-        wideSwitch = new SwitchCompat(ui.context);
-        wideSwitch.setShowText(false);
-        wideSwitch.setThumbTintList(switchTint(ui.themeColor(R.color.oemAccent),
-                ui.themeColor(R.color.outlineMuted)));
-        wideSwitch.setTrackTintList(switchTint(ui.themeColor(R.color.assistStrokeActive),
-                ui.themeColor(R.color.outline)));
+        wideSwitch = new CockpitToggle(ui.context);
+        wideSwitch.setChecked(wide, false);
         wideSwitch.setOnCheckedChangeListener((b, on) -> setWide(on));
         LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         sp.setMarginStart(ui.dp(6));
         box.addView(wideSwitch, sp);
-        box.setOnClickListener(v -> wideSwitch.toggle());
+        box.setOnClickListener(v -> wideSwitch.performClick());
         return box;
     }
 
@@ -234,7 +230,7 @@ final class Camera360ClipViewer {
     private void setWide(boolean on) {
         if (wide == on) return;
         wide = on;
-        if (wideSwitch != null && wideSwitch.isChecked() != on) wideSwitch.setChecked(on);
+        if (wideSwitch != null && wideSwitch.isChecked() != on) wideSwitch.setChecked(on, false);
         if (onWide != null) onWide.accept(on);
     }
 

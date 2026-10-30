@@ -49,6 +49,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.service.DmsFaceRecognitionManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.vehicle.CarSeatMemoryManager;
@@ -494,6 +495,8 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
         doorSlotsCard.addView(doorSlotsContainer, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        CockpitLegacyStyler.apply(root);
+        CockpitLegacyStyler.applySectionHeadings(root);
         setContentView(root);
     }
 
