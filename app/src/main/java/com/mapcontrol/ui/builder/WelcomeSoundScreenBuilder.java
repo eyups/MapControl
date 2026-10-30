@@ -103,7 +103,7 @@ public final class WelcomeSoundScreenBuilder {
 
         LinearLayout mainContainer = new LinearLayout(context);
         mainContainer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+        int margin = com.mapcontrol.ui.cockpit.CockpitTokens.dim(context, R.dimen.ck_margin);
         mainContainer.setPadding(margin, margin, margin, margin);
         mainContainer.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
 
@@ -177,7 +177,7 @@ public final class WelcomeSoundScreenBuilder {
             chip.setTextColor(primary);
             chip.setPadding(chipPadX, chipPadY, chipPadX, chipPadY);
             GradientDrawable chipBg = new GradientDrawable();
-            chipBg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+            chipBg.setColor(UiStyles.color(context, R.color.ck_surface_2));
             chipBg.setCornerRadius(8 * context.getResources().getDisplayMetrics().density);
             chipBg.setStroke(1, UiStyles.color(context, R.color.outlineSubtle));
             chip.setBackground(chipBg);
@@ -360,7 +360,7 @@ public final class WelcomeSoundScreenBuilder {
         card.setOrientation(LinearLayout.VERTICAL);
         int pad = Math.round(18 * context.getResources().getDisplayMetrics().density);
         card.setPadding(pad, pad, pad, pad);
-        UiStyles.setGlassCardBackground(card);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(card);
         return card;
     }
 
@@ -419,7 +419,7 @@ public final class WelcomeSoundScreenBuilder {
 
     private static GradientDrawable fieldBackground(Context context) {
         GradientDrawable bg = new GradientDrawable();
-        bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+        bg.setColor(UiStyles.color(context, R.color.ck_surface_2));
         bg.setCornerRadius(context.getResources().getDimension(R.dimen.oem_button_radius));
         bg.setStroke(1, UiStyles.color(context, R.color.outline));
         return bg;
@@ -429,7 +429,7 @@ public final class WelcomeSoundScreenBuilder {
         float radius = context.getResources().getDimension(R.dimen.oem_button_radius);
         float density = context.getResources().getDisplayMetrics().density;
         GradientDrawable bg = new GradientDrawable();
-        bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+        bg.setColor(UiStyles.color(context, R.color.ck_surface_2));
         bg.setCornerRadius(radius);
         bg.setStroke(Math.max(1, Math.round(density)),
                 UiStyles.color(context, R.color.outlineSubtle));
@@ -620,7 +620,7 @@ public final class WelcomeSoundScreenBuilder {
             chip.setClickable(true);
             chip.setFocusable(true);
             UiStyles.applySolidRoundedBackgroundDp(chip,
-                    UiStyles.color(context, R.color.surfaceCardInner), 8f);
+                    UiStyles.color(context, R.color.ck_surface_2), 8f);
             chip.setOnClickListener(v -> {
                 int start = Math.max(0, input.getSelectionStart());
                 input.getText().insert(start, ch);
@@ -664,7 +664,7 @@ public final class WelcomeSoundScreenBuilder {
         for (int i = 0; i < designs.size(); i++) {
             boolean selected = designs.get(i).id().equals(selectedId);
             GradientDrawable bg = new GradientDrawable();
-            bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+            bg.setColor(UiStyles.color(context, R.color.ck_surface_2));
             bg.setCornerRadius(radius);
             bg.setStroke(Math.max(1, Math.round((selected ? 2f : 1f) * density)),
                     UiStyles.color(context, selected ? R.color.oemAccent : R.color.outline));

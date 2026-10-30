@@ -74,8 +74,9 @@ public class EqualizerTabBuilder {
 
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        outer.setPadding(margin, margin, margin, margin);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        outer.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -130,9 +131,9 @@ public class EqualizerTabBuilder {
     private LinearLayout createCard() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        int inner = CockpitTokens.dim(context, R.dimen.ck_card_padding);
         card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(card);
         return card;
     }
 
@@ -307,7 +308,7 @@ public class EqualizerTabBuilder {
         SeekBar bar = new SeekBar(context);
         bar.setMax(Math.max(1, max));
         bar.setProgress(Math.max(0, Math.min(progress, bar.getMax())));
-        int accent = UiStyles.color(context, R.color.oemAccent);
+        int accent = CockpitTokens.color(context, R.color.ck_accent);
         int thumbPx = UiStyles.dimenPx(context, R.dimen.equalizer_thumb_size);
         int trackPx = UiStyles.dimenPx(context, R.dimen.equalizer_track_height);
         GradientDrawable thumb = new GradientDrawable();

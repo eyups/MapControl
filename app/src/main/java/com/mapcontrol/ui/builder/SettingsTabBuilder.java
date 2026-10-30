@@ -234,9 +234,9 @@ public class SettingsTabBuilder {
     private LinearLayout createSettingsCard() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        int inner = CockpitTokens.dim(context, R.dimen.ck_card_padding);
         card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(card);
         return card;
     }
 

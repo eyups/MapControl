@@ -91,7 +91,7 @@ final class TemperatureAutomationUi {
         card.setOrientation(LinearLayout.VERTICAL);
         int pad = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
         card.setPadding(pad, pad, pad, pad);
-        UiStyles.setGlassCardBackground(card);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(card);
         return card;
     }
 

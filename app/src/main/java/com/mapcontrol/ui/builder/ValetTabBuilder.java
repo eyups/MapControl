@@ -66,7 +66,7 @@ public class ValetTabBuilder {
         scrollView.removeAllViews();
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+        int margin = com.mapcontrol.ui.cockpit.CockpitTokens.dim(context, R.dimen.ck_margin);
         outer.setPadding(margin, margin, margin, margin * 2);
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -475,7 +475,7 @@ public class ValetTabBuilder {
         input.setHintTextColor(UiStyles.color(context, R.color.textHint));
         input.setPadding(dp(12), dp(8), dp(12), dp(8));
         GradientDrawable bg = new GradientDrawable();
-        bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+        bg.setColor(com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_surface_2));
         bg.setCornerRadius(dp(8));
         bg.setStroke(Math.max(1, Math.round(dp(1))),
                 UiStyles.color(context, R.color.outline));

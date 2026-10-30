@@ -75,8 +75,9 @@ public class DriverProfilesTabBuilder {
 
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        outer.setPadding(margin, margin, margin, margin);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        outer.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
 
         DriverProfileManager.Profile active = manager.getActive();
         if (context.getResources().getConfiguration().screenWidthDp >= 1000) {
@@ -123,9 +124,9 @@ public class DriverProfilesTabBuilder {
     private LinearLayout createCard() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        int inner = CockpitTokens.dim(context, R.dimen.ck_card_padding);
         card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
+        CockpitSurfaces.level1(card);
         return card;
     }
 
@@ -167,13 +168,13 @@ public class DriverProfilesTabBuilder {
         headerText.setOrientation(LinearLayout.VERTICAL);
         TextView name = new TextView(context);
         name.setText(active.name);
-        name.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        CockpitTokens.headlineSm(name);
         name.setTextColor(UiStyles.color(context, R.color.textPrimary));
         name.setTypeface(null, android.graphics.Typeface.BOLD);
         headerText.addView(name);
         TextView subtitle = new TextView(context);
         subtitle.setText(R.string.profiles_detail_subtitle);
-        subtitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+        CockpitTokens.bodySm(subtitle);
         subtitle.setTextColor(UiStyles.color(context, R.color.textHint));
         subtitle.setPadding(0, Math.round(2 * density), 0, 0);
         headerText.addView(subtitle);
@@ -319,9 +320,11 @@ public class DriverProfilesTabBuilder {
         toggle.setGravity(Gravity.CENTER_VERTICAL);
         toggle.setClickable(true);
         toggle.setFocusable(true);
-        toggle.setPadding(16, 14, 16, 14);
-        UiStyles.applySolidRoundedBackgroundDp(toggle,
-                UiStyles.color(context, R.color.surfaceCardInner), 12f);
+        toggle.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        CockpitSurfaces.level2(toggle);
 
         TextView label = new TextView(context);
         label.setText(context.getString(R.string.profiles_advanced_items, profile.items.size()));
@@ -333,7 +336,7 @@ public class DriverProfilesTabBuilder {
         TextView mark = new TextView(context);
         mark.setText("+");
         mark.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-        mark.setTextColor(UiStyles.color(context, R.color.oemAccent));
+        mark.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
         mark.setGravity(Gravity.CENTER);
         toggle.addView(mark, new LinearLayout.LayoutParams(
                 Math.round(28 * context.getResources().getDisplayMetrics().density),
@@ -564,7 +567,7 @@ public class DriverProfilesTabBuilder {
         ImageView check = new ImageView(context);
         check.setImageResource(R.drawable.ic_mdi_check);
         check.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        check.setColorFilter(UiStyles.color(context, R.color.oemAccent),
+        check.setColorFilter(CockpitTokens.color(context, R.color.ck_accent),
                 android.graphics.PorterDuff.Mode.SRC_IN);
         int checkPx = Math.round(sizePx * 0.36f);
         GradientDrawable checkBg = new GradientDrawable();

@@ -100,7 +100,7 @@ public class SplitScreenTabBuilder {
 
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+        int margin = com.mapcontrol.ui.cockpit.CockpitTokens.dim(context, R.dimen.ck_margin);
         outer.setPadding(margin, margin, margin, margin);
 
         CockpitGrid grid = new CockpitGrid(context);
@@ -186,7 +186,7 @@ public class SplitScreenTabBuilder {
         int pad = Math.round(14 * density);
         row.setPadding(pad, pad, pad, pad);
         row.setMinimumHeight(Math.round(72 * density));
-        UiStyles.applySolidRoundedBackground(row, UiStyles.color(context, R.color.surfaceCardInner));
+        UiStyles.applySolidRoundedBackground(row, com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_surface_2));
 
         int iconSize = Math.round(48 * density);
         ImageView icon = new ImageView(context);
@@ -332,7 +332,7 @@ public class SplitScreenTabBuilder {
     }
 
     private void applyPreviewColors() {
-        int accent = UiStyles.color(context, R.color.oemAccent);
+        int accent = com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_accent);
         ratioPreview.setColors(
                 ColorUtils.setAlphaComponent(accent, 140),
                 UiStyles.color(context, R.color.surfaceCardElevated),
@@ -518,7 +518,7 @@ public class SplitScreenTabBuilder {
             return;
         }
         int selected = SplitScreenStore.getGestureCode(context);
-        int accent = UiStyles.color(context, R.color.oemAccent);
+        int accent = com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_accent);
         int idle = UiStyles.color(context, R.color.textSecondary);
         float density = context.getResources().getDisplayMetrics().density;
 
@@ -526,8 +526,8 @@ public class SplitScreenTabBuilder {
             boolean isSelected = cell.code == selected;
             boolean blocked = !isSelected && ownerOf(cell.code) != 0;
             GradientDrawable bg = new GradientDrawable();
-            bg.setCornerRadius(UiStyles.dimenPx(context, R.dimen.oem_button_radius));
-            bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+            bg.setCornerRadius(12);
+            bg.setColor(com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_surface_2));
             if (isSelected) {
                 bg.setStroke(Math.round(2 * density), accent);
             } else {
@@ -550,7 +550,7 @@ public class SplitScreenTabBuilder {
         int pad = Math.round(14 * density);
         gestureInfo.setPadding(pad, pad, pad, pad);
         UiStyles.applySolidRoundedBackground(gestureInfo,
-                UiStyles.color(context, R.color.surfaceCardInner));
+                com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_surface_2));
 
         if (!SplitScreenGesture.isValid(selected)) {
             TextView none = new TextView(context);
@@ -571,7 +571,7 @@ public class SplitScreenTabBuilder {
 
         SwipeGestureIconView big = new SwipeGestureIconView(context);
         big.setGesture(fingers, direction);
-        big.setTint(UiStyles.color(context, R.color.oemAccent));
+        big.setTint(com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_accent));
         line.addView(big, new LinearLayout.LayoutParams(
                 Math.round(150 * density), Math.round(110 * density)));
 
