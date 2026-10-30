@@ -26,6 +26,8 @@ import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.profile.ProfileAvatars;
 import com.mapcontrol.vehicle.FaceProfileStore;
+import android.content.Intent;
+import com.mapcontrol.ui.activity.DmsFaceProfileActivity;
 import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitButton;
 import com.mapcontrol.ui.cockpit.CockpitChip;
@@ -144,7 +146,7 @@ public class DriverProfilesTabBuilder {
         card.addContent(header);
 
         addInfoRow(card, R.drawable.ic_mdi_account,
-                context.getString(R.string.profiles_face_label), faceStatus());
+                context.getString(R.string.profiles_face_label), faceStatus(profile));
         addInfoRow(card, R.drawable.ic_mdi_car_seat,
                 context.getString(R.string.profiles_seat_label),
                 profile.seatSlot > 0
@@ -193,6 +195,16 @@ public class DriverProfilesTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         actionsLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
         card.addContent(actions, actionsLp);
+
+        CockpitButton face = CockpitButton.secondary(context,
+                context.getString(profileHasFace(profile)
+                        ? R.string.profiles_face_update
+                        : R.string.profiles_face_add));
+        face.setOnClickListener(v -> openFaceEnrollment(profile));
+        LinearLayout.LayoutParams faceLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        faceLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        card.addContent(face, faceLp);
 
         TextView advanced = new TextView(context);
         advanced.setText(R.string.profiles_advanced_settings_link);
@@ -319,15 +331,29 @@ public class DriverProfilesTabBuilder {
         return card;
     }
 
-    private String faceStatus() {
+    private String faceStatus(DriverProfileManager.Profile profile) {
+        return profileHasFace(profile)
+                ? context.getString(R.string.profiles_face_registered)
+                : context.getString(R.string.profiles_face_none);
+    }
+
+    private boolean profileHasFace(DriverProfileManager.Profile profile) {
         try {
-            int count = FaceProfileStore.load(context).size();
-            return count > 0
-                    ? context.getString(R.string.profiles_face_registered)
-                    : context.getString(R.string.profiles_face_none);
-        } catch (Exception e) {
-            return context.getString(R.string.profiles_face_none);
+            for (FaceProfileStore.Profile face : FaceProfileStore.load(context)) {
+                if (face.name != null && face.name.equalsIgnoreCase(profile.name)) {
+                    return true;
+                }
+            }
+        } catch (Exception ignored) {
         }
+        return false;
+    }
+
+    private void openFaceEnrollment(DriverProfileManager.Profile profile) {
+        Intent intent = new Intent(context, DmsFaceProfileActivity.class);
+        intent.putExtra(DmsFaceProfileActivity.EXTRA_PREFILL_NAME, profile.name);
+        intent.putExtra(DmsFaceProfileActivity.EXTRA_PREFILL_SEAT, profile.seatSlot);
+        context.startActivity(intent);
     }
 
     private void showProfileSettings(DriverProfileManager.Profile profile) {

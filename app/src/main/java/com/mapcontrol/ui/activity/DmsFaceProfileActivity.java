@@ -69,6 +69,8 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
     private static final long ANALYSIS_INTERVAL_MS = 700;
     private static final int REQUIRED_SAMPLES = 5;
     private static final long TONE_FRAME_INTERVAL_MS = 80L;
+    public static final String EXTRA_PREFILL_NAME = "prefillFaceName";
+    public static final String EXTRA_PREFILL_SEAT = "prefillFaceSeat";
 
     private final Handler uiHandler = new Handler();
     private TextureView preview;
@@ -174,8 +176,18 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
         } catch (IllegalStateException e) {
             profileStoreError = true;
         }
-        selectedMemory = pickNextAvailableMemory();
+        Intent launchIntent = getIntent();
+        String prefillName = launchIntent == null ? null
+                : launchIntent.getStringExtra(EXTRA_PREFILL_NAME);
+        int prefillSeat = launchIntent == null ? 0
+                : launchIntent.getIntExtra(EXTRA_PREFILL_SEAT, 0);
+        selectedMemory = prefillSeat >= 1 && prefillSeat <= FaceProfileStore.MAX_PROFILES
+                ? prefillSeat : pickNextAvailableMemory();
         buildScreen();
+        if (prefillName != null && !prefillName.trim().isEmpty()) {
+            nameInput.setText(prefillName);
+            nameInput.setSelection(nameInput.getText().length());
+        }
         if (profileStoreError) {
             status.setText(getString(R.string.dms_face_load_error, "Keystore"));
         } else {

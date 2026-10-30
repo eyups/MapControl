@@ -1893,6 +1893,9 @@ public class MainActivity extends AppCompatActivity {
         if (dmsFaceRecognitionTabBuilder != null) {
             dmsFaceRecognitionTabBuilder.refresh();
         }
+        if (currentTab == TAB_DRIVER_PROFILES && driverProfilesTabBuilder != null) {
+            driverProfilesTabBuilder.rebuild();
+        }
         }
     }
 
@@ -2269,6 +2272,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (dmsFaceRecognitionTabBuilder != null) {
             dmsFaceRecognitionTabBuilder.refresh();
+        }
+        if (currentTab == TAB_DRIVER_PROFILES && driverProfilesTabBuilder != null) {
+            driverProfilesTabBuilder.rebuild();
         }
         sBenchHost = this;
         // Arka plandayken Floating Back / overlay hedef seçimi prefs'e yazılır; yayın onPause'da

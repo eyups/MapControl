@@ -1378,4 +1378,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_activate_short">Geçiş Yap</string>
     <string name="profiles_max_reached">En fazla 3 sürücü profili destekleniyor.</string>
     <string name="profiles_advanced_settings_link">Koltuk ve ek hafıza ayarları</string>
+    <string name="profiles_face_add">Yüz Ekle</string>
+    <string name="profiles_face_update">Yüzü Güncelle</string>
 </resources>
