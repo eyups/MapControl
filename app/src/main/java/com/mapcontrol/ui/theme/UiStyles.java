@@ -230,7 +230,7 @@ public final class UiStyles {
     /** Seçili seçeneğin kısa açıklaması; eski madde işaretli liste yerine tek satır. */
     private static CharSequence buildOptionsHelp(Context context, String[] labels, String[] helps, int selected) {
         int index = Math.max(0, Math.min(selected, Math.min(labels.length, helps.length) - 1));
-        return labels[index] + " — " + helps[index];
+        return helps[index];
     }
 
     /**
