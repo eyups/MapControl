@@ -560,9 +560,7 @@ public final class CloudTabBuilder {
             identityLine.setText(context.getString(R.string.ck_roadmate_identity,
                     id == null || id.isEmpty() ? "—" : id));
         }
-        UiStyles.setButtonStartIconTinted(startStopButton,
-                running ? R.drawable.ic_mdi_pause : R.drawable.ic_mdi_play,
-                CockpitTokens.color(context, R.color.ck_on_accent), dp(8));
+        UiStyles.clearButtonCompoundDrawables(startStopButton);
         startStopButton.setEnabled(paired);
         shareLocationRow.getToggle().setEnabled(paired);
         if (shareLocationRow.getToggle().isChecked() != config.shareLocation()) {
