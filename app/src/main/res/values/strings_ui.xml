@@ -1318,6 +1318,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_web_hint">Connect from your phone or computer on the same network. Scan the QR code or type the address in a browser. The upload page is local-network only.</string>
     <string name="ck_roadmate_title">Roadmate</string>
     <string name="ck_roadmate_unpaired_hint">Cloud actions appear here after pairing.</string>
+    <string name="ck_roadmate_paired_title">Connection</string>
     <string name="ck_roadmate_actions">Actions</string>
     <string name="ck_home_vehicle_visual">Vehicle</string>
     <string name="ck_home_vehicle_visual_hint">T18FL4 vehicle view</string>

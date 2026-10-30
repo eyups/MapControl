@@ -20,7 +20,6 @@ import com.mapcontrol.ui.cockpit.CockpitGrid;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitToggleRow;
-import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 import java.util.Locale;
@@ -43,6 +42,7 @@ public final class CloudTabBuilder {
     private final TextView actionsPlaceholder;
     private final Button startStopButton;
     private final CockpitToggleRow shareLocationRow;
+    private final CockpitGrid actionsGrid;
     private final Button logUploadButton;
     private final Button vdbusButton;
     private final Button updateButton;
@@ -61,21 +61,24 @@ public final class CloudTabBuilder {
 
         TextView title = new TextView(context);
         title.setText(R.string.ck_roadmate_title);
-        title.setTextSize(18);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        title.setTypeface(null, Typeface.BOLD);
-        title.setPadding(dp(16), dp(24), dp(16), dp(8));
+        CockpitTokens.headlineSm(title);
+        title.setPadding(CockpitTokens.dim(context, R.dimen.ck_margin),
+                CockpitTokens.dim(context, R.dimen.ck_space_lg),
+                CockpitTokens.dim(context, R.dimen.ck_margin),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
         root.addView(title, matchWidth());
 
         TextView description = new TextView(context);
         description.setText(R.string.settings_cloud_desc);
-        description.setTextSize(13);
-        description.setTextColor(UiStyles.color(context, R.color.textHint));
-        description.setPadding(dp(16), 0, dp(16), dp(12));
+        CockpitTokens.bodySm(description);
+        description.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        description.setPadding(CockpitTokens.dim(context, R.dimen.ck_margin), 0,
+                CockpitTokens.dim(context, R.dimen.ck_margin),
+                CockpitTokens.dim(context, R.dimen.ck_space_md));
         root.addView(description, matchWidth());
 
         LinearLayout columns = new LinearLayout(context);
-        columns.setOrientation(LinearLayout.HORIZONTAL);
+        columns.setOrientation(LinearLayout.VERTICAL);
         columns.setBaselineAligned(false);
         LinearLayout pairCard = new LinearLayout(context);
         pairCard.setOrientation(LinearLayout.VERTICAL);
@@ -87,9 +90,21 @@ public final class CloudTabBuilder {
         CockpitSurfaces.level1(pairCard);
         CockpitSurfaces.level1(actionsCard);
 
+        TextView pairTitle = new TextView(context);
+        pairTitle.setText(R.string.ck_roadmate_paired_title);
+        CockpitTokens.labelCaps(pairTitle);
+        pairCard.addView(pairTitle, matchWidth());
+
+        TextView actionsTitleTop = new TextView(context);
+        actionsTitleTop.setText(R.string.ck_roadmate_actions);
+        CockpitTokens.labelCaps(actionsTitleTop);
+        actionsCard.addView(actionsTitleTop, matchWidth());
+
         status = new TextView(context);
-        status.setTextSize(13);
-        status.setPadding(0, 0, 0, dp(10));
+        CockpitTokens.bodySm(status);
+        status.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        status.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_sm), 0,
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
         pairCard.addView(status, matchWidth());
 
         unpairedRow = new LinearLayout(context);
@@ -124,8 +139,8 @@ public final class CloudTabBuilder {
 
         actionsPlaceholder = new TextView(context);
         actionsPlaceholder.setText(R.string.ck_roadmate_unpaired_hint);
-        actionsPlaceholder.setTextSize(14);
-        actionsPlaceholder.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+        CockpitTokens.bodySm(actionsPlaceholder);
+        actionsPlaceholder.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         actionsPlaceholder.setPadding(0, dp(8), 0, dp(8));
         actionsCard.addView(actionsPlaceholder, matchWidth());
 
@@ -148,13 +163,7 @@ public final class CloudTabBuilder {
         startRowLp.bottomMargin = dp(8);
         pairedRow.addView(startRow, startRowLp);
 
-        TextView actionsTitle = new TextView(context);
-        actionsTitle.setText(R.string.ck_roadmate_actions);
-        CockpitTokens.labelCaps(actionsTitle);
-        actionsTitle.setPadding(0, dp(10), 0, dp(6));
-        pairedRow.addView(actionsTitle, matchWidth());
-
-        CockpitGrid actionsGrid = new CockpitGrid(context);
+        actionsGrid = new CockpitGrid(context);
 
         shareLocationRow = new CockpitToggleRow(context, R.drawable.ic_mdi_map,
                 context.getString(R.string.settings_cloud_share_location), null,
@@ -202,18 +211,15 @@ public final class CloudTabBuilder {
         restoreButton.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         UiStyles.styleOemButton(restoreButton, CockpitTokens.color(context, R.color.ck_surface_2));
         actionsGrid.add(restoreButton, 4);
-        actionsGrid.add(new View(context), 4); // tek kalan buton yarim kalsin
-        pairedRow.addView(actionsGrid, matchWidth());
-        actionsCard.addView(pairedRow, matchWidth());
+        LinearLayout.LayoutParams gridLp = matchWidth();
+        gridLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        actionsCard.addView(actionsGrid, gridLp);
+        pairCard.addView(pairedRow, matchWidth());
 
-        LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        leftLp.setMarginEnd(8);
-        LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        rightLp.setMarginStart(8);
-        columns.addView(pairCard, leftLp);
-        columns.addView(actionsCard, rightLp);
+        columns.addView(pairCard, matchWidth());
+        LinearLayout.LayoutParams actionsCardLp = matchWidth();
+        actionsCardLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        columns.addView(actionsCard, actionsCardLp);
         root.addView(columns, matchWidth());
 
         pairButton.setOnClickListener(view -> pair());
@@ -418,6 +424,7 @@ public final class CloudTabBuilder {
         unpairedRow.setVisibility(paired ? View.GONE : View.VISIBLE);
         pairedRow.setVisibility(paired ? View.VISIBLE : View.GONE);
         actionsPlaceholder.setVisibility(paired ? View.GONE : View.VISIBLE);
+        actionsGrid.setVisibility(paired ? View.VISIBLE : View.GONE);
 
         if (manager.getState() == CloudManager.State.PAIRING) {
             status.setText(R.string.settings_cloud_pairing);
