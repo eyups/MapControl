@@ -25,6 +25,7 @@ import com.mapcontrol.ui.cockpit.CockpitButton;
 import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitChip;
 import com.mapcontrol.ui.cockpit.CockpitEmptyState;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
@@ -42,9 +43,6 @@ public class DrivingHistoryTabBuilder {
     private final Context context;
     private final ScrollView scrollView;
     private final LinearLayout listContainer;
-    private final LinearLayout filterBar;
-    private final java.util.List<TextView> filterChips = new java.util.ArrayList<>();
-    private final java.util.List<Integer> filterDaysValues = new java.util.ArrayList<>();
     private int filterDays = 0;
 
     public DrivingHistoryTabBuilder(Context context) {
@@ -61,18 +59,6 @@ public class DrivingHistoryTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        content.addView(buildHeader());
-        filterBar = new LinearLayout(context);
-        filterBar.setOrientation(LinearLayout.HORIZONTAL);
-        filterBar.setGravity(Gravity.CENTER_VERTICAL);
-        LinearLayout.LayoutParams filterLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        filterLp.bottomMargin = dp(10);
-        content.addView(filterBar, filterLp);
-        addFilterChip("Tümü", 0);
-        addFilterChip("7 gün", 7);
-        addFilterChip("30 gün", 30);
         listContainer = new LinearLayout(context);
         listContainer.setOrientation(LinearLayout.VERTICAL);
         content.addView(listContainer, new LinearLayout.LayoutParams(
@@ -103,6 +89,9 @@ public class DrivingHistoryTabBuilder {
         if (!history.isEmpty()) {
             listContainer.addView(buildTrendCard(history));
             Log.i(TAG, "trend added");
+        } else {
+            // Trend kartı yoksa filtre/yenile kontrolleri yine erişilebilir kalsın.
+            listContainer.addView(buildControlsCard());
         }
         DrivingSessionRecorder recorder = DrivingSessionRecorder.get(context);
         DrivingTrip current = recorder.isActive() ? recorder.getDisplayTrip() : recorder.getLastTrip();
@@ -139,33 +128,54 @@ public class DrivingHistoryTabBuilder {
             emptyLp.bottomMargin = dp(12);
             listContainer.addView(emptyCard, emptyLp);
         }
+        // Yenile/filtre sonrası oluşan yeni TextView'lar da ilk açılıştaki
+        // Cockpit tipografisini alsın.
+        CockpitLegacyStyler.apply(listContainer);
     }
 
-    private void addFilterChip(String label, int days) {
-        CockpitChip chip = new CockpitChip(context, label);
-        chip.setOnClickListener(v -> {
-            filterDays = days;
-            updateFilterChips();
-            refresh();
-        });
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                CockpitTokens.dim(context, R.dimen.ck_chip_h));
-        lp.setMarginEnd(dp(8));
-        filterBar.addView(chip, lp);
-        filterChips.add(chip);
-        filterDaysValues.add(days);
-        updateFilterChips();
-    }
+    private LinearLayout buildControlsRow() {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
 
-    private void updateFilterChips() {
-        for (int i = 0; i < filterChips.size(); i++) {
-            TextView chip = filterChips.get(i);
-            boolean selected = filterDaysValues.get(i) == filterDays;
-            if (chip instanceof CockpitChip) {
-                ((CockpitChip) chip).setSelectedState(selected);
-            }
+        String[] labels = new String[]{"Tümü", "7 gün", "30 gün"};
+        int[] days = new int[]{0, 7, 30};
+        for (int i = 0; i < labels.length; i++) {
+            final int day = days[i];
+            CockpitChip chip = new CockpitChip(context, labels[i]);
+            chip.setSelectedState(day == filterDays);
+            chip.setOnClickListener(v -> {
+                filterDays = day;
+                refresh();
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    CockpitTokens.dim(context, R.dimen.ck_chip_h));
+            lp.setMarginEnd(dp(8));
+            row.addView(chip, lp);
         }
+
+        View spacer = new View(context);
+        row.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+
+        CockpitButton refresh = CockpitButton.secondary(context,
+                context.getString(R.string.driving_history_refresh));
+        refresh.setOnClickListener(v -> refresh());
+        row.addView(refresh, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        return row;
+    }
+
+    private CockpitCard buildControlsCard() {
+        CockpitCard card = new CockpitCard(context);
+        card.addContent(buildControlsRow());
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.bottomMargin = dp(12);
+        card.setLayoutParams(lp);
+        return card;
     }
 
     private List<DrivingTrip> filterHistory(List<DrivingTrip> all) {
@@ -193,6 +203,8 @@ public class DrivingHistoryTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         cardLp.bottomMargin = dp(12);
         card.setLayoutParams(cardLp);
+
+        card.addView(buildControlsRow(), controlsLp());
 
         TextView title = new TextView(context);
         title.setText("EKO TREND");
@@ -412,6 +424,14 @@ public class DrivingHistoryTabBuilder {
                 + String.format(appLocale(), "%.1f km", trip.distanceKm);
     }
 
+    private LinearLayout.LayoutParams controlsLp() {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.bottomMargin = dp(12);
+        return lp;
+    }
+
     private LinearLayout.LayoutParams weighted() {
         return new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -423,34 +443,6 @@ public class DrivingHistoryTabBuilder {
         CockpitTokens.labelCaps(label);
         label.setPadding(0, dp(14), 0, dp(6));
         return label;
-    }
-
-    private LinearLayout buildHeader() {
-        LinearLayout header = new LinearLayout(context);
-        header.setOrientation(LinearLayout.HORIZONTAL);
-        header.setGravity(Gravity.CENTER_VERTICAL);
-
-        TextView subtitle = new TextView(context);
-        subtitle.setText(R.string.driving_history_subtitle);
-        CockpitTokens.bodySm(subtitle);
-        subtitle.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        subtitle.setPadding(0, 0, dp(12), 0);
-        header.addView(subtitle, new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-        CockpitButton refresh = CockpitButton.secondary(context,
-                context.getString(R.string.driving_history_refresh));
-        refresh.setOnClickListener(v -> refresh());
-        header.addView(refresh, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        LinearLayout.LayoutParams headerLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        headerLp.bottomMargin = dp(12);
-        header.setLayoutParams(headerLp);
-        return header;
     }
 
     private LinearLayout buildCard(DrivingTrip trip, boolean live) {

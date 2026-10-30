@@ -1411,7 +1411,7 @@ public class MainActivity extends AppCompatActivity {
             addTabChild(parent, homeScrollView, matchParent);
         } else if (tabIndex == TAB_DRIVING_HISTORY) {
             drivingHistoryTabBuilder.onTabVisible();
-            addTabChildWithHeader(parent, drivingHistoryScrollView, matchParent, tabIndex);
+            addTabChild(parent, drivingHistoryScrollView, matchParent);
         } else if (tabIndex == TAB_CLIMATE_AUTOMATION) {
             rebuildClimateAutomationTab();
             addTabChild(parent, climateAutomationScrollView, matchParent);
