@@ -4,24 +4,27 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Typeface;
 import android.view.Gravity;
-import android.widget.Button;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.mapcontrol.R;
-import com.mapcontrol.ui.theme.UiStyles;
+import com.mapcontrol.ui.cockpit.CockpitButton;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSectionHeader;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
+import com.mapcontrol.ui.cockpit.MetricView;
+import com.mapcontrol.ui.cockpit.StatusBadge;
 import com.mapcontrol.vehicle.VehicleMetricsFormatter;
 import com.mapcontrol.vehicle.VehicleMetricsRepository;
 import com.mapcontrol.vehicle.VehicleMetricsSnapshot;
 
 /**
- * Araç bilgisi — {@link VehicleMetricsRepository} üzerinden canlı VDBus verisi.
+ * Araç bilgisi — canlı VDBus verisi. Glanceable metrik kartları + "Gelişmiş" ham veri kartı.
  */
 public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener {
 
@@ -38,12 +41,22 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
     private final VehicleInfoCallback callback;
 
     private ScrollView scrollView;
-    private LinearLayout contentRoot;
-    private TextView statusText;
-    private LinearLayout rowsContainer;
-    private LinearLayout leftRows;
-    private LinearLayout rightRows;
-    private LinearLayout currentRowsColumn;
+    private LinearLayout advancedRows;
+    private CockpitCard advancedCard;
+    private boolean advancedShown;
+    private StatusBadge statusBadge;
+    private MetricView speedMetric;
+    private MetricView gearMetric;
+    private MetricView rpmMetric;
+    private MetricView fuelMetric;
+    private MetricView rangeMetric;
+    private MetricView consMetric;
+    private MetricView coolantMetric;
+    private MetricView batteryMetric;
+    private MetricView avgSpeedMetric;
+    private MetricView odoMetric;
+    private MetricView tripMetric;
+    private MetricView sinceStartMetric;
     private volatile boolean tabVisible;
 
     public VehicleInfoTabBuilder(
@@ -61,15 +74,16 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         return scrollView;
     }
 
-    /** Light/dark geçişinde içeriği taze renklerle yeniden kurar. */
     public void rebuild() {
         build();
     }
 
     public void startListening() {
         tabVisible = true;
-        statusText.setText(R.string.vehicle_info_loading);
-        clearRows();
+        if (statusBadge != null) {
+            statusBadge.setLevel(StatusBadge.NEUTRAL);
+            statusBadge.setText(R.string.vehicle_info_loading);
+        }
         repository.addListener(this);
         repository.refresh();
     }
@@ -84,7 +98,10 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
     }
 
     public void refreshSnapshot() {
-        statusText.setText(R.string.vehicle_info_loading);
+        if (statusBadge != null) {
+            statusBadge.setLevel(StatusBadge.NEUTRAL);
+            statusBadge.setText(R.string.vehicle_info_loading);
+        }
         repository.refresh();
     }
 
@@ -93,130 +110,188 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         if (!tabVisible) {
             return;
         }
-        repaintRows(snapshot);
-        statusText.setText(snapshot.connected
-                ? R.string.vehicle_info_listening
-                : R.string.vehicle_info_unavailable);
+        if (statusBadge != null) {
+            statusBadge.setLevel(snapshot.connected ? StatusBadge.NOMINAL : StatusBadge.ADVISORY);
+            statusBadge.setText(snapshot.connected
+                    ? R.string.vehicle_info_listening
+                    : R.string.vehicle_info_unavailable);
+        }
+        renderMetrics(snapshot);
+        if (advancedShown) {
+            repaintRows(snapshot);
+        }
     }
 
     private void build() {
-
+        advancedShown = false;
         scrollView = new ScrollView(uiContext);
         scrollView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         scrollView.setFillViewport(true);
 
         LinearLayout outer = new LinearLayout(uiContext);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(uiContext, R.dimen.oem_card_margin);
-        outer.setPadding(margin, margin, margin, margin);
+        int m = CockpitTokens.dim(uiContext, R.dimen.ck_margin);
+        outer.setPadding(m, CockpitTokens.dim(uiContext, R.dimen.ck_space_md), m, m);
 
-        contentRoot = new LinearLayout(uiContext);
-        contentRoot.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(uiContext, R.dimen.oem_card_inner_padding);
-        contentRoot.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(contentRoot);
+        LinearLayout header = new LinearLayout(uiContext);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
 
         TextView title = new TextView(uiContext);
+        CockpitTokens.headlineMd(title);
         title.setText(R.string.vehicle_info_title);
-        title.setTextSize(20);
-        title.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
-        title.setTypeface(null, Typeface.BOLD);
-        contentRoot.addView(title);
+        header.addView(title, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+        statusBadge = StatusBadge.neutral(uiContext, uiContext.getString(R.string.vehicle_info_tab_idle));
+        header.addView(statusBadge);
+        outer.addView(header);
 
         TextView intro = new TextView(uiContext);
+        CockpitTokens.bodySm(intro);
         intro.setText(R.string.vehicle_info_intro);
-        intro.setTextSize(14);
-        intro.setTextColor(UiStyles.color(uiContext, R.color.textHint));
-        intro.setPadding(0, UiStyles.dimenPx(uiContext, R.dimen.spacing_small), 0,
-                UiStyles.dimenPx(uiContext, R.dimen.spacing_medium));
-        contentRoot.addView(intro);
+        LinearLayout.LayoutParams introLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        introLp.bottomMargin = CockpitTokens.dim(uiContext, R.dimen.ck_space_md);
+        outer.addView(intro, introLp);
 
-        statusText = new TextView(uiContext);
-        statusText.setText(R.string.vehicle_info_tab_idle);
-        statusText.setTextSize(14);
-        statusText.setTextColor(UiStyles.color(uiContext, R.color.textPrimary87));
-        statusText.setPadding(0, 0, 0, UiStyles.dimenPx(uiContext, R.dimen.spacing_small));
-        contentRoot.addView(statusText);
+        LinearLayout actions = new LinearLayout(uiContext);
+        actions.setOrientation(LinearLayout.HORIZONTAL);
+        CockpitButton refresh = CockpitButton.secondary(uiContext,
+                uiContext.getString(R.string.vehicle_info_refresh));
+        refresh.setOnClickListener(v -> refreshSnapshot());
+        actions.addView(refresh, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        CockpitButton eng = CockpitButton.secondary(uiContext,
+                uiContext.getString(R.string.vehicle_info_open_engmode));
+        eng.setOnClickListener(v -> launchEngModeMenu());
+        LinearLayout.LayoutParams engLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        engLp.leftMargin = CockpitTokens.dim(uiContext, R.dimen.ck_space_sm);
+        actions.addView(eng, engLp);
+        LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        actionsLp.bottomMargin = CockpitTokens.dim(uiContext, R.dimen.ck_space_lg);
+        outer.addView(actions, actionsLp);
 
-        LinearLayout actionRow = new LinearLayout(uiContext);
-        actionRow.setOrientation(LinearLayout.HORIZONTAL);
-        actionRow.setGravity(Gravity.CENTER_VERTICAL);
-        int btnGap = UiStyles.dimenPx(uiContext, R.dimen.spacing_small);
+        CockpitGrid grid = new CockpitGrid(uiContext);
+        outer.addView(grid, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        Button refreshBtn = createActionButton(R.string.vehicle_info_refresh, R.color.buttonPrimary);
-        refreshBtn.setOnClickListener(v -> refreshSnapshot());
-        actionRow.addView(refreshBtn, weightedButtonLp(0, btnGap));
+        CockpitCard drive = new CockpitCard(uiContext, "Sürüş").span(4);
+        LinearLayout driveRow = new LinearLayout(uiContext);
+        driveRow.setOrientation(LinearLayout.HORIZONTAL);
+        speedMetric = metric("Hız");
+        gearMetric = metric("Vites");
+        rpmMetric = metric("Devir");
+        driveRow.addView(speedMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        driveRow.addView(gearMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        driveRow.addView(rpmMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        drive.addContent(driveRow);
+        grid.add(drive, 4);
 
-        Button engModeBtn = createActionButton(R.string.vehicle_info_open_engmode, R.color.buttonSecondaryMuted);
-        engModeBtn.setOnClickListener(v -> launchEngModeMenu());
-        actionRow.addView(engModeBtn, weightedButtonLp(btnGap, 0));
+        CockpitCard fuel = new CockpitCard(uiContext, "Yakıt").span(4);
+        LinearLayout fuelRow = new LinearLayout(uiContext);
+        fuelRow.setOrientation(LinearLayout.HORIZONTAL);
+        fuelMetric = metric("Seviye");
+        rangeMetric = metric("Menzil");
+        consMetric = metric("Ort. tüketim");
+        fuelRow.addView(fuelMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        fuelRow.addView(rangeMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        fuelRow.addView(consMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        fuel.addContent(fuelRow);
+        grid.add(fuel, 4);
 
-        LinearLayout.LayoutParams actionRowLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        actionRowLp.bottomMargin = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
-        contentRoot.addView(actionRow, actionRowLp);
+        CockpitCard motor = new CockpitCard(uiContext, "Motor").span(4);
+        LinearLayout motorRow = new LinearLayout(uiContext);
+        motorRow.setOrientation(LinearLayout.HORIZONTAL);
+        coolantMetric = metric("Soğutma");
+        batteryMetric = metric("Akü");
+        avgSpeedMetric = metric("Ort. hız");
+        motorRow.addView(coolantMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        motorRow.addView(batteryMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        motorRow.addView(avgSpeedMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        motor.addContent(motorRow);
+        grid.add(motor, 4);
 
-        rowsContainer = new LinearLayout(uiContext);
-        rowsContainer.setOrientation(LinearLayout.VERTICAL);
-        leftRows = new LinearLayout(uiContext);
-        leftRows.setOrientation(LinearLayout.VERTICAL);
+        CockpitCard distance = new CockpitCard(uiContext, "Mesafe").span(4);
+        LinearLayout distRow = new LinearLayout(uiContext);
+        distRow.setOrientation(LinearLayout.HORIZONTAL);
+        odoMetric = metric("Odometre");
+        tripMetric = metric("Yolculuk");
+        sinceStartMetric = metric("Son çalıştırma");
+        distRow.addView(odoMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        distRow.addView(tripMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        distRow.addView(sinceStartMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        distance.addContent(distRow);
+        grid.add(distance, 4);
 
-        if (uiContext.getResources().getConfiguration().screenWidthDp >= 1000) {
-            LinearLayout rowsGrid = new LinearLayout(uiContext);
-            rowsGrid.setOrientation(LinearLayout.HORIZONTAL);
-            rowsGrid.setBaselineAligned(false);
-            rightRows = new LinearLayout(uiContext);
-            rightRows.setOrientation(LinearLayout.VERTICAL);
-            int gutter = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
-            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            leftLp.setMarginEnd(gutter / 2);
-            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            rightLp.setMarginStart(gutter / 2);
-            rowsGrid.addView(leftRows, leftLp);
-            rowsGrid.addView(rightRows, rightLp);
-            rowsContainer.addView(rowsGrid, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-        } else {
-            rightRows = leftRows;
-            rowsContainer.addView(leftRows, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
-        contentRoot.addView(rowsContainer, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        advancedCard = new CockpitCard(uiContext, "Gelişmiş").span(8);
+        advancedCard.status(StatusBadge.neutral(uiContext, "Ham VDBus"));
+        final CockpitButton toggle = CockpitButton.secondary(uiContext, "Göster");
+        toggle.setOnClickListener(v -> {
+            advancedShown = !advancedShown;
+            advancedRows.setVisibility(advancedShown ? View.VISIBLE : View.GONE);
+            toggle.setText(advancedShown ? "Gizle" : "Göster");
+            if (advancedShown) {
+                repository.refresh();
+            }
+        });
+        LinearLayout toggleRow = new LinearLayout(uiContext);
+        toggleRow.setGravity(Gravity.END);
+        toggleRow.addView(toggle, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        advancedCard.addContent(toggleRow);
 
-        outer.addView(contentRoot, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        advancedRows = new LinearLayout(uiContext);
+        advancedRows.setOrientation(LinearLayout.VERTICAL);
+        advancedRows.setVisibility(View.GONE);
+        advancedCard.addContent(advancedRows);
+        grid.add(advancedCard, 8);
 
         scrollView.addView(outer, new ScrollView.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
-    private Button createActionButton(int labelResId, int backgroundColorResId) {
-        Button button = new Button(uiContext);
-        button.setText(labelResId);
-        button.setAllCaps(false);
-        button.setTextSize(14);
-        button.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
-        button.setTypeface(null, Typeface.BOLD);
-        UiStyles.styleOemButton(button, UiStyles.color(uiContext, backgroundColorResId));
-        int padH = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
-        button.setPadding(padH, 12, padH, 12);
-        return button;
+    private MetricView metric(String label) {
+        MetricView v = new MetricView(uiContext, label);
+        v.setValueTextSize(28f);
+        return v;
     }
 
-    private static LinearLayout.LayoutParams weightedButtonLp(int marginStart, int marginEnd) {
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        lp.setMarginStart(marginStart);
-        lp.setMarginEnd(marginEnd);
-        return lp;
+    private void renderMetrics(VehicleMetricsSnapshot snapshot) {
+        if (!snapshot.connected) {
+            for (MetricView v : new MetricView[]{speedMetric, gearMetric, rpmMetric, fuelMetric,
+                    rangeMetric, consMetric, coolantMetric, batteryMetric, avgSpeedMetric,
+                    odoMetric, tripMetric, sinceStartMetric}) {
+                v.value("—");
+            }
+            return;
+        }
+        speedMetric.value(formatter.formatSpeed(repository.getCombined(ReadOnlyID.ID_CAR_SPEED)));
+        gearMetric.value(formatter.formatGear(repository.getCombined(ReadOnlyID.ID_GEARBOX_STATE)));
+        rpmMetric.value(formatter.formatRpm(repository.getCombined(ReadOnlyID.ID_ENGINE_RPM)));
+        fuelMetric.value(formatter.formatFuelLevel(repository.getCombined(ReadOnlyID.ID_FUEL_PERCENT)));
+        rangeMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_ENDURANCE_KM)));
+        consMetric.value(formatter.formatConsumption(repository.getCombined(ReadOnlyID.ID_AVG_FUEL_CONS)));
+        coolantMetric.value(formatter.formatTemperature(repository.getCombined(ReadOnlyID.ID_WATER_TEMPERATURE)));
+        batteryMetric.value(formatter.formatVoltage(repository.getCombined(ReadOnlyID.ID_IBS_VOLTAGE)));
+        avgSpeedMetric.value(formatter.formatSpeed(repository.getCombined(ReadOnlyID.ID_AVG_SPEED)));
+        odoMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM)));
+        tripMetric.value(formatter.formatDeciKm(repository.getCombined(ReadOnlyID.ID_TRIP)));
+        sinceStartMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM_AFTER_RUNNING)));
     }
 
     private void launchEngModeMenu() {
@@ -247,9 +322,7 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
     }
 
     private void repaintRows(VehicleMetricsSnapshot snapshot) {
-        clearRows();
-        currentRowsColumn = leftRows;
-
+        advancedRows.removeAllViews();
         if (!snapshot.connected) {
             addRow(uiContext.getString(R.string.vehicle_info_hint_title),
                     uiContext.getString(R.string.vehicle_info_hint_body));
@@ -282,7 +355,6 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         addRow(uiContext.getString(R.string.vehicle_info_afc_trip),
                 formatter.formatConsumption(repository.getCombined(ReadOnlyID.ID_AVERAGE_FUEL_CONS_AFTER_RUNNING)));
 
-        currentRowsColumn = rightRows;
         addSection(uiContext.getString(R.string.vehicle_info_section_motor));
         addRow(uiContext.getString(R.string.vehicle_info_eng_spd),
                 formatter.formatRpm(repository.getCombined(ReadOnlyID.ID_ENGINE_RPM)));
@@ -313,49 +385,35 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
                 uiContext.getString(R.string.vehicle_info_etm_only_body));
     }
 
-    private void clearRows() {
-        if (leftRows != null) {
-            leftRows.removeAllViews();
-        }
-        if (rightRows != null) {
-            rightRows.removeAllViews();
-        }
-    }
-
-    private LinearLayout rowsTarget() {
-        return currentRowsColumn != null ? currentRowsColumn : rowsContainer;
-    }
-
     private void addSection(String title) {
         TextView tv = new TextView(uiContext);
-        tv.setText(title);
-        tv.setTextSize(17);
-        tv.setTypeface(null, Typeface.BOLD);
-        tv.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
-        int top = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
-        tv.setPadding(0, top, 0, UiStyles.dimenPx(uiContext, R.dimen.spacing_small));
-        rowsTarget().addView(tv);
+        CockpitTokens.labelCaps(tv);
+        tv.setText(title.toUpperCase(new java.util.Locale("tr", "TR")));
+        int top = CockpitTokens.dim(uiContext, R.dimen.ck_space_md);
+        tv.setPadding(0, top, 0, CockpitTokens.dim(uiContext, R.dimen.ck_space_sm));
+        advancedRows.addView(tv);
     }
 
     private void addRow(String label, String value) {
         LinearLayout row = new LinearLayout(uiContext);
-        row.setOrientation(LinearLayout.VERTICAL);
-        int padV = UiStyles.dimenPx(uiContext, R.dimen.spacing_small);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        int padV = CockpitTokens.dim(uiContext, R.dimen.ck_space_sm);
         row.setPadding(0, padV, 0, padV);
 
         TextView labelTv = new TextView(uiContext);
+        CockpitTokens.bodySm(labelTv);
         labelTv.setText(label);
-        labelTv.setTextSize(14);
-        labelTv.setTextColor(UiStyles.color(uiContext, R.color.textHint));
-        row.addView(labelTv);
+        labelTv.setTextColor(CockpitTokens.color(uiContext, R.color.ck_text_medium));
+        row.addView(labelTv, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         TextView valueTv = new TextView(uiContext);
+        CockpitTokens.mono(valueTv);
         valueTv.setText(value);
-        valueTv.setTextSize(18);
-        valueTv.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
-        valueTv.setGravity(Gravity.START);
+        valueTv.setGravity(Gravity.END);
         row.addView(valueTv);
 
-        rowsTarget().addView(row);
+        advancedRows.addView(row);
     }
 }

@@ -37,6 +37,7 @@ public final class CockpitNavModel {
 
     public static final String PREF_LAST_DOMAIN = "cockpitLastDomain";
     public static final String PREF_LAST_TAB = "cockpitLastTab";
+    public static final String PREF_RAIL_EXPANDED = "ckRailExpanded";
 
     public static final class Item {
         public final int tabId;

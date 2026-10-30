@@ -1,24 +1,23 @@
 package com.mapcontrol.ui.builder;
-import android.graphics.Color;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.text.TextUtils;
+import android.graphics.PorterDuff;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
-
-import com.mapcontrol.R;
-import com.mapcontrol.ui.theme.ThemeManager;
-import com.mapcontrol.ui.theme.UiStyles;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
+import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
+import com.mapcontrol.ui.cockpit.StatusBadge;
 
 public class DriveModeTabBuilder {
     public interface DriveModeCallback {
@@ -32,6 +31,20 @@ public class DriveModeTabBuilder {
 
     private ScrollView scrollView;
     private LinearLayout tabContent;
+    private final LinearLayout[] modeCards = new LinearLayout[8];
+    private final ImageView[] modeIcons = new ImageView[8];
+    private final TextView[] modeTitles = new TextView[8];
+    private final View[] modeIndicators = new View[8];
+    private StatusBadge currentBadge;
+    private int selectedIndex;
+
+    private static final String[] MODE_NAMES = {"Hiçbiri", "Eco", "Normal", "Sport", "Snow",
+            "Mud", "Offroad", "Sand"};
+    private static final int[] MODE_VALUES = {-1, 0, 1, 2, 3, 4, 5, 7};
+    private static final int[] MODE_ICONS = {R.drawable.ic_mdi_radiobox_blank,
+            R.drawable.ic_mdi_leaf, R.drawable.ic_mdi_car, R.drawable.ic_mdi_car_sports,
+            R.drawable.ic_mdi_snowflake, R.drawable.ic_mdi_waves, R.drawable.ic_mdi_terrain,
+            R.drawable.ic_mdi_beach};
 
     public DriveModeTabBuilder(Context context, SharedPreferences prefs, DriveModeCallback callback) {
         this.context = context;
@@ -40,280 +53,167 @@ public class DriveModeTabBuilder {
         build();
     }
 
-    private void applySelectedThumb(LinearLayout card) {
-        android.graphics.drawable.Drawable thumb =
-                UiStyles.drawable(context, R.drawable.bg_segment_thumb);
-        if (thumb != null) {
-            card.setBackground(thumb);
-        } else {
-            card.setBackgroundResource(R.drawable.bg_segment_thumb);
-        }
-    }
-
     public ScrollView build() {
         scrollView = new ScrollView(context);
-        scrollView.setBackgroundColor(Color.TRANSPARENT);
-        scrollView.setPadding(0, 0, 0, 0);
+        scrollView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
         scrollView.setFillViewport(true);
 
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        outer.setPadding(margin, margin, margin, margin);
+        tabContent = outer;
+        int m = CockpitTokens.dim(context, R.dimen.ck_margin);
+        outer.setPadding(m, CockpitTokens.dim(context, R.dimen.ck_space_md), m, m);
 
-        tabContent = new LinearLayout(context);
-        tabContent.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        tabContent.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(tabContent);
+        LinearLayout heading = new LinearLayout(context);
+        heading.setOrientation(LinearLayout.HORIZONTAL);
+        heading.setGravity(Gravity.CENTER_VERTICAL);
+        TextView title = new TextView(context);
+        CockpitTokens.headlineMd(title);
+        title.setText(R.string.drive_modes_title);
+        heading.addView(title, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        currentBadge = StatusBadge.neutral(context, "—");
+        heading.addView(currentBadge);
+        LinearLayout.LayoutParams headLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        headLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        outer.addView(heading, headLp);
 
-        outer.addView(tabContent, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        scrollView.addView(outer, new ScrollView.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        TextView subtitle = new TextView(context);
+        CockpitTokens.bodySm(subtitle);
+        subtitle.setText("Hafıza modu aracın sürüş karakterini belirler. 'Hiçbiri' otomatik ayarlama yapmaz.");
+        LinearLayout.LayoutParams subLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        subLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
+        outer.addView(subtitle, subLp);
 
-        float densityTitle = context.getResources().getDisplayMetrics().density;
-        LinearLayout driveTitleRow = new LinearLayout(context);
-        driveTitleRow.setOrientation(LinearLayout.HORIZONTAL);
-        driveTitleRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        driveTitleRow.setPadding(16, 24, 16, 12);
-
-        AppCompatImageView driveTitleIcon = new AppCompatImageView(context);
-        driveTitleIcon.setImageResource(R.drawable.ic_mdi_car);
-        driveTitleIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        int titleIconPx = (int) (28 * densityTitle);
-        driveTitleIcon.setLayoutParams(new LinearLayout.LayoutParams(titleIconPx, titleIconPx));
-        driveTitleIcon.setImageTintList(ColorStateList.valueOf(
-                UiStyles.color(context, R.color.textPrimary)));
-        driveTitleRow.addView(driveTitleIcon);
-
-        TextView driveModeTitle = new TextView(context);
-        driveModeTitle.setText(R.string.drive_modes_title);
-        driveModeTitle.setTextSize(20);
-        driveModeTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        driveModeTitle.setTypeface(null, android.graphics.Typeface.BOLD);
-        LinearLayout.LayoutParams titleRowTextLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        titleRowTextLp.setMargins((int) (12 * densityTitle), 0, 0, 0);
-        driveTitleRow.addView(driveModeTitle, titleRowTextLp);
-
-        tabContent.addView(driveTitleRow, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        LinearLayout driveModeTrack = new LinearLayout(context);
-        driveModeTrack.setOrientation(LinearLayout.HORIZONTAL);
-        if (ThemeManager.isCyber(context)) {
-            driveModeTrack.setBackgroundColor(Color.TRANSPARENT);
-        } else {
-            driveModeTrack.setBackgroundResource(R.drawable.bg_segment_track);
-        }
-        int trackPad = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
-        driveModeTrack.setPadding(trackPad, trackPad, trackPad, trackPad);
-        LinearLayout.LayoutParams driveModeTrackParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        driveModeTrackParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.spacing_medium));
-
-        RadioGroup driveModeRadioGroup = new RadioGroup(context);
-        driveModeRadioGroup.setOrientation(LinearLayout.HORIZONTAL);
-        RadioGroup.LayoutParams radioGroupLp = new RadioGroup.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        driveModeRadioGroup.setLayoutParams(radioGroupLp);
-
-        float density = context.getResources().getDisplayMetrics().density;
-        int pianoKeyH = Math.round(100f * density);
-        int indicatorHpx = Math.max(1, Math.round(4f * density));
-
-        String[] driveModeNames = {
-                context.getString(R.string.drive_mode_none),
-                "Eco", "Normal", "Sport", "Snow", "Mud", "Offroad", "Sand"
-        };
-        int[] driveModeValues = {-1, 0, 1, 2, 3, 4, 5, 7};
-        int[] driveModeIds = {9, 10, 11, 12, 13, 14, 15, 17};
-        int[] driveModeIconRes = {
-                R.drawable.ic_mdi_radiobox_blank,
-                R.drawable.ic_mdi_leaf,
-                R.drawable.ic_mdi_car,
-                R.drawable.ic_mdi_car_sports,
-                R.drawable.ic_mdi_snowflake,
-                R.drawable.ic_mdi_waves,
-                R.drawable.ic_mdi_terrain,
-                R.drawable.ic_mdi_beach
-        };
+        CockpitGrid grid = new CockpitGrid(context);
+        outer.addView(grid, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         int savedMode = prefs.getInt("driveModeSetting", -1);
-
-        final LinearLayout[] modeCards = new LinearLayout[driveModeNames.length];
-        final AppCompatImageView[] modeIcons = new AppCompatImageView[driveModeNames.length];
-        final TextView[] modeTitles = new TextView[driveModeNames.length];
-        final android.view.View[] indicators = new android.view.View[driveModeNames.length];
-
-        for (int i = 0; i < driveModeNames.length; i++) {
-            final int modeValue = driveModeValues[i];
-            final int radioId = driveModeIds[i];
-            final String modeName = driveModeNames[i];
-            final int modeIconRes = driveModeIconRes[i];
-
-            LinearLayout modeCard = new LinearLayout(context);
-            modeCard.setOrientation(LinearLayout.VERTICAL);
-            modeCard.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
-            int keyPadH = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
-            modeCard.setPadding(keyPadH, 10, keyPadH, 8);
-            modeCard.setClickable(true);
-            modeCard.setFocusable(true);
-
-            boolean isSelected = (savedMode == modeValue);
-            if (isSelected) {
-                applySelectedThumb(modeCard);
-            } else {
-                modeCard.setBackgroundColor(Color.TRANSPARENT);
-            }
-
-            RadioGroup.LayoutParams cardParams = new RadioGroup.LayoutParams(
-                    0, pianoKeyH, 1f);
-            cardParams.setMargins(1, 0, 1, 0);
-
-            LinearLayout titleBand = new LinearLayout(context);
-            titleBand.setOrientation(LinearLayout.VERTICAL);
-            titleBand.setGravity(android.view.Gravity.CENTER);
-            LinearLayout.LayoutParams titleBandLp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    1f);
-            modeCard.addView(titleBand, titleBandLp);
-
-            int modeIconPx = (int) (22 * density);
-            AppCompatImageView modeIcon = new AppCompatImageView(context);
-            modeIcon.setImageResource(modeIconRes);
-            modeIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            LinearLayout.LayoutParams modeIconLp = new LinearLayout.LayoutParams(modeIconPx, modeIconPx);
-            modeIconLp.gravity = android.view.Gravity.CENTER_HORIZONTAL;
-            modeIconLp.bottomMargin = (int) (4 * density);
-            modeIcon.setLayoutParams(modeIconLp);
-            modeIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
-                    isSelected ? R.color.textPrimary : R.color.textPrimary85)));
-            modeIcons[i] = modeIcon;
-            titleBand.addView(modeIcon);
-
-            TextView modeTitle = new TextView(context);
-            modeTitle.setText(modeName);
-            modeTitle.setTextColor(UiStyles.color(context, isSelected ? R.color.textPrimary : R.color.textPrimary85));
-            modeTitle.setTextSize(12);
-            modeTitle.setTypeface(null, isSelected ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
-            modeTitle.setGravity(android.view.Gravity.CENTER);
-            modeTitle.setMaxLines(2);
-            modeTitle.setEllipsize(TextUtils.TruncateAt.END);
-            modeTitle.setLineSpacing(2, 1.0f);
-            LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            titleBand.addView(modeTitle, titleLp);
-
-            android.view.View indicator = new android.view.View(context);
-            indicator.setBackgroundColor(UiStyles.color(context, R.color.oemAccent));
-            LinearLayout.LayoutParams indicatorParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    indicatorHpx);
-            indicatorParams.setMargins(0, 0, 0, 0);
-            indicator.setVisibility(isSelected ? android.view.View.VISIBLE : android.view.View.GONE);
-            modeCard.addView(indicator, indicatorParams);
-
-            modeCards[i] = modeCard;
-            modeTitles[i] = modeTitle;
-            indicators[i] = indicator;
-
-            RadioButton radioButton = new RadioButton(context);
-            radioButton.setId(radioId);
-            radioButton.setVisibility(android.view.View.GONE);
-            modeCard.addView(radioButton);
-
-            modeCard.setOnClickListener(v -> driveModeRadioGroup.check(radioId));
-            driveModeRadioGroup.addView(modeCard, cardParams);
+        selectedIndex = indexForMode(savedMode);
+        for (int i = 0; i < MODE_NAMES.length; i++) {
+            grid.add(buildModeCard(i), 2);
+        }
+        refreshSelection();
+        if (currentBadge != null) {
+            currentBadge.setLevel(StatusBadge.NOMINAL);
+            currentBadge.setText(MODE_NAMES[selectedIndex]);
         }
 
-        driveModeTrack.addView(driveModeRadioGroup);
-        tabContent.addView(driveModeTrack, driveModeTrackParams);
+        CockpitCard hint = new CockpitCard(context, "Hafıza Modu").span(8);
+        TextView body = new TextView(context);
+        CockpitTokens.bodySm(body);
+        body.setText("Seçim prefs'e yazılır ve servis aynı değeri yeniden uygular. "
+                + "Hiçbiri seçildiğinde araç ayarlarına yazılmaz.");
+        body.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        hint.addContent(body);
+        grid.add(hint, 8);
 
-        if (savedMode == -1) {
-            driveModeRadioGroup.check(9);
-        } else {
-            int initialId = mapModeToRadioId(savedMode);
-            if (initialId != -1) {
-                driveModeRadioGroup.check(initialId);
-            }
-        }
-
-        driveModeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int selectedMode = -1;
-            int selectedIndex = -1;
-
-            if (checkedId == 9) {
-                selectedMode = -1;
-                selectedIndex = 0;
-            } else {
-                for (int i = 0; i < driveModeIds.length; i++) {
-                    if (driveModeIds[i] == checkedId) {
-                        selectedMode = driveModeValues[i];
-                        selectedIndex = i;
-                        break;
-                    }
-                }
-            }
-
-            if (selectedIndex >= 0) {
-                prefs.edit().putInt("driveModeSetting", selectedMode).apply();
-                callback.onModeSelected(selectedMode);
-
-                for (int i = 0; i < modeCards.length; i++) {
-                    if (modeCards[i] != null) {
-                        boolean isSelected = (i == selectedIndex);
-                        if (isSelected) {
-                            applySelectedThumb(modeCards[i]);
-                        } else {
-                            modeCards[i].setBackgroundColor(Color.TRANSPARENT);
-                        }
-                        if (modeIcons[i] != null) {
-                            modeIcons[i].setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
-                                    isSelected ? R.color.textPrimary : R.color.textPrimary85)));
-                        }
-                        if (modeTitles[i] != null) {
-                            modeTitles[i].setTextColor(UiStyles.color(context, isSelected ? R.color.textPrimary : R.color.textPrimary85));
-                            modeTitles[i].setTypeface(null, isSelected ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
-                        }
-                        if (indicators[i] != null) {
-                            indicators[i].setVisibility(isSelected ? android.view.View.VISIBLE : android.view.View.GONE);
-                        }
-                    }
-                }
-
-                if (selectedMode == -1) {
-                    callback.log("Hafıza modu seçildi: Hiçbiri (Otomatik ayarlama yapılmayacak)");
-                } else {
-                    callback.log("Hafıza modu seçildi: " + driveModeNames[selectedIndex] + " (Mode: " + selectedMode + ")");
-                    applyDriveMode(selectedMode);
-                }
-            }
-        });
-
+        scrollView.addView(outer, new ScrollView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         return scrollView;
     }
 
-    private int mapModeToRadioId(int mode) {
-        switch (mode) {
-            case -1: return 9;
-            case 0: return 10;
-            case 1: return 11;
-            case 2: return 12;
-            case 3: return 13;
-            case 4: return 14;
-            case 5: return 15;
-            case 7: return 17;
-            default: return -1;
+    private View buildModeCard(int index) {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setGravity(Gravity.CENTER);
+        card.setMinimumHeight(CockpitTokens.dp(context, 160));
+        card.setClickable(true);
+        card.setFocusable(true);
+        card.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_md));
+        card.setContentDescription(MODE_NAMES[index]);
+
+        ImageView icon = new ImageView(context);
+        icon.setImageResource(MODE_ICONS[index]);
+        icon.setColorFilter(CockpitTokens.color(context, R.color.ck_text_medium),
+                PorterDuff.Mode.SRC_IN);
+        card.addView(icon, new LinearLayout.LayoutParams(
+                CockpitTokens.dp(context, 40), CockpitTokens.dp(context, 40)));
+
+        TextView label = new TextView(context);
+        CockpitTokens.title(label);
+        label.setText(MODE_NAMES[index]);
+        label.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        labelLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        card.addView(label, labelLp);
+
+        View indicator = new View(context);
+        indicator.setBackgroundColor(CockpitTokens.color(context, R.color.ck_accent));
+        LinearLayout.LayoutParams indLp = new LinearLayout.LayoutParams(
+                CockpitTokens.dp(context, 48), CockpitTokens.dp(context, 3));
+        indLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        card.addView(indicator, indLp);
+
+        modeCards[index] = card;
+        modeIcons[index] = icon;
+        modeTitles[index] = label;
+        modeIndicators[index] = indicator;
+
+        card.setOnClickListener(v -> selectMode(index));
+        return card;
+    }
+
+    private void selectMode(int index) {
+        if (index == selectedIndex) {
+            return;
         }
+        selectedIndex = index;
+        int mode = MODE_VALUES[index];
+        prefs.edit().putInt("driveModeSetting", mode).apply();
+        callback.onModeSelected(mode);
+        refreshSelection();
+        if (currentBadge != null) {
+            currentBadge.setText(MODE_NAMES[index]);
+        }
+        if (mode == -1) {
+            callback.log("Hafıza modu seçildi: Hiçbiri (Otomatik ayarlama yapılmayacak)");
+        } else {
+            callback.log("Hafıza modu seçildi: " + MODE_NAMES[index] + " (Mode: " + mode + ")");
+            applyDriveMode(mode);
+        }
+    }
+
+    private void refreshSelection() {
+        for (int i = 0; i < modeCards.length; i++) {
+            if (modeCards[i] == null) {
+                continue;
+            }
+            boolean selected = i == selectedIndex;
+            if (selected) {
+                modeCards[i].setBackground(CockpitSurfaces.outlined(context,
+                        CockpitTokens.color(context, R.color.ck_surface_2),
+                        CockpitTokens.color(context, R.color.ck_accent), 16f));
+            } else {
+                modeCards[i].setBackground(CockpitSurfaces.outlined(context,
+                        CockpitTokens.color(context, R.color.ck_surface_1),
+                        CockpitTokens.color(context, R.color.ck_stroke), 16f));
+            }
+            int tint = selected
+                    ? CockpitTokens.color(context, R.color.ck_accent)
+                    : CockpitTokens.color(context, R.color.ck_text_medium);
+            modeIcons[i].setColorFilter(tint, PorterDuff.Mode.SRC_IN);
+            modeTitles[i].setTextColor(selected
+                    ? CockpitTokens.color(context, R.color.ck_text_high)
+                    : CockpitTokens.color(context, R.color.ck_text_medium));
+            modeIndicators[i].setVisibility(selected ? View.VISIBLE : View.INVISIBLE);
+        }
+    }
+
+    private int indexForMode(int mode) {
+        for (int i = 0; i < MODE_VALUES.length; i++) {
+            if (MODE_VALUES[i] == mode) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void applyDriveMode(int mode) {
@@ -322,7 +222,8 @@ public class DriveModeTabBuilder {
 
             if (!carInfo.isServiceConnnected()) {
                 carInfo.init(context);
-                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> applyDriveMode(mode), 500);
+                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
+                        () -> applyDriveMode(mode), 500);
                 return;
             }
 

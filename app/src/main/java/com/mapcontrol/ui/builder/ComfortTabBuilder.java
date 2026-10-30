@@ -3,18 +3,26 @@ package com.mapcontrol.ui.builder;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mapcontrol.R;
-import com.mapcontrol.ui.theme.UiStyles;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitListRow;
+import com.mapcontrol.ui.cockpit.CockpitSegmented;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
+import com.mapcontrol.ui.cockpit.CockpitToggle;
+import com.mapcontrol.ui.cockpit.StatusBadge;
 import com.mapcontrol.vehicle.ComfortCommands;
 import com.mapcontrol.vehicle.RecirculationAutomation;
 
+import java.util.Arrays;
 import java.util.function.Consumer;
 
-/** Standalone comfort tab: startup sunroof/sunshade and traffic recirculation. */
+/** Konfor: açılış cam tavan/güneşlik ve trafik iç sirkülasyonu. */
 public class ComfortTabBuilder {
 
     private final Context context;
@@ -40,84 +48,114 @@ public class ComfortTabBuilder {
         scrollView.removeAllViews();
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        outer.setPadding(margin, margin, margin, margin * 2);
-
-        LinearLayout card = new LinearLayout(context);
-        card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
+        int m = CockpitTokens.dim(context, R.dimen.ck_margin);
+        outer.setPadding(m, CockpitTokens.dim(context, R.dimen.ck_space_md), m, m);
 
         TextView title = new TextView(context);
+        CockpitTokens.headlineMd(title);
         title.setText(R.string.settings_comfort_title);
-        title.setTextSize(19);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        title.setTypeface(null, android.graphics.Typeface.BOLD);
-        card.addView(title);
+        outer.addView(title);
 
         TextView desc = new TextView(context);
+        CockpitTokens.bodySm(desc);
         desc.setText(R.string.settings_comfort_desc);
-        desc.setTextSize(13);
-        desc.setTextColor(UiStyles.color(context, R.color.textHint));
-        desc.setLineSpacing(0f, 1.25f);
         LinearLayout.LayoutParams descLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        descLp.topMargin = 6;
-        descLp.bottomMargin = 14;
-        card.addView(desc, descLp);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        descLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
+        outer.addView(desc, descLp);
 
-        UiStyles.addTernarySegmentedControl(context, card,
-                context.getString(R.string.settings_comfort_sunroof_title),
-                new String[]{
-                        context.getString(R.string.drive_mode_none),
-                        context.getString(R.string.settings_comfort_sunroof_vent),
-                        context.getString(R.string.settings_comfort_sunroof_open)},
-                new String[]{
-                        context.getString(R.string.settings_comfort_sunroof_help_none),
-                        context.getString(R.string.settings_comfort_sunroof_help_vent),
-                        context.getString(R.string.settings_comfort_sunroof_help_open)},
-                new int[]{-1, ComfortCommands.SUNROOF_VENT, ComfortCommands.SUNROOF_OPEN},
-                prefs.getInt(ComfortCommands.PREF_SUNROOF, -1),
-                mode -> {
+        CockpitGrid grid = new CockpitGrid(context);
+        outer.addView(grid, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        CockpitCard sunroof = new CockpitCard(context,
+                context.getString(R.string.settings_comfort_sunroof_title)).span(4);
+        int sunroofMode = prefs.getInt(ComfortCommands.PREF_SUNROOF, -1);
+        sunroof.status(badgeForMode(sunroofMode,
+                R.string.settings_comfort_sunroof_vent,
+                R.string.settings_comfort_sunroof_open));
+        CockpitSegmented sunroofSeg = new CockpitSegmented(context, Arrays.asList(
+                context.getString(R.string.drive_mode_none),
+                context.getString(R.string.settings_comfort_sunroof_vent),
+                context.getString(R.string.settings_comfort_sunroof_open)),
+                indexForMode(sunroofMode, new int[]{-1, ComfortCommands.SUNROOF_VENT,
+                        ComfortCommands.SUNROOF_OPEN}), index -> {
+                    int mode = new int[]{-1, ComfortCommands.SUNROOF_VENT,
+                            ComfortCommands.SUNROOF_OPEN}[index];
                     prefs.edit().putInt(ComfortCommands.PREF_SUNROOF, mode).apply();
                     log.accept("Cam tavan açılış ayarı: " + mode);
                 });
+        sunroof.addContent(sunroofSeg);
+        TextView sunroofHelp = new TextView(context);
+        CockpitTokens.bodySm(sunroofHelp);
+        sunroofHelp.setText(R.string.settings_comfort_sunroof_help_none);
+        sunroof.addContent(sunroofHelp);
+        grid.add(sunroof, 4);
 
-        UiStyles.addTernarySegmentedControl(context, card,
-                context.getString(R.string.settings_comfort_sunshade_title),
-                new String[]{
-                        context.getString(R.string.drive_mode_none),
-                        context.getString(R.string.settings_comfort_sunshade_open),
-                        context.getString(R.string.settings_comfort_sunshade_close)},
-                new String[]{
-                        context.getString(R.string.settings_comfort_sunshade_help_none),
-                        context.getString(R.string.settings_comfort_sunshade_help_open),
-                        context.getString(R.string.settings_comfort_sunshade_help_close)},
-                new int[]{-1, ComfortCommands.SUNSHADE_OPEN, ComfortCommands.SUNSHADE_CLOSE},
-                prefs.getInt(ComfortCommands.PREF_SUNSHADE, -1),
-                mode -> {
+        CockpitCard sunshade = new CockpitCard(context,
+                context.getString(R.string.settings_comfort_sunshade_title)).span(4);
+        int shadeMode = prefs.getInt(ComfortCommands.PREF_SUNSHADE, -1);
+        sunshade.status(badgeForMode(shadeMode,
+                R.string.settings_comfort_sunshade_open,
+                R.string.settings_comfort_sunshade_close));
+        CockpitSegmented shadeSeg = new CockpitSegmented(context, Arrays.asList(
+                context.getString(R.string.drive_mode_none),
+                context.getString(R.string.settings_comfort_sunshade_open),
+                context.getString(R.string.settings_comfort_sunshade_close)),
+                indexForMode(shadeMode, new int[]{-1, ComfortCommands.SUNSHADE_OPEN,
+                        ComfortCommands.SUNSHADE_CLOSE}), index -> {
+                    int mode = new int[]{-1, ComfortCommands.SUNSHADE_OPEN,
+                            ComfortCommands.SUNSHADE_CLOSE}[index];
                     prefs.edit().putInt(ComfortCommands.PREF_SUNSHADE, mode).apply();
                     log.accept("Güneşlik açılış ayarı: " + mode);
                 });
+        sunshade.addContent(shadeSeg);
+        TextView shadeHelp = new TextView(context);
+        CockpitTokens.bodySm(shadeHelp);
+        shadeHelp.setText(R.string.settings_comfort_sunshade_help_none);
+        sunshade.addContent(shadeHelp);
+        grid.add(sunshade, 4);
 
-        UiStyles.addBinarySegmentedControl(context, card,
+        CockpitCard recirc = new CockpitCard(context,
+                context.getString(R.string.settings_comfort_recirc_title)).span(8);
+        boolean recircOn = prefs.getBoolean(RecirculationAutomation.PREF_ENABLED, false);
+        recirc.status(recircOn ? StatusBadge.nominal(context, context.getString(R.string.common_on))
+                : StatusBadge.neutral(context, context.getString(R.string.common_off)));
+        CockpitListRow row = new CockpitListRow(context, R.drawable.ic_mdi_car_defrost,
                 context.getString(R.string.settings_comfort_recirc_title),
-                context.getString(R.string.common_on), context.getString(R.string.common_off),
-                context.getString(R.string.settings_comfort_recirc_help_on),
-                context.getString(R.string.settings_comfort_recirc_help_off),
-                prefs.getBoolean(RecirculationAutomation.PREF_ENABLED, false),
-                on -> {
-                    prefs.edit().putBoolean(RecirculationAutomation.PREF_ENABLED, on).apply();
-                    log.accept("Trafikte otomatik iç sirkülasyon: " + (on ? "Açık" : "Kapalı"));
-                });
+                context.getString(recircOn ? R.string.settings_comfort_recirc_help_on
+                        : R.string.settings_comfort_recirc_help_off));
+        CockpitToggle toggle = new CockpitToggle(context);
+        toggle.setChecked(recircOn, false);
+        row.trailing(toggle);
+        toggle.setOnCheckedChangeListener((t, checked) -> {
+            prefs.edit().putBoolean(RecirculationAutomation.PREF_ENABLED, checked).apply();
+            log.accept("Trafikte otomatik iç sirkülasyon: " + (checked ? "Açık" : "Kapalı"));
+            row.subtitle(context.getString(checked
+                    ? R.string.settings_comfort_recirc_help_on
+                    : R.string.settings_comfort_recirc_help_off));
+        });
+        recirc.addContent(row);
+        grid.add(recirc, 8);
 
-        outer.addView(card, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
         scrollView.addView(outer, new ScrollView.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private int indexForMode(int mode, int[] modes) {
+        for (int i = 0; i < modes.length; i++) {
+            if (modes[i] == mode) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    private StatusBadge badgeForMode(int mode, int positive1, int positive2) {
+        if (mode == -1) {
+            return StatusBadge.neutral(context, context.getString(R.string.drive_mode_none));
+        }
+        return StatusBadge.nominal(context, mode == positive1
+                ? context.getString(positive1) : context.getString(positive2));
     }
 }

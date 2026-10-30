@@ -1250,4 +1250,11 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_rail_expand">Menüyü genişlet</string>
     <string name="ck_rail_collapse">Menüyü daralt</string>
     <string name="ck_offline">Bağlı değil</string>
+
+    <string name="ck_rail_cockpit">Kokpit</string>
+    <string name="ck_rail_vehicle">Araç</string>
+    <string name="ck_rail_safety">Güvenlik</string>
+    <string name="ck_rail_media">Medya</string>
+    <string name="ck_rail_apps">Bağlantı</string>
+    <string name="ck_rail_settings">Ayarlar</string>
 </resources>

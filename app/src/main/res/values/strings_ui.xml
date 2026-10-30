@@ -1231,4 +1231,11 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_rail_expand">Expand menu</string>
     <string name="ck_rail_collapse">Collapse menu</string>
     <string name="ck_offline">Not connected</string>
+
+    <string name="ck_rail_cockpit">Cockpit</string>
+    <string name="ck_rail_vehicle">Vehicle</string>
+    <string name="ck_rail_safety">Safety</string>
+    <string name="ck_rail_media">Media</string>
+    <string name="ck_rail_apps">Connect</string>
+    <string name="ck_rail_settings">Settings</string>
 </resources>

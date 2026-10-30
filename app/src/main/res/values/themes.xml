@@ -4,12 +4,12 @@
     <style name="Theme.MapControl.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="android:windowBackground">@color/ck_bg_base</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowContentOverlay">@null</item>
 
-        <item name="android:statusBarColor">@color/backgroundColor</item>
-        <item name="android:navigationBarColor">@color/backgroundColor</item>
+        <item name="android:statusBarColor">@color/ck_bg_base</item>
+        <item name="android:navigationBarColor">@color/ck_bg_base</item>
 
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
@@ -24,7 +24,7 @@
 
     <!-- Light UI: dark icons in status bar -->
     <style name="Theme.MapControl" parent="Theme.MapControl.Base">
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Dedicated dark report surface for the drive score screen. -->

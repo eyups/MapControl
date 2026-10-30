@@ -1,90 +1,35 @@
 package com.mapcontrol.ui.builder;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.View;
-import android.text.TextUtils;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
-
 import com.mapcontrol.R;
-import com.mapcontrol.ui.theme.ThemeManager;
+import com.mapcontrol.ui.cockpit.CockpitNavModel;
+import com.mapcontrol.ui.cockpit.CockpitNavRail;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.valet.ValetModeManager;
 
+/** Cockpit nav rail adapter; SideRailCallback is preserved. */
 public class SideRailBuilder {
     public interface SideRailCallback {
         void onTabSelected(int tabIndex, String title);
         void onAppManagementRequested();
         void log(String message);
+        default void onRailWidthChanged(boolean expanded) { }
     }
-
-    private static final int TAB_HOME = 17;
-    private static final int TAB_WIFI = 0;
-    private static final int TAB_FILE = 1;
-    private static final int TAB_PROFILE = 2;
-    private static final int TAB_PROJECTION = 3;
-    private static final int TAB_APPS = 5;
-    private static final int TAB_DRIVE_MODE = 6;
-    private static final int TAB_SETTINGS = 7;
-    private static final int TAB_WELCOME_SOUND = 8;
-    private static final int TAB_VEHICLE_INFO = 9;
-    private static final int TAB_EQUALIZER = 11;
-    private static final int TAB_DRIVER_PROFILES = 13;
-    private static final int TAB_DRIVING_HISTORY = 14;
-    private static final int TAB_COMFORT = 15;
-    private static final int TAB_VALET = 16;
-    private static final int TAB_CLIMATE_AUTOMATION = 18;
-    private static final int TAB_FACE_RECOGNITION = 19;
-    private static final int TAB_CAMERA_360 = 20;
-    private static final int TAB_SPLIT_SCREEN = 21;
-    private static final int TAB_SUNROOF_AUTOMATION = 22;
 
     private final Context context;
     private final SharedPreferences prefs;
     private final SideRailCallback callback;
-
-    private LinearLayout menuHome;
-    private LinearLayout menuApps;
-    private LinearLayout menuWifi;
-    private LinearLayout menuFileUpload;
-    private LinearLayout menuSettings;
-    private LinearLayout menuProjection;
-    private LinearLayout menuDriveMode;
-    private LinearLayout menuTest;
-    private LinearLayout menuCamera360;
-    private LinearLayout menuSplitScreen;
-    private LinearLayout menuWelcomeSound;
-    private LinearLayout menuEqualizer;
-    private LinearLayout menuDriverProfiles;
-    private LinearLayout menuClimateAutomation;
-    private LinearLayout menuSunroofAutomation;
-    private LinearLayout menuFaceRecognition;
-    private LinearLayout menuProfile;
-    private LinearLayout menuVehicleInfo;
-    private LinearLayout menuDrivingHistory;
-    private LinearLayout menuComfort;
-    private LinearLayout menuValet;
-    private LinearLayout sideRail;
-    private TextView appTitleText;
-    private LinearLayout selectedMenuRow;
+    private CockpitNavRail rail;
     private boolean launcherModeActive;
     private boolean contentWide;
+    private int currentTab = CockpitNavModel.TAB_HOME;
 
     public SideRailBuilder(Context context, SharedPreferences prefs, SideRailCallback callback) {
         this.context = context;
@@ -93,338 +38,86 @@ public class SideRailBuilder {
     }
 
     public LinearLayout build() {
-        sideRail = new LinearLayout(context);
-        sideRail.setOrientation(LinearLayout.VERTICAL);
-        UiStyles.setRailPanelBackground(sideRail);
-        sideRail.setPadding(0, 0, 0, 0);
-
-        LinearLayout sideRailTopBar = new LinearLayout(context);
-        sideRailTopBar.setOrientation(LinearLayout.HORIZONTAL);
-        sideRailTopBar.setBackgroundColor(Color.TRANSPARENT);
-        sideRailTopBar.setPadding(26, 18, 22, 14);
-        sideRailTopBar.setGravity(Gravity.CENTER_VERTICAL);
-        sideRailTopBar.setMinimumHeight((int) (64 * context.getResources().getDisplayMetrics().density));
-
-        appTitleText = new TextView(context);
-        try {
-            String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            SpannableString spannableText = new SpannableString("RoadDeck by vNoisy (" + versionName + ")");
-            int vNoisyStart = spannableText.toString().indexOf("vNoisy");
-            int vNoisyEnd = vNoisyStart + "vNoisy".length();
-            if (vNoisyStart >= 0) {
-                spannableText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC),
-                        vNoisyStart, vNoisyEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        rail = new CockpitNavRail(context, prefs, new CockpitNavRail.Listener() {
+            @Override
+            public void onDomainSelected(CockpitNavModel.Domain domain) {
+                int tab = restoredTab(domain);
+                prefs.edit().putInt(CockpitNavModel.PREF_LAST_TAB + "_" + domain.id, tab)
+                        .putInt(CockpitNavModel.PREF_LAST_DOMAIN, domain.id).apply();
+                callback.onTabSelected(tab, context.getString(domain.titleRes));
             }
-            int versionStart = spannableText.toString().indexOf("(");
-            int versionEnd = spannableText.length();
-            if (versionStart >= 0) {
-                spannableText.setSpan(new RelativeSizeSpan(0.82f),
-                        versionStart, versionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            @Override
+            public void onSettingsSelected() {
+                callback.onTabSelected(CockpitNavModel.TAB_SETTINGS,
+                        context.getString(R.string.ck_domain_settings));
             }
-            appTitleText.setText(spannableText);
-        } catch (PackageManager.NameNotFoundException e) {
-            SpannableString spannableText = new SpannableString("RoadDeck by vNoisy");
-            int vNoisyStart = spannableText.toString().indexOf("vNoisy");
-            int vNoisyEnd = vNoisyStart + "vNoisy".length();
-            if (vNoisyStart >= 0) {
-                spannableText.setSpan(new StyleSpan(android.graphics.Typeface.ITALIC),
-                        vNoisyStart, vNoisyEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            @Override
+            public void onRailWidthChanged(boolean expanded) {
+                callback.onRailWidthChanged(expanded);
             }
-            appTitleText.setText(spannableText);
-        }
-        appTitleText.setTextSize(24);
-        appTitleText.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        appTitleText.setTypeface(null, android.graphics.Typeface.BOLD);
-        sideRailTopBar.addView(appTitleText);
 
-        sideRail.addView(sideRailTopBar, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        ScrollView menuScrollView = new ScrollView(context);
-        menuScrollView.setBackgroundColor(Color.TRANSPARENT);
-        menuScrollView.setFillViewport(false);
-
-        LinearLayout menuContainer = new LinearLayout(context);
-        menuContainer.setOrientation(LinearLayout.VERTICAL);
-        menuContainer.setBackgroundColor(Color.TRANSPARENT);
-
-        menuHome = createRailMenuItemView(R.drawable.ic_mdi_home, t(R.string.side_rail_home));
-        menuWifi = createRailMenuItemView(R.drawable.ic_mdi_wifi, t(R.string.side_rail_wifi));
-        menuApps = createRailMenuItemView(R.drawable.ic_mdi_cellphone, t(R.string.side_rail_apps));
-        menuFileUpload = createRailMenuItemView(R.drawable.ic_mdi_web, t(R.string.side_rail_web));
-        // Temporarily hidden: Profile rail item (uncomment addView and onClick below to restore).
-        menuProfile = createRailMenuItemView(R.drawable.ic_mdi_account, t(R.string.side_rail_profile));
-        menuDriveMode = createRailMenuItemView(R.drawable.ic_mdi_car, t(R.string.side_rail_drive_mode));
-        menuComfort = createRailMenuItemView(R.drawable.ic_mdi_car_seat,
-                t(R.string.side_rail_comfort));
-        menuValet = createRailMenuItemView(R.drawable.ic_mdi_shield_car,
-                t(R.string.side_rail_valet));
-        menuDriverProfiles = createRailMenuItemView(R.drawable.ic_mdi_account,
-                t(R.string.side_rail_driver_profiles));
-        menuWelcomeSound = createRailMenuItemView(R.drawable.ic_mdi_volume_high,
-                t(R.string.side_rail_welcome_sound));
-        menuEqualizer = createRailMenuItemView(R.drawable.ic_mdi_equalizer,
-                t(R.string.side_rail_equalizer));
-        menuClimateAutomation = createRailMenuItemView(R.drawable.ic_mdi_thermometer,
-                t(R.string.side_rail_climate_automation));
-        menuSunroofAutomation = createRailMenuItemView(R.drawable.ic_mdi_car_sunroof,
-                t(R.string.side_rail_sunroof_automation));
-        menuFaceRecognition = createRailMenuItemView(R.drawable.ic_mdi_account,
-                t(R.string.side_rail_face_recognition));
-        menuTest = createRailMenuItemView(R.drawable.ic_mdi_camera, t(R.string.side_rail_camera));
-        menuCamera360 = createRailMenuItemView(R.drawable.ic_mdi_camera, t(R.string.camera360_title));
-        menuSplitScreen = createRailMenuItemView(R.drawable.ic_mdi_view_split,
-                t(R.string.side_rail_split_screen));
-        menuProjection = createRailMenuItemView(R.drawable.ic_mdi_map, t(R.string.side_rail_projection));
-        menuVehicleInfo = createRailMenuItemView(R.drawable.ic_mdi_speedometer,
-                t(R.string.side_rail_vehicle_info));
-        menuDrivingHistory = createRailMenuItemView(R.drawable.ic_mdi_road_variant,
-                t(R.string.side_rail_driving_report));
-        menuSettings = createRailMenuItemView(R.drawable.ic_mdi_cog, t(R.string.side_rail_settings));
-
-        menuContainer.addView(menuHome);
-        menuContainer.addView(sectionHeader(R.string.nav_section_connect));
-        menuContainer.addView(menuWifi);
-        menuContainer.addView(menuApps);
-        menuContainer.addView(menuFileUpload);
-        // menuContainer.addView(menuProfile); // Temporarily hidden — see comment above menuProfile creation.
-        menuContainer.addView(sectionHeader(R.string.nav_section_vehicle));
-        menuContainer.addView(menuDriveMode);
-        menuContainer.addView(menuDriverProfiles);
-        menuContainer.addView(menuComfort);
-        menuContainer.addView(menuValet);
-        menuContainer.addView(menuVehicleInfo);
-        menuContainer.addView(menuDrivingHistory);
-        menuContainer.addView(sectionHeader(R.string.nav_section_media));
-        menuContainer.addView(menuWelcomeSound);
-        menuContainer.addView(menuEqualizer);
-        menuContainer.addView(menuClimateAutomation);
-        menuContainer.addView(menuSunroofAutomation);
-        menuContainer.addView(menuFaceRecognition);
-        menuTest.setVisibility(View.GONE);
-        menuContainer.addView(menuTest);
-        menuContainer.addView(menuCamera360);
-        menuContainer.addView(menuSplitScreen);
-        menuContainer.addView(menuProjection);
-        menuContainer.addView(sectionHeader(R.string.nav_section_system));
-        menuContainer.addView(menuSettings);
-
-        menuScrollView.addView(menuContainer, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        LinearLayout.LayoutParams menuScrollParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                1.0f);
-        sideRail.addView(menuScrollView, menuScrollParams);
-
-        updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        bindMenuClicks();
-        setValetModeActive(ValetModeManager.shouldHidePersonal(context));
-        return sideRail;
-    }
-
-    /**
-     * Dikey ekran: sol kolon yok. Aynı sekmeler üstte yatay kaydırılan ikon + kısa etiket şeridi.
-     */
-    public LinearLayout buildPortrait() {
-        sideRail = new LinearLayout(context);
-        sideRail.setOrientation(LinearLayout.VERTICAL);
-        UiStyles.setRailPanelBackground(sideRail);
-
-        HorizontalScrollView menuScroll = new HorizontalScrollView(context);
-        menuScroll.setHorizontalScrollBarEnabled(false);
-        menuScroll.setFillViewport(true);
-
-        LinearLayout menuContainer = new LinearLayout(context);
-        menuContainer.setOrientation(LinearLayout.HORIZONTAL);
-        menuContainer.setGravity(Gravity.CENTER_VERTICAL);
-
-        menuHome = createPortraitRailItem(R.drawable.ic_mdi_home, t(R.string.side_rail_home));
-        menuWifi = createPortraitRailItem(R.drawable.ic_mdi_wifi, t(R.string.side_rail_wifi));
-        menuApps = createPortraitRailItem(R.drawable.ic_mdi_cellphone, t(R.string.side_rail_apps));
-        menuFileUpload = createPortraitRailItem(R.drawable.ic_mdi_web, t(R.string.side_rail_web));
-        menuProfile = createPortraitRailItem(R.drawable.ic_mdi_account, t(R.string.side_rail_profile));
-        menuDriveMode = createPortraitRailItem(R.drawable.ic_mdi_car, t(R.string.side_rail_drive_mode));
-        menuComfort = createPortraitRailItem(R.drawable.ic_mdi_car_seat,
-                t(R.string.side_rail_comfort));
-        menuValet = createPortraitRailItem(R.drawable.ic_mdi_shield_car,
-                t(R.string.side_rail_valet));
-        menuDriverProfiles = createPortraitRailItem(R.drawable.ic_mdi_account,
-                t(R.string.side_rail_driver_profiles));
-        menuWelcomeSound = createPortraitRailItem(R.drawable.ic_mdi_volume_high,
-                t(R.string.side_rail_welcome_sound));
-        menuEqualizer = createPortraitRailItem(R.drawable.ic_mdi_equalizer,
-                t(R.string.side_rail_equalizer));
-        menuClimateAutomation = createPortraitRailItem(R.drawable.ic_mdi_thermometer,
-                t(R.string.side_rail_climate_automation));
-        menuSunroofAutomation = createPortraitRailItem(R.drawable.ic_mdi_car_sunroof,
-                t(R.string.side_rail_sunroof_automation));
-        menuFaceRecognition = createPortraitRailItem(R.drawable.ic_mdi_account,
-                t(R.string.side_rail_face_recognition));
-        menuTest = createPortraitRailItem(R.drawable.ic_mdi_camera, t(R.string.side_rail_camera));
-        menuCamera360 = createPortraitRailItem(R.drawable.ic_mdi_camera, t(R.string.camera360_title));
-        menuSplitScreen = createPortraitRailItem(R.drawable.ic_mdi_view_split,
-                t(R.string.side_rail_split_screen));
-        menuProjection = createPortraitRailItem(R.drawable.ic_mdi_map, t(R.string.side_rail_projection));
-        menuVehicleInfo = createPortraitRailItem(R.drawable.ic_mdi_speedometer,
-                t(R.string.side_rail_vehicle_info));
-        menuDrivingHistory = createPortraitRailItem(R.drawable.ic_mdi_road_variant,
-                t(R.string.side_rail_driving_report));
-        menuSettings = createPortraitRailItem(R.drawable.ic_mdi_cog, t(R.string.side_rail_settings));
-
-        menuContainer.addView(menuHome);
-        menuContainer.addView(menuWifi);
-        menuContainer.addView(menuApps);
-        menuContainer.addView(menuFileUpload);
-        menuContainer.addView(menuDriveMode);
-        menuContainer.addView(menuDriverProfiles);
-        menuContainer.addView(menuComfort);
-        menuContainer.addView(menuValet);
-        menuContainer.addView(menuWelcomeSound);
-        menuContainer.addView(menuEqualizer);
-        menuContainer.addView(menuClimateAutomation);
-        menuContainer.addView(menuSunroofAutomation);
-        menuContainer.addView(menuFaceRecognition);
-        menuTest.setVisibility(View.GONE);
-        menuContainer.addView(menuTest);
-        menuContainer.addView(menuCamera360);
-        menuContainer.addView(menuSplitScreen);
-        menuContainer.addView(menuProjection);
-        menuContainer.addView(menuVehicleInfo);
-        menuContainer.addView(menuDrivingHistory);
-        menuContainer.addView(menuSettings);
-
-        menuScroll.addView(menuContainer, new HorizontalScrollView.LayoutParams(
-                HorizontalScrollView.LayoutParams.WRAP_CONTENT,
-                HorizontalScrollView.LayoutParams.WRAP_CONTENT));
-        sideRail.addView(menuScroll, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        bindMenuClicks();
-        setValetModeActive(ValetModeManager.shouldHidePersonal(context));
-        return sideRail;
-    }
-
-    private void bindMenuClicks() {
-        menuHome.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_HOME, t(R.string.side_rail_home));
-            updateMenuSelection(menuHome);
-        });
-
-        menuWifi.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_WIFI, t(R.string.side_rail_wifi));
-            updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        });
-
-        menuFileUpload.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_FILE, t(R.string.side_rail_web));
-            updateMenuSelection(menuFileUpload, menuWifi, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        });
-
-        menuProjection.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_PROJECTION, t(R.string.side_rail_projection));
-            updateMenuSelection(menuProjection, menuWifi, menuFileUpload, menuProfile, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        });
-
-        menuVehicleInfo.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_VEHICLE_INFO, t(R.string.side_rail_vehicle_info));
-            updateMenuSelection(menuVehicleInfo, menuWifi, menuFileUpload, menuProfile, menuProjection, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        });
-
-        menuDrivingHistory.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_DRIVING_HISTORY, t(R.string.side_rail_driving_report));
-            updateMenuSelection(menuDrivingHistory);
-        });
-
-        menuSettings.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_SETTINGS, t(R.string.side_rail_settings));
-            updateMenuSelection(menuSettings, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        });
-
-        menuApps.setOnClickListener(v -> {
-            boolean accepted = prefs.getBoolean("appManagementDisclaimerAccepted", false);
-            if (accepted) {
-                callback.onTabSelected(TAB_APPS, t(R.string.side_rail_apps));
-                updateMenuSelection(menuApps, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuDriveMode, menuTest, menuWelcomeSound);
-            } else {
+            @Override
+            public void onAppManagementNeeded() {
                 callback.onAppManagementRequested();
             }
-        });
-
-        menuDriveMode.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_DRIVE_MODE, t(R.string.side_rail_drive_mode));
-            updateMenuSelection(menuDriveMode, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuTest, menuWelcomeSound);
-        });
-
-        menuWelcomeSound.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_WELCOME_SOUND, t(R.string.side_rail_welcome_sound));
-            updateMenuSelection(menuWelcomeSound, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest);
-        });
-
-        menuEqualizer.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_EQUALIZER, t(R.string.side_rail_equalizer));
-            updateMenuSelection(menuEqualizer, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-        });
-
-        menuComfort.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_COMFORT, t(R.string.side_rail_comfort));
-            updateMenuSelection(menuComfort);
-        });
-
-        menuValet.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_VALET, t(R.string.side_rail_valet));
-            updateMenuSelection(menuValet);
-        });
-
-        menuDriverProfiles.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_DRIVER_PROFILES, t(R.string.side_rail_driver_profiles));
-            updateMenuSelection(menuDriverProfiles);
-        });
-
-        menuClimateAutomation.setOnClickListener(v -> openExperimentalMenu(
-                "climateAutoBetaWarningSeen",
-                () -> {
-                    callback.onTabSelected(TAB_CLIMATE_AUTOMATION, t(R.string.side_rail_climate_automation));
-                    updateMenuSelection(menuClimateAutomation);
-                }));
-
-        menuSunroofAutomation.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_SUNROOF_AUTOMATION, t(R.string.side_rail_sunroof_automation));
-            updateMenuSelection(menuSunroofAutomation);
-        });
-
-        menuFaceRecognition.setOnClickListener(v -> openExperimentalMenu(
-                "dmsFaceBetaWarningSeen",
-                () -> {
-                    callback.onTabSelected(TAB_FACE_RECOGNITION, t(R.string.dms_recognition_title));
-                    updateMenuSelection(menuFaceRecognition);
-                }));
-
-        menuCamera360.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_CAMERA_360, t(R.string.camera360_title));
-            updateMenuSelection(menuCamera360);
-        });
-
-        menuSplitScreen.setOnClickListener(v -> {
-            callback.onTabSelected(TAB_SPLIT_SCREEN, t(R.string.side_rail_split_screen));
-            updateMenuSelection(menuSplitScreen);
-        });
+        }, false);
+        rail.setSelectedTab(currentTab);
+        applyRailVisibility();
+        return rail;
     }
 
-    /**
-     * Launcher modu aktifken sol menüyü tamamen gizler; kapalıyken normal görünüme döner.
-     */
+    /** Dikey ekran: üstte yatay domain şeridi. */
+    public LinearLayout buildPortrait() {
+        rail = new CockpitNavRail(context, prefs, new CockpitNavRail.Listener() {
+            @Override
+            public void onDomainSelected(CockpitNavModel.Domain domain) {
+                int tab = restoredTab(domain);
+                prefs.edit().putInt(CockpitNavModel.PREF_LAST_TAB + "_" + domain.id, tab)
+                        .putInt(CockpitNavModel.PREF_LAST_DOMAIN, domain.id).apply();
+                callback.onTabSelected(tab, context.getString(domain.titleRes));
+            }
+
+            @Override
+            public void onSettingsSelected() {
+                callback.onTabSelected(CockpitNavModel.TAB_SETTINGS,
+                        context.getString(R.string.ck_domain_settings));
+            }
+
+            @Override
+            public void onAppManagementNeeded() {
+                callback.onAppManagementRequested();
+            }
+        }, true);
+        rail.setSelectedTab(currentTab);
+        applyRailVisibility();
+        return rail;
+    }
+
+    private int restoredTab(CockpitNavModel.Domain domain) {
+        // Son seçilen alt sekme kullanıcı seçiminde yazılır; yoksa domain'in ilk sekmesi.
+        int stored = prefs.getInt(CockpitNavModel.PREF_LAST_TAB + "_" + domain.id, -1);
+        if (stored >= 0) {
+            for (CockpitNavModel.Item item : domain.items) {
+                if (item.tabId == stored && CockpitNavModel.isAvailable(prefs, stored)) {
+                    return stored;
+                }
+            }
+        }
+        for (CockpitNavModel.Item item : domain.items) {
+            if (CockpitNavModel.isAvailable(prefs, item.tabId)) {
+                return item.tabId;
+            }
+        }
+        return domain.items.get(0).tabId;
+    }
+
     public void setLauncherModeActive(boolean active) {
         launcherModeActive = active;
         applyRailVisibility();
     }
 
-    /** Icerik tam genislik istedi (or. Kamera 360 izleme ekrani); launcher modundan bagimsiz. */
     public void setContentWide(boolean wide) {
         contentWide = wide;
         applyRailVisibility();
@@ -434,291 +127,84 @@ public class SideRailBuilder {
         return launcherModeActive || contentWide;
     }
 
-    private void applyRailVisibility() {
-        if (sideRail != null) {
-            sideRail.setVisibility(isRailHidden() ? View.GONE : View.VISIBLE);
-        }
-    }
-
     public boolean isLauncherModeActive() {
         return launcherModeActive;
     }
 
-    /** Light/dark değişiminde rail arka planı ve seçim renklerini yeniler (Activity recreate yok). */
-    public void reapplyTheme() {
-        if (sideRail != null) {
-            UiStyles.setRailPanelBackground(sideRail);
-        }
-        if (appTitleText != null) {
-            appTitleText.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        }
-        LinearLayout[] rows = menuRows();
-        for (LinearLayout row : rows) {
-            if (row != null) {
-                applyRailRowSelectedState(row, row == selectedMenuRow);
-            }
+    private void applyRailVisibility() {
+        if (rail != null) {
+            rail.setRailVisible(!isRailHidden());
         }
     }
 
-    /**
-     * Tıklama dışı (ör. Uygulama Yönetimi yasal diyalogu onayı) sonrası sol menü vurgusunu
-     * {@code switchTab} ile aynı sekme indeksine hizalar.
-     * <p>LOG (4) kenar çubuğunda olmadığından bu indekste işlem yapılmaz.
-     */
     public void setSelectionForTabIndex(int tabIndex) {
-        switch (tabIndex) {
-            case TAB_HOME:
-                updateMenuSelection(menuHome);
-                break;
-            case 0:
-                updateMenuSelection(menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case 1:
-                updateMenuSelection(menuFileUpload, menuWifi, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case 2:
-                updateMenuSelection(menuProfile, menuWifi, menuFileUpload, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case 3:
-                updateMenuSelection(menuProjection, menuWifi, menuFileUpload, menuProfile, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case 4:
-                break;
-            case 5:
-                updateMenuSelection(menuApps, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case 6:
-                updateMenuSelection(menuDriveMode, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuTest, menuWelcomeSound);
-                break;
-            case 7:
-                updateMenuSelection(menuSettings, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case 8:
-                updateMenuSelection(menuWelcomeSound, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest);
-                break;
-            case 9:
-                updateMenuSelection(menuVehicleInfo, menuWifi, menuFileUpload, menuProfile, menuProjection, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case 11:
-                updateMenuSelection(menuEqualizer, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo, menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound);
-                break;
-            case TAB_DRIVER_PROFILES:
-                updateMenuSelection(menuDriverProfiles);
-                break;
-            case TAB_COMFORT:
-                updateMenuSelection(menuComfort);
-                break;
-            case TAB_VALET:
-                updateMenuSelection(menuValet);
-                break;
-            case TAB_DRIVING_HISTORY:
-                updateMenuSelection(menuDrivingHistory);
-                break;
-            case TAB_CLIMATE_AUTOMATION:
-                updateMenuSelection(menuClimateAutomation);
-                break;
-            case TAB_SUNROOF_AUTOMATION:
-                updateMenuSelection(menuSunroofAutomation);
-                break;
-            case TAB_FACE_RECOGNITION:
-                updateMenuSelection(menuFaceRecognition);
-                break;
-            case TAB_CAMERA_360:
-                updateMenuSelection(menuCamera360);
-                break;
-            case TAB_SPLIT_SCREEN:
-                updateMenuSelection(menuSplitScreen);
-                break;
-            default:
-                break;
+        currentTab = tabIndex;
+        if (rail != null) {
+            rail.setSelectedTab(tabIndex);
         }
     }
 
-    private String t(int resId) {
-        return context.getString(resId);
-    }
-
-    private TextView sectionHeader(int labelResId) {
-        float density = context.getResources().getDisplayMetrics().density;
-        TextView view = new TextView(context);
-        view.setText(labelResId);
-        view.setTextSize(10);
-        view.setLetterSpacing(0.18f);
-        view.setTextColor(UiStyles.color(context, R.color.textHint));
-        view.setTypeface(null, android.graphics.Typeface.BOLD);
-        view.setPadding((int) (26 * density), (int) (18 * density),
-                (int) (26 * density), (int) (6 * density));
-        return view;
-    }
-
-    private LinearLayout createRailMenuItemView(int iconResId, String text) {
-        float density = context.getResources().getDisplayMetrics().density;
-        int minTouchPx = Math.round(context.getResources().getDimension(R.dimen.rail_row_min_height));
-
-        LinearLayout itemLayout = new LinearLayout(context);
-        itemLayout.setOrientation(LinearLayout.HORIZONTAL);
-        int padH = (int) (18 * density);
-        int padV = (int) (12 * density);
-        itemLayout.setPadding(padH, padV, padH, padV);
-        itemLayout.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
-        itemLayout.setClickable(true);
-        itemLayout.setFocusable(true);
-        itemLayout.setMinimumHeight(minTouchPx);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        int mH = (int) (12 * density);
-        int mV = (int) (6 * density);
-        params.setMargins(mH, mV, mH, mV);
-        itemLayout.setLayoutParams(params);
-
-        int iconSize = (int) (24 * density);
-        AppCompatImageView iconView = new AppCompatImageView(context);
-        iconView.setImageResource(iconResId);
-        iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        iconView.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textSecondary)));
-        LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(iconSize, iconSize);
-        iconLp.gravity = Gravity.CENTER_VERTICAL;
-        itemLayout.addView(iconView, iconLp);
-
-        TextView textView = new TextView(context);
-        textView.setText(text);
-        textView.setTextSize(17);
-        textView.setTextColor(UiStyles.color(context, R.color.textSecondary));
-        textView.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f);
-        textParams.setMargins((int) (12 * density), 0, 0, 0);
-        itemLayout.addView(textView, textParams);
-
-        itemLayout.setTag(R.id.side_rail_icon, iconView);
-        itemLayout.setTag(R.id.side_rail_label, textView);
-
-        return itemLayout;
-    }
-
-    private LinearLayout createPortraitRailItem(int iconResId, String text) {
-        float density = context.getResources().getDisplayMetrics().density;
-        LinearLayout itemLayout = new LinearLayout(context);
-        itemLayout.setOrientation(LinearLayout.VERTICAL);
-        int padH = (int) (10 * density);
-        int padV = (int) (8 * density);
-        itemLayout.setPadding(padH, padV, padH, padV);
-        itemLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        itemLayout.setClickable(true);
-        itemLayout.setFocusable(true);
-        itemLayout.setMinimumWidth((int) (76 * density));
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        int m = (int) (4 * density);
-        params.setMargins(m, m, m, m);
-        itemLayout.setLayoutParams(params);
-
-        int iconSize = (int) (24 * density);
-        AppCompatImageView iconView = new AppCompatImageView(context);
-        iconView.setImageResource(iconResId);
-        iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        iconView.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textSecondary)));
-        LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(iconSize, iconSize);
-        iconLp.gravity = Gravity.CENTER_HORIZONTAL;
-        itemLayout.addView(iconView, iconLp);
-
-        TextView textView = new TextView(context);
-        textView.setText(text);
-        textView.setTextSize(11);
-        textView.setMaxLines(1);
-        textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setTextColor(UiStyles.color(context, R.color.textSecondary));
-        textView.setGravity(Gravity.CENTER_HORIZONTAL);
-        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        textParams.topMargin = (int) (4 * density);
-        itemLayout.addView(textView, textParams);
-
-        itemLayout.setTag(R.id.side_rail_icon, iconView);
-        itemLayout.setTag(R.id.side_rail_label, textView);
-        return itemLayout;
-    }
-
-    private void applyRailRowSelectedState(LinearLayout row, boolean selected) {
-        AppCompatImageView icon = (AppCompatImageView) row.getTag(R.id.side_rail_icon);
-        TextView label = (TextView) row.getTag(R.id.side_rail_label);
-        if (selected) {
-            UiStyles.setBackgroundRes(row, R.drawable.bg_nav_pill_selected);
-            if (icon != null) {
-                icon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.oemAccent)));
-            }
-            if (label != null) {
-                label.setTextColor(UiStyles.color(context, R.color.oemAccent));
-                applyRailTypeface(label, true);
-            }
-        } else {
-            row.setBackgroundColor(Color.TRANSPARENT);
-            if (icon != null) {
-                icon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textSecondary)));
-            }
-            if (label != null) {
-                label.setTextColor(UiStyles.color(context, R.color.textSecondary));
-                applyRailTypeface(label, false);
-            }
+    public void setExpanded(boolean expanded) {
+        if (rail != null) {
+            rail.setExpanded(expanded, true);
         }
     }
 
-    private void applyRailTypeface(TextView label, boolean bold) {
-        if (ThemeManager.isCyber(context)) {
-            label.setTypeface(android.graphics.Typeface.MONOSPACE,
-                    bold ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
-        } else {
-            label.setTypeface(null,
-                    bold ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
+    public boolean isExpanded() {
+        return rail != null && rail.isExpanded();
+    }
+
+    public void reapplyTheme() {
+        if (rail != null) {
+            rail.setSelectedTab(currentTab);
+        }
+        if (rail != null) {
+            View root = rail;
+            root.setBackgroundColor(UiStyles.color(context, R.color.ck_surface_1));
         }
     }
 
-    /** Hides personal navigation entries while a privacy-enabled valet session is active. */
+    /** Valet oturumunda kişisel domain'i (Uygulamalar) gizler. */
     public void setValetModeActive(boolean active) {
-        setMenuVisible(menuApps, !active);
-        setMenuVisible(menuDriverProfiles, !active);
-        setMenuVisible(menuWelcomeSound, !active);
-        setMenuVisible(menuEqualizer, !active);
-    }
-
-    private void setMenuVisible(LinearLayout item, boolean visible) {
-        if (item != null) {
-            item.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (rail == null) {
+            return;
+        }
+        rail.setValetModeActive(active);
+        if (active && CockpitNavModel.domainForTab(currentTab).id == 4) {
+            callback.onTabSelected(CockpitNavModel.TAB_HOME,
+                    context.getString(R.string.ck_domain_cockpit));
         }
     }
 
-    private void openExperimentalMenu(String seenKey, Runnable open) {
+    public boolean isValetModeActive() {
+        return ValetModeManager.isActive(context);
+    }
+
+    public void showExperimentalWarning(String seenKey, Runnable open) {
         if (prefs.getBoolean(seenKey, false)) {
             open.run();
             return;
         }
-        float density = context.getResources().getDisplayMetrics().density;
-        int pad = Math.round(28 * density);
         LinearLayout box = new LinearLayout(context);
         box.setOrientation(LinearLayout.VERTICAL);
-        box.setPadding(pad, pad, pad, Math.round(8 * density));
+        int pad = Math.round(28 * context.getResources().getDisplayMetrics().density);
+        box.setPadding(pad, pad, pad, Math.round(8 * context.getResources().getDisplayMetrics().density));
 
         TextView title = new TextView(context);
         title.setText(R.string.experimental_feature_warning_title);
-        title.setTextSize(28);
-        title.setTypeface(null, Typeface.BOLD);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        title.setTextSize(26);
+        title.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(context,
+                com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_BOLD));
+        title.setTextColor(UiStyles.color(context, R.color.ck_text_high));
         title.setGravity(Gravity.CENTER);
         box.addView(title);
 
         TextView message = new TextView(context);
         message.setText(R.string.experimental_feature_warning);
-        message.setTextSize(22);
-        message.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        message.setTextSize(20);
+        message.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
         message.setGravity(Gravity.CENTER);
-        message.setPadding(0, Math.round(18 * density), 0, 0);
+        message.setPadding(0, Math.round(18 * context.getResources().getDisplayMetrics().density), 0, 0);
         box.addView(message);
 
         AlertDialog dialog = new AlertDialog.Builder(context)
@@ -729,37 +215,6 @@ public class SideRailBuilder {
                     open.run();
                 })
                 .create();
-        dialog.setOnShowListener(d -> {
-            android.widget.Button ok = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            if (ok != null) {
-                ok.setTextSize(22);
-                ok.setTypeface(null, Typeface.BOLD);
-            }
-        });
         dialog.show();
-    }
-
-    private LinearLayout[] menuRows() {
-        return new LinearLayout[]{
-                menuHome, menuWifi, menuFileUpload, menuProfile, menuProjection, menuVehicleInfo,
-                menuSettings, menuApps, menuDriveMode, menuTest, menuWelcomeSound, menuEqualizer,
-                menuComfort, menuValet, menuDriverProfiles, menuDrivingHistory,
-                menuClimateAutomation, menuSunroofAutomation, menuFaceRecognition, menuCamera360, menuSplitScreen
-        };
-    }
-
-    private void updateMenuSelection(LinearLayout selected, LinearLayout... others) {
-        selectedMenuRow = selected;
-        applyRailRowSelectedState(selected, true);
-        for (LinearLayout other : others) {
-            if (other != null && other != selected) {
-                applyRailRowSelectedState(other, false);
-            }
-        }
-        for (LinearLayout row : menuRows()) {
-            if (row != null && row != selected) {
-                applyRailRowSelectedState(row, false);
-            }
-        }
     }
 }

@@ -11,7 +11,7 @@ import android.widget.FrameLayout;
  */
 public class MaxWidthFrameLayout extends FrameLayout {
 
-    public static final int DEFAULT_MAX_WIDTH_DP = 1120;
+    public static final int DEFAULT_MAX_WIDTH_DP = 1704;
 
     private final int maxWidthPx;
 

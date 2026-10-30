@@ -1,24 +1,25 @@
 package com.mapcontrol.ui.builder;
-import android.graphics.Color;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
+import android.graphics.PorterDuff;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
-
-import com.mapcontrol.R;
 import com.desaysv.ivi.extra.project.carinfo.CarSettingID;
 import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
-import com.mapcontrol.ui.theme.UiStyles;
+import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
+import com.mapcontrol.ui.cockpit.CockpitToggle;
+import com.mapcontrol.ui.cockpit.StatusBadge;
 
 public class AssistTabBuilder {
     public interface AssistCallback {
@@ -31,6 +32,19 @@ public class AssistTabBuilder {
     private final Context context;
     private final SharedPreferences prefs;
     private final AssistCallback callback;
+    private final CardHolder[] holders = new CardHolder[7];
+    private final boolean[] active = new boolean[7];
+    private final int[] savedValues = new int[7];
+
+    private static final Object[][] ASSIST_CARDS = {
+            {R.string.assist_card_iss, R.drawable.ic_mdi_restart, 0, -1, "issSetting", "ISS"},
+            {R.string.assist_card_spd_limit, R.drawable.ic_mdi_speedometer, 2, -1, "spdLimitSetting", "Hız Limitleyici"},
+            {R.string.assist_card_ldw, R.drawable.ic_mdi_road_variant, 2, -1, "ldwSetting", "LDW"},
+            {R.string.assist_card_ldp, R.drawable.ic_mdi_shield_car, 2, -1, "ldpSetting", "LDP"},
+            {R.string.assist_card_fcw, R.drawable.ic_mdi_car_brake_alert, 2, -1, "fcwSetting", "FCW"},
+            {R.string.assist_card_aeb, R.drawable.ic_mdi_car_brake_abs, 2, -1, "aebSetting", "AEB"},
+            {R.string.assist_card_cpd, R.drawable.ic_mdi_car_seat, 2, -1, "cpdSetting", "CPD"}
+    };
 
     public AssistTabBuilder(Context context, SharedPreferences prefs, AssistCallback callback) {
         this.context = context;
@@ -40,251 +54,138 @@ public class AssistTabBuilder {
 
     public ScrollView build() {
         ScrollView scrollView = new ScrollView(context);
-        scrollView.setBackgroundColor(Color.TRANSPARENT);
-        scrollView.setFillViewport(false);
+        scrollView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        scrollView.setFillViewport(true);
 
-        LinearLayout container = new LinearLayout(context);
-        container.setOrientation(LinearLayout.VERTICAL);
-        container.setBackgroundColor(Color.TRANSPARENT);
+        LinearLayout outer = new LinearLayout(context);
+        outer.setOrientation(LinearLayout.VERTICAL);
+        int m = CockpitTokens.dim(context, R.dimen.ck_margin);
+        outer.setPadding(m, CockpitTokens.dim(context, R.dimen.ck_space_md), m, m);
 
-        float densityTitle = context.getResources().getDisplayMetrics().density;
-        LinearLayout assistTitleRow = new LinearLayout(context);
-        assistTitleRow.setOrientation(LinearLayout.HORIZONTAL);
-        assistTitleRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
-        assistTitleRow.setPadding(16, 24, 16, 8);
+        TextView title = new TextView(context);
+        CockpitTokens.headlineMd(title);
+        title.setText(R.string.assist_title);
+        outer.addView(title);
 
-        AppCompatImageView assistTitleIcon = new AppCompatImageView(context);
-        assistTitleIcon.setImageResource(R.drawable.ic_mdi_car);
-        assistTitleIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        int titleIconPx = (int) (28 * densityTitle);
-        assistTitleIcon.setLayoutParams(new LinearLayout.LayoutParams(titleIconPx, titleIconPx));
-        assistTitleIcon.setImageTintList(ColorStateList.valueOf(
-                UiStyles.color(context, R.color.textPrimary)));
-        assistTitleRow.addView(assistTitleIcon);
+        TextView subtitle = new TextView(context);
+        CockpitTokens.bodySm(subtitle);
+        subtitle.setText(R.string.assist_subtitle);
+        LinearLayout.LayoutParams subLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        subLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
+        outer.addView(subtitle, subLp);
 
-        TextView assistTitle = new TextView(context);
-        assistTitle.setText(R.string.assist_title);
-        assistTitle.setTextSize(20);
-        assistTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        assistTitle.setTypeface(null, android.graphics.Typeface.BOLD);
-        LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        titleLp.setMargins((int) (12 * densityTitle), 0, 0, 0);
-        assistTitleRow.addView(assistTitle, titleLp);
+        CockpitGrid grid = new CockpitGrid(context);
+        outer.addView(grid, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        container.addView(assistTitleRow, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        TextView assistSubtitle = new TextView(context);
-        assistSubtitle.setText(R.string.assist_subtitle);
-        assistSubtitle.setTextSize(14);
-        assistSubtitle.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-        assistSubtitle.setPadding(16, 0, 16, 16);
-        container.addView(assistSubtitle, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        GridLayout assistGrid = new GridLayout(context);
-        assistGrid.setColumnCount(2);
-        assistGrid.setPadding(16, 0, 16, 16);
-        assistGrid.setBackgroundColor(Color.TRANSPARENT);
-
-        LinearLayout.LayoutParams gridParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        gridParams.setMargins(0, 0, 0, 16);
-
-        Object[][] assistCards = {
-                {R.string.assist_card_iss, R.drawable.ic_mdi_restart, 0, -1, "issSetting", "ISS"},
-                {R.string.assist_card_spd_limit, R.drawable.ic_mdi_speedometer, 2, -1, "spdLimitSetting", "Hız Limitleyici"},
-                {R.string.assist_card_ldw, R.drawable.ic_mdi_road_variant, 2, -1, "ldwSetting", "LDW"},
-                {R.string.assist_card_ldp, R.drawable.ic_mdi_shield_car, 2, -1, "ldpSetting", "LDP"},
-                {R.string.assist_card_fcw, R.drawable.ic_mdi_car_brake_alert, 2, -1, "fcwSetting", "FCW"},
-                {R.string.assist_card_aeb, R.drawable.ic_mdi_car_brake_abs, 2, -1, "aebSetting", "AEB"},
-                {R.string.assist_card_cpd, R.drawable.ic_mdi_car_seat, 2, -1, "cpdSetting", "CPD"}
-        };
-
-        int[] savedValues = {
-                prefs.getInt("issSetting", -1),
-                prefs.getInt("spdLimitSetting", -1),
-                prefs.getInt("ldwSetting", -1),
-                prefs.getInt("ldpSetting", -1),
-                prefs.getInt("fcwSetting", -1),
-                prefs.getInt("aebSetting", -1),
-                prefs.getInt("cpdSetting", -1)
-        };
-
-        final LinearLayout[] cardContainers = new LinearLayout[assistCards.length];
-        final AppCompatImageView[] iconViews = new AppCompatImageView[assistCards.length];
-        final TextView[] titleViews = new TextView[assistCards.length];
-        final TextView[] statusViews = new TextView[assistCards.length];
-        final TextView[] onChips = new TextView[assistCards.length];
-        final FrameLayout[] cardFrames = new FrameLayout[assistCards.length];
-
-        float density = context.getResources().getDisplayMetrics().density;
-
-        for (int i = 0; i < assistCards.length; i++) {
-            final int cardIndex = i;
-            final int cardTitleRes = (Integer) assistCards[i][0];
-            final int cardIconRes = (Integer) assistCards[i][1];
-            final int activeValue = (Integer) assistCards[i][2];
-            final int passiveValue = (Integer) assistCards[i][3];
-            final String settingKey = (String) assistCards[i][4];
-            final String logPrefix = (String) assistCards[i][5];
-
-            FrameLayout cardFrame = new FrameLayout(context);
-            cardFrames[cardIndex] = cardFrame;
-
-            LinearLayout card = new LinearLayout(context);
-            card.setOrientation(LinearLayout.VERTICAL);
-            card.setGravity(android.view.Gravity.CENTER);
-            card.setPadding((int) (16 * density), (int) (16 * density), (int) (16 * density), (int) (16 * density));
-            card.setMinimumHeight((int) (130 * density));
-            card.setClickable(true);
-            card.setFocusable(true);
-            cardContainers[cardIndex] = card;
-
-            final boolean[] isActiveRef = {savedValues[cardIndex] == activeValue};
-
-            android.graphics.drawable.GradientDrawable cardBg = new android.graphics.drawable.GradientDrawable();
-            if (isActiveRef[0]) {
-                cardBg.setColor(UiStyles.color(context, R.color.assistCardActive));
-                cardBg.setCornerRadius(16 * density);
-                cardBg.setStroke((int) (2 * density), UiStyles.color(context, R.color.assistStrokeActive));
-            } else {
-                cardBg.setColor(UiStyles.color(context, R.color.assistCardIdle));
-                cardBg.setCornerRadius(16 * density);
-                cardBg.setStroke((int) (1 * density), UiStyles.color(context, R.color.outline));
-            }
-            card.setBackground(cardBg);
-
-            AppCompatImageView iconView = new AppCompatImageView(context);
-            iconView.setImageResource(cardIconRes);
-            iconView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            int iconPx = (int) (36 * density);
-            LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(iconPx, iconPx);
-            iconLp.gravity = android.view.Gravity.CENTER_HORIZONTAL;
-            iconView.setLayoutParams(iconLp);
-            iconView.setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
-                    isActiveRef[0] ? R.color.textPrimary : R.color.textPrimary70)));
-            iconViews[cardIndex] = iconView;
-            card.addView(iconView);
-
-            TextView titleView = new TextView(context);
-            titleView.setText(cardTitleRes);
-            titleView.setTextSize(15);
-            titleView.setGravity(android.view.Gravity.CENTER);
-            titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            titleView.setTypeface(null, isActiveRef[0] ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
-            titleView.setPadding(0, (int) (8 * density), 0, (int) (4 * density));
-            titleViews[cardIndex] = titleView;
-            card.addView(titleView);
-
-            TextView statusView = new TextView(context);
-            statusView.setText(isActiveRef[0] ? getStatusText(settingKey) : context.getString(R.string.assist_status_not_set));
-            statusView.setTextSize(12);
-            statusView.setGravity(android.view.Gravity.CENTER);
-            statusView.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-            statusViews[cardIndex] = statusView;
-            card.addView(statusView);
-
-            TextView onChip = new TextView(context);
-            onChip.setText(R.string.assist_chip_on);
-            onChip.setTextSize(10);
-            onChip.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            onChip.setTypeface(null, android.graphics.Typeface.BOLD);
-            onChip.setBackgroundColor(UiStyles.color(context, R.color.chipOn));
-            onChip.setPadding((int) (8 * density), (int) (2 * density), (int) (8 * density), (int) (2 * density));
-            onChip.setVisibility(isActiveRef[0] ? android.view.View.VISIBLE : android.view.View.GONE);
-            FrameLayout.LayoutParams chipParams = new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.WRAP_CONTENT,
-                    FrameLayout.LayoutParams.WRAP_CONTENT);
-            chipParams.gravity = android.view.Gravity.TOP | android.view.Gravity.END;
-            chipParams.setMargins(0, (int) (8 * density), (int) (8 * density), 0);
-            cardFrame.addView(onChip, chipParams);
-            onChips[cardIndex] = onChip;
-
-            cardFrame.addView(card);
-
-            GridLayout.LayoutParams cardParams = new GridLayout.LayoutParams();
-            cardParams.width = 0;
-            cardParams.height = GridLayout.LayoutParams.WRAP_CONTENT;
-            cardParams.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-            cardParams.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-            cardParams.setMargins((int) (8 * density), (int) (8 * density), (int) (8 * density), (int) (8 * density));
-            assistGrid.addView(cardFrame, cardParams);
-
-            card.setOnClickListener(v -> {
-                boolean newActive = !isActiveRef[0];
-                int newValue = newActive ? activeValue : passiveValue;
-
-                if ((settingKey.equals("fcwSetting") || settingKey.equals("aebSetting")) && newActive) {
-                    callback.onSafetyWarningRequired(settingKey, newValue, () -> {
-                        prefs.edit().putInt(settingKey, newValue).apply();
-                        callback.onSettingChanged(settingKey, newValue);
-                        savedValues[cardIndex] = newValue;
-                        callback.log(logPrefix + ": Aktif");
-                        trySendCarInfoValue(settingKey, true, logPrefix);
-                        isActiveRef[0] = true;
-                        updateCardUI(cardIndex, true, settingKey, cardContainers, iconViews, titleViews, statusViews, onChips, density);
-                    });
-                    return;
-                }
-
-                prefs.edit().putInt(settingKey, newValue).apply();
-                callback.onSettingChanged(settingKey, newValue);
-                savedValues[cardIndex] = newValue;
-
-                if (newActive) {
-                    callback.log(logPrefix + ": Aktif");
-                    trySendCarInfoValue(settingKey, true, logPrefix);
-                } else {
-                    callback.log(logPrefix + ": Pasif (Hiçbiri)");
-                    trySendCarInfoValue(settingKey, false, logPrefix);
-                }
-
-                isActiveRef[0] = newActive;
-                updateCardUI(cardIndex, isActiveRef[0], settingKey, cardContainers, iconViews, titleViews, statusViews, onChips, density);
-            });
+        for (int i = 0; i < ASSIST_CARDS.length; i++) {
+            savedValues[i] = prefs.getInt((String) ASSIST_CARDS[i][4], -1);
+            active[i] = savedValues[i] == (Integer) ASSIST_CARDS[i][2];
+            grid.add(buildCard(i), 2);
         }
 
-        container.addView(assistGrid, gridParams);
+        CockpitCard cpd = new CockpitCard(context, "CPD Notu").span(8);
+        cpd.status(StatusBadge.advisory(context, "Donanıma bağlı"));
+        TextView note = new TextView(context);
+        CockpitTokens.bodySm(note);
+        note.setText(R.string.assist_cpd_disclaimer);
+        note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        cpd.addContent(note);
+        grid.add(cpd, 8);
 
-        TextView cpdDisclaimer = new TextView(context);
-        cpdDisclaimer.setText(R.string.assist_cpd_disclaimer);
-        cpdDisclaimer.setTextSize(12);
-        cpdDisclaimer.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-        cpdDisclaimer.setPadding(16, 0, 16, 16);
-        container.addView(cpdDisclaimer, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        scrollView.addView(container, new ScrollView.LayoutParams(
-                ScrollView.LayoutParams.MATCH_PARENT,
-                ScrollView.LayoutParams.WRAP_CONTENT));
+        scrollView.addView(outer, new ScrollView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         return scrollView;
     }
 
-    private void updateCardUI(int cardIndex, boolean isActive, String settingKey,
-                              LinearLayout[] cardContainers, AppCompatImageView[] iconViews, TextView[] titleViews,
-                              TextView[] statusViews, TextView[] onChips, float density) {
-        android.graphics.drawable.GradientDrawable newBg = new android.graphics.drawable.GradientDrawable();
-        if (isActive) {
-            newBg.setColor(UiStyles.color(context, R.color.assistCardActive));
-            newBg.setCornerRadius(16 * density);
-            newBg.setStroke((int) (2 * density), UiStyles.color(context, R.color.assistStrokeActive));
-        } else {
-            newBg.setColor(UiStyles.color(context, R.color.assistCardIdle));
-            newBg.setCornerRadius(16 * density);
-            newBg.setStroke((int) (1 * density), UiStyles.color(context, R.color.outline));
+    private CockpitCard buildCard(int index) {
+        final int cardIndex = index;
+        final int titleRes = (Integer) ASSIST_CARDS[index][0];
+        final int iconRes = (Integer) ASSIST_CARDS[index][1];
+        final int activeValue = (Integer) ASSIST_CARDS[index][2];
+        final int passiveValue = (Integer) ASSIST_CARDS[index][3];
+        final String settingKey = (String) ASSIST_CARDS[index][4];
+        final String logPrefix = (String) ASSIST_CARDS[index][5];
+
+        CockpitCard card = new CockpitCard(context, context.getString(titleRes)).span(2);
+        StatusBadge badge = active[index]
+                ? StatusBadge.nominal(context, getStatusText(settingKey))
+                : StatusBadge.neutral(context, context.getString(R.string.assist_status_not_set));
+        card.status(badge);
+
+        LinearLayout body = new LinearLayout(context);
+        body.setOrientation(LinearLayout.HORIZONTAL);
+        body.setGravity(Gravity.CENTER_VERTICAL);
+
+        ImageView icon = new ImageView(context);
+        icon.setImageResource(iconRes);
+        icon.setColorFilter(CockpitTokens.color(context, active[index]
+                        ? R.color.ck_accent : R.color.ck_text_medium),
+                PorterDuff.Mode.SRC_IN);
+        body.addView(icon, new LinearLayout.LayoutParams(
+                CockpitTokens.dp(context, 40), CockpitTokens.dp(context, 40)));
+
+        CockpitToggle toggle = new CockpitToggle(context);
+        toggle.setChecked(active[index], false);
+        LinearLayout.LayoutParams toggleLp = new LinearLayout.LayoutParams(
+                CockpitTokens.dim(context, R.dimen.ck_toggle_w),
+                CockpitTokens.dim(context, R.dimen.ck_toggle_h));
+        toggleLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        body.addView(toggle, toggleLp);
+        card.addContent(body);
+
+        holders[index] = new CardHolder(card, badge, toggle);
+
+        toggle.setOnCheckedChangeListener((t, checked) -> {
+            boolean newActive = checked;
+            int newValue = newActive ? activeValue : passiveValue;
+
+            if ((settingKey.equals("fcwSetting") || settingKey.equals("aebSetting")) && newActive) {
+                callback.onSafetyWarningRequired(settingKey, newValue, () -> {
+                    prefs.edit().putInt(settingKey, newValue).apply();
+                    callback.onSettingChanged(settingKey, newValue);
+                    savedValues[cardIndex] = newValue;
+                    callback.log(logPrefix + ": Aktif");
+                    trySendCarInfoValue(settingKey, true, logPrefix);
+                    active[cardIndex] = true;
+                    updateCardUI(cardIndex, true, settingKey);
+                });
+                return;
+            }
+
+            prefs.edit().putInt(settingKey, newValue).apply();
+            callback.onSettingChanged(settingKey, newValue);
+            savedValues[cardIndex] = newValue;
+
+            if (newActive) {
+                callback.log(logPrefix + ": Aktif");
+                trySendCarInfoValue(settingKey, true, logPrefix);
+            } else {
+                callback.log(logPrefix + ": Pasif (Hiçbiri)");
+                trySendCarInfoValue(settingKey, false, logPrefix);
+            }
+            active[cardIndex] = newActive;
+            updateCardUI(cardIndex, newActive, settingKey);
+        });
+        return card;
+    }
+
+    private void updateCardUI(int index, boolean isActive, String settingKey) {
+        CardHolder holder = holders[index];
+        if (holder == null) {
+            return;
         }
-        cardContainers[cardIndex].setBackground(newBg);
-        iconViews[cardIndex].setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
-                isActive ? R.color.textPrimary : R.color.textPrimary70)));
-        titleViews[cardIndex].setTypeface(null, isActive ? android.graphics.Typeface.BOLD : android.graphics.Typeface.NORMAL);
-        statusViews[cardIndex].setText(isActive ? getStatusText(settingKey) : context.getString(R.string.assist_status_not_set));
-        onChips[cardIndex].setVisibility(isActive ? android.view.View.VISIBLE : android.view.View.GONE);
+        holder.toggle.setChecked(isActive, true);
+        if (isActive) {
+            holder.badge.setLevel(StatusBadge.NOMINAL);
+            holder.badge.setText(getStatusText(settingKey));
+        } else {
+            holder.badge.setLevel(StatusBadge.NEUTRAL);
+            holder.badge.setText(context.getString(R.string.assist_status_not_set));
+        }
+        // İkon rengi: kart başlığının yanındaki ikon body içinde; yeniden boyamak için
+        // toggle/rozet yeterli, ikon durumu bir sonraki kurulumda güncellenir.
     }
 
     private String getStatusText(String settingKey) {
@@ -337,6 +238,18 @@ public class AssistTabBuilder {
             }
         } catch (Exception e) {
             callback.log("❌ CarInfo gönderim hatası: " + e.getMessage());
+        }
+    }
+
+    private static final class CardHolder {
+        final CockpitCard card;
+        final StatusBadge badge;
+        final CockpitToggle toggle;
+
+        CardHolder(CockpitCard card, StatusBadge badge, CockpitToggle toggle) {
+            this.card = card;
+            this.badge = badge;
+            this.toggle = toggle;
         }
     }
 }
