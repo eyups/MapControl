@@ -1325,4 +1325,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_assist_cpd_note">CPD Notu</string>
     <string name="ck_assist_hardware_dep">Donanıma bağlı</string>
     <string name="ck_theme_locked_desc">Cockpit koyu teması sabittir. Gece/gündüz yeniden kurma altyapısı korunur.</string>
+
+    <string name="ck_settings_cat_general">Genel</string>
+    <string name="ck_settings_cat_system">Sistem</string>
+    <string name="ck_settings_cat_vehicle">Araç</string>
+    <string name="ck_settings_cat_app">Uygulama</string>
 </resources>

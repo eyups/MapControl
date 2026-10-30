@@ -1306,4 +1306,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_assist_cpd_note">CPD Note</string>
     <string name="ck_assist_hardware_dep">Hardware dependent</string>
     <string name="ck_theme_locked_desc">Cockpit dark theme is fixed. Day/night rebuild hooks are preserved.</string>
+
+    <string name="ck_settings_cat_general">General</string>
+    <string name="ck_settings_cat_system">System</string>
+    <string name="ck_settings_cat_vehicle">Vehicle</string>
+    <string name="ck_settings_cat_app">App</string>
 </resources>

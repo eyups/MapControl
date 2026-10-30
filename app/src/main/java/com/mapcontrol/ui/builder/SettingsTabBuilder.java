@@ -31,6 +31,9 @@ import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTestData;
 import com.mapcontrol.driving.DrivingTripStore;
 import com.mapcontrol.tts.MapControlSpeech;
+import com.mapcontrol.ui.cockpit.CockpitListRow;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.widget.SystemStatsOverlay;
@@ -116,29 +119,85 @@ public class SettingsTabBuilder {
             LinearLayout right = createSettingsCard();
             int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
             LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 2f);
             leftLp.setMarginEnd(gutter / 2);
             LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 6f);
             rightLp.setMarginStart(gutter / 2);
             columns.addView(left, leftLp);
             columns.addView(right, rightLp);
 
-            createThemeSection(left);
-            createLanguageSection(left);
-            createTtsSection(left);
-            createDrivingCoachSection(left);
-            createDrivingTestDataSection(left);
-            createAppInfoSection(left);
-            createBootAutostartSection(left);
-            createCloudSection(left);
+            LinearLayout general = sectionGroup();
+            createThemeSection(general);
+            createLanguageSection(general);
+            createTtsSection(general);
+            createDrivingCoachSection(general);
+            createDrivingTestDataSection(general);
 
-            createAdbSection(right);
-            createSystemStatsSection(right);
-            createPermissionsSection(right);
-            createFloatingBackButtonSection(right);
-            createLauncherModeSection(right);
-            createVehicleModelSection(right);
+            LinearLayout system = sectionGroup();
+            createAdbSection(system);
+            createSystemStatsSection(system);
+            createPermissionsSection(system);
+            createFloatingBackButtonSection(system);
+
+            LinearLayout vehicle = sectionGroup();
+            createLauncherModeSection(vehicle);
+            createVehicleModelSection(vehicle);
+
+            LinearLayout app = sectionGroup();
+            createAppInfoSection(app);
+            createBootAutostartSection(app);
+            createCloudSection(app);
+
+            final LinearLayout[] groups = {general, system, vehicle, app};
+            final CockpitListRow[] selectedRow = {null};
+            int[] icons = {R.drawable.ic_mdi_cog, R.drawable.ic_mdi_cellphone,
+                    R.drawable.ic_mdi_car, R.drawable.ic_mdi_package_variant};
+            int[] labels = {R.string.ck_settings_cat_general, R.string.ck_settings_cat_system,
+                    R.string.ck_settings_cat_vehicle, R.string.ck_settings_cat_app};
+            for (int i = 0; i < groups.length; i++) {
+                final int index = i;
+                CockpitListRow row = new CockpitListRow(context, icons[i],
+                        context.getString(labels[i]), null);
+                TextView chevron = new TextView(context);
+                CockpitTokens.headlineSm(chevron);
+                chevron.setText("›");
+                chevron.setTextColor(CockpitTokens.color(context, R.color.ck_text_muted));
+                row.trailing(chevron);
+                row.clickRow(v -> {
+                    if (selectedRow[0] != null) {
+                        selectedRow[0].setBackground(CockpitSurfaces.outlined(context,
+                                CockpitTokens.color(context, R.color.ck_surface_1),
+                                CockpitTokens.color(context, R.color.ck_stroke), 16f));
+                    }
+                    selectedRow[0] = row;
+                    row.setBackground(CockpitSurfaces.outlined(context,
+                            CockpitTokens.color(context, R.color.ck_surface_2),
+                            CockpitTokens.color(context, R.color.ck_accent), 16f));
+                    right.removeAllViews();
+                    right.addView(groups[index], new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT));
+                });
+                left.addView(row, new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams gap = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        CockpitTokens.dim(context, R.dimen.ck_space_sm));
+                left.addView(new View(context), gap);
+            }
+
+            // Varsayılan kategori: Genel
+            if (left.getChildCount() > 0 && left.getChildAt(0) instanceof CockpitListRow) {
+                selectedRow[0] = (CockpitListRow) left.getChildAt(0);
+                selectedRow[0].setBackground(CockpitSurfaces.outlined(context,
+                        CockpitTokens.color(context, R.color.ck_surface_2),
+                        CockpitTokens.color(context, R.color.ck_accent), 16f));
+            }
+            right.addView(general, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
 
             parent.addView(columns, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -164,6 +223,14 @@ public class SettingsTabBuilder {
         parent.addView(card, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private LinearLayout sectionGroup() {
+        LinearLayout group = new LinearLayout(context);
+        group.setOrientation(LinearLayout.VERTICAL);
+        group.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_sm), 0,
+                CockpitTokens.dim(context, R.dimen.ck_space_sm), 0);
+        return group;
     }
 
     private void createCloudSection(LinearLayout parentContainer) {
