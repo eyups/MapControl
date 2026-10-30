@@ -63,7 +63,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private MetricView odoValue;
     private StatusBadge statusBadge;
     private CockpitCard onboardingCard;
-    private LinearLayout lastDriveHost;
+    private View lastDriveCard;
     private volatile boolean tabVisible;
 
     public HomeTabBuilder(Context context, VehicleMetricsRepository repository, HomeCallback callback) {
@@ -81,7 +81,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
     public void startListening() {
         tabVisible = true;
-        renderLastDrive();
+        // Last drive is built once with the tab; live trip updates are reflected on next open.
         repository.removeListener(this);
         repository.addListener(this);
         repository.refresh();
@@ -117,10 +117,9 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
         grid.add(buildVehicleCard(), 4);
         grid.add(buildQuickActions(), 4);
-        grid.add(buildValetCard(), 8);
-        grid.add(buildOnboardingCard(), 8);
-        grid.add(buildLastDriveHost(), 8);
-        renderLastDrive();
+        grid.addFullWidth(buildLastDriveCard());
+        grid.addFullWidth(buildValetCard());
+        grid.addFullWidth(buildOnboardingCard());
     }
 
     private View buildHero() {
@@ -253,23 +252,9 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         return onboardingCard;
     }
 
-    private View buildLastDriveHost() {
-        lastDriveHost = new LinearLayout(context);
-        lastDriveHost.setOrientation(LinearLayout.VERTICAL);
-        return lastDriveHost;
-    }
-
-    private void renderLastDrive() {
-        if (lastDriveHost == null) {
-            return;
-        }
-        lastDriveHost.removeAllViews();
-        lastDriveHost.addView(buildLastDriveCard(), new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-    }
-
     private CockpitCard buildLastDriveCard() {
-        CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_last_drive)).span(8);
+        CockpitCard card = new CockpitCard(context,
+                context.getString(R.string.ck_home_last_drive)).span(8);
         DrivingSessionRecorder recorder = DrivingSessionRecorder.get(context);
         DrivingTrip trip = recorder.isActive() ? recorder.getDisplayTrip() : recorder.getLastTrip();
         if (trip == null) {
@@ -279,51 +264,50 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             }
         }
         if (trip == null) {
-            card.status(StatusBadge.neutral(context, context.getString(R.string.ck_home_no_record)));
+            card.status(StatusBadge.neutral(context,
+                    context.getString(R.string.ck_home_no_record)));
             TextView empty = new TextView(context);
-            CockpitTokens.bodySm(empty);
+            CockpitTokens.bodyMd(empty);
+            empty.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
             empty.setText(context.getString(R.string.ck_home_no_drive));
             card.addContent(empty);
             return card;
         }
 
-        card.status(StatusBadge.nominal(context, recorder.isActive() ? context.getString(R.string.ck_home_in_progress) : context.getString(R.string.ck_home_completed)));
+        card.status(StatusBadge.nominal(context, recorder.isActive()
+                ? context.getString(R.string.ck_home_in_progress)
+                : context.getString(R.string.ck_home_completed)));
+
         LinearLayout row = new LinearLayout(context);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        MetricView score = new MetricView(context, context.getString(R.string.ck_home_score)).value(String.valueOf(trip.score));
-        score.setMinimumWidth(CockpitTokens.dp(context, 160));
-        row.addView(score);
 
-        LinearLayout info = new LinearLayout(context);
-        info.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams infoLp = new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        infoLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
-        row.addView(info, infoLp);
+        TextView score = new TextView(context);
+        CockpitTokens.display(score);
+        score.setText(String.valueOf(trip.score));
+        score.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        row.addView(score, new LinearLayout.LayoutParams(
+                CockpitTokens.dp(context, 150), LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        TextView title = new TextView(context);
-        CockpitTokens.title(title);
-        title.setText(trip.title.isEmpty() ? context.getString(R.string.ck_home_drive) : trip.title);
-        info.addView(title);
-
+        TextView info = new TextView(context);
+        CockpitTokens.bodyMd(info);
         SimpleDateFormat fmt = new SimpleDateFormat("d MMM · HH:mm", new Locale("tr", "TR"));
-        TextView meta = new TextView(context);
-        CockpitTokens.bodySm(meta);
-        meta.setText(fmt.format(new Date(trip.startTimeMs))
-                + " · " + String.format(Locale.getDefault(), "%.1f km", trip.distanceKm));
-        info.addView(meta);
-
+        String meta = (trip.title.isEmpty() ? context.getString(R.string.ck_home_drive) : trip.title)
+                + "\n" + fmt.format(new Date(trip.startTimeMs))
+                + " · " + String.format(Locale.getDefault(), "%.1f km", trip.distanceKm);
         if (trip.consumptionL100 > 0) {
-            TextView cons = new TextView(context);
-            CockpitTokens.mono(cons);
-            cons.setText(String.format(Locale.getDefault(), "%.1f L/100 km", trip.consumptionL100));
-            info.addView(cons);
+            meta += "\n" + String.format(Locale.getDefault(), "%.1f L/100 km", trip.consumptionL100);
         }
+        info.setText(meta);
+        info.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        row.addView(info, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         card.addContent(row);
 
-        CockpitButton open = CockpitButton.secondary(context, context.getString(R.string.ck_home_view_all));
-        open.setOnClickListener(v -> callback.onNavigate(TAB_DRIVING_HISTORY, context.getString(R.string.ck_home_drive_report)));
+        CockpitButton open = CockpitButton.secondary(context,
+                context.getString(R.string.ck_home_view_all));
+        open.setOnClickListener(v -> callback.onNavigate(TAB_DRIVING_HISTORY,
+                context.getString(R.string.ck_home_drive_report)));
         card.addAction(open);
         return card;
     }

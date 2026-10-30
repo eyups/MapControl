@@ -36,6 +36,14 @@ public class CockpitGrid extends LinearLayout {
         used += span;
     }
 
+    /** Full-width row without weight measurement (nested layouts with text). */
+    public void addFullWidth(View view) {
+        newRow();
+        currentRow.addView(view, new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT));
+        used = COLUMNS;
+    }
+
     public void addRow(View view) {
         newRow();
         currentRow.addView(view, new LinearLayout.LayoutParams(0,

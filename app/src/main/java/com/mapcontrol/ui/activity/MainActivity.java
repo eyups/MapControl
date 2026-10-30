@@ -462,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
                         crossfadeContent(() -> {
                             switchTab(tabIndex);
                             if (topBarTitle != null) {
-                                topBarTitle.setText(title);
+                                topBarTitle.setText(CockpitNavModel.title(MainActivity.this, tabIndex));
                             }
                             if (tabIndex == TAB_DRIVING_HISTORY && drivingHistoryTabBuilder != null) {
                                 drivingHistoryTabBuilder.onTabVisible();

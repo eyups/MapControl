@@ -21,6 +21,11 @@ import com.mapcontrol.driving.DrivingTripStore;
 import com.mapcontrol.driving.DrivingTrendBarsView;
 import com.mapcontrol.driving.DrivingTrends;
 import com.mapcontrol.ui.activity.DrivingAnalysisActivity;
+import com.mapcontrol.ui.cockpit.CockpitButton;
+import com.mapcontrol.ui.cockpit.CockpitChip;
+import com.mapcontrol.ui.cockpit.CockpitEmptyState;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.AppLocaleManager;
 
@@ -124,10 +129,8 @@ public class DrivingHistoryTabBuilder {
             String message = filterDays > 0
                     ? "Seçilen dönemde kayıtlı sürüş yok."
                     : context.getString(R.string.driving_history_empty);
-            TextView empty = text(message, 16,
-                    UiStyles.color(context, R.color.textSecondary), false);
-            empty.setGravity(Gravity.CENTER);
-            empty.setPadding(dp(24), dp(48), dp(24), dp(48));
+            CockpitEmptyState empty = new CockpitEmptyState(context,
+                    R.drawable.ic_mdi_road_variant, message);
             listContainer.addView(empty, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -135,12 +138,7 @@ public class DrivingHistoryTabBuilder {
     }
 
     private void addFilterChip(String label, int days) {
-        TextView chip = text(label, 12,
-                UiStyles.color(context, R.color.textSecondary), true);
-        chip.setGravity(Gravity.CENTER);
-        chip.setPadding(dp(12), dp(7), dp(12), dp(7));
-        chip.setClickable(true);
-        chip.setFocusable(true);
+        CockpitChip chip = new CockpitChip(context, label);
         chip.setOnClickListener(v -> {
             filterDays = days;
             updateFilterChips();
@@ -148,7 +146,7 @@ public class DrivingHistoryTabBuilder {
         });
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+                CockpitTokens.dim(context, R.dimen.ck_chip_h));
         lp.setMarginEnd(dp(8));
         filterBar.addView(chip, lp);
         filterChips.add(chip);
@@ -160,15 +158,9 @@ public class DrivingHistoryTabBuilder {
         for (int i = 0; i < filterChips.size(); i++) {
             TextView chip = filterChips.get(i);
             boolean selected = filterDaysValues.get(i) == filterDays;
-            GradientDrawable bg = new GradientDrawable();
-            bg.setColor(UiStyles.color(context, selected
-                    ? R.color.oemAccent : R.color.surfaceCardElevated));
-            bg.setCornerRadius(dp(9));
-            bg.setStroke(Math.max(1, Math.round(dp(1))),
-                    UiStyles.color(context, R.color.outlineSubtle));
-            chip.setBackground(bg);
-            chip.setTextColor(UiStyles.color(context, selected
-                    ? R.color.textPrimary : R.color.textSecondary));
+            if (chip instanceof CockpitChip) {
+                ((CockpitChip) chip).setSelectedState(selected);
+            }
         }
     }
 
@@ -191,12 +183,7 @@ public class DrivingHistoryTabBuilder {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(dp(16), dp(14), dp(16), dp(14));
-        GradientDrawable background = new GradientDrawable();
-        background.setColor(UiStyles.color(context, R.color.surfaceCard));
-        background.setCornerRadius(dp(16));
-        background.setStroke(Math.max(1, Math.round(dp(1))),
-                UiStyles.color(context, R.color.outlineSubtle));
-        card.setBackground(background);
+        CockpitSurfaces.level1(card);
         LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -421,9 +408,9 @@ public class DrivingHistoryTabBuilder {
     }
 
     private TextView sectionLabel(int labelResId) {
-        TextView label = text(labelResId, 11,
-                UiStyles.color(context, R.color.textHint), true);
-        label.setLetterSpacing(0.16f);
+        TextView label = text(labelResId, 13,
+                UiStyles.color(context, R.color.textSecondary), true);
+        CockpitTokens.labelCaps(label);
         label.setPadding(0, dp(14), 0, dp(6));
         return label;
     }
@@ -439,15 +426,8 @@ public class DrivingHistoryTabBuilder {
         header.addView(subtitle, new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        Button refresh = new Button(context);
-        refresh.setText(R.string.driving_history_refresh);
-        refresh.setAllCaps(false);
-        refresh.setTextSize(13);
-        refresh.setTypeface(null, Typeface.BOLD);
-        refresh.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        refresh.setPadding(dp(16), dp(8), dp(16), dp(8));
-        UiStyles.styleOemButton(refresh,
-                UiStyles.color(context, R.color.buttonSecondaryMuted));
+        CockpitButton refresh = CockpitButton.secondary(context,
+                context.getString(R.string.driving_history_refresh));
         refresh.setOnClickListener(v -> refresh());
         header.addView(refresh, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -469,12 +449,7 @@ public class DrivingHistoryTabBuilder {
         card.setPadding(dp(16), dp(12), dp(16), dp(12));
         card.setClickable(true);
         card.setFocusable(true);
-        GradientDrawable background = new GradientDrawable();
-        background.setColor(UiStyles.color(context, R.color.surfaceCard));
-        background.setCornerRadius(dp(16));
-        background.setStroke(Math.max(1, Math.round(dp(1))),
-                UiStyles.color(context, R.color.outlineSubtle));
-        card.setBackground(background);
+        CockpitSurfaces.level1(card);
 
         if (wide) {
             LinearLayout.LayoutParams scoreLp = new LinearLayout.LayoutParams(
