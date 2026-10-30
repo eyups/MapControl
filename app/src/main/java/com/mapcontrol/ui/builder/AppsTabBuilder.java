@@ -49,6 +49,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitEmptyState;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.NetworkWifiHelper;
@@ -199,30 +202,23 @@ public class AppsTabBuilder {
         serverListBound = false;
         tabContent = new LinearLayout(context);
         tabContent.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        tabContent.setPadding(margin, margin, margin, margin);
-        tabContent.setBackgroundColor(UiStyles.color(context, R.color.transparent));
-
-        LinearLayout card = new LinearLayout(context);
-        card.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        tabContent.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
+        tabContent.setBackgroundColor(android.graphics.Color.TRANSPARENT);
 
         ScrollView appsListScrollView = new ScrollView(context);
-        appsListScrollView.setBackgroundColor(UiStyles.color(context, R.color.transparent));
-        appsListScrollView.setPadding(0, 0, 0, 0);
+        appsListScrollView.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        appsListScrollView.setFillViewport(true);
+        appsListScrollView.setClipToPadding(false);
 
         appsListContainer = new LinearLayout(context);
         appsListContainer.setOrientation(LinearLayout.VERTICAL);
-        appsListScrollView.addView(appsListContainer);
-
-        LinearLayout.LayoutParams appsListParams = new LinearLayout.LayoutParams(
+        appsListScrollView.addView(appsListContainer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                0, 1f);
-        card.addView(appsListScrollView, appsListParams);
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        tabContent.addView(card, new LinearLayout.LayoutParams(
+        tabContent.addView(appsListScrollView, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0, 1f));
 
@@ -278,8 +274,9 @@ public class AppsTabBuilder {
 
         Button btnModeToggle = new Button(ctx);
         updateModeToggleButton(btnModeToggle);
-        btnModeToggle.setTextSize(16);
-        btnModeToggle.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+        btnModeToggle.setTextSize(15);
+        btnModeToggle.setTypeface(CockpitTokens.inter(ctx, CockpitTokens.WEIGHT_MEDIUM));
+        btnModeToggle.setTextColor(CockpitTokens.color(ctx, R.color.ck_text_high));
         btnModeToggle.setBackgroundColor(UiStyles.color(ctx, R.color.transparent));
         btnModeToggle.setPadding(12, 12, 12, 12);
         btnModeToggle.setOnClickListener(v -> {
@@ -298,7 +295,7 @@ public class AppsTabBuilder {
         toggleParams.setMargins(0, 0, 4, 0);
         container.addView(btnModeToggle, toggleParams);
 
-        int destructive = UiStyles.color(ctx, R.color.textDestructive);
+        int destructive = CockpitTokens.color(ctx, R.color.ck_critical);
         int iconGap = UiStyles.dimenPx(ctx, R.dimen.spacing_small);
 
         Button btnDeleteOps = new Button(ctx);
@@ -329,9 +326,12 @@ public class AppsTabBuilder {
     private static void styleTopBarAction(Button button, int color) {
         button.setAllCaps(false);
         button.setTextSize(15);
+        button.setTypeface(CockpitTokens.inter(button.getContext(),
+                CockpitTokens.WEIGHT_MEDIUM));
         button.setTextColor(color);
-        button.setBackgroundColor(UiStyles.color(button.getContext(), R.color.transparent));
-        button.setPadding(12, 12, 12, 12);
+        button.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        button.setPadding(12, 8, 12, 8);
+        button.setMinHeight(CockpitTokens.dim(button.getContext(), R.dimen.ck_touch_min));
         button.setMinWidth(0);
         button.setMinimumWidth(0);
     }
@@ -348,9 +348,11 @@ public class AppsTabBuilder {
     private void updateModeToggleButton(Button btnModeToggle) {
         if (btnModeToggle == null) return;
         int icon = isLocalMode ? R.drawable.ic_mdi_cellphone : R.drawable.ic_mdi_web;
+        int tint = CockpitTokens.color(context,
+                isLocalMode ? R.color.ck_text_high : R.color.ck_accent);
         btnModeToggle.setText(isLocalMode ? R.string.apps_mode_local : R.string.apps_mode_server);
-        UiStyles.setButtonStartIconTinted(btnModeToggle, icon,
-                UiStyles.color(context, R.color.textPrimary),
+        btnModeToggle.setTextColor(tint);
+        UiStyles.setButtonStartIconTinted(btnModeToggle, icon, tint,
                 UiStyles.dimenPx(context, R.dimen.spacing_small));
     }
 
@@ -420,14 +422,19 @@ public class AppsTabBuilder {
         if (appsListContainer == null) return;
         serverListBound = false;
         appRows.clear();
+        appsListContainer.removeAllViews();
 
         try {
             PackageManager pm = context.getPackageManager();
+            CockpitCard card = new CockpitCard(context,
+                    context.getString(R.string.apps_mode_local));
+            LinearLayout rows = new LinearLayout(context);
+            rows.setOrientation(LinearLayout.VERTICAL);
+            card.addContent(rows);
 
             for (PackageInfo pkgInfo : packages) {
                 String packageName = pkgInfo.packageName;
                 String currentVersion = pkgInfo.versionName != null ? pkgInfo.versionName : "0";
-
                 String displayName = packageName;
                 try {
                     ApplicationInfo appInfo = pm.getApplicationInfo(packageName, 0);
@@ -438,81 +445,63 @@ public class AppsTabBuilder {
 
                 final String finalPackageName = packageName;
                 final String finalDisplayName = displayName;
-                final String finalCurrentVersion = currentVersion;
 
                 LinearLayout appCard = new LinearLayout(context);
                 appCard.setOrientation(LinearLayout.HORIZONTAL);
-                appCard.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
-                        CockpitTokens.dim(context, R.dimen.ck_space_sm),
-                        CockpitTokens.dim(context, R.dimen.ck_space_md),
-                        CockpitTokens.dim(context, R.dimen.ck_space_sm));
+                int cardPadH = CockpitTokens.dim(context, R.dimen.ck_space_md);
+                int cardPadV = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+                appCard.setPadding(cardPadH, cardPadV, cardPadH, cardPadV);
                 appCard.setGravity(android.view.Gravity.CENTER_VERTICAL);
-                appCard.setClickable(true);
-                appCard.setFocusable(true);
-
-                UiStyles.applySolidRoundedBackgroundDp(appCard,
-                        UiStyles.color(context, R.color.surfaceCardInner), 16f);
-
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    appCard.setElevation(2f);
-                }
-
+                appCard.setBackground(CockpitSurfaces.outlined(context,
+                        CockpitTokens.color(context, R.color.ck_surface_2),
+                        CockpitTokens.color(context, R.color.ck_stroke), 16f));
+                appCard.setMinimumHeight(CockpitTokens.dp(context, 84));
                 LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 cardParams.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
-                appCard.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
 
                 android.widget.ImageView appIcon = new android.widget.ImageView(context);
                 try {
-                    android.graphics.drawable.Drawable icon = pm.getApplicationIcon(finalPackageName);
-                    appIcon.setImageDrawable(icon);
+                    appIcon.setImageDrawable(pm.getApplicationIcon(finalPackageName));
                 } catch (Exception e) {
                     appIcon.setImageResource(android.R.drawable.sym_def_app_icon);
                 }
                 appIcon.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
                 LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
-                        CockpitTokens.dp(context, 40), CockpitTokens.dp(context, 40));
-                iconParams.setMargins(0, 0, 16, 0);
+                        CockpitTokens.dp(context, 44), CockpitTokens.dp(context, 44));
+                iconParams.setMargins(0, 0, cardPadH, 0);
                 appCard.addView(appIcon, iconParams);
 
                 LinearLayout infoContainer = new LinearLayout(context);
                 infoContainer.setOrientation(LinearLayout.VERTICAL);
-                infoContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
-
                 TextView nameText = new TextView(context);
                 nameText.setText(finalDisplayName);
-                nameText.setTextColor(UiStyles.color(context, R.color.textPrimary));
-                nameText.setTextSize(17);
-                nameText.setTypeface(null, android.graphics.Typeface.NORMAL);
+                CockpitTokens.title(nameText);
                 infoContainer.addView(nameText);
 
                 TextView statusText = new TextView(context);
-                statusText.setText(context.getString(R.string.apps_status_installed, finalCurrentVersion));
-                statusText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-                statusText.setTextSize(13);
+                statusText.setText(context.getString(R.string.apps_status_installed, currentVersion));
+                CockpitTokens.bodySm(statusText);
+                statusText.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
                 LinearLayout.LayoutParams statusParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-                statusParams.setMargins(0, 4, 0, 0);
+                statusParams.topMargin = CockpitTokens.dp(context, 4);
                 infoContainer.addView(statusText, statusParams);
-
-                LinearLayout.LayoutParams infoParams = new LinearLayout.LayoutParams(
-                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-                appCard.addView(infoContainer, infoParams);
-
-                LinearLayout rightContainer = new LinearLayout(context);
-                rightContainer.setOrientation(LinearLayout.HORIZONTAL);
-                rightContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
+                appCard.addView(infoContainer, new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
                 Button actionButton = new Button(context);
                 actionButton.setText(R.string.apps_action_open);
                 actionButton.setTextSize(15);
-                actionButton.setTypeface(null, android.graphics.Typeface.BOLD);
-                actionButton.setPadding(24, 12, 24, 12);
-
-                UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonPrimary));
-                actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+                actionButton.setTypeface(CockpitTokens.inter(context,
+                        CockpitTokens.WEIGHT_SEMIBOLD));
+                actionButton.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+                actionButton.setMinWidth(CockpitTokens.dp(context, 88));
+                UiStyles.styleOemButton(actionButton,
+                        CockpitTokens.color(context, R.color.ck_accent));
+                actionButton.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
                 actionButton.setOnClickListener(v -> {
                     try {
                         Intent launchIntent = pm.getLaunchIntentForPackage(finalPackageName);
@@ -527,55 +516,34 @@ public class AppsTabBuilder {
                         Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();
                     }
                 });
-                rightContainer.addView(actionButton);
+                appCard.addView(actionButton);
 
                 Button removeButton = new Button(context);
                 removeButton.setText(R.string.apps_action_remove);
                 removeButton.setTextSize(15);
+                removeButton.setTypeface(CockpitTokens.inter(context,
+                        CockpitTokens.WEIGHT_SEMIBOLD));
+                removeButton.setTextColor(CockpitTokens.color(context, R.color.ck_critical));
+                removeButton.setBackgroundColor(android.graphics.Color.TRANSPARENT);
                 removeButton.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
-                removeButton.setTypeface(null, android.graphics.Typeface.BOLD);
-                removeButton.setTextColor(UiStyles.color(context, R.color.textDestructive));
-                removeButton.setBackgroundColor(UiStyles.color(context, R.color.transparent));
-                removeButton.setPadding(18, 12, 18, 12);
+                removeButton.setMinWidth(CockpitTokens.dp(context, 72));
+                removeButton.setPadding(12, 8, 12, 8);
                 removeButton.setOnClickListener(v -> uninstallApp(finalPackageName, finalDisplayName));
                 LinearLayout.LayoutParams removeParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-                removeParams.setMargins(UiStyles.dimenPx(context, R.dimen.spacing_medium), 0, 0, 0);
-                rightContainer.addView(removeButton, removeParams);
+                removeParams.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+                appCard.addView(removeButton, removeParams);
 
-                appCard.addView(rightContainer);
-                appsListContainer.addView(appCard, cardParams);
+                rows.addView(appCard, cardParams);
             }
 
             if (packages.isEmpty()) {
-                float d = context.getResources().getDisplayMetrics().density;
-                LinearLayout emptyCard = new LinearLayout(context);
-                emptyCard.setOrientation(LinearLayout.VERTICAL);
-                emptyCard.setGravity(android.view.Gravity.CENTER);
-                emptyCard.setPadding(32, 48, 32, 48);
-
-                AppCompatImageView emptyIcon = new AppCompatImageView(context);
-                emptyIcon.setImageResource(R.drawable.ic_mdi_package_variant);
-                emptyIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                int iconPx = Math.round(56 * d);
-                emptyIcon.setLayoutParams(new LinearLayout.LayoutParams(iconPx, iconPx));
-                emptyIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textMuted)));
-                emptyCard.addView(emptyIcon);
-
-                TextView emptyText = new TextView(context);
-                emptyText.setText(R.string.apps_local_empty);
-                emptyText.setTextColor(UiStyles.color(context, R.color.textMuted));
-                emptyText.setTextSize(15);
-                emptyText.setGravity(android.view.Gravity.CENTER);
-                LinearLayout.LayoutParams etLp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                etLp.topMargin = Math.round(16 * d);
-                emptyCard.addView(emptyText, etLp);
-
-                appsListContainer.addView(emptyCard);
+                card.addContent(new CockpitEmptyState(context,
+                        R.drawable.ic_mdi_package_variant,
+                        context.getString(R.string.apps_local_empty)));
             }
+            addCatalogCard(card);
         } catch (Exception e) {
             callback.log("Yerel uygulama listesi gösterim hatası: " + e.getMessage());
         }
@@ -696,12 +664,11 @@ public class AppsTabBuilder {
         serverListBound = false;
         appRows.clear();
         appsListContainer.removeAllViews();
-        TextView loadingText = new TextView(context);
-        loadingText.setText(reconnecting ? R.string.apps_server_reconnecting : R.string.common_loading);
-        loadingText.setTextColor(UiStyles.color(context, reconnecting ? R.color.textSecondaryCool : R.color.textLoading));
-        loadingText.setTextSize(14);
-        loadingText.setPadding(8, 8, 8, 8);
-        appsListContainer.addView(loadingText);
+        CockpitCard loadingCard = new CockpitCard(context);
+        loadingCard.addContent(new com.mapcontrol.ui.cockpit.CockpitLoading(context,
+                context.getString(reconnecting
+                        ? R.string.apps_server_reconnecting : R.string.common_loading)));
+        addCatalogCard(loadingCard);
     }
 
     private void onServerLoadFailed(String detail) {
@@ -772,12 +739,15 @@ public class AppsTabBuilder {
         if (appsListContainer == null || listArray == null) return;
         serverListBound = true;
         appRows.clear();
+        appsListContainer.removeAllViews();
 
         try {
             PackageManager pm = context.getPackageManager();
             rebuildCatalog(listArray);
 
             Set<String> renderedGroups = new HashSet<>();
+            CockpitCard catalogCard = null;
+            LinearLayout catalogRows = null;
             for (int i = 0; i < listArray.length(); i++) {
                 JSONObject appObj = listArray.getJSONObject(i);
                 String groupId = appObj.optString("group", "").trim();
@@ -787,83 +757,62 @@ public class AppsTabBuilder {
                     }
                     continue;
                 }
-                addServerAppCard(appObj, pm, appsListContainer);
+                if (catalogCard == null) {
+                    catalogCard = new CockpitCard(context,
+                            context.getString(R.string.apps_catalog_title));
+                    catalogRows = new LinearLayout(context);
+                    catalogRows.setOrientation(LinearLayout.VERTICAL);
+                    catalogCard.addContent(catalogRows);
+                    addCatalogCard(catalogCard);
+                }
+                addServerAppCard(appObj, pm, catalogRows);
             }
 
             if (listArray.length() == 0) {
-                float d = context.getResources().getDisplayMetrics().density;
-                LinearLayout emptyCard = new LinearLayout(context);
-                emptyCard.setOrientation(LinearLayout.VERTICAL);
-                emptyCard.setGravity(android.view.Gravity.CENTER);
-                emptyCard.setPadding(32, 48, 32, 48);
-                AppCompatImageView emptyIcon = new AppCompatImageView(context);
-                emptyIcon.setImageResource(R.drawable.ic_mdi_package_variant);
-                emptyIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                int iconPx = Math.round(56 * d);
-                emptyIcon.setLayoutParams(new LinearLayout.LayoutParams(iconPx, iconPx));
-                emptyIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textMuted)));
-                emptyCard.addView(emptyIcon);
-                TextView emptyText = new TextView(context);
-                emptyText.setText(R.string.apps_remote_empty);
-                emptyText.setTextColor(UiStyles.color(context, R.color.textMuted));
-                emptyText.setTextSize(15);
-                emptyText.setGravity(android.view.Gravity.CENTER);
-                LinearLayout.LayoutParams etLp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                etLp.topMargin = Math.round(16 * d);
-                emptyCard.addView(emptyText, etLp);
-                appsListContainer.addView(emptyCard);
+                CockpitCard emptyCard = new CockpitCard(context);
+                CockpitEmptyState empty = new CockpitEmptyState(context,
+                        R.drawable.ic_mdi_package_variant,
+                        context.getString(R.string.apps_remote_empty));
+                emptyCard.addContent(empty);
+                addCatalogCard(emptyCard);
             }
         } catch (Exception e) {
             callback.log("Uygulama listesi gösterim hatası: " + e.getMessage());
         }
     }
 
+    private void addCatalogCard(CockpitCard card) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+        appsListContainer.addView(card, lp);
+    }
+
     private void addGroupSection(String groupId, JSONArray listArray, PackageManager pm) throws JSONException {
         CatalogGroup group = catalogGroups.get(groupId);
-        float density = context.getResources().getDisplayMetrics().density;
-        int pad = Math.round(12 * density);
-
-        LinearLayout section = new LinearLayout(context);
-        section.setOrientation(LinearLayout.VERTICAL);
-        section.setPadding(pad, pad, pad, Math.round(4 * density));
-        UiStyles.applySolidRoundedBackgroundDp(section,
-                UiStyles.color(context, R.color.surfaceCardElevated), 16f);
-
-        TextView title = new TextView(context);
-        String titleText = group != null && !group.title.trim().isEmpty() ? group.title.trim() : groupId;
-        title.setText(titleText);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        title.setTextSize(15);
-        title.setTypeface(null, android.graphics.Typeface.BOLD);
-        section.addView(title);
+        String titleText = group != null && !group.title.trim().isEmpty()
+                ? group.title.trim() : groupId;
+        CockpitCard card = new CockpitCard(context, titleText);
 
         if (group != null && !group.warning.trim().isEmpty()) {
             TextView warn = new TextView(context);
+            CockpitTokens.bodySm(warn);
             warn.setText(group.warning.trim());
-            warn.setTextColor(UiStyles.color(context, R.color.statusWarning));
-            warn.setTextSize(13);
-            LinearLayout.LayoutParams warnParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            warnParams.topMargin = Math.round(4 * density);
-            warnParams.bottomMargin = Math.round(8 * density);
-            section.addView(warn, warnParams);
+            warn.setTextColor(CockpitTokens.color(context, R.color.ck_caution));
+            card.addContent(warn);
         }
 
+        LinearLayout rows = new LinearLayout(context);
+        rows.setOrientation(LinearLayout.VERTICAL);
+        card.addContent(rows);
         for (int i = 0; i < listArray.length(); i++) {
             JSONObject appObj = listArray.getJSONObject(i);
             if (groupId.equals(appObj.optString("group", "").trim())) {
-                addServerAppCard(appObj, pm, section);
+                addServerAppCard(appObj, pm, rows);
             }
         }
-
-        LinearLayout.LayoutParams sectionParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        sectionParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
-        appsListContainer.addView(section, sectionParams);
+        addCatalogCard(card);
     }
 
     private void addServerAppCard(JSONObject appObj, PackageManager pm, LinearLayout container) throws JSONException {
@@ -898,22 +847,21 @@ public class AppsTabBuilder {
 
         LinearLayout appCard = new LinearLayout(context);
         appCard.setOrientation(LinearLayout.HORIZONTAL);
-        appCard.setPadding(20, 20, 20, 20);
+        int cardPadH = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        int cardPadV = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        appCard.setPadding(cardPadH, cardPadV, cardPadH, cardPadV);
         appCard.setGravity(android.view.Gravity.CENTER_VERTICAL);
         appCard.setClickable(true);
         appCard.setFocusable(true);
-
-        UiStyles.applySolidRoundedBackgroundDp(appCard,
-                UiStyles.color(context, R.color.surfaceCardInner), 16f);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            appCard.setElevation(2f);
-        }
+        appCard.setBackground(CockpitSurfaces.outlined(context,
+                CockpitTokens.color(context, R.color.ck_surface_2),
+                CockpitTokens.color(context, R.color.ck_stroke), 16f));
 
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        cardParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
-        appCard.setMinimumHeight((int) (120 * context.getResources().getDisplayMetrics().density));
+        cardParams.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        appCard.setMinimumHeight(CockpitTokens.dp(context, 84));
 
         android.widget.ImageView appIcon = new android.widget.ImageView(context);
         try {
@@ -928,9 +876,8 @@ public class AppsTabBuilder {
         }
         appIcon.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
         LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
-                (int) (44 * context.getResources().getDisplayMetrics().density),
-                (int) (44 * context.getResources().getDisplayMetrics().density));
-        iconParams.setMargins(0, 0, 16, 0);
+                CockpitTokens.dp(context, 44), CockpitTokens.dp(context, 44));
+        iconParams.setMargins(0, 0, cardPadH, 0);
         appCard.addView(appIcon, iconParams);
 
         LinearLayout infoContainer = new LinearLayout(context);
@@ -943,9 +890,7 @@ public class AppsTabBuilder {
 
         TextView nameText = new TextView(context);
         nameText.setText(displayName);
-        nameText.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        nameText.setTextSize(17);
-        nameText.setTypeface(null, android.graphics.Typeface.NORMAL);
+        CockpitTokens.title(nameText);
         infoContainer.addView(nameText);
 
         TextView statusText = new TextView(context);
@@ -959,7 +904,7 @@ public class AppsTabBuilder {
             statusText.setText(R.string.apps_status_not_installed);
             statusText.setTextColor(UiStyles.color(context, R.color.textMuted));
         }
-        statusText.setTextSize(13);
+        CockpitTokens.bodySm(statusText);
         LinearLayout.LayoutParams statusParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -971,7 +916,7 @@ public class AppsTabBuilder {
             TextView companionText = new TextView(context);
             companionText.setText(companionNote);
             companionText.setTextColor(UiStyles.color(context, R.color.statusWarning));
-            companionText.setTextSize(12);
+            CockpitTokens.bodySm(companionText);
             LinearLayout.LayoutParams companionParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -988,9 +933,12 @@ public class AppsTabBuilder {
         rightContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
 
         Button actionButton = new Button(context);
-        actionButton.setTextSize(14);
-        actionButton.setTypeface(null, android.graphics.Typeface.BOLD);
-        actionButton.setPadding(24, 12, 24, 12);
+        actionButton.setTextSize(15);
+        actionButton.setTypeface(CockpitTokens.inter(context,
+                CockpitTokens.WEIGHT_SEMIBOLD));
+        actionButton.setPadding(20, 10, 20, 10);
+        actionButton.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        actionButton.setMinWidth(CockpitTokens.dp(context, 88));
 
         if (trackProgress) {
             actionButton.setEnabled(false);
@@ -1033,9 +981,12 @@ public class AppsTabBuilder {
         if (finalIsInstalled && !isLocked) {
             Button removeButton = new Button(context);
             removeButton.setText(R.string.apps_action_remove);
-            removeButton.setTextSize(14);
-            removeButton.setTypeface(null, android.graphics.Typeface.BOLD);
-            removeButton.setTextColor(UiStyles.color(context, R.color.textDestructive));
+            removeButton.setTextSize(15);
+            removeButton.setTypeface(CockpitTokens.inter(context,
+                    CockpitTokens.WEIGHT_SEMIBOLD));
+            removeButton.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+            removeButton.setMinWidth(CockpitTokens.dp(context, 72));
+            removeButton.setTextColor(CockpitTokens.color(context, R.color.ck_critical));
             removeButton.setBackgroundColor(UiStyles.color(context, R.color.transparent));
             removeButton.setPadding(18, 12, 18, 12);
             removeButton.setOnClickListener(v -> uninstallApp(packageName, displayName));

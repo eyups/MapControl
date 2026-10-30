@@ -30,6 +30,9 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.dvr.CameraGlEngine;
 import com.mapcontrol.dvr.CameraHub;
 import com.mapcontrol.dvr.CameraRecorder;
@@ -421,21 +424,16 @@ public class Camera360TabBuilder {
     private LinearLayout card() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(dp(18), dp(16), dp(18), dp(16));
-        GradientDrawable bg = roundRect(themeColor(R.color.surfaceCard), 20);
-        bg.setStroke(dp(1), themeColor(R.color.outline));
-        card.setBackground(bg);
+        int p = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        card.setPadding(p, p, p, p);
+        CockpitSurfaces.level1(card);
         return card;
     }
 
     private TextView sectionLabel(int textRes) {
         TextView tv = new TextView(context);
         tv.setText(textRes);
-        tv.setTextSize(11);
-        tv.setTypeface(null, Typeface.BOLD);
-        tv.setLetterSpacing(0.08f);
-        tv.setAllCaps(true);
-        tv.setTextColor(themeColor(R.color.textSecondaryCool));
+        CockpitTokens.labelCaps(tv);
         return tv;
     }
 
@@ -501,9 +499,8 @@ public class Camera360TabBuilder {
         back.addView(arrow, new LinearLayout.LayoutParams(dp(22), dp(22)));
         TextView backText = new TextView(context);
         backText.setText(R.string.camera360_title);
-        backText.setTextSize(15);
-        backText.setTypeface(null, Typeface.BOLD);
-        backText.setTextColor(themeColor(R.color.textPrimary));
+        CockpitTokens.bodySm(backText);
+        backText.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         LinearLayout.LayoutParams btp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         btp.setMarginStart(dp(8));
@@ -513,9 +510,7 @@ public class Camera360TabBuilder {
 
         TextView title = new TextView(context);
         title.setText(titleRes);
-        title.setTextSize(20);
-        title.setTypeface(null, Typeface.BOLD);
-        title.setTextColor(themeColor(R.color.textPrimary));
+        CockpitTokens.headlineSm(title);
         title.setSingleLine(true);
         title.setEllipsize(TextUtils.TruncateAt.END);
         LinearLayout.LayoutParams tp = new LinearLayout.LayoutParams(
@@ -531,78 +526,77 @@ public class Camera360TabBuilder {
     private LinearLayout buildMenuView() {
         LinearLayout menu = new LinearLayout(context);
         menu.setOrientation(LinearLayout.VERTICAL);
-        menu.setGravity(Gravity.CENTER);
-        int side = dp(16);
-        menu.setPadding(side, 0, side, 0);
+        int side = CockpitTokens.dim(context, R.dimen.ck_margin);
+        menu.setPadding(side, CockpitTokens.dim(context, R.dimen.ck_space_sm), side,
+                CockpitTokens.dim(context, R.dimen.ck_space_md));
 
         LinearLayout heading = new LinearLayout(context);
         heading.setOrientation(LinearLayout.HORIZONTAL);
         heading.setGravity(Gravity.CENTER_VERTICAL);
-        int accent = themeColor(R.color.oemAccent);
+        int accent = CockpitTokens.color(context, R.color.ck_accent);
         heading.addView(iconBadge(R.drawable.ic_mdi_camera, accent,
-                themeColor(R.color.surfaceCardInner), 52, 28, false));
+                CockpitTokens.color(context, R.color.ck_surface_2), 52, 28, false));
         LinearLayout headingText = new LinearLayout(context);
         headingText.setOrientation(LinearLayout.VERTICAL);
-        headingText.setPadding(dp(14), 0, 0, 0);
+        headingText.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md), 0, 0, 0);
         TextView title = new TextView(context);
         title.setText(R.string.camera360_title);
-        title.setTextSize(24);
-        title.setTypeface(null, Typeface.BOLD);
-        title.setTextColor(themeColor(R.color.textPrimary));
+        CockpitTokens.headlineMd(title);
         headingText.addView(title);
         TextView subtitle = new TextView(context);
         subtitle.setText(R.string.camera360_menu_title);
-        subtitle.setTextSize(14);
-        subtitle.setTextColor(themeColor(R.color.textSecondaryCool));
+        CockpitTokens.bodySm(subtitle);
+        subtitle.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         headingText.addView(subtitle);
         heading.addView(headingText);
-        menu.addView(heading, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        menu.addView(heading);
 
-        LinearLayout cards = new LinearLayout(context);
-        cards.setOrientation(LinearLayout.HORIZONTAL);
-        cards.setGravity(Gravity.CENTER);
-        LinearLayout.LayoutParams cardsP = new LinearLayout.LayoutParams(
+        CockpitGrid grid = new CockpitGrid(context);
+        LinearLayout.LayoutParams gridLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        cardsP.setMargins(0, dp(18), 0, 0);
-        menu.addView(cards, cardsP);
+        gridLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
+        menu.addView(grid, gridLp);
 
-        cards.addView(makeMenuCard(
-                iconBadge(R.drawable.ic_mdi_play, accent, withAlpha(accent, 0x2A), 68, 36, true),
+        View live = makeMenuCard(
+                iconBadge(R.drawable.ic_mdi_play, accent,
+                        CockpitTokens.color(context, R.color.ck_accent_stroke_30), 56, 30, true),
                 R.string.camera360_menu_live, R.string.camera360_menu_live_sub,
-                v -> enterPreview()));
-        menuUsbCard = makeMenuCard(recordGlyph(68),
+                v -> enterPreview());
+        grid.add(live, 4);
+
+        menuUsbCard = makeMenuCard(recordGlyph(56),
                 R.string.camera360_menu_record, R.string.camera360_menu_record_sub,
                 v -> enterRecord());
         menuUsbSub = lastMenuCardSub;
-        cards.addView(menuUsbCard);
+        grid.add(menuUsbCard, 4);
 
-        LinearLayout cards2 = new LinearLayout(context);
-        cards2.setOrientation(LinearLayout.HORIZONTAL);
-        cards2.setGravity(Gravity.CENTER);
-        menu.addView(cards2, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         menuAutoCard = makeMenuCard(
-                iconBadge(R.drawable.ic_mdi_car, COLOR_REC, withAlpha(COLOR_REC, 0x2A), 68, 36, true),
+                iconBadge(R.drawable.ic_mdi_car, COLOR_REC,
+                        CockpitTokens.color(context, R.color.ck_critical_bg), 56, 30, true),
                 R.string.camera360_menu_auto, R.string.camera360_menu_auto_sub_off,
                 v -> enterAuto());
         menuAutoSub = lastMenuCardSub;
-        cards2.addView(menuAutoCard);
-        cards2.addView(makeMenuCard(
-                iconBadge(R.drawable.ic_mdi_view_grid, accent, withAlpha(accent, 0x2A), 68, 36, true),
+        grid.add(menuAutoCard, 4);
+
+        grid.add(makeMenuCard(
+                iconBadge(R.drawable.ic_mdi_view_grid, accent,
+                        CockpitTokens.color(context, R.color.ck_accent_stroke_30), 56, 30, true),
                 R.string.camera360_menu_viewer, R.string.camera360_menu_viewer_sub,
-                v -> enterViewer()));
+                v -> enterViewer()), 4);
 
         menuRecBanner = new TextView(context);
         menuRecBanner.setText(R.string.camera360_rec_banner);
-        menuRecBanner.setTextSize(15);
-        menuRecBanner.setTypeface(null, Typeface.BOLD);
-        menuRecBanner.setTextColor(COLOR_REC);
+        CockpitTokens.bodySm(menuRecBanner);
+        menuRecBanner.setTextColor(CockpitTokens.color(context, R.color.ck_critical));
         menuRecBanner.setGravity(Gravity.CENTER);
-        menuRecBanner.setPadding(dp(20), dp(10), dp(20), dp(10));
-        GradientDrawable bannerBg = roundRect(withAlpha(COLOR_REC, 0x24), 22);
-        bannerBg.setStroke(dp(1), withAlpha(COLOR_REC, 0x66));
-        setPressableBackground(menuRecBanner, bannerBg, 22);
+        menuRecBanner.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        GradientDrawable bannerBg = roundRect(
+                CockpitTokens.color(context, R.color.ck_critical_bg), 16);
+        bannerBg.setStroke(dp(1), CockpitTokens.color(context, R.color.ck_critical));
+        setPressableBackground(menuRecBanner, bannerBg, 16);
         menuRecBanner.setVisibility(View.GONE);
         menuRecBanner.setOnClickListener(v -> {
             if (dvr.isRecordingInternal()) enterAuto();
@@ -610,7 +604,7 @@ public class Camera360TabBuilder {
         });
         LinearLayout.LayoutParams bp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        bp.setMargins(0, dp(18), 0, 0);
+        bp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         menu.addView(menuRecBanner, bp);
         return menu;
     }
@@ -635,15 +629,11 @@ public class Camera360TabBuilder {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.HORIZONTAL);
         card.setGravity(Gravity.CENTER_VERTICAL);
-        card.setPadding(dp(22), dp(20), dp(16), dp(20));
-        GradientDrawable bg = roundRect(themeColor(R.color.surfaceCard), 22);
-        bg.setStroke(dp(1), themeColor(R.color.outline));
-        setPressableBackground(card, bg, 22);
+        int pad = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        card.setPadding(pad, pad, pad, pad);
+        CockpitSurfaces.level2(card);
+        card.setMinimumHeight(CockpitTokens.dp(context, 112));
         card.setOnClickListener(click);
-        LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(0, dp(124), 1f);
-        int m = dp(8);
-        cp.setMargins(m, m, m, m);
-        card.setLayoutParams(cp);
 
         card.addView(icon);
 
@@ -657,17 +647,15 @@ public class Camera360TabBuilder {
 
         TextView title = new TextView(context);
         title.setText(titleRes);
-        title.setTextSize(21);
-        title.setTypeface(null, Typeface.BOLD);
-        title.setTextColor(themeColor(R.color.textPrimary));
+        CockpitTokens.title(title);
         texts.addView(title);
 
         TextView sub = new TextView(context);
         sub.setText(subRes);
-        sub.setTextSize(14);
+        CockpitTokens.bodySm(sub);
         sub.setMaxLines(2);
         sub.setEllipsize(TextUtils.TruncateAt.END);
-        sub.setTextColor(themeColor(R.color.textSecondaryCool));
+        sub.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         sp.topMargin = dp(4);
@@ -677,8 +665,8 @@ public class Camera360TabBuilder {
         ImageView chevron = new ImageView(context);
         chevron.setImageResource(R.drawable.ic_mdi_chevron_up);
         chevron.setRotation(90f);
-        chevron.setColorFilter(themeColor(R.color.textMuted));
-        card.addView(chevron, new LinearLayout.LayoutParams(dp(28), dp(28)));
+        chevron.setColorFilter(CockpitTokens.color(context, R.color.ck_text_medium));
+        card.addView(chevron, new LinearLayout.LayoutParams(dp(24), dp(24)));
         return card;
     }
 
