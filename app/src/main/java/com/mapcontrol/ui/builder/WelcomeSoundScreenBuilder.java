@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.welcome.WelcomeDesign;
 import com.mapcontrol.ui.welcome.WelcomeDesignCatalog;
@@ -31,7 +32,7 @@ import java.util.function.Consumer;
  */
 public final class WelcomeSoundScreenBuilder {
 
-    private static final int FORM_MAX_WIDTH_DP = 760;
+    private static final int FORM_MAX_WIDTH_DP = 1400;
 
     private WelcomeSoundScreenBuilder() {
     }
@@ -107,15 +108,13 @@ public final class WelcomeSoundScreenBuilder {
 
         TextView titleText = new TextView(context);
         titleText.setText(R.string.welcome_sound_title);
-        titleText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
-        titleText.setTextColor(primary);
-        titleText.setTypeface(null, android.graphics.Typeface.BOLD);
+        CockpitTokens.headlineMd(titleText);
         mainContainer.addView(titleText);
 
         TextView subtitle = new TextView(context);
         subtitle.setText(R.string.welcome_sound_subtitle);
-        subtitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-        subtitle.setTextColor(UiStyles.color(context, R.color.textHint));
+        CockpitTokens.bodySm(subtitle);
+        subtitle.setTextColor(UiStyles.color(context, R.color.textSecondary));
         subtitle.setPadding(0, 4, 0, 16);
         mainContainer.addView(subtitle);
 
