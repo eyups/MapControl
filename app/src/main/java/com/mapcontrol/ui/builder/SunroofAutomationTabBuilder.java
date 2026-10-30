@@ -148,10 +148,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
             columns.addView(leftColumn, weightedCard(0, dp(8, density)));
             columns.addView(rightColumn, weightedCard(dp(8, density), 0));
-            LinearLayout.LayoutParams columnsLp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            columnsLp.topMargin = dp(12, density);
-            root.addView(columns, columnsLp);
+            root.addView(columns);
         }
 
         engine.addListener(this);
@@ -167,7 +164,9 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
     }
 
     private View buildStartupGrid() {
-        CockpitGrid grid = new CockpitGrid(context);
+        LinearLayout grid = new LinearLayout(context);
+        grid.setOrientation(LinearLayout.HORIZONTAL);
+        grid.setBaselineAligned(false);
 
         CockpitCard sunroof = new CockpitCard(context,
                 context.getString(R.string.settings_comfort_sunroof_title)).span(4);
@@ -193,7 +192,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
                     callback.log("Cam tavan açılış ayarı: " + sunroofModes[index]);
                 });
         sunroof.addContent(sunroofSeg);
-        grid.add(sunroof, 4);
+        grid.addView(sunroof, weightedStartupCard(0, dp(8, context.getResources().getDisplayMetrics().density)));
 
         CockpitCard shade = new CockpitCard(context,
                 context.getString(R.string.settings_comfort_sunshade_title)).span(4);
@@ -219,8 +218,16 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
                     callback.log("Güneşlik açılış ayarı: " + shadeModes[index]);
                 });
         shade.addContent(shadeSeg);
-        grid.add(shade, 4);
+        grid.addView(shade, weightedStartupCard(dp(8, context.getResources().getDisplayMetrics().density), 0));
         return grid;
+    }
+
+    private LinearLayout.LayoutParams weightedStartupCard(int left, int right) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        lp.leftMargin = left;
+        lp.rightMargin = right;
+        return lp;
     }
 
     private static int indexOfMode(int mode, int[] modes) {
