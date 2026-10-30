@@ -56,6 +56,8 @@ public final class VehicleModelHostView extends FrameLayout {
     private float spinDownX;
     private int spinDownFrame;
     private boolean spinning;
+    private boolean introSpinning;
+    private boolean introSpinPlayed;
     private final SparseArray<Bitmap> spinCache = new SparseArray<>();
     private ViewMode currentMode = ViewMode.NORMAL;
 
@@ -102,6 +104,9 @@ public final class VehicleModelHostView extends FrameLayout {
         }
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
+                if (introSpinning) {
+                    stopIntroSpin();
+                }
                 spinDownX = event.getX();
                 spinDownFrame = spinFrame;
                 spinning = false;
@@ -132,6 +137,35 @@ public final class VehicleModelHostView extends FrameLayout {
             default:
                 return true;
         }
+    }
+
+    private void playIntroSpin() {
+        if (introSpinPlayed || spinPrefix == null || spinLastFrame <= 1 || !isAttachedToWindow()) {
+            return;
+        }
+        introSpinPlayed = true;
+        introSpinning = true;
+        carImageView.setVisibility(GONE);
+        fallbackView.setVisibility(GONE);
+        animationView.setOnCompleteListener(() -> {
+            introSpinning = false;
+            animationView.hide();
+            carImageView.setVisibility(VISIBLE);
+            spinFrame = spinLastFrame;
+        });
+        animationView.setResources(resources);
+        animationView.setVisibility(VISIBLE);
+        animationView.play(spinPrefix, 0, spinLastFrame, false, 55);
+    }
+
+    private void stopIntroSpin() {
+        if (!introSpinning) {
+            return;
+        }
+        introSpinning = false;
+        animationView.stop();
+        animationView.hide();
+        carImageView.setVisibility(VISIBLE);
     }
 
     private void showSpinFrame(int index) {
@@ -288,6 +322,7 @@ public final class VehicleModelHostView extends FrameLayout {
             carImageView.setVisibility(VISIBLE);
             fallbackView.setVisibility(GONE);
             post(this::animateReveal);
+            postDelayed(this::playIntroSpin, 340);
             return;
         }
         oemAssetsLoaded = false;

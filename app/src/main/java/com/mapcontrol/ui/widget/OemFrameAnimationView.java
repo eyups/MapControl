@@ -30,7 +30,9 @@ public final class OemFrameAnimationView extends View {
     private int endIndex = -1;
     private boolean reverse;
     private boolean playing;
+    private long frameDelayMs = FRAME_DELAY_MS;
     private Bitmap currentFrame;
+    @Nullable private Runnable onComplete;
 
     private final Runnable frameRunnable = new Runnable() {
         @Override
@@ -44,16 +46,18 @@ public final class OemFrameAnimationView extends View {
             if (endIndex >= 0) {
                 if (!reverse && frameIndex >= endIndex) {
                     stop();
+                    runComplete();
                     return;
                 }
                 if (reverse && frameIndex <= endIndex) {
                     stop();
+                    runComplete();
                     return;
                 }
             }
 
             frameIndex += reverse ? -1 : 1;
-            handler.postDelayed(this, FRAME_DELAY_MS);
+            handler.postDelayed(this, frameDelayMs);
         }
     };
 
@@ -65,12 +69,28 @@ public final class OemFrameAnimationView extends View {
         super(context, attrs);
     }
 
+    public void setOnCompleteListener(@Nullable Runnable listener) {
+        this.onComplete = listener;
+    }
+
+    private void runComplete() {
+        Runnable listener = onComplete;
+        if (listener != null) {
+            listener.run();
+        }
+    }
+
     public void setResources(MaterialVehicleResources resources) {
         this.resources = resources;
     }
 
     public void play(String prefix, int startIndex, int endIndex, boolean reverse) {
+        play(prefix, startIndex, endIndex, reverse, FRAME_DELAY_MS);
+    }
+
+    public void play(String prefix, int startIndex, int endIndex, boolean reverse, long delayMs) {
         stop();
+        this.frameDelayMs = delayMs;
         this.prefix = prefix;
         this.frameIndex = startIndex;
         this.endIndex = endIndex;
