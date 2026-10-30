@@ -160,7 +160,14 @@ public final class MaterialVehicleResources {
         return Arrays.asList(
                 CAR_MODEL_BASE,
                 CAR_MODEL_BASE + "_face1",
-                CAR_MODEL_BASE + "_face2");
+                CAR_MODEL_BASE + "_face2",
+                "img_theme_classic_car",
+                "img_theme_simplicity_car",
+                "img_theme_classic_phev_car",
+                "img_theme_simplicity_phev_car",
+                "car_model_face1_0",
+                "car_model_face1_15",
+                "car_model_face1_30");
     }
 
     @Nullable

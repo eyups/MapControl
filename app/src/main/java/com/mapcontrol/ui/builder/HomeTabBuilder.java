@@ -163,6 +163,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         vehicleView = new VehicleModelHostView(context);
         vehicleView.setGlowVisible(false);
         vehicleView.setContentDescription(context.getString(R.string.ck_home_vehicle_visual_hint));
+        vehicleView.onHostStart();
         visualHost.addView(vehicleView, new android.widget.FrameLayout.LayoutParams(
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT));

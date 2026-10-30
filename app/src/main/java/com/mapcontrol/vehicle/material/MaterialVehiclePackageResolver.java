@@ -74,6 +74,16 @@ final class MaterialVehiclePackageResolver {
             Log.w(TAG, "EOL eşleşmedi, modelCode=" + eol.getModelCode());
         }
 
+        if (isPackageInstalled(context, "com.desaysv.materialvehicle.t18fl4")) {
+            Log.i(TAG, "Yedek paket: com.desaysv.materialvehicle.t18fl4");
+            return new Resolution("com.desaysv.materialvehicle.t18fl4",
+                    "car_model_face1_0", "T18FL4");
+        }
+        if (isPackageInstalled(context, "com.desaysv.materialvehicle.t28")) {
+            Log.i(TAG, "Yedek paket: com.desaysv.materialvehicle.t28");
+            return new Resolution("com.desaysv.materialvehicle.t28",
+                    "car_model_face1_0", "T28");
+        }
         if (isPackageInstalled(context, "com.desaysv.materialvehicle")) {
             Log.i(TAG, "Yedek paket: com.desaysv.materialvehicle");
             return new Resolution("com.desaysv.materialvehicle", drawableBase, "GENERIC");
