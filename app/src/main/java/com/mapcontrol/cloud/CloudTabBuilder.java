@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitToggleRow;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
@@ -133,10 +135,26 @@ public final class CloudTabBuilder {
 
         startStopButton = new Button(context);
         startStopButton.setAllCaps(false);
-        startStopButton.setTextColor(UiStyles.color(context, R.color.surfaceCard));
-        UiStyles.applySolidRoundedBackground(
-                startStopButton, UiStyles.color(context, R.color.buttonPrimary));
-        pairedRow.addView(startStopButton, matchWidth());
+        startStopButton.setTextSize(16);
+        UiStyles.styleOemButton(startStopButton, CockpitTokens.color(context, R.color.ck_accent));
+        startStopButton.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
+        startStopButton.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        startStopButton.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
+        LinearLayout startRow = new LinearLayout(context);
+        startRow.setOrientation(LinearLayout.HORIZONTAL);
+        startRow.addView(startStopButton, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams startRowLp = matchWidth();
+        startRowLp.bottomMargin = dp(8);
+        pairedRow.addView(startRow, startRowLp);
+
+        TextView actionsTitle = new TextView(context);
+        actionsTitle.setText(R.string.ck_roadmate_actions);
+        CockpitTokens.labelCaps(actionsTitle);
+        actionsTitle.setPadding(0, dp(10), 0, dp(6));
+        pairedRow.addView(actionsTitle, matchWidth());
+
+        CockpitGrid actionsGrid = new CockpitGrid(context);
 
         shareLocationRow = new CockpitToggleRow(context, R.drawable.ic_mdi_map,
                 context.getString(R.string.settings_cloud_share_location), null,
@@ -148,42 +166,44 @@ public final class CloudTabBuilder {
         logUploadButton = new Button(context);
         logUploadButton.setText(R.string.settings_cloud_send_log);
         logUploadButton.setAllCaps(false);
-        logUploadButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.applySolidRoundedBackground(
-                logUploadButton, UiStyles.color(context, R.color.buttonNeutral));
-        pairedRow.addView(logUploadButton, matchWidth());
+        logUploadButton.setTextSize(15);
+        logUploadButton.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(logUploadButton, CockpitTokens.color(context, R.color.ck_surface_2));
+        actionsGrid.add(logUploadButton, 4);
 
         vdbusButton = new Button(context);
         vdbusButton.setText(R.string.settings_cloud_vdbus_snapshot);
         vdbusButton.setAllCaps(false);
-        vdbusButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.applySolidRoundedBackground(
-                vdbusButton, UiStyles.color(context, R.color.buttonNeutral));
-        pairedRow.addView(vdbusButton, matchWidth());
+        vdbusButton.setTextSize(15);
+        vdbusButton.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(vdbusButton, CockpitTokens.color(context, R.color.ck_surface_2));
+        actionsGrid.add(vdbusButton, 4);
 
         updateButton = new Button(context);
         updateButton.setText(R.string.settings_cloud_check_update);
         updateButton.setAllCaps(false);
-        updateButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.applySolidRoundedBackground(
-                updateButton, UiStyles.color(context, R.color.buttonNeutral));
-        pairedRow.addView(updateButton, matchWidth());
+        updateButton.setTextSize(15);
+        updateButton.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(updateButton, CockpitTokens.color(context, R.color.ck_surface_2));
+        actionsGrid.add(updateButton, 4);
 
         backupButton = new Button(context);
         backupButton.setText(R.string.settings_cloud_backup);
         backupButton.setAllCaps(false);
-        backupButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.applySolidRoundedBackground(
-                backupButton, UiStyles.color(context, R.color.buttonNeutral));
-        pairedRow.addView(backupButton, matchWidth());
+        backupButton.setTextSize(15);
+        backupButton.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(backupButton, CockpitTokens.color(context, R.color.ck_surface_2));
+        actionsGrid.add(backupButton, 4);
 
         restoreButton = new Button(context);
         restoreButton.setText(R.string.settings_cloud_restore);
         restoreButton.setAllCaps(false);
-        restoreButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.applySolidRoundedBackground(
-                restoreButton, UiStyles.color(context, R.color.buttonNeutral));
-        pairedRow.addView(restoreButton, matchWidth());
+        restoreButton.setTextSize(15);
+        restoreButton.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(restoreButton, CockpitTokens.color(context, R.color.ck_surface_2));
+        actionsGrid.add(restoreButton, 4);
+        actionsGrid.add(new View(context), 4); // tek kalan buton yarim kalsin
+        pairedRow.addView(actionsGrid, matchWidth());
         actionsCard.addView(pairedRow, matchWidth());
 
         LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
