@@ -1454,6 +1454,9 @@ public class MainActivity extends AppCompatActivity {
         shell.addView(new CockpitPageHeader(this, pageTitle(tabIndex), pageSubtitle(tabIndex)),
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
+        if (child.getParent() instanceof android.view.ViewGroup) {
+            ((android.view.ViewGroup) child.getParent()).removeView(child);
+        }
         shell.addView(child, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
         addTabChild(parent, shell, lp);
