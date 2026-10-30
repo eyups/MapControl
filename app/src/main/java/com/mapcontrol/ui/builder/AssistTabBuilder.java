@@ -82,17 +82,17 @@ public class AssistTabBuilder {
         for (int i = 0; i < ASSIST_CARDS.length; i++) {
             savedValues[i] = prefs.getInt((String) ASSIST_CARDS[i][4], -1);
             active[i] = savedValues[i] == (Integer) ASSIST_CARDS[i][2];
-            grid.add(buildCard(i), 2);
+            grid.add(buildCard(i), 4);
         }
 
-        CockpitCard cpd = new CockpitCard(context, context.getString(R.string.ck_assist_cpd_note)).span(8);
+        CockpitCard cpd = new CockpitCard(context, context.getString(R.string.ck_assist_cpd_note)).span(4);
         cpd.status(StatusBadge.advisory(context, context.getString(R.string.ck_assist_hardware_dep)));
         TextView note = new TextView(context);
         CockpitTokens.bodySm(note);
         note.setText(R.string.assist_cpd_disclaimer);
         note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         cpd.addContent(note);
-        grid.add(cpd, 8);
+        grid.add(cpd, 4);
 
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
