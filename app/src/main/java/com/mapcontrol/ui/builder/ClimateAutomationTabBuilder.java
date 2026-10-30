@@ -69,34 +69,17 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         titleRow.setOrientation(LinearLayout.HORIZONTAL);
         titleRow.setGravity(Gravity.CENTER_VERTICAL);
 
-        FrameLayout titleIconBadge = new FrameLayout(context);
-        GradientDrawable titleIconBackground = new GradientDrawable();
-        titleIconBackground.setColor(UiStyles.color(context, R.color.surfaceCardInner));
-        titleIconBackground.setCornerRadius(dp(16, density));
-        titleIconBadge.setBackground(titleIconBackground);
-        AppCompatImageView titleIcon = new AppCompatImageView(context);
-        titleIcon.setImageResource(R.drawable.ic_mdi_thermometer);
-        titleIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        titleIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.oemAccent)));
-        int titleIconPx = dp(28, density);
-        FrameLayout.LayoutParams titleIconLp = new FrameLayout.LayoutParams(titleIconPx, titleIconPx, Gravity.CENTER);
-        titleIconBadge.addView(titleIcon, titleIconLp);
-        titleRow.addView(titleIconBadge, new LinearLayout.LayoutParams(dp(52, density), dp(52, density)));
-
         LinearLayout heading = new LinearLayout(context);
         heading.setOrientation(LinearLayout.VERTICAL);
-        heading.setPadding(dp(14, density), 0, 0, 0);
         TextView title = new TextView(context);
         title.setText(R.string.climate_auto_title);
-        title.setTextSize(24);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        title.setTypeface(null, Typeface.BOLD);
+        com.mapcontrol.ui.cockpit.CockpitTokens.headlineMd(title);
         heading.addView(title);
 
         TextView subtitle = new TextView(context);
         subtitle.setText(R.string.climate_auto_subtitle);
-        subtitle.setTextSize(14);
-        subtitle.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+        com.mapcontrol.ui.cockpit.CockpitTokens.bodySm(subtitle);
+        subtitle.setTextColor(com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_text_medium));
         if (compactLayout) {
             LinearLayout.LayoutParams subtitleLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

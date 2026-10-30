@@ -231,36 +231,18 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         titleRow.setGravity(Gravity.CENTER_VERTICAL);
         titleRow.setPadding(0, dp(4, density), 0, dp(12, density));
 
-        FrameLayout titleIconBadge = new FrameLayout(context);
-        GradientDrawable titleIconBackground = new GradientDrawable();
-        titleIconBackground.setColor(UiStyles.color(context, R.color.surfaceCardInner));
-        titleIconBackground.setCornerRadius(dp(16, density));
-        titleIconBadge.setBackground(titleIconBackground);
-
-        AppCompatImageView titleIcon = new AppCompatImageView(context);
-        titleIcon.setImageResource(R.drawable.ic_mdi_car_sunroof);
-        titleIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        titleIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.oemAccent)));
-        int iconPx = dp(28, density);
-        FrameLayout.LayoutParams titleIconLp = new FrameLayout.LayoutParams(iconPx, iconPx, Gravity.CENTER);
-        titleIconBadge.addView(titleIcon, titleIconLp);
-        titleRow.addView(titleIconBadge, new LinearLayout.LayoutParams(dp(52, density), dp(52, density)));
-
         LinearLayout heading = new LinearLayout(context);
         heading.setOrientation(LinearLayout.VERTICAL);
-        heading.setPadding(dp(14, density), 0, 0, 0);
 
         TextView title = new TextView(context);
         title.setText("Akıllı Cam Tavan Otomasyonu");
-        title.setTextSize(22);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        title.setTypeface(null, Typeface.BOLD);
+        com.mapcontrol.ui.cockpit.CockpitTokens.headlineMd(title);
         heading.addView(title);
 
         TextView subtitle = new TextView(context);
         subtitle.setText("Güneş yakıyorsa tavanı kapatır; bulutlu havada veya gün batımında açar.");
-        subtitle.setTextSize(12);
-        subtitle.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+        com.mapcontrol.ui.cockpit.CockpitTokens.bodySm(subtitle);
+        subtitle.setTextColor(com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_text_medium));
         heading.addView(subtitle);
 
         titleRow.addView(heading, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));

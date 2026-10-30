@@ -531,14 +531,10 @@ public class Camera360TabBuilder {
                 CockpitTokens.dim(context, R.dimen.ck_space_md));
 
         LinearLayout heading = new LinearLayout(context);
-        heading.setOrientation(LinearLayout.HORIZONTAL);
-        heading.setGravity(Gravity.CENTER_VERTICAL);
+        heading.setOrientation(LinearLayout.VERTICAL);
         int accent = CockpitTokens.color(context, R.color.ck_accent);
-        heading.addView(iconBadge(R.drawable.ic_mdi_camera, accent,
-                CockpitTokens.color(context, R.color.ck_surface_2), 52, 28, false));
         LinearLayout headingText = new LinearLayout(context);
         headingText.setOrientation(LinearLayout.VERTICAL);
-        headingText.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md), 0, 0, 0);
         TextView title = new TextView(context);
         title.setText(R.string.camera360_title);
         CockpitTokens.headlineMd(title);
