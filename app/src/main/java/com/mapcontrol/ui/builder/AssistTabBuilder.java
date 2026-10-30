@@ -35,6 +35,8 @@ public class AssistTabBuilder {
     private final CardHolder[] holders = new CardHolder[8];
     private final boolean[] active = new boolean[8];
     private final int[] savedValues = new int[8];
+    private CockpitCard cpdCard;
+    private CockpitCard childLockCard;
 
     private static final Object[][] ASSIST_CARDS = {
             {R.string.assist_card_iss, R.drawable.ic_mdi_restart, 0, -1, "issSetting", "ISS"},
@@ -82,10 +84,18 @@ public class AssistTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         for (int i = 0; i < ASSIST_CARDS.length; i++) {
-            savedValues[i] = prefs.getInt((String) ASSIST_CARDS[i][4], -1);
+            String settingKey = (String) ASSIST_CARDS[i][4];
+            savedValues[i] = prefs.getInt(settingKey, -1);
             active[i] = savedValues[i] == (Integer) ASSIST_CARDS[i][2];
-            grid.add(buildCard(i), 4);
+            CockpitCard card = buildCard(i);
+            if ("cpdSetting".equals(settingKey)) {
+                cpdCard = card;
+            } else if ("childLockSetting".equals(settingKey)) {
+                childLockCard = card;
+            }
+            grid.add(card, 4);
         }
+        equalizeBottomCardHeights(grid);
 
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -113,8 +123,7 @@ public class AssistTabBuilder {
 
         ImageView icon = new ImageView(context);
         icon.setImageResource(iconRes);
-        icon.setColorFilter(CockpitTokens.color(context, active[index]
-                        ? R.color.ck_accent : R.color.ck_text_medium),
+        icon.setColorFilter(CockpitTokens.color(context, R.color.ck_text_medium),
                 PorterDuff.Mode.SRC_IN);
         body.addView(icon, new LinearLayout.LayoutParams(
                 CockpitTokens.dp(context, 40), CockpitTokens.dp(context, 40)));
@@ -179,6 +188,31 @@ public class AssistTabBuilder {
             updateCardUI(cardIndex, newActive, settingKey);
         });
         return card;
+    }
+
+    /**
+     * CPD ve Arka Cam Çocuk Kilidi aynı satırda; açıklama satır sayıları
+     * farklı olduğu için kart yüksekliklerini satırdaki en yüksek karta eşitle.
+     */
+    private void equalizeBottomCardHeights(CockpitGrid grid) {
+        grid.addOnLayoutChangeListener((v, left, top, right, bottom,
+                oldLeft, oldTop, oldRight, oldBottom) -> {
+            if (cpdCard == null || childLockCard == null) {
+                return;
+            }
+            int cpdHeight = cpdCard.getHeight();
+            int childHeight = childLockCard.getHeight();
+            if (cpdHeight <= 0 || childHeight <= 0) {
+                return;
+            }
+            int target = Math.max(cpdHeight, childHeight);
+            if (cpdCard.getMinimumHeight() != target) {
+                cpdCard.setMinimumHeight(target);
+            }
+            if (childLockCard.getMinimumHeight() != target) {
+                childLockCard.setMinimumHeight(target);
+            }
+        });
     }
 
     private void updateCardUI(int index, boolean isActive, String settingKey) {
