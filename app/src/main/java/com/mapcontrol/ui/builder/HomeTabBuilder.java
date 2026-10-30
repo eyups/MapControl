@@ -105,7 +105,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         content = new LinearLayout(context);
         content.setOrientation(LinearLayout.VERTICAL);
         int m = CockpitTokens.dim(context, R.dimen.ck_margin);
-        content.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_md), 0, m);
+        content.setPadding(m, CockpitTokens.dim(context, R.dimen.ck_space_md), 0, m);
         scrollView.addView(content, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
