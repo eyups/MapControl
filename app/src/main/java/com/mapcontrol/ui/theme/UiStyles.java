@@ -245,9 +245,7 @@ public final class UiStyles {
         if (title != null && !title.isEmpty()) {
             TextView rowTitle = new TextView(context);
             rowTitle.setText(title);
-            rowTitle.setTextSize(18);
-            rowTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            rowTitle.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+            CockpitTokens.labelCaps(rowTitle);
             int hPad = dimenPx(context, R.dimen.spacing_medium);
             rowTitle.setPadding(hPad, dimenPx(context, R.dimen.spacing_medium), hPad,
                     dimenPx(context, R.dimen.spacing_small));
@@ -279,7 +277,7 @@ public final class UiStyles {
         TextView help = new TextView(context);
         help.setTextSize(15);
         help.setTextColor(UiStyles.color(context, R.color.textSecondary));
-        help.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_REGULAR));
+        help.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
         int hPad = dimenPx(context, R.dimen.spacing_medium);
         help.setPadding(hPad, dimenPx(context, R.dimen.spacing_small), hPad,
                 dimenPx(context, R.dimen.spacing_medium));
@@ -290,19 +288,19 @@ public final class UiStyles {
             if (on) {
                 setBackgroundRes(left, R.drawable.bg_segment_thumb);
                 left.setTextColor(color(context, R.color.textPrimary));
-                left.setTypeface(null, android.graphics.Typeface.BOLD);
+                left.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 right.setBackgroundColor(Color.TRANSPARENT);
                 right.setTextColor(color(context, R.color.textSecondary));
-                right.setTypeface(null, android.graphics.Typeface.NORMAL);
+                right.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 help.setText(buildOptionsHelp(context, new String[]{leftLabel, rightLabel},
                         new String[]{leftHelp, rightHelp}, 0));
             } else {
                 setBackgroundRes(right, R.drawable.bg_segment_thumb);
                 right.setTextColor(color(context, R.color.textPrimary));
-                right.setTypeface(null, android.graphics.Typeface.BOLD);
+                right.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 left.setBackgroundColor(Color.TRANSPARENT);
                 left.setTextColor(color(context, R.color.textSecondary));
-                left.setTypeface(null, android.graphics.Typeface.NORMAL);
+                left.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 help.setText(buildOptionsHelp(context, new String[]{leftLabel, rightLabel},
                         new String[]{leftHelp, rightHelp}, 1));
             }
@@ -415,9 +413,7 @@ public final class UiStyles {
         if (title != null && !title.isEmpty()) {
             TextView rowTitle = new TextView(context);
             rowTitle.setText(title);
-            rowTitle.setTextSize(18);
-            rowTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            rowTitle.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+            CockpitTokens.labelCaps(rowTitle);
             int hPad = dimenPx(context, R.dimen.spacing_medium);
             rowTitle.setPadding(hPad, dimenPx(context, R.dimen.spacing_medium), hPad,
                     dimenPx(context, R.dimen.spacing_small));
@@ -448,7 +444,7 @@ public final class UiStyles {
         TextView help = new TextView(context);
         help.setTextSize(15);
         help.setTextColor(UiStyles.color(context, R.color.textSecondary));
-        help.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_REGULAR));
+        help.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
         int hPad = dimenPx(context, R.dimen.spacing_medium);
         help.setPadding(hPad, dimenPx(context, R.dimen.spacing_small), hPad,
                 dimenPx(context, R.dimen.spacing_medium));
@@ -469,11 +465,11 @@ public final class UiStyles {
                 if (i == idx) {
                     setBackgroundRes(tv, R.drawable.bg_segment_thumb);
                     tv.setTextColor(UiStyles.color(context, R.color.textPrimary));
-                    tv.setTypeface(null, android.graphics.Typeface.BOLD);
+                    tv.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 } else {
                     tv.setBackgroundColor(Color.TRANSPARENT);
                     tv.setTextColor(UiStyles.color(context, R.color.textSecondary));
-                    tv.setTypeface(null, android.graphics.Typeface.NORMAL);
+                    tv.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 }
             }
             help.setText(buildOptionsHelp(context, labels, helps, idx));

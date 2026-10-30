@@ -18,6 +18,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 import java.util.function.IntConsumer;
@@ -286,7 +287,7 @@ final class Camera360Ui {
                     items[i].setBackgroundColor(Color.TRANSPARENT);
                 }
                 items[i].setTextColor(ui.themeColor(on ? R.color.textPrimary : R.color.textSecondary));
-                items[i].setTypeface(null, on ? Typeface.BOLD : Typeface.NORMAL);
+                items[i].setTypeface(CockpitTokens.inter(items[i].getContext(), CockpitTokens.WEIGHT_MEDIUM));
             }
         }
     }
