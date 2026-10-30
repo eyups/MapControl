@@ -133,7 +133,7 @@ public final class CloudManager {
                 JSONObject body = new JSONObject();
                 body.put("code", normalized);
                 body.put("kind", "car");
-                body.put("name", "MapControl");
+                body.put("name", "RoadDeck");
                 body.put("app_version", BuildConfig.VERSION_NAME);
                 CloudHttp.Response response = http.postJson(
                         "/api/v1/devices/pair", null, body, 16 * 1024);

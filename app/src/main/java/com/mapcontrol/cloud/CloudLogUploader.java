@@ -60,7 +60,7 @@ final class CloudLogUploader {
             }
         }
         String redacted = redact(raw);
-        String header = "MapControl cloud log\n"
+        String header = "RoadDeck cloud log\n"
                 + "generated=" + new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US)
                 .format(new Date()) + "\n"
                 + "note=manual upload; bounded at 256 KB\n\n";

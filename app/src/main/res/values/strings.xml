@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Map Control</string>
+    <string name="app_name">RoadDeck</string>
     <string name="launch_splash_loading">Loading…</string>
     <string name="accessibility_service_description">Floating Back (global BACK), typing into the focused field from web management, and reading Yandex Maps navigation cards for the cluster display. After changing settings, turn the service off and on again.</string>
     <string name="yandex_cluster_nav_section_title">Yandex → Cluster</string>
@@ -10,10 +10,10 @@
     <string name="yandex_cluster_nav_toast_showing">Yandex guidance found; cluster cards updated.</string>
     <string name="yandex_cluster_nav_toast_yandex_closed">Yandex Maps is not open. Open the map and start guidance.</string>
     <string name="yandex_cluster_nav_toast_no_nav">Yandex is open; cards appear automatically when guidance starts.</string>
-    <string name="yandex_cluster_nav_toast_accessibility">Enable the MapControl accessibility service first.</string>
+    <string name="yandex_cluster_nav_toast_accessibility">Enable the RoadDeck accessibility service first.</string>
     <string name="yandex_cluster_nav_toast_service_wait">Accessibility service connecting…</string>
     <string name="log_tts_hint">Enter text to read aloud</string>
-    <string name="log_tts_welcome_phrase">Welcome to the MapControl log screen</string>
+    <string name="log_tts_welcome_phrase">Welcome to the RoadDeck log screen</string>
     <string name="web_server_toast_wifi_ok_title">Wi‑Fi connected</string>
     <string name="web_server_toast_wifi_ok_sub">Internet connection is active.</string>
     <string name="web_server_toast_wifi_off_title">Could not connect to Wi‑Fi</string>
@@ -25,7 +25,7 @@
     <string name="floating_qa_tap_for_app_info">Tap: force stop. Long press: app info.</string>
     <string name="floating_qa_force_stop_ok">Stopped: %1$s</string>
     <string name="floating_qa_force_stop_fail">Could not force stop (device permission required). Long press and close from settings.</string>
-    <string name="floating_qa_force_stop_protected">This package is protected or MapControl; cannot force stop.</string>
+    <string name="floating_qa_force_stop_protected">This package is protected or RoadDeck; cannot force stop.</string>
     <string name="floating_qa_title_display1">Display 1 — open apps</string>
     <string name="floating_qa_title_display2">Display 2 — open apps</string>
     <string name="floating_qa_label_display1">Display 1</string>
@@ -126,7 +126,7 @@ Monitor — Foreground apps on display 2</string>
     <string name="vehicle_info_listening">Live updates on — refreshes as gauges change.</string>
     <string name="vehicle_info_unavailable">Vehicle information is unavailable right now.</string>
     <string name="vehicle_info_hint_title">What should you do?</string>
-    <string name="vehicle_info_hint_body">With ignition on, wait a few seconds and tap Refresh. If it persists, restart MapControl.</string>
+    <string name="vehicle_info_hint_body">With ignition on, wait a few seconds and tap Refresh. If it persists, restart RoadDeck.</string>
     <string name="vehicle_info_value_unknown">Not available or could not be read</string>
     <string name="vehicle_info_section_distance">Distance</string>
     <string name="vehicle_info_odo">Total km (ODO)</string>
@@ -171,7 +171,7 @@ Monitor — Foreground apps on display 2</string>
     <string name="launcher_dashboard_card_fuel_motor">Fuel and engine</string>
     <string name="launcher_dashboard_card_quick">Quick access</string>
     <string name="launcher_dashboard_quick_apps_label">Apps</string>
-    <string name="launcher_dashboard_quick_shortcuts_label">MapControl</string>
+    <string name="launcher_dashboard_quick_shortcuts_label">RoadDeck</string>
     <string name="launcher_dashboard_quick_add">Add app</string>
     <string name="launcher_dashboard_quick_pick_title">Choose app</string>
     <string name="launcher_dashboard_quick_system_suffix"> (System)</string>
@@ -253,7 +253,7 @@ Monitor — Foreground apps on display 2</string>
     <string name="launcher_dashboard_media_empty_title">Bluetooth ready</string>
     <string name="launcher_dashboard_media_empty_body">Select a song to play</string>
     <string name="launcher_dashboard_media_need_access_title">Notification access required</string>
-    <string name="launcher_dashboard_media_need_access_body">Tap to open MapControl for media</string>
+    <string name="launcher_dashboard_media_need_access_body">Tap to open RoadDeck for media</string>
     <string name="launcher_dashboard_media_unknown_title">No track info</string>
     <string name="launcher_dashboard_media_unknown_artist">No artist info</string>
     <string name="launcher_media_play">Play</string>

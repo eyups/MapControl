@@ -21,7 +21,7 @@
     <string name="settings_boot_section_title">System startup</string>
     <string name="settings_boot_section_desc">Automatically start the service and app screen when the device reboots.</string>
     <string name="settings_boot_service_title">Background service on startup</string>
-    <string name="settings_boot_service_help_on">Start MapControl service after BOOT.</string>
+    <string name="settings_boot_service_help_on">Start RoadDeck service after BOOT.</string>
     <string name="settings_boot_service_help_off">Service starts only when you open the app manually.</string>
     <string name="settings_boot_ui_title">App screen on startup</string>
     <string name="settings_boot_ui_help_on">Open the home screen when the vehicle takes power.</string>
@@ -47,7 +47,7 @@
     <string name="settings_changelog_load_error">Error loading release notes: %1$s</string>
     <string name="settings_changelog_version_prefix">Version </string>
     <string name="settings_launcher_mode_title">Vehicle Launcher mode</string>
-    <string name="settings_launcher_mode_desc">When enabled, MapControl opens as a full-screen vehicle panel (side menu hidden, status bar hidden, gauges and app shortcuts shown). When off, the app runs in normal tab view.</string>
+    <string name="settings_launcher_mode_desc">When enabled, RoadDeck opens as a full-screen vehicle panel (side menu hidden, status bar hidden, gauges and app shortcuts shown). When off, the app runs in normal tab view.</string>
     <string name="settings_launcher_mode_help_on">Full-screen vehicle panel on.</string>
     <string name="settings_launcher_mode_help_off">Normal tab view.</string>
     <string name="settings_launcher_home_link">Change default home app in system settings</string>
@@ -129,12 +129,12 @@
     <string name="projection_google_maps_nav_desc">When Google Maps starts guidance, open cluster projection automatically. Requires notification access and Google Maps as the projection target. Stopping guidance does not close projection.</string>
     <string name="projection_google_maps_nav_on_help">Open cluster when a Google Maps navigation notification arrives.</string>
     <string name="projection_google_maps_nav_off_help">Do not open cluster from Google Maps notifications.</string>
-    <string name="projection_google_maps_nav_need_access">Enable notification access for MapControl first.</string>
+    <string name="projection_google_maps_nav_need_access">Enable notification access for RoadDeck first.</string>
     <string name="projection_map_swipe_title">Map swipe</string>
     <string name="projection_map_swipe_desc">Off unless you turn it on. Two fingers left: if the cluster is closed, Google Maps or Yandex Maps on the main screen opens on the cluster. Google Maps uses the existing cluster map. If the cluster is already showing one of those maps and the other is on the main screen, they swap. Two fingers right closes cluster projection. Other apps are ignored, so the car screen is not taken over. Usage access is required.</string>
     <string name="projection_map_swipe_on_help">Handle two-finger swipes for Google Maps and Yandex Maps only.</string>
-    <string name="projection_map_swipe_off_help">Ignore car swipes. MapControl does not move any app.</string>
-    <string name="projection_map_swipe_need_access">Enable usage access for MapControl first. The swipe stays off until then.</string>
+    <string name="projection_map_swipe_off_help">Ignore car swipes. RoadDeck does not move any app.</string>
+    <string name="projection_map_swipe_need_access">Enable usage access for RoadDeck first. The swipe stays off until then.</string>
     <string name="projection_google_maps_nav_summary_idle">No active Google Maps guidance notification.</string>
     <string name="projection_google_maps_cluster_cards_title">Google Maps → Cluster cards</string>
     <string name="projection_google_maps_cluster_cards_desc">Shows distance, maneuver, and ETA from the navigation notification as cards on the cluster display. Requires notification access.</string>
@@ -370,7 +370,7 @@
     <string name="camera360_rec_stop">Stop Recording</string>
     <string name="camera360_rec_active">Recording: %1$s - %2$s</string>
     <string name="camera360_rec_done">Saved: %1$s</string>
-    <string name="camera360_rec_hint">Records as one MP4 (mosaic 1280x800, ~60 MB/min) into the MapControl folder on USB.</string>
+    <string name="camera360_rec_hint">Records as one MP4 (mosaic 1280x800, ~60 MB/min) into the RoadDeck folder on USB.</string>
     <string name="camera360_refresh">Refresh</string>
     <string name="camera360_hour">h</string>
     <string name="camera360_minute">min</string>
@@ -538,7 +538,7 @@
     <string name="equalizer_band_khz_whole">%1$d kHz</string>
     <string name="equalizer_level_db">%1$+.1f dB</string>
     <string name="equalizer_gain_db">%1$.1f dB</string>
-    <string name="onboarding_title">Map Control</string>
+    <string name="onboarding_title">RoadDeck</string>
     <string name="onboarding_subtitle">Choose your language to get started</string>
     <string name="onboarding_continue">Continue</string>
     <string name="installer_confirm_countdown">Installing automatically in %1$d s</string>
@@ -621,8 +621,8 @@
     <string name="settings_perm_nls_ok">Notification access is on and the listener is connected.</string>
     <string name="settings_perm_nls_not_bound">Notification access is on, but the listener is not connected.</string>
     <string name="settings_perm_nls_missing">Not listed in enabled_notification_listeners.</string>
-    <string name="settings_perm_fg_ok">MapControlService is running. Foreground: %1$s.</string>
-    <string name="settings_perm_fg_down">MapControlService is not running. The permission is a normal permission; the service starts at boot or when the app is opened.</string>
+    <string name="settings_perm_fg_ok">RoadDeck service is running. Foreground: %1$s.</string>
+    <string name="settings_perm_fg_down">RoadDeck service is not running. The permission is a normal permission; the service starts at boot or when the app is opened.</string>
     <string name="settings_perm_fg_fail">%1$s</string>
     <string name="settings_perm_boot_granted">Permission granted. Boot switch: %1$s. No reboot was performed.</string>
     <string name="settings_perm_boot_denied">RECEIVE_BOOT_COMPLETED is missing. Boot switch: %1$s.</string>
@@ -635,9 +635,9 @@
     <string name="settings_perm_no">no</string>
     <string name="settings_perm_on">on</string>
     <string name="settings_perm_off">off</string>
-    <string name="settings_uninstall_button">Uninstall MapControl</string>
-    <string name="settings_uninstall_title">Uninstall MapControl?</string>
-    <string name="settings_uninstall_message">Only the MapControl app will be uninstalled. Android will show its system confirmation too.</string>
+    <string name="settings_uninstall_button">Uninstall RoadDeck</string>
+    <string name="settings_uninstall_title">Uninstall RoadDeck?</string>
+    <string name="settings_uninstall_message">Only the RoadDeck app will be uninstalled. Android will show its system confirmation too.</string>
     <string name="settings_uninstall_failed">Could not open the uninstall screen.</string>
     <string name="wifi_global_stabilize_eyebrow">WI-FI MANAGEMENT</string>
     <string name="wifi_global_stabilize_title">Preparing Wi-Fi connection…</string>
@@ -874,7 +874,7 @@
 <string name="side_rail_valet">Vale Modu</string>
 <string name="wifi_networks_title">Wi-Fi networks</string>
 <string name="wifi_restricted_title">Wi‑Fi restricted</string>
-<string name="wifi_restricted_message">Wi‑Fi can\'t be changed from MapControl while the vehicle\'s wireless projection/SoftAP is active. Only system Settings can toggle it.</string>
+<string name="wifi_restricted_message">Wi‑Fi can\'t be changed from RoadDeck while the vehicle\'s wireless projection/SoftAP is active. Only system Settings can toggle it.</string>
 <string name="wifi_restricted_open_settings">Open Wi‑Fi settings</string>
 <string name="side_rail_home">Ana Sayfa</string>
 <string name="side_rail_automation">Automation</string>
@@ -1001,8 +1001,8 @@
 <string name="vehicle_info_light_night">Night</string>
     <string name="climate_auto_rear_section">Rear seats</string>
     <string name="settings_system_stats_title">System monitor</string>
-    <string name="settings_system_stats_desc">Shows CPU, GPU, RAM, MapControl CPU usage, and thermal status above all screens.</string>
-    <string name="settings_system_stats_help_on">Visible above every MapControl screen</string>
+    <string name="settings_system_stats_desc">Shows CPU, GPU, RAM, RoadDeck CPU usage, and thermal status above all screens.</string>
+    <string name="settings_system_stats_help_on">Visible above every RoadDeck screen</string>
     <string name="settings_system_stats_help_off">Monitor is hidden</string>
     <string name="system_stats_cpu">CPU</string>
     <string name="system_stats_gpu">GPU</string>
@@ -1057,7 +1057,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="split_status_ready">Free-form windows are on. Ready.</string>
     <string name="split_status_will_enable">Free-form windows are off. They will be turned on when you start.</string>
     <string name="split_status_unsupported">This vehicle does not allow free-form windows. Split Screen cannot start.</string>
-    <string name="split_note_not_owner">MapControl is not the device owner. If an app is already open, it may not take the new size. Close it first.</string>
+    <string name="split_note_not_owner">RoadDeck is not the device owner. If an app is already open, it may not take the new size. Close it first.</string>
     <string name="split_app1">App 1</string>
     <string name="split_app2">App 2</string>
     <string name="split_select_app">Select app…</string>
@@ -1210,7 +1210,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_backup_failed">Profile backup failed.</string>
     <string name="settings_cloud_restore_confirm">Profile and scene preferences will be replaced with the last cloud backup. Continue?</string>
     <string name="settings_cloud_restore_action">Restore</string>
-    <string name="settings_cloud_restore_done">Backup restored. Restart MapControl to refresh the UI.</string>
+    <string name="settings_cloud_restore_done">Backup restored. Restart RoadDeck to refresh the UI.</string>
     <string name="settings_cloud_restore_failed">Backup could not be restored.</string>
 
 </resources>

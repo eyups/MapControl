@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Map Control</string>
+    <string name="app_name">RoadDeck</string>
     <string name="launch_splash_loading">Yükleniyor…</string>
     <string name="accessibility_service_description">Yüzen Geri (global BACK), web yönetiminden odaklı metin alanına yazma ve Yandex Maps navigasyon kartlarını okuyup cluster ekranında gösterme. Yapılandırmayı değiştirdikten sonra servisi kapatıp açmanız gerekir.</string>
     <string name="yandex_cluster_nav_section_title">Yandex → Cluster</string>
@@ -10,10 +10,10 @@
     <string name="yandex_cluster_nav_toast_showing">Yandex rehberlik bulundu; cluster kartları güncellendi.</string>
     <string name="yandex_cluster_nav_toast_yandex_closed">Yandex Maps açık değil. Haritayı açıp rehberliği başlatın.</string>
     <string name="yandex_cluster_nav_toast_no_nav">Yandex açık; rehberlik başlayınca kartlar otomatik görünür.</string>
-    <string name="yandex_cluster_nav_toast_accessibility">Önce MapControl erişilebilirlik servisini açın.</string>
+    <string name="yandex_cluster_nav_toast_accessibility">Önce RoadDeck erişilebilirlik servisini açın.</string>
     <string name="yandex_cluster_nav_toast_service_wait">Erişilebilirlik servisi bağlanıyor…</string>
     <string name="log_tts_hint">Okunacak metni yazın</string>
-    <string name="log_tts_welcome_phrase">MapControl kayıt ekranına hoş geldiniz</string>
+    <string name="log_tts_welcome_phrase">RoadDeck kayıt ekranına hoş geldiniz</string>
     <string name="web_server_toast_wifi_ok_title">Wi‑Fi bağlı</string>
     <string name="web_server_toast_wifi_ok_sub">İnternet bağlantısı aktif.</string>
     <string name="web_server_toast_wifi_off_title">Wi‑Fi’ye bağlanılamadı</string>
@@ -25,7 +25,7 @@
     <string name="floating_qa_tap_for_app_info">Kısa tık: uygulamayı zorla durdur. Uzun bas: uygulama bilgisi.</string>
     <string name="floating_qa_force_stop_ok">Durduruldu: %1$s</string>
     <string name="floating_qa_force_stop_fail">Zorla durdurulamadı (cihaz izni gerekir). Uzun basıp ayarlardan kapatın.</string>
-    <string name="floating_qa_force_stop_protected">Bu paket korumalı veya MapControl; zorla durdurulmaz.</string>
+    <string name="floating_qa_force_stop_protected">Bu paket korumalı veya RoadDeck; zorla durdurulmaz.</string>
     <string name="floating_qa_title_display1">1. ekran — açık uygulamalar</string>
     <string name="floating_qa_title_display2">2. ekran — açık uygulamalar</string>
     <string name="floating_qa_label_display1">Ekran 1</string>
@@ -122,7 +122,7 @@
     <string name="vehicle_info_listening">Canlı güncelleme açık — gösterge değiştikçe yenilenir.</string>
     <string name="vehicle_info_unavailable">Araç bilgisi şu an alınamıyor.</string>
     <string name="vehicle_info_hint_title">Ne yapmalısınız?</string>
-    <string name="vehicle_info_hint_body">Kontağı açıkken birkaç saniye bekleyip Yenileye basın. Sorun sürerse MapControl uygulamasını yeniden başlatın.</string>
+    <string name="vehicle_info_hint_body">Kontağı açıkken birkaç saniye bekleyip Yenileye basın. Sorun sürerse RoadDeck uygulamasını yeniden başlatın.</string>
     <string name="vehicle_info_value_unknown">Henüz yok veya okunamadı</string>
 
     <string name="vehicle_info_section_distance">Kilometre</string>
@@ -172,7 +172,7 @@
     <string name="launcher_dashboard_card_fuel_motor">Yakıt ve motor</string>
     <string name="launcher_dashboard_card_quick">Hızlı erişim</string>
     <string name="launcher_dashboard_quick_apps_label">Uygulamalar</string>
-    <string name="launcher_dashboard_quick_shortcuts_label">MapControl</string>
+    <string name="launcher_dashboard_quick_shortcuts_label">RoadDeck</string>
     <string name="launcher_dashboard_quick_add">Uygulama ekle</string>
     <string name="launcher_dashboard_quick_pick_title">Uygulama seç</string>
     <string name="launcher_dashboard_quick_system_suffix"> (Sistem)</string>
@@ -254,7 +254,7 @@
     <string name="launcher_dashboard_media_empty_title">Bluetooth hazır</string>
     <string name="launcher_dashboard_media_empty_body">Çalmak için bir şarkı seçin</string>
     <string name="launcher_dashboard_media_need_access_title">Bildirim erişimi gerekli</string>
-    <string name="launcher_dashboard_media_need_access_body">Medyayı görmek için dokunun ve MapControl’ü açın</string>
+    <string name="launcher_dashboard_media_need_access_body">Medyayı görmek için dokunun ve RoadDeck’ü açın</string>
     <string name="launcher_dashboard_media_unknown_title">Şarkı bilgisi yok</string>
     <string name="launcher_dashboard_media_unknown_artist">Sanatçı bilgisi yok</string>
     <string name="launcher_media_play">Oynat</string>

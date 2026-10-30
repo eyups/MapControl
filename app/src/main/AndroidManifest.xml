@@ -117,7 +117,7 @@
             android:name=".ui.activity.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:label="Map Control"
+            android:label="RoadDeck"
             android:theme="@style/Theme.MapControl.Splash"
             android:configChanges="orientation|screenSize|keyboardHidden|uiMode">
             <intent-filter>
@@ -140,7 +140,7 @@
             android:targetActivity=".ui.activity.MainActivity"
             android:enabled="false"
             android:exported="true"
-            android:label="Map Control (Ana Ekran)"
+            android:label="RoadDeck (Ana Ekran)"
             android:icon="@mipmap/ic_launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

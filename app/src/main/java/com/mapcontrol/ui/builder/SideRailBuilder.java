@@ -108,7 +108,7 @@ public class SideRailBuilder {
         appTitleText = new TextView(context);
         try {
             String versionName = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
-            SpannableString spannableText = new SpannableString("MapControl by vNoisy (" + versionName + ")");
+            SpannableString spannableText = new SpannableString("RoadDeck by vNoisy (" + versionName + ")");
             int vNoisyStart = spannableText.toString().indexOf("vNoisy");
             int vNoisyEnd = vNoisyStart + "vNoisy".length();
             if (vNoisyStart >= 0) {
@@ -123,7 +123,7 @@ public class SideRailBuilder {
             }
             appTitleText.setText(spannableText);
         } catch (PackageManager.NameNotFoundException e) {
-            SpannableString spannableText = new SpannableString("MapControl by vNoisy");
+            SpannableString spannableText = new SpannableString("RoadDeck by vNoisy");
             int vNoisyStart = spannableText.toString().indexOf("vNoisy");
             int vNoisyEnd = vNoisyStart + "vNoisy".length();
             if (vNoisyStart >= 0) {

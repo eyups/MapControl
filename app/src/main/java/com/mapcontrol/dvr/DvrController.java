@@ -79,7 +79,7 @@ public final class DvrController {
         NO_CAMERA, NOT_WRITABLE, LOW_SPACE, NO_USB, USB_FULL, ERROR
     }
 
-    public static final String USB_DIR_NAME = "MapControl";
+    public static final String USB_DIR_NAME = "RoadDeck";
     public static final String USB_EXPORT_DIR_NAME = "Klipler";
     /** Arac ici kayitta her zaman bos birakilacak alan. */
     public static final long RESERVE_BYTES = 2_000_000_000L;

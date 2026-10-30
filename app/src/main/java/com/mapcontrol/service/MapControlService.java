@@ -225,7 +225,7 @@ public class MapControlService extends Service {
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("MapControl")
+                .setContentTitle("RoadDeck")
                 .setContentText("Arka planda çalışıyor")
                 .setSmallIcon(android.R.drawable.ic_menu_info_details)
                 .setContentIntent(pendingIntent)
@@ -325,10 +325,10 @@ public class MapControlService extends Service {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
-                    "MapControl Service",
+                    "RoadDeck service",
                     NotificationManager.IMPORTANCE_LOW
             );
-            channel.setDescription("MapControl arka plan servisi");
+            channel.setDescription("RoadDeck arka plan servisi");
             NotificationManager manager = getSystemService(NotificationManager.class);
             if (manager != null) {
                 manager.createNotificationChannel(channel);

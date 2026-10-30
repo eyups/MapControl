@@ -53,7 +53,7 @@ final class CloudHttp {
             connection.setInstanceFollowRedirects(false);
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("Accept-Encoding", "identity");
-            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            connection.setRequestProperty("User-Agent", "RoadDeck-Cloud/1");
             if (deviceToken != null && !deviceToken.isEmpty()) {
                 connection.setRequestProperty("Authorization", "Device " + deviceToken);
             }
@@ -111,7 +111,7 @@ final class CloudHttp {
             connection.setRequestProperty("Accept-Encoding", "identity");
             connection.setRequestProperty("Content-Type",
                     "multipart/form-data; boundary=" + boundary);
-            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            connection.setRequestProperty("User-Agent", "RoadDeck-Cloud/1");
             if (deviceToken != null && !deviceToken.isEmpty()) {
                 connection.setRequestProperty("Authorization", "Device " + deviceToken);
             }
@@ -165,7 +165,7 @@ final class CloudHttp {
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("Accept-Encoding", "identity");
             connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            connection.setRequestProperty("User-Agent", "RoadDeck-Cloud/1");
             if (deviceToken != null && !deviceToken.isEmpty()) {
                 connection.setRequestProperty("Authorization", "Device " + deviceToken);
             }
@@ -214,7 +214,7 @@ final class CloudHttp {
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("Accept-Encoding", "identity");
             connection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            connection.setRequestProperty("User-Agent", "RoadDeck-Cloud/1");
             if (deviceToken != null && !deviceToken.isEmpty()) {
                 connection.setRequestProperty("Authorization", "Device " + deviceToken);
             }
@@ -260,7 +260,7 @@ final class CloudHttp {
             connection.setInstanceFollowRedirects(false);
             connection.setRequestProperty("Accept", "application/vnd.android.package-archive");
             connection.setRequestProperty("Accept-Encoding", "identity");
-            connection.setRequestProperty("User-Agent", "MapControl-Cloud/1");
+            connection.setRequestProperty("User-Agent", "RoadDeck-Cloud/1");
             if (deviceToken != null && !deviceToken.isEmpty()) {
                 connection.setRequestProperty("Authorization", "Device " + deviceToken);
             }
