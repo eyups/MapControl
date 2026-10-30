@@ -120,4 +120,6 @@
     <dimen name="ck_stroke">1dp</dimen>
     <dimen name="ck_subtab_h">48dp</dimen>
     <dimen name="ck_rail_item_h">80dp</dimen>
+    <dimen name="ck_action_min_w">160dp</dimen>
+    <dimen name="ck_action_max_w">360dp</dimen>
 </resources>

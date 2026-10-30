@@ -194,9 +194,12 @@ public final class WelcomeSoundScreenBuilder {
 
         LinearLayout ttsGenerateRow = actionButtonRow(context,
                 context.getString(R.string.welcome_tts_generate), true);
-        ttsCard.addView(ttsGenerateRow, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        ttsGenerateRow.setMinimumWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        ttsGenerateRow.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        LinearLayout.LayoutParams ttsGenLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        ttsCard.addView(ttsGenerateRow, ttsGenLp);
         TextView ttsStatus = new TextView(context);
         ttsStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
         ttsStatus.setTextColor(UiStyles.color(context, R.color.textHint));
@@ -237,12 +240,16 @@ public final class WelcomeSoundScreenBuilder {
                 context.getString(R.string.welcome_sound_play), false);
         TextView playbackLabel = (TextView) playbackRow.getChildAt(0);
         playbackRow.setAlpha(0.45f);
+        rowSelect.setMinimumWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        playbackRow.setMinimumWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         LinearLayout.LayoutParams selectLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        selectLp.setMarginEnd(5);
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        selectLp.setMarginEnd(8);
         LinearLayout.LayoutParams playLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        playLp.setMarginStart(5);
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        playLp.setMarginStart(0);
         fileActions.addView(rowSelect, selectLp);
         fileActions.addView(playbackRow, playLp);
         sourceCard.addView(fileActions, new LinearLayout.LayoutParams(
@@ -565,8 +572,10 @@ public final class WelcomeSoundScreenBuilder {
         btnPreview.setTextColor(primary);
         UiStyles.styleOemButton(btnPreview, UiStyles.color(context, R.color.buttonPrimary));
         btnPreview.setPadding(24, 16, 24, 16);
+        btnPreview.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        btnPreview.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams previewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         previewParams.setMargins(0, 8, 0, 0);
         parent.addView(btnPreview, previewParams);

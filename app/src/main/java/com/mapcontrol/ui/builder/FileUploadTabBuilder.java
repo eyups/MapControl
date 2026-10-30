@@ -79,8 +79,10 @@ public class FileUploadTabBuilder {
         UiStyles.styleOemButton(btnWebServerToggle,
                 CockpitTokens.color(context, R.color.ck_accent));
         btnWebServerToggle.setPadding(16, 16, 16, 16);
+        btnWebServerToggle.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        btnWebServerToggle.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams toggleLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         toggleLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         control.addContent(btnWebServerToggle, toggleLp);

@@ -241,12 +241,18 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             dismissOnboarding();
             callback.onNavigate(TAB_VEHICLE_INFO, context.getString(R.string.ck_home_vehicle_info));
         });
-        actions.addView(vehicle, new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        vehicle.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        vehicle.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
+        actions.addView(vehicle, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         CockpitButton start = CockpitButton.secondary(context, context.getString(R.string.ck_home_start));
         start.setOnClickListener(v -> dismissOnboarding());
-        LinearLayout.LayoutParams startLp = new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        start.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        start.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
+        LinearLayout.LayoutParams startLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         startLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         actions.addView(start, startLp);
         return onboardingCard;

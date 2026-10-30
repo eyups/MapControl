@@ -160,13 +160,19 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         CockpitButton refresh = CockpitButton.secondary(uiContext,
                 uiContext.getString(R.string.vehicle_info_refresh));
         refresh.setOnClickListener(v -> refreshSnapshot());
-        actions.addView(refresh, new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        refresh.setMinWidth(CockpitTokens.dim(uiContext, R.dimen.ck_action_min_w));
+        refresh.setMaxWidth(CockpitTokens.dim(uiContext, R.dimen.ck_action_max_w));
+        actions.addView(refresh, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         CockpitButton eng = CockpitButton.secondary(uiContext,
                 uiContext.getString(R.string.vehicle_info_open_engmode));
         eng.setOnClickListener(v -> launchEngModeMenu());
-        LinearLayout.LayoutParams engLp = new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        eng.setMinWidth(CockpitTokens.dim(uiContext, R.dimen.ck_action_min_w));
+        eng.setMaxWidth(CockpitTokens.dim(uiContext, R.dimen.ck_action_max_w));
+        LinearLayout.LayoutParams engLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         engLp.leftMargin = CockpitTokens.dim(uiContext, R.dimen.ck_space_sm);
         actions.addView(eng, engLp);
         LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(

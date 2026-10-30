@@ -34,6 +34,7 @@ import com.mapcontrol.nav.GoogleMapsNavSnapshot;
 import com.mapcontrol.nav.YandexClusterNavCoordinator;
 import com.mapcontrol.nav.YandexClusterNavOverlay;
 import com.mapcontrol.service.GlobalBackService;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 import com.mapcontrol.manager.CarSystemGestureController;
@@ -134,8 +135,10 @@ public class ProjectionTabBuilder {
         btnOpen.setTypeface(null, Typeface.BOLD);
         UiStyles.styleOemButton(btnOpen, UiStyles.color(context, R.color.buttonPrimary));
         btnOpen.setPadding(16, 20, 16, 20);
+        btnOpen.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        btnOpen.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams openParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         openParams.setMargins(0, 0, 8, 0);
         btnOpen.setId(View.generateViewId());
         controlButtonContainer.addView(btnOpen, openParams);
@@ -147,8 +150,10 @@ public class ProjectionTabBuilder {
         btnClose.setTypeface(null, Typeface.BOLD);
         UiStyles.styleOemButton(btnClose, UiStyles.color(context, R.color.surfaceCardInner));
         btnClose.setPadding(16, 20, 16, 20);
+        btnClose.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        btnClose.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams closeParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         btnClose.setId(View.generateViewId());
         controlButtonContainer.addView(btnClose, closeParams);
 
