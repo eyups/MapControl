@@ -1355,4 +1355,25 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_roadmate_status_ready">DURUM: HAZIR</string>
     <string name="ck_roadmate_status_passive">DURUM: PASİF</string>
     <string name="ck_roadmate_identity">Hizmet Kimliği: %1$s</string>
+    <string name="ck_domain_driver">Sürücü</string>
+    <string name="ck_rail_driver">Sürücü</string>
+    <string name="profiles_face_label">Yüz Tanıma</string>
+    <string name="profiles_seat_label">Koltuk Hafıza</string>
+    <string name="profiles_apply_on_start_short_on">Açık</string>
+    <string name="profiles_apply_on_start_short_off">Kapalı</string>
+    <string name="profiles_advanced_items_short">Ek ayarlar</string>
+    <string name="profiles_sync_apply">Ayarları Eşitle</string>
+    <string name="profiles_activate">Bu Profile Geçiş Yap</string>
+    <string name="profiles_role_primary">Birincil Sürücü</string>
+    <string name="profiles_role_secondary">İkinci Sürücü</string>
+    <string name="profiles_ready_badge">HAZIR</string>
+    <string name="profiles_new_card_title">Yeni Profil / Misafir</string>
+    <string name="profiles_new_card_desc">Koltuk, ayna ve klima ayarlarını saklamadan bağımsız misafir modu başlatın veya yeni bir aile üyesi kaydedin.</string>
+    <string name="profiles_new_badge">YENİ</string>
+    <string name="profiles_guest_start">Misafir Modunu Başlat</string>
+    <string name="profiles_guest_name">Misafir</string>
+    <string name="profiles_face_registered">Kayıtlı (Hazır)</string>
+    <string name="profiles_face_none">Kayıtlı değil</string>
+    <string name="profiles_sync_apply_short">Eşitle</string>
+    <string name="profiles_activate_short">Geçiş Yap</string>
 </resources>

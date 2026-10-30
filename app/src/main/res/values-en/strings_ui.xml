@@ -1336,4 +1336,25 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_roadmate_status_ready">STATUS: READY</string>
     <string name="ck_roadmate_status_passive">STATUS: PASSIVE</string>
     <string name="ck_roadmate_identity">Service ID: %1$s</string>
+    <string name="ck_domain_driver">Driver</string>
+    <string name="ck_rail_driver">Driver</string>
+    <string name="profiles_face_label">Face Recognition</string>
+    <string name="profiles_seat_label">Seat memory</string>
+    <string name="profiles_apply_on_start_short_on">On</string>
+    <string name="profiles_apply_on_start_short_off">Off</string>
+    <string name="profiles_advanced_items_short">Extra settings</string>
+    <string name="profiles_sync_apply">Sync Settings</string>
+    <string name="profiles_activate">Switch to this profile</string>
+    <string name="profiles_role_primary">Primary Driver</string>
+    <string name="profiles_role_secondary">Second Driver</string>
+    <string name="profiles_ready_badge">READY</string>
+    <string name="profiles_new_card_title">New Profile / Guest</string>
+    <string name="profiles_new_card_desc">Start an independent guest mode without saving seat, mirror and climate settings, or add a new family member.</string>
+    <string name="profiles_new_badge">NEW</string>
+    <string name="profiles_guest_start">Start Guest Mode</string>
+    <string name="profiles_guest_name">Guest</string>
+    <string name="profiles_face_registered">Registered (Ready)</string>
+    <string name="profiles_face_none">Not registered</string>
+    <string name="profiles_sync_apply_short">Sync</string>
+    <string name="profiles_activate_short">Switch</string>
 </resources>

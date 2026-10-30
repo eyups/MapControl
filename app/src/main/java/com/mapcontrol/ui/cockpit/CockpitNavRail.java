@@ -195,6 +195,7 @@ public class CockpitNavRail extends LinearLayout {
             case 2: return R.string.ck_rail_safety;
             case 3: return R.string.ck_rail_media;
             case 4: return R.string.ck_rail_apps;
+            case 6: return R.string.ck_rail_driver;
             default: return R.string.ck_rail_settings;
         }
     }

@@ -98,15 +98,17 @@ public final class CockpitNavModel {
                             R.drawable.ic_mdi_car_sunroof)
                     .add(TAB_ASSIST, R.string.ck_sub_assist, R.drawable.ic_mdi_shield_car));
 
-            list.add(new Domain(2, R.string.ck_domain_safety, R.drawable.ic_mdi_shield_car)
-                    .add(TAB_DRIVING_HISTORY, R.string.side_rail_driving_report,
-                            R.drawable.ic_mdi_road_variant)
-                    .add(TAB_CAMERA_360, R.string.camera360_title, R.drawable.ic_mdi_camera)
-                    .add(TAB_VALET, R.string.side_rail_valet, R.drawable.ic_mdi_shield_car)
+            list.add(new Domain(6, R.string.ck_domain_driver, R.drawable.ic_mdi_account)
                     .add(TAB_DRIVER_PROFILES, R.string.side_rail_driver_profiles,
                             R.drawable.ic_mdi_account)
                     .add(TAB_FACE_RECOGNITION, R.string.side_rail_face_recognition,
                             R.drawable.ic_mdi_account));
+
+            list.add(new Domain(2, R.string.ck_domain_safety, R.drawable.ic_mdi_shield_car)
+                    .add(TAB_DRIVING_HISTORY, R.string.side_rail_driving_report,
+                            R.drawable.ic_mdi_road_variant)
+                    .add(TAB_CAMERA_360, R.string.camera360_title, R.drawable.ic_mdi_camera)
+                    .add(TAB_VALET, R.string.side_rail_valet, R.drawable.ic_mdi_shield_car));
 
             list.add(new Domain(3, R.string.ck_domain_media, R.drawable.ic_mdi_music_note)
                     .add(TAB_EQUALIZER, R.string.side_rail_equalizer, R.drawable.ic_mdi_equalizer)

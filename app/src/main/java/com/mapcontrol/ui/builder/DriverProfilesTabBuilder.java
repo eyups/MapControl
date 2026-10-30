@@ -25,6 +25,9 @@ import com.mapcontrol.R;
 import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.profile.ProfileAvatars;
+import com.mapcontrol.vehicle.FaceProfileStore;
+import com.mapcontrol.ui.cockpit.CockpitCard;
+import com.mapcontrol.ui.cockpit.CockpitButton;
 import com.mapcontrol.ui.cockpit.CockpitChip;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitToggleRow;
@@ -80,45 +83,272 @@ public class DriverProfilesTabBuilder {
                 margin, margin);
 
         DriverProfileManager.Profile active = manager.getActive();
-        if (context.getResources().getConfiguration().screenWidthDp >= 1000) {
-            LinearLayout columns = new LinearLayout(context);
-            columns.setOrientation(LinearLayout.HORIZONTAL);
-            columns.setBaselineAligned(false);
+        boolean wide = context.getResources().getConfiguration().screenWidthDp >= 1000;
+        LinearLayout cards = new LinearLayout(context);
+        cards.setOrientation(wide ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
+        cards.setBaselineAligned(false);
 
-            LinearLayout left = createCard();
-            addProfileList(left, active);
-            LinearLayout right = createCard();
-            addProfileDetail(right, active);
-
-            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
-            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.36f);
-            leftLp.setMarginEnd(gutter / 2);
-            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.64f);
-            rightLp.setMarginStart(gutter / 2);
-            columns.addView(left, leftLp);
-            columns.addView(right, rightLp);
-            outer.addView(columns, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-        } else {
-            LinearLayout listCard = createCard();
-            addProfileList(listCard, active);
-            outer.addView(listCard, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            LinearLayout detailCard = createCard();
-            addProfileDetail(detailCard, active);
-            LinearLayout.LayoutParams detailLp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            detailLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_medium);
-            outer.addView(detailCard, detailLp);
+        java.util.List<DriverProfileManager.Profile> profiles = manager.getProfiles();
+        for (int i = 0; i < profiles.size(); i++) {
+            DriverProfileManager.Profile profile = profiles.get(i);
+            CockpitCard card = buildProfileCard(profile, profile == active, i);
+            if (wide) {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                if (i > 0) lp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+                cards.addView(card, lp);
+            } else {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                if (i > 0) lp.topMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+                cards.addView(card, lp);
+            }
         }
 
+        CockpitCard newCard = buildNewProfileCard();
+        if (wide) {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            lp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+            cards.addView(newCard, lp);
+        } else {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.topMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+            cards.addView(newCard, lp);
+        }
+        outer.addView(cards, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private CockpitCard buildProfileCard(DriverProfileManager.Profile profile,
+            boolean active, int index) {
+        CockpitCard card = new CockpitCard(context);
+        if (active) {
+            card.setBackground(CockpitSurfaces.outlined(context,
+                    CockpitTokens.color(context, R.color.ck_surface_2),
+                    CockpitTokens.color(context, R.color.ck_accent), 16f));
+        }
+        int pad = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        card.setPadding(pad, pad, pad, pad);
+
+        LinearLayout header = new LinearLayout(context);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
+        frame(card, profile, header, active, index);
+        card.addContent(header);
+
+        addInfoRow(card, R.drawable.ic_mdi_account,
+                context.getString(R.string.profiles_face_label), faceStatus());
+        addInfoRow(card, R.drawable.ic_mdi_car_seat,
+                context.getString(R.string.profiles_seat_label),
+                profile.seatSlot > 0
+                        ? context.getString(R.string.profiles_slot_n, profile.seatSlot)
+                        : context.getString(R.string.profiles_slot_none));
+        addInfoRow(card, R.drawable.ic_mdi_car,
+                context.getString(R.string.profiles_apply_on_start_title),
+                context.getString(profile.applyOnStart
+                        ? R.string.profiles_apply_on_start_short_on
+                        : R.string.profiles_apply_on_start_short_off));
+        addInfoRow(card, R.drawable.ic_mdi_package_variant,
+                context.getString(R.string.profiles_advanced_items_short),
+                String.valueOf(profile.items.size()));
+
+        LinearLayout actions = new LinearLayout(context);
+        actions.setOrientation(LinearLayout.HORIZONTAL);
+        actions.setGravity(Gravity.CENTER_VERTICAL);
+        if (active) {
+            CockpitButton apply = CockpitButton.primary(context,
+                    context.getString(R.string.profiles_sync_apply_short));
+            apply.setOnClickListener(v -> executor.execute(() -> {
+                DriverProfileApplier.applyNow(context, log);
+                handler.post(onProfileChanged);
+            }));
+            actions.addView(apply, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        } else {
+            CockpitButton activate = CockpitButton.secondary(context,
+                    context.getString(R.string.profiles_activate_short));
+            activate.setOnClickListener(v -> {
+                manager.activate(profile.id);
+                log.accept("[Profil] Aktif profil: " + profile.name);
+                handler.post(onProfileChanged);
+            });
+            actions.addView(activate, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        }
+        CockpitButton edit = CockpitButton.secondary(context,
+                context.getString(R.string.profiles_edit));
+        LinearLayout.LayoutParams editLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        editLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        edit.setOnClickListener(v -> showProfileSettings(profile));
+        actions.addView(edit, editLp);
+        card.addContent(actions);
+        return card;
+    }
+
+    private void frame(CockpitCard card, DriverProfileManager.Profile profile,
+            LinearLayout header, boolean active, int index) {
+        float density = context.getResources().getDisplayMetrics().density;
+        FrameLayout avatar = createAvatar(profile.avatar, 64, false);
+        LinearLayout.LayoutParams avatarLp = new LinearLayout.LayoutParams(
+                64 * Math.round(density), 64 * Math.round(density));
+        avatarLp.setMarginEnd(Math.round(14 * density));
+        header.addView(avatar, avatarLp);
+
+        LinearLayout text = new LinearLayout(context);
+        text.setOrientation(LinearLayout.VERTICAL);
+        TextView name = new TextView(context);
+        name.setText(profile.name);
+        CockpitTokens.headlineSm(name);
+        text.addView(name);
+        TextView role = new TextView(context);
+        role.setText(index == 0
+                ? context.getString(R.string.profiles_role_primary)
+                : context.getString(R.string.profiles_role_secondary));
+        CockpitTokens.bodySm(role);
+        role.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        text.addView(role);
+        header.addView(text, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        View badge = active
+                ? StatusBadge.nominal(context, context.getString(R.string.profiles_active_badge))
+                : StatusBadge.neutral(context, context.getString(R.string.profiles_ready_badge));
+        header.addView(badge);
+    }
+
+    private void addInfoRow(CockpitCard card, int iconRes, String label, String value) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        CockpitSurfaces.level1(row);
+        ImageView icon = new ImageView(context);
+        icon.setImageResource(iconRes);
+        icon.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
+        row.addView(icon, new LinearLayout.LayoutParams(dp(22), dp(22)));
+        TextView text = new TextView(context);
+        text.setText(label);
+        CockpitTokens.bodySm(text);
+        LinearLayout.LayoutParams textLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        textLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        row.addView(text, textLp);
+        TextView valueView = new TextView(context);
+        valueView.setText(value);
+        CockpitTokens.bodySm(valueView);
+        valueView.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        row.addView(valueView);
+        LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        rowLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        card.addContent(row, rowLp);
+    }
+
+    private CockpitCard buildNewProfileCard() {
+        CockpitCard card = new CockpitCard(context);
+        int pad = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        card.setPadding(pad, pad, pad, pad);
+        LinearLayout header = new LinearLayout(context);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
+        FrameLayout icon = new FrameLayout(context);
+        icon.setBackground(CockpitSurfaces.outlined(context,
+                CockpitTokens.color(context, R.color.ck_surface_2),
+                CockpitTokens.color(context, R.color.ck_stroke), 16f));
+        ImageView plus = new ImageView(context);
+        plus.setImageResource(R.drawable.ic_mdi_account);
+        plus.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
+        icon.addView(plus, new FrameLayout.LayoutParams(dp(28), dp(28), Gravity.CENTER));
+        header.addView(icon, new LinearLayout.LayoutParams(dp(64), dp(64)));
+        TextView label = new TextView(context);
+        label.setText(context.getString(R.string.profiles_new_card_title));
+        CockpitTokens.headlineSm(label);
+        LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        labelLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        header.addView(label, labelLp);
+        header.addView(StatusBadge.neutral(context,
+                context.getString(R.string.profiles_new_badge)));
+        card.addContent(header);
+
+        TextView desc = new TextView(context);
+        desc.setText(context.getString(R.string.profiles_new_card_desc));
+        CockpitTokens.bodySm(desc);
+        desc.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams descLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        descLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        card.addContent(desc, descLp);
+
+        CockpitButton create = CockpitButton.primary(context,
+                context.getString(R.string.profiles_new));
+        create.setOnClickListener(v -> showNewProfileDialog());
+        LinearLayout.LayoutParams createLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        createLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        card.addContent(create, createLp);
+        CockpitButton guest = CockpitButton.secondary(context,
+                context.getString(R.string.profiles_guest_start));
+        guest.setOnClickListener(v -> startGuestProfile());
+        LinearLayout.LayoutParams guestLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        guestLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        card.addContent(guest, guestLp);
+        return card;
+    }
+
+    private String faceStatus() {
+        try {
+            int count = FaceProfileStore.load(context).size();
+            return count > 0
+                    ? context.getString(R.string.profiles_face_registered)
+                    : context.getString(R.string.profiles_face_none);
+        } catch (Exception e) {
+            return context.getString(R.string.profiles_face_none);
+        }
+    }
+
+    private void showProfileSettings(DriverProfileManager.Profile profile) {
+        LinearLayout content = new LinearLayout(context);
+        content.setOrientation(LinearLayout.VERTICAL);
+        content.setPadding(dp(16), dp(8), dp(16), dp(8));
+        addSeatSection(content, profile);
+        addAdvancedItems(content, profile);
+        ScrollView scroll = new ScrollView(context);
+        scroll.addView(content);
+        new AlertDialog.Builder(context)
+                .setTitle(profile.name)
+                .setView(scroll)
+                .setPositiveButton(R.string.profiles_ok, null)
+                .show();
+    }
+
+    private void startGuestProfile() {
+        String guestName = context.getString(R.string.profiles_guest_name);
+        DriverProfileManager.Profile guest = null;
+        for (DriverProfileManager.Profile p : manager.getProfiles()) {
+            if (guestName.equals(p.name)) {
+                guest = p;
+                break;
+            }
+        }
+        if (guest == null) {
+            guest = manager.create(guestName, false);
+        }
+        manager.activate(guest.id);
+        log.accept("[Profil] Misafir profili etkin");
+        handler.post(onProfileChanged);
+    }
+
+    private int dp(int value) {
+        return Math.round(value * context.getResources().getDisplayMetrics().density);
     }
 
     private LinearLayout createCard() {
