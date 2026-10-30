@@ -38,7 +38,7 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
             ComfortCommands.PREF_SUNROOF, ComfortCommands.PREF_SUNSHADE,
             RecirculationAutomation.PREF_ENABLED, TemperatureAutomation.PREF_ENABLED,
             "welcomeDesignId", "welcomeCustomText", "welcomeAudioFilePath", "welcomeAudioAutoPlay"));
-    private static final String[] SCOPED_PREFIXES = {"tempAuto_"};
+    private static final String[] SCOPED_PREFIXES = {"tempAuto_", "climateAuto_"};
     private static final Set<String> BACKUP_PREF_KEYS = new HashSet<>(Arrays.asList(
             "welcomeDesignId", "welcomeCustomText", "welcomeAudioFilePath", "welcomeAudioAutoPlay"));
 

@@ -2096,6 +2096,9 @@ public class MainActivity extends AppCompatActivity {
 
     /** Aktif profil değişince hafıza ayarı gösteren sekmeleri yeniler ve açık sekmeyi yeniden bağlar. */
     private void onDriverProfileChanged() {
+        if (topBarBuilder != null) {
+            topBarBuilder.refreshProfile();
+        }
         rebuildNonLauncherTabsForUiMode();
         if (currentTab != TAB_LAUNCHER) {
             switchTab(currentTab);
@@ -2256,6 +2259,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (topBarBuilder != null) {
+            topBarBuilder.refreshProfile();
+        }
         if (currentTab == TAB_CAMERA_360 && camera360TabBuilder != null) {
             camera360TabBuilder.onTabVisible();
         }

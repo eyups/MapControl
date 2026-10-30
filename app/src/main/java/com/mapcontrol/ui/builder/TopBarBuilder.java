@@ -84,6 +84,12 @@ public class TopBarBuilder {
         }
     }
 
+    public void refreshProfile() {
+        if (statusBar != null) {
+            statusBar.refreshProfile();
+        }
+    }
+
     public TextView getTitleView() {
         return titleView;
     }

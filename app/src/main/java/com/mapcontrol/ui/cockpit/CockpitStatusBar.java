@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mapcontrol.R;
+import com.mapcontrol.profile.DriverProfileManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,7 @@ public class CockpitStatusBar extends LinearLayout {
 
     private final TextView titleView;
     private final TextView clockView;
+    private final TextView profileChip;
     private final LinearLayout actions;
     private final CockpitButton backButton;
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -80,6 +82,25 @@ public class CockpitStatusBar extends LinearLayout {
         left.addView(titleView, new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT));
 
+        profileChip = new TextView(context);
+        CockpitTokens.labelCaps(profileChip);
+        profileChip.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        profileChip.setBackground(CockpitSurfaces.outlined(context,
+                CockpitTokens.color(context, R.color.ck_surface_1),
+                CockpitTokens.color(context, R.color.ck_stroke), 12f));
+        profileChip.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dp(context, 4),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dp(context, 4));
+        profileChip.setSingleLine(true);
+        profileChip.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        profileChip.setMaxWidth(CockpitTokens.dp(context, 180));
+        LayoutParams profileLp = new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT);
+        profileLp.rightMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        addView(profileChip, profileLp);
+        refreshProfile();
+
         clockView = new TextView(context);
         CockpitTokens.headlineSm(clockView);
         CockpitTokens.tabular(clockView);
@@ -126,6 +147,17 @@ public class CockpitStatusBar extends LinearLayout {
 
     private void updateClock() {
         clockView.setText(timeFormat.format(new Date()));
+    }
+
+    /** Aktif sürücü profilini üst bar çipinde gösterir. */
+    public void refreshProfile() {
+        if (profileChip == null) {
+            return;
+        }
+        DriverProfileManager.Profile active = DriverProfileManager.get(getContext()).getActive();
+        String name = active == null || active.name == null || active.name.trim().isEmpty()
+                ? "—" : active.name.trim();
+        profileChip.setText(getContext().getString(R.string.ck_profile_chip, name));
     }
 
     public TextView getTitleView() {

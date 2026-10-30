@@ -1361,4 +1361,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_advanced_settings_link">Seat &amp; extra memory settings</string>
     <string name="profiles_face_add">Add face</string>
     <string name="profiles_face_update">Update face</string>
+    <string name="ck_profile_chip">PROFILE: %1$s</string>
 </resources>

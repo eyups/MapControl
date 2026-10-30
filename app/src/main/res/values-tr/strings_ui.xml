@@ -1380,4 +1380,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_advanced_settings_link">Koltuk ve ek hafıza ayarları</string>
     <string name="profiles_face_add">Yüz Ekle</string>
     <string name="profiles_face_update">Yüzü Güncelle</string>
+    <string name="ck_profile_chip">PROFİL: %1$s</string>
 </resources>
