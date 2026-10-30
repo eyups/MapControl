@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.NetworkWifiHelper;
 
@@ -441,7 +442,10 @@ public class AppsTabBuilder {
 
                 LinearLayout appCard = new LinearLayout(context);
                 appCard.setOrientation(LinearLayout.HORIZONTAL);
-                appCard.setPadding(20, 20, 20, 20);
+                appCard.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                        CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                        CockpitTokens.dim(context, R.dimen.ck_space_md),
+                        CockpitTokens.dim(context, R.dimen.ck_space_sm));
                 appCard.setGravity(android.view.Gravity.CENTER_VERTICAL);
                 appCard.setClickable(true);
                 appCard.setFocusable(true);
@@ -456,8 +460,8 @@ public class AppsTabBuilder {
                 LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-                cardParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
-                appCard.setMinimumHeight((int) (120 * context.getResources().getDisplayMetrics().density));
+                cardParams.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
+                appCard.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
 
                 android.widget.ImageView appIcon = new android.widget.ImageView(context);
                 try {
@@ -468,8 +472,7 @@ public class AppsTabBuilder {
                 }
                 appIcon.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
                 LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
-                        (int) (44 * context.getResources().getDisplayMetrics().density),
-                        (int) (44 * context.getResources().getDisplayMetrics().density));
+                        CockpitTokens.dp(context, 40), CockpitTokens.dp(context, 40));
                 iconParams.setMargins(0, 0, 16, 0);
                 appCard.addView(appIcon, iconParams);
 
@@ -504,7 +507,7 @@ public class AppsTabBuilder {
 
                 Button actionButton = new Button(context);
                 actionButton.setText(R.string.apps_action_open);
-                actionButton.setTextSize(14);
+                actionButton.setTextSize(15);
                 actionButton.setTypeface(null, android.graphics.Typeface.BOLD);
                 actionButton.setPadding(24, 12, 24, 12);
 
@@ -528,7 +531,8 @@ public class AppsTabBuilder {
 
                 Button removeButton = new Button(context);
                 removeButton.setText(R.string.apps_action_remove);
-                removeButton.setTextSize(14);
+                removeButton.setTextSize(15);
+                removeButton.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
                 removeButton.setTypeface(null, android.graphics.Typeface.BOLD);
                 removeButton.setTextColor(UiStyles.color(context, R.color.textDestructive));
                 removeButton.setBackgroundColor(UiStyles.color(context, R.color.transparent));
@@ -993,7 +997,8 @@ public class AppsTabBuilder {
         } else if (hasUpdate) {
             actionButton.setText(R.string.apps_action_update);
             actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonSuccessBright));
+            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.ck_accent));
+            actionButton.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
             actionButton.setOnClickListener(v -> {
                 callback.log(displayName + " güncelleniyor...");
                 requestInstall(packageName, displayName, downloadUrl, null);
@@ -1013,7 +1018,8 @@ public class AppsTabBuilder {
         } else {
             actionButton.setText(R.string.apps_action_install);
             actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonSuccessBright));
+            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.ck_accent));
+            actionButton.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
             actionButton.setOnClickListener(v -> requestInstall(packageName, displayName, downloadUrl, null));
         }
 
@@ -1333,7 +1339,8 @@ public class AppsTabBuilder {
         button.setEnabled(true);
         button.setText(R.string.apps_action_install_local);
         button.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(button, UiStyles.color(context, R.color.buttonSuccessBright));
+        UiStyles.styleOemButton(button, UiStyles.color(context, R.color.ck_accent));
+            button.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
         UiStyles.clearButtonCompoundDrawables(button);
         button.setOnClickListener(v -> {
             String pkg = packageNameFromApkFile(readyFile);
@@ -1373,7 +1380,8 @@ public class AppsTabBuilder {
             button.setTextColor(iconColor);
             status.setText(label);
             status.setTextColor(UiStyles.color(context, R.color.statusInfo));
-            UiStyles.styleOemButton(button, UiStyles.color(context, R.color.buttonSuccessBright));
+            UiStyles.styleOemButton(button, UiStyles.color(context, R.color.ck_accent));
+            button.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
             UiStyles.setButtonStartIconTinted(button, R.drawable.ic_mdi_timer_sand, iconColor, iconGap);
         } else if (progress.phase == DownloadProgress.INSTALLING) {
             button.setEnabled(false);
@@ -1381,7 +1389,8 @@ public class AppsTabBuilder {
             button.setTextColor(iconColor);
             status.setText(R.string.apps_installing);
             status.setTextColor(UiStyles.color(context, R.color.statusInfo));
-            UiStyles.styleOemButton(button, UiStyles.color(context, R.color.buttonSuccessBright));
+            UiStyles.styleOemButton(button, UiStyles.color(context, R.color.ck_accent));
+            button.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
             UiStyles.setButtonStartIconTinted(button, R.drawable.ic_mdi_package_variant, iconColor, iconGap);
         } else if (progress.phase == DownloadProgress.FAILED) {
             button.setEnabled(true);
@@ -1783,7 +1792,7 @@ public class AppsTabBuilder {
                     LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT);
-                    cardParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
+                    cardParams.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
 
                     LinearLayout iconBox = new LinearLayout(context);
                     iconBox.setOrientation(LinearLayout.VERTICAL);
