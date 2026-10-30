@@ -1232,4 +1232,22 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_restore_done">Yedek geri yüklendi. Arayüz için uygulamayı yeniden başlat.</string>
     <string name="settings_cloud_restore_failed">Yedek geri yüklenemedi.</string>
 
+
+    <!-- Cockpit IA -->
+    <string name="ck_domain_cockpit">Kokpit</string>
+    <string name="ck_domain_vehicle">Araç</string>
+    <string name="ck_domain_safety">Sürüş &amp; Güvenlik</string>
+    <string name="ck_domain_media">Medya &amp; Ekran</string>
+    <string name="ck_domain_apps">Uygulamalar &amp; Bağlantı</string>
+    <string name="ck_domain_settings">Ayarlar</string>
+    <string name="ck_sub_cockpit">Kokpit</string>
+    <string name="ck_sub_drive_mode">Sürüş Modu</string>
+    <string name="ck_sub_climate">Klima Otomasyonu</string>
+    <string name="ck_sub_assist">Yardım Sistemleri</string>
+    <string name="ck_sub_launcher">Launcher</string>
+    <string name="ck_sub_general">Genel</string>
+    <string name="ck_sub_log">Log</string>
+    <string name="ck_rail_expand">Menüyü genişlet</string>
+    <string name="ck_rail_collapse">Menüyü daralt</string>
+    <string name="ck_offline">Bağlı değil</string>
 </resources>

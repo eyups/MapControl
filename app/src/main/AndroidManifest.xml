@@ -265,6 +265,11 @@
             </intent-filter>
         </service>
         
+
+        <activity
+            android:name=".ui.cockpit.CockpitGalleryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MapControl" />
     </application>
 
 </manifest>

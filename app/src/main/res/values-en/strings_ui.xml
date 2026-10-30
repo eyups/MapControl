@@ -1213,4 +1213,22 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_restore_done">Backup restored. Restart RoadDeck to refresh the UI.</string>
     <string name="settings_cloud_restore_failed">Backup could not be restored.</string>
 
+
+    <!-- Cockpit IA -->
+    <string name="ck_domain_cockpit">Cockpit</string>
+    <string name="ck_domain_vehicle">Vehicle</string>
+    <string name="ck_domain_safety">Driving &amp; Safety</string>
+    <string name="ck_domain_media">Media &amp; Display</string>
+    <string name="ck_domain_apps">Apps &amp; Connectivity</string>
+    <string name="ck_domain_settings">Settings</string>
+    <string name="ck_sub_cockpit">Cockpit</string>
+    <string name="ck_sub_drive_mode">Drive Mode</string>
+    <string name="ck_sub_climate">Climate Automation</string>
+    <string name="ck_sub_assist">Assist Systems</string>
+    <string name="ck_sub_launcher">Launcher</string>
+    <string name="ck_sub_general">General</string>
+    <string name="ck_sub_log">Log</string>
+    <string name="ck_rail_expand">Expand menu</string>
+    <string name="ck_rail_collapse">Collapse menu</string>
+    <string name="ck_offline">Not connected</string>
 </resources>

@@ -34,7 +34,7 @@ public final class CockpitTokens {
         return Math.round(value * context.getResources().getDisplayMetrics().density);
     }
 
-    public static int dp(Context context, int dimenRes) {
+    public static int dim(Context context, int dimenRes) {
         return Math.round(context.getResources().getDimension(dimenRes));
     }
 

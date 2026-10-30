@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <application>
+        <!-- Debug-only gallery; release manifest keeps exported=false. -->
+        <activity
+            android:name=".ui.cockpit.CockpitGalleryActivity"
+            android:exported="true"
+            tools:replace="android:exported" />
+    </application>
+</manifest>
