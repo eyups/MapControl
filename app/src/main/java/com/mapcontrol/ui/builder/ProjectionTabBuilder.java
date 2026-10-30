@@ -88,8 +88,9 @@ public class ProjectionTabBuilder {
 
         LinearLayout outer = new LinearLayout(context);
         outer.setOrientation(LinearLayout.VERTICAL);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        outer.setPadding(margin, margin, margin, margin);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        outer.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
 
         projectionTabContent = new LinearLayout(context);
         projectionTabContent.setOrientation(LinearLayout.VERTICAL);
@@ -107,19 +108,17 @@ public class ProjectionTabBuilder {
 
         TextView projectionTitle = new TextView(context);
         projectionTitle.setText(R.string.projection_title);
-        projectionTitle.setTextSize(18);
-        projectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        projectionTitle.setTypeface(null, Typeface.BOLD);
-        projectionTitle.setPadding(16, 16, 16, 8);
+        CockpitTokens.title(projectionTitle);
+        projectionTitle.setPadding(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
         leftCard.addView(projectionTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         TextView projectionStatus = new TextView(context);
         projectionStatus.setText(R.string.projection_status_off);
-        projectionStatus.setTextSize(13);
-        projectionStatus.setTextColor(UiStyles.color(context, R.color.textHint));
-        projectionStatus.setPadding(16, 0, 16, 16);
+        CockpitTokens.bodySm(projectionStatus);
+        projectionStatus.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        projectionStatus.setPadding(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_md));
         projectionStatus.setId(View.generateViewId());
         leftCard.addView(projectionStatus, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -132,11 +131,12 @@ public class ProjectionTabBuilder {
 
         Button btnOpen = new Button(context);
         btnOpen.setText(R.string.projection_open);
-        btnOpen.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnOpen.setTextSize(16);
-        btnOpen.setTypeface(null, Typeface.BOLD);
-        UiStyles.styleOemButton(btnOpen, UiStyles.color(context, R.color.buttonPrimary));
-        btnOpen.setPadding(16, 20, 16, 20);
+        btnOpen.setTextSize(18);
+        btnOpen.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnOpen, CockpitTokens.color(context, R.color.ck_accent));
+        btnOpen.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
+        btnOpen.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
+        btnOpen.setPadding(16, 12, 16, 12);
         btnOpen.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         btnOpen.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams openParams = new LinearLayout.LayoutParams(
@@ -147,11 +147,12 @@ public class ProjectionTabBuilder {
 
         Button btnClose = new Button(context);
         btnClose.setText(R.string.projection_stop);
-        btnClose.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnClose.setTextSize(16);
-        btnClose.setTypeface(null, Typeface.BOLD);
-        UiStyles.styleOemButton(btnClose, UiStyles.color(context, R.color.surfaceCardInner));
-        btnClose.setPadding(16, 20, 16, 20);
+        btnClose.setTextSize(18);
+        btnClose.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnClose, CockpitTokens.color(context, R.color.ck_surface_2));
+        btnClose.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        btnClose.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
+        btnClose.setPadding(16, 12, 16, 12);
         btnClose.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         btnClose.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams closeParams = new LinearLayout.LayoutParams(
@@ -183,23 +184,24 @@ public class ProjectionTabBuilder {
 
         TextView appTitle = new TextView(context);
         appTitle.setText(R.string.projection_app_title);
-        appTitle.setTextSize(18);
-        appTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        appTitle.setTypeface(null, Typeface.BOLD);
-        appTitle.setPadding(16, 16, 16, 8);
+        CockpitTokens.title(appTitle);
+        appTitle.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_md), 0,
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
         leftCard.addView(appTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         LinearLayout appCard = new LinearLayout(context);
         appCard.setOrientation(LinearLayout.VERTICAL);
-        UiStyles.applySolidRoundedBackgroundDp(appCard,
-                UiStyles.color(context, R.color.surfaceCard), 16f);
-        appCard.setPadding(20, 20, 20, 20);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(appCard);
+        appCard.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_md));
         LinearLayout.LayoutParams appCardParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        appCardParams.setMargins(16, 0, 16, 16);
+        appCardParams.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_md));
 
         LinearLayout appInfo = new LinearLayout(context);
         appInfo.setOrientation(LinearLayout.HORIZONTAL);
@@ -207,8 +209,7 @@ public class ProjectionTabBuilder {
 
         LinearLayout iconBox = new LinearLayout(context);
         iconBox.setOrientation(LinearLayout.VERTICAL);
-        UiStyles.applySolidRoundedBackgroundDp(iconBox,
-                UiStyles.color(context, R.color.surfaceCardInner), 12f);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(iconBox);
         iconBox.setGravity(Gravity.CENTER);
         iconBox.setPadding(16, 16, 16, 16);
 
@@ -217,7 +218,8 @@ public class ProjectionTabBuilder {
         mapIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
         int mapIconPx = Math.round(36 * context.getResources().getDisplayMetrics().density);
         mapIcon.setLayoutParams(new LinearLayout.LayoutParams(mapIconPx, mapIconPx));
-        mapIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textPrimary)));
+        mapIcon.setImageTintList(ColorStateList.valueOf(
+                CockpitTokens.color(context, R.color.ck_accent)));
         iconBox.addView(mapIcon);
 
         LinearLayout.LayoutParams iconBoxParams = new LinearLayout.LayoutParams(80, 80);
@@ -230,9 +232,7 @@ public class ProjectionTabBuilder {
 
         targetAppLabel = new TextView(context);
         targetAppLabel.setText(R.string.common_not_selected);
-        targetAppLabel.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        targetAppLabel.setTextSize(17);
-        targetAppLabel.setTypeface(null, Typeface.NORMAL);
+        CockpitTokens.title(targetAppLabel);
         LinearLayout.LayoutParams targetLabelParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -241,8 +241,8 @@ public class ProjectionTabBuilder {
 
         TextView appDesc = new TextView(context);
         appDesc.setText(R.string.projection_app_desc);
-        appDesc.setTextColor(UiStyles.color(context, R.color.textHint));
-        appDesc.setTextSize(13);
+        CockpitTokens.bodySm(appDesc);
+        appDesc.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         textInfo.addView(appDesc);
 
         appInfo.addView(textInfo, new LinearLayout.LayoutParams(
@@ -254,11 +254,12 @@ public class ProjectionTabBuilder {
 
         Button btnSelectApp = new Button(context);
         btnSelectApp.setText(R.string.projection_change_app);
-        btnSelectApp.setTextColor(UiStyles.color(context, R.color.textPrimary80));
-        btnSelectApp.setTextSize(14);
-        btnSelectApp.setTypeface(null, Typeface.NORMAL);
-        UiStyles.styleOemButton(btnSelectApp, UiStyles.color(context, R.color.surfaceCardInner));
-        btnSelectApp.setPadding(16, 14, 16, 14);
+        btnSelectApp.setTextSize(15);
+        btnSelectApp.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnSelectApp, CockpitTokens.color(context, R.color.ck_surface_2));
+        btnSelectApp.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        btnSelectApp.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        btnSelectApp.setPadding(16, 10, 16, 10);
         btnSelectApp.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         btnSelectApp.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams selectParams = new LinearLayout.LayoutParams(
@@ -269,11 +270,14 @@ public class ProjectionTabBuilder {
 
         Button btnLaunchOnCluster = new Button(context);
         btnLaunchOnCluster.setText(R.string.projection_launch_cluster);
-        btnLaunchOnCluster.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnLaunchOnCluster.setTextSize(14);
-        btnLaunchOnCluster.setTypeface(null, Typeface.BOLD);
-        UiStyles.styleOemButton(btnLaunchOnCluster, UiStyles.color(context, R.color.buttonPrimary));
-        btnLaunchOnCluster.setPadding(16, 14, 16, 14);
+        btnLaunchOnCluster.setTextSize(15);
+        btnLaunchOnCluster.setTypeface(CockpitTokens.inter(context,
+                CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnLaunchOnCluster,
+                CockpitTokens.color(context, R.color.ck_accent));
+        btnLaunchOnCluster.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
+        btnLaunchOnCluster.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        btnLaunchOnCluster.setPadding(16, 10, 16, 10);
         btnLaunchOnCluster.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         btnLaunchOnCluster.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams launchParams = new LinearLayout.LayoutParams(
@@ -316,8 +320,7 @@ public class ProjectionTabBuilder {
 
         LinearLayout mainCardContainer = new LinearLayout(context);
         mainCardContainer.setOrientation(LinearLayout.VERTICAL);
-        UiStyles.applySolidRoundedBackgroundDp(mainCardContainer,
-                UiStyles.color(context, R.color.surfaceCard), 16f);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(mainCardContainer);
         LinearLayout.LayoutParams mainCardParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
