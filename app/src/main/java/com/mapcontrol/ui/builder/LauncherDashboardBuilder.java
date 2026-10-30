@@ -180,18 +180,27 @@ public final class LauncherDashboardBuilder implements
             musicDriveLp.topMargin = cardGap / 2;
             cardsRow.addView(musicDriveCard, musicDriveLp);
         } else {
-            LinearLayout.LayoutParams quickLp = weightedLp(0.22f);
-            quickLp.setMarginEnd(cardGap / 2);
-            cardsRow.addView(quickCard, quickLp);
+            // Plan §10: sol 5/8 araç, sağ 3/8 dikey kart yığını.
+            LinearLayout rightStack = new LinearLayout(context);
+            rightStack.setOrientation(LinearLayout.VERTICAL);
 
-            LinearLayout.LayoutParams vehicleLp = weightedLp(0.56f);
-            vehicleLp.setMarginStart(cardGap / 2);
+            LinearLayout.LayoutParams quickLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0, 3f);
+            quickLp.bottomMargin = cardGap / 2;
+            rightStack.addView(quickCard, quickLp);
+
+            LinearLayout.LayoutParams musicDriveLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0, 2f);
+            musicDriveLp.topMargin = cardGap / 2;
+            rightStack.addView(musicDriveCard, musicDriveLp);
+
+            LinearLayout.LayoutParams vehicleLp = weightedLp(0.62f);
             vehicleLp.setMarginEnd(cardGap / 2);
             cardsRow.addView(vehicleCard, vehicleLp);
 
-            LinearLayout.LayoutParams musicDriveLp = weightedLp(0.22f);
-            musicDriveLp.setMarginStart(cardGap / 2);
-            cardsRow.addView(musicDriveCard, musicDriveLp);
+            LinearLayout.LayoutParams stackLp = weightedLp(0.38f);
+            stackLp.setMarginStart(cardGap / 2);
+            cardsRow.addView(rightStack, stackLp);
         }
 
         LinearLayout.LayoutParams cardsRowLp = portrait
