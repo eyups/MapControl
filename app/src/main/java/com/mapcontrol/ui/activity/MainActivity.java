@@ -1386,7 +1386,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == 1) {
             addTabChildWithHeader(parent, fileUploadScrollView, matchParent, tabIndex);
         } else if (tabIndex == 3) {
-            addTabChildWithHeader(parent, projectionScrollView, matchParent, tabIndex);
+            addTabChild(parent, projectionScrollView, matchParent);
         } else if (tabIndex == 4) {
             addTabChildWithHeader(parent, logTabContent, matchParent, tabIndex);
         } else if (tabIndex == 5) {

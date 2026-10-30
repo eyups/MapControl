@@ -92,6 +92,24 @@ public class ProjectionTabBuilder {
         outer.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
                 margin, margin);
 
+        LinearLayout pageHeader = new LinearLayout(context);
+        pageHeader.setOrientation(LinearLayout.VERTICAL);
+        TextView pageTitle = new TextView(context);
+        pageTitle.setText(R.string.projection_title);
+        CockpitTokens.headlineMd(pageTitle);
+        pageHeader.addView(pageTitle);
+        TextView pageSubtitle = new TextView(context);
+        pageSubtitle.setText(R.string.ck_page_projection_sub);
+        CockpitTokens.bodySm(pageSubtitle);
+        pageSubtitle.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams pageSubLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        pageSubLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_xs);
+        pageSubLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        pageHeader.addView(pageSubtitle, pageSubLp);
+        outer.addView(pageHeader, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
         projectionTabContent = new LinearLayout(context);
         projectionTabContent.setOrientation(LinearLayout.VERTICAL);
         projectionTabContent.setPadding(0, 0, 0, 0);
