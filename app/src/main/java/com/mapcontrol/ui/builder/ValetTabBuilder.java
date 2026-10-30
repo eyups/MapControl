@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.CockpitToggleRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -117,10 +118,12 @@ public class ValetTabBuilder {
                 rebuild();
             }
         });
+        save.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        save.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams saveLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        saveLp.topMargin = dp(16);
+        saveLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         card.addView(save, saveLp);
         parent.addView(card, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -128,20 +131,25 @@ public class ValetTabBuilder {
     }
 
     private void buildSettings(LinearLayout parent, ValetSession session) {
-        LinearLayout card = card();
-        card.addView(sectionTitle("Vale Modu"));
-        card.addView(body("Sürüşü izler ve raporlar; aracın hızını sınırlamaz. Başlatmadan önce aracı park hâlinde bırak."));
+        LinearLayout columns = new LinearLayout(context);
+        columns.setOrientation(LinearLayout.HORIZONTAL);
+        columns.setBaselineAligned(false);
+        LinearLayout left = card();
+        LinearLayout right = card();
+
+        left.addView(sectionTitle("Vale Modu"));
+        left.addView(body("Sürüşü izler ve raporlar; aracın hızını sınırlamaz. Başlatmadan önce aracı park hâlinde bırak."));
 
         EditText speed = numberField(String.valueOf(session.speedLimitKmh));
-        card.addView(fieldLabel("Hız uyarı eşiği (km/h)"));
-        card.addView(speed);
+        left.addView(fieldLabel("HIZ UYARI EŞİĞİ (KM/H)"));
+        left.addView(speed);
 
         EditText radius = numberField(String.valueOf(session.geofenceRadiusM));
-        card.addView(fieldLabel("Alan sınırı yarıçapı (metre)"));
-        card.addView(radius);
+        left.addView(fieldLabel("ALAN SINIRI YARIÇAPI (METRE)"));
+        left.addView(radius);
 
         CockpitToggleRow curfew = switchRow("Saat kısıtı uyarısı", session.curfewEnabled);
-        card.addView(curfew);
+        right.addView(curfew);
         LinearLayout timeRow = new LinearLayout(context);
         timeRow.setOrientation(LinearLayout.HORIZONTAL);
         EditText start = timeField(session.curfewStartMinute);
@@ -152,19 +160,21 @@ public class ValetTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         endLp.setMarginStart(dp(8));
         timeRow.addView(end, endLp);
-        card.addView(timeRow);
+        right.addView(timeRow);
 
         CockpitToggleRow hidePersonal = switchRow("Kişisel menüleri gizle", session.hidePersonal);
-        card.addView(hidePersonal);
+        right.addView(hidePersonal);
 
         TextView note = smallText("Konum izni yoksa yalnızca hız ve saat kısıtı izlenir. Veriler cihazda kalır.");
         LinearLayout.LayoutParams noteLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         noteLp.topMargin = dp(10);
-        card.addView(note, noteLp);
+        right.addView(note, noteLp);
 
         Button startBtn = button("Vale Modu'nu başlat", true);
+        startBtn.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        startBtn.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         startBtn.setOnClickListener(v -> new AlertDialog.Builder(context)
                 .setTitle("Vale Modu başlatılsın mı?")
                 .setMessage("Araç park hâlinde olmalı. Modu bitirmek için PIN gerekir; "
@@ -185,20 +195,30 @@ public class ValetTabBuilder {
                 .setNegativeButton("Vazgeç", null)
                 .show());
         LinearLayout.LayoutParams startLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        startLp.topMargin = dp(14);
-        card.addView(startBtn, startLp);
+        startLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        left.addView(startBtn, startLp);
 
         Button changePin = button("PIN değiştir", false);
+        changePin.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        changePin.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         changePin.setOnClickListener(v -> showPinSetupDialog());
         LinearLayout.LayoutParams pinLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        pinLp.topMargin = dp(8);
-        card.addView(changePin, pinLp);
+        pinLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        left.addView(changePin, pinLp);
 
-        parent.addView(card, new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        leftLp.setMarginEnd(8);
+        LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        rightLp.setMarginStart(8);
+        columns.addView(left, leftLp);
+        columns.addView(right, rightLp);
+        parent.addView(columns, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
     }
@@ -254,8 +274,11 @@ public class ValetTabBuilder {
         buttons.setOrientation(LinearLayout.HORIZONTAL);
         Button refresh = button("Yenile", false);
         refresh.setOnClickListener(v -> rebuild());
-        buttons.addView(refresh, new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        refresh.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        refresh.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
+        buttons.addView(refresh, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         Button end = button("Modu bitir", true);
         end.setOnClickListener(v -> requestPinToEnd());
         LinearLayout.LayoutParams endLp = new LinearLayout.LayoutParams(0,
@@ -355,20 +378,21 @@ public class ValetTabBuilder {
     private LinearLayout card() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        int inner = CockpitTokens.dim(context, R.dimen.ck_card_padding);
         card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(card);
         return card;
     }
 
     private TextView sectionTitle(String text) {
-        TextView view = text(text, 20, UiStyles.color(context, R.color.textPrimary), true);
-        view.setLetterSpacing(0.02f);
+        TextView view = new TextView(context);
+        CockpitTokens.headlineSm(view);
+        view.setText(text);
         return view;
     }
 
     private TextView body(String text) {
-        TextView view = text(text, 13, UiStyles.color(context, R.color.textSecondary), false);
+        TextView view = text(text, 15, CockpitTokens.color(context, R.color.ck_text_medium), false);
         view.setLineSpacing(0f, 1.25f);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -379,7 +403,9 @@ public class ValetTabBuilder {
     }
 
     private TextView fieldLabel(String text) {
-        TextView view = text(text, 12, UiStyles.color(context, R.color.textHint), false);
+        TextView view = new TextView(context);
+        CockpitTokens.labelCaps(view);
+        view.setText(text);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -390,7 +416,8 @@ public class ValetTabBuilder {
     }
 
     private TextView smallText(String text) {
-        return text(text, 12, UiStyles.color(context, R.color.textSecondary), false);
+        TextView v = text(text, 15, CockpitTokens.color(context, R.color.ck_text_medium), false);
+        return v;
     }
 
     private TextView text(String value, int sizeSp, int color, boolean bold) {
