@@ -1316,4 +1316,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_roadmate_title">Roadmate</string>
     <string name="ck_roadmate_unpaired_hint">Cloud actions appear here after pairing.</string>
     <string name="ck_roadmate_actions">Actions</string>
+    <string name="ck_home_vehicle_visual">Vehicle</string>
+    <string name="ck_home_vehicle_visual_hint">Tap to change the vehicle appearance</string>
 </resources>

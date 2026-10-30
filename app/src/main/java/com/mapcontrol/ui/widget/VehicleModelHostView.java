@@ -102,6 +102,10 @@ public final class VehicleModelHostView extends FrameLayout {
         return glowLp;
     }
 
+    public void setGlowVisible(boolean visible) {
+        glowView.setVisibility(visible ? VISIBLE : GONE);
+    }
+
     public void onHostStart() {
         active = true;
         resources.init(getContext());
