@@ -20,12 +20,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:fontFamily="@font/inter"
             android:textColor="@color/textPrimary"
             android:backgroundTint="@color/buttonPrimary"
             android:padding="12dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:minHeight="48dp"
+            android:minHeight="64dp"
             android:minWidth="120dp"
             android:elevation="4dp"/>
     </LinearLayout>
@@ -41,6 +42,7 @@
             android:layout_weight="1">
             <TextView
                 android:textSize="18sp"
+                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text1"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -59,6 +61,7 @@
             android:layout_weight="1">
             <TextView
                 android:textSize="18sp"
+                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text2"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -83,6 +86,7 @@
             android:layout_weight="1">
             <TextView
                 android:textSize="18sp"
+                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text3"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -101,6 +105,7 @@
             android:layout_weight="1">
             <TextView
                 android:textSize="18sp"
+                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text4"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -127,6 +132,7 @@
             android:layout_weight="1">
             <TextView
                 android:textSize="18sp"
+                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text5"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -145,6 +151,7 @@
             android:layout_weight="1">
             <TextView
                 android:textSize="18sp"
+                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text6"
                 android:padding="10dp"
                 android:layout_width="match_parent"

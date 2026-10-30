@@ -218,11 +218,12 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
 
         Button backBtn = new Button(this);
         backBtn.setText(R.string.dms_face_back);
-        backBtn.setTextColor(0xFFFFFFFF);
-        backBtn.setTextSize(14);
+        backBtn.setTextColor(UiStyles.color(this, R.color.ck_text_high));
+        backBtn.setTextSize(15);
         backBtn.setAllCaps(false);
         backBtn.setPadding(dp(18), dp(8), dp(18), dp(8));
-        UiStyles.applySolidRoundedBackgroundDp(backBtn, 0xFF263244, 12f);
+        UiStyles.applySolidRoundedBackgroundDp(backBtn, UiStyles.color(this, R.color.ck_surface_2), 16f);
+        backBtn.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(this, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
         backBtn.setOnClickListener(v -> finish());
         topBar.addView(backBtn, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, dp(42)));
@@ -239,11 +240,12 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
 
         modeButton = new Button(this);
         updateModeButtonText();
-        modeButton.setTextColor(0xFFFFFFFF);
-        modeButton.setTextSize(12);
+        modeButton.setTextColor(UiStyles.color(this, R.color.ck_on_accent));
+        modeButton.setTextSize(15);
         modeButton.setAllCaps(false);
         modeButton.setPadding(dp(12), dp(6), dp(12), dp(6));
-        UiStyles.applySolidRoundedBackgroundDp(modeButton, 0xFF1E3A8A, 10f);
+        UiStyles.applySolidRoundedBackgroundDp(modeButton, UiStyles.color(this, R.color.ck_accent), 16f);
+        modeButton.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(this, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
         modeButton.setOnClickListener(v -> showModeSelectionDialog());
         LinearLayout.LayoutParams modeLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, dp(40));
@@ -252,11 +254,12 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
 
         clearButton = new Button(this);
         clearButton.setText(R.string.dms_face_clear);
-        clearButton.setTextColor(0xFFFFFFFF);
-        clearButton.setTextSize(13);
+        clearButton.setTextColor(UiStyles.color(this, R.color.ck_text_high));
+        clearButton.setTextSize(15);
         clearButton.setAllCaps(false);
         clearButton.setPadding(dp(16), dp(8), dp(16), dp(8));
-        UiStyles.applySolidRoundedBackgroundDp(clearButton, 0xFFB91C1C, 12f);
+        UiStyles.applySolidRoundedBackgroundDp(clearButton, UiStyles.color(this, R.color.ck_surface_2), 16f);
+        clearButton.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(this, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
         clearButton.setOnClickListener(v -> confirmClearProfiles());
         topBar.addView(clearButton, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, dp(40)));
@@ -373,13 +376,14 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
         nameInput = new EditText(this);
         nameInput.setSingleLine(true);
         nameInput.setHint(R.string.dms_face_name_hint);
-        nameInput.setHintTextColor(0xFF94A3B8);
-        nameInput.setTextColor(0xFFFFFFFF);
+        nameInput.setHintTextColor(UiStyles.color(this, R.color.ck_text_medium));
+        nameInput.setTextColor(UiStyles.color(this, R.color.ck_text_high));
         nameInput.setTextSize(15);
         nameInput.setPadding(dp(14), dp(8), dp(14), dp(8));
-        UiStyles.applySolidRoundedBackgroundDp(nameInput, 0xFF1E293B, 10f);
+        UiStyles.applySolidRoundedBackgroundDp(nameInput, UiStyles.color(this, R.color.ck_bg_recessed), 12f);
+        nameInput.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(this, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_REGULAR));
         enrollCard.addView(nameInput, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(44)));
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(64)));
 
         memoryLabel = new TextView(this);
         memoryLabel.setText("Koltuk Hafızası Seçin:");
@@ -423,12 +427,13 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
 
         enrollButton = new Button(this);
         enrollButton.setText(R.string.dms_face_enroll);
-        enrollButton.setTextColor(0xFFFFFFFF);
+        enrollButton.setTextColor(UiStyles.color(this, R.color.ck_on_accent));
         enrollButton.setTextSize(15);
         enrollButton.setTypeface(null, Typeface.BOLD);
         enrollButton.setAllCaps(false);
         enrollButton.setEnabled(false);
-        UiStyles.applySolidRoundedBackgroundDp(enrollButton, 0xFF2563EB, 12f);
+        UiStyles.applySolidRoundedBackgroundDp(enrollButton, UiStyles.color(this, R.color.ck_accent), 16f);
+        enrollButton.setTypeface(com.mapcontrol.ui.cockpit.CockpitTokens.inter(this, com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD));
         enrollButton.setOnClickListener(v -> onEnrollButtonClicked());
         LinearLayout.LayoutParams enrollBtnLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, dp(46));
