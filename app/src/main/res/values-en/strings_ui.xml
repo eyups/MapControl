@@ -1318,8 +1318,22 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_web_hint">Connect from your phone or computer on the same network. Scan the QR code or type the address in a browser. The upload page is local-network only.</string>
     <string name="ck_roadmate_title">Roadmate</string>
     <string name="ck_roadmate_unpaired_hint">Cloud actions appear here after pairing.</string>
-    <string name="ck_roadmate_paired_title">Connection</string>
+    <string name="ck_roadmate_paired_title">Connection Management</string>
     <string name="ck_roadmate_actions">Actions</string>
     <string name="ck_home_vehicle_visual">Vehicle</string>
     <string name="ck_home_vehicle_visual_hint">T18FL4 vehicle view</string>
+    <string name="ck_roadmate_encryption">End-to-end encryption</string>
+    <string name="ck_roadmate_encryption_sub">TLS 1.3 / AES-256 GCM encrypted tunnel</string>
+    <string name="ck_roadmate_actions_sub">System diagnostics &amp; synchronization console</string>
+    <string name="ck_roadmate_log_sub">Live error and kernel logs</string>
+    <string name="ck_roadmate_vdbus_sub">Capture and send CAN frame dump</string>
+    <string name="ck_roadmate_update_sub">OTA Telematics software version</string>
+    <string name="ck_roadmate_backup_sub">Seat, mirror, climate settings</string>
+    <string name="ck_roadmate_restore_sub">Restore the latest cloud backup</string>
+    <string name="ck_roadmate_vdbus_footer">VDBus client: local bridge</string>
+    <string name="ck_roadmate_baud">115200 baud</string>
+    <string name="ck_roadmate_status_active">STATUS: ACTIVE</string>
+    <string name="ck_roadmate_status_ready">STATUS: READY</string>
+    <string name="ck_roadmate_status_passive">STATUS: PASSIVE</string>
+    <string name="ck_roadmate_identity">Service ID: %1$s</string>
 </resources>
