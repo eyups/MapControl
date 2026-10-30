@@ -116,10 +116,10 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         content.addView(grid, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        grid.add(buildVehicleVisual(), 8);
+        grid.add(buildVehicleVisual(), 4);
         grid.add(buildVehicleCard(), 4);
         grid.add(buildQuickActions(), 4);
-        grid.addFullWidth(buildLastDriveCard());
+        grid.add(buildLastDriveCard(), 4);
         grid.addFullWidth(buildValetCard());
         grid.addFullWidth(buildOnboardingCard());
     }
@@ -144,7 +144,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
     private CockpitCard buildVehicleVisual() {
         CockpitCard card = new CockpitCard(context,
-                context.getString(R.string.ck_home_vehicle_visual)).span(8);
+                context.getString(R.string.ck_home_vehicle_visual)).span(4);
+        card.setMinimumHeight(dp(300));
         card.status(StatusBadge.nominal(context, context.getString(R.string.ck_home_vehicle_visual_hint)));
         vehicleView = new android.widget.ImageView(context);
         vehicleView.setImageResource(R.drawable.t18_vehicle);
@@ -156,12 +157,13 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         vehicleView.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(320)
                 .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
         card.addContent(vehicleView, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, 240)));
+                LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, 210)));
         return card;
     }
 
     private CockpitCard buildVehicleCard() {
         CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_vehicle_card)).span(4);
+        card.setMinimumHeight(dp(300));
         statusBadge = StatusBadge.neutral(context, context.getString(R.string.ck_home_connecting));
         card.status(statusBadge);
 
@@ -187,6 +189,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
     private CockpitCard buildQuickActions() {
         CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_quick)).span(4);
+        card.setMinimumHeight(dp(300));
         LinearLayout row1 = new LinearLayout(context);
         row1.setOrientation(LinearLayout.HORIZONTAL);
         row1.addView(quick(context.getString(R.string.ck_home_vehicle_info), TAB_VEHICLE_INFO, context.getString(R.string.ck_home_vehicle_info)),
@@ -282,7 +285,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
     private CockpitCard buildLastDriveCard() {
         CockpitCard card = new CockpitCard(context,
-                context.getString(R.string.ck_home_last_drive)).span(8);
+                context.getString(R.string.ck_home_last_drive)).span(4);
+        card.setMinimumHeight(dp(300));
         DrivingSessionRecorder recorder = DrivingSessionRecorder.get(context);
         DrivingTrip trip = recorder.isActive() ? recorder.getDisplayTrip() : recorder.getLastTrip();
         if (trip == null) {
