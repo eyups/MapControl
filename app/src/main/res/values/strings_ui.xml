@@ -38,7 +38,7 @@
     <string name="settings_version_latest_failed">Latest version: Failed to load</string>
     <string name="settings_version_latest_error">Latest version: Error</string>
     <string name="settings_install_title">Install</string>
-    <string name="settings_install_body">This app can be installed free from https://vnoisy.dev</string>
+    <string name="settings_install_body">This app can be installed from Roadmate Cloud.</string>
     <string name="settings_changelog_title">Release notes</string>
     <string name="settings_changelog_not_found">No release notes found.</string>
     <string name="settings_changelog_load_failed">Could not load release notes. (HTTP %1$d)</string>

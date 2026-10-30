@@ -58,7 +58,8 @@ import com.mapcontrol.util.NetworkWifiHelper;
 
 public class AppsTabBuilder {
 
-    private static final String SERVER_LIST_URL = "https://vnoisy.dev/apk/list.json";
+    private static final String CLOUD_BASE_URL = "https://ctrl.eyups.com";
+    private static final String SERVER_LIST_URL = CLOUD_BASE_URL + "/api/v1/car/apps";
     private static final long SERVER_RETRY_INITIAL_MS = 2_000L;
     private static final long SERVER_RETRY_MAX_MS = 15_000L;
     public interface AppsCallback {
@@ -613,6 +614,12 @@ public class AppsTabBuilder {
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(10000);
                 connection.setReadTimeout(10000);
+                String cloudToken = context.getSharedPreferences(
+                        "MapControlPrefs", Context.MODE_PRIVATE)
+                        .getString("cloudDeviceToken", "");
+                if (!cloudToken.isEmpty()) {
+                    connection.setRequestProperty("Authorization", "Device " + cloudToken);
+                }
 
                 int responseCode = connection.getResponseCode();
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -1476,6 +1483,14 @@ public class AppsTabBuilder {
 
                 URL url = new URL(downloadUrl);
                 connection = (HttpURLConnection) url.openConnection();
+                if (downloadUrl.startsWith(CLOUD_BASE_URL)) {
+                    String cloudToken = context.getSharedPreferences(
+                            "MapControlPrefs", Context.MODE_PRIVATE)
+                            .getString("cloudDeviceToken", "");
+                    if (!cloudToken.isEmpty()) {
+                        connection.setRequestProperty("Authorization", "Device " + cloudToken);
+                    }
+                }
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(60000);
                 connection.setReadTimeout(60000);

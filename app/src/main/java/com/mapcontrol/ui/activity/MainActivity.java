@@ -921,7 +921,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public String getCarToken() {
-                        return prefs.getString("carToken", null);
+                        return prefs.getString("cloudDeviceToken", null);
                     }
 
                     @Override

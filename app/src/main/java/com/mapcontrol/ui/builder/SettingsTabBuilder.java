@@ -974,15 +974,17 @@ public class SettingsTabBuilder {
                 } catch (PackageManager.NameNotFoundException ignored) {
                 }
 
-                String token = callback.getCarToken();
-                URL url = new URL("https://api.vnoisy.dev/api/announcement/get");
+                String token = context.getSharedPreferences(
+                        "MapControlPrefs", Context.MODE_PRIVATE)
+                        .getString("cloudDeviceToken", "");
+                URL url = new URL("https://ctrl.eyups.com/api/v1/car/announcements");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setConnectTimeout(5000);
                 connection.setReadTimeout(5000);
 
                 if (token != null && !token.isEmpty()) {
-                    connection.setRequestProperty("Authorization", "Bearer " + token);
+                    connection.setRequestProperty("Authorization", "Device " + token);
                 }
 
                 int responseCode = connection.getResponseCode();

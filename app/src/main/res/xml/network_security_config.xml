@@ -12,7 +12,7 @@
     <!-- Alternatif: Sadece belirli domain'lere izin ver (daha güvenli) -->
     <!--
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">vnoisy.dev</domain>
+        <domain includeSubdomains="true">roadmate-cloud</domain>
         <domain includeSubdomains="true">example.com</domain>
     </domain-config>
     -->

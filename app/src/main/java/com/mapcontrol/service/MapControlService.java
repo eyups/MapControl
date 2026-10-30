@@ -33,7 +33,6 @@ import java.io.File;
 import java.io.IOException;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import com.mapcontrol.api.ProfileApiService;
 import com.mapcontrol.audio.AudioEqualizerController;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.valet.ValetMonitor;
@@ -460,19 +459,6 @@ public class MapControlService extends Service {
                             closeClusterDisplay(true);
                             } else {
                                 log("Araç kapanınca otomatik kapatma devre dışı, navigasyon kapatılmıyor");
-                            }
-                            
-                            // Otomatik konum kaydetme kontrolü
-                            boolean autoLocationSaveOnPowerOff = prefs.getBoolean("autoLocationSaveOnPowerOff", false);
-                            if (autoLocationSaveOnPowerOff) {
-                                // ProfileApiService ile giriş kontrolü yap
-                                ProfileApiService profileApiService = new ProfileApiService(MapControlService.this);
-                                if (profileApiService.isLoggedIn()) {
-                                    log("Otomatik konum kaydetme aktif, konum kaydediliyor...");
-                                    saveLocationAutomatically(profileApiService);
-                                } else {
-                                    log("Otomatik konum kaydetme aktif ama kullanıcı giriş yapmamış");
-                                }
                             }
                             
                             // Sürüş modu sıfırla (bir sonraki açılışta tekrar uygulanabilir)
@@ -1190,64 +1176,6 @@ public class MapControlService extends Service {
                 log("❌ Cluster display kapatma hatası: " + e.getMessage());
             }
         });
-    }
-
-    /**
-     * Otomatik konum kaydetme (araç kapanınca)
-     */
-    private void saveLocationAutomatically(ProfileApiService profileApiService) {
-        new Thread(() -> {
-            try {
-                // LocationManager ile konum al
-                android.location.LocationManager locationManager = (android.location.LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if (locationManager == null) {
-                    log("❌ LocationManager bulunamadı");
-                    return;
-                }
-                
-                // Konum izni kontrolü
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                    if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        log("❌ Konum izni yok, otomatik konum kaydedilemedi");
-                        return;
-                    }
-                }
-                
-                // Mevcut konumu al
-                android.location.Location lastLocation = locationManager.getLastKnownLocation(android.location.LocationManager.GPS_PROVIDER);
-                if (lastLocation == null) {
-                    lastLocation = locationManager.getLastKnownLocation(android.location.LocationManager.NETWORK_PROVIDER);
-                }
-                
-                if (lastLocation != null) {
-                    double latitude = lastLocation.getLatitude();
-                    double longitude = lastLocation.getLongitude();
-                    
-                    log("📍 Otomatik konum kaydediliyor: " + latitude + ", " + longitude);
-                    
-                    profileApiService.saveCoordinates(latitude, longitude, "Auto Location (Power Off)", "Araç kapanınca otomatik kaydedilen konum", new ProfileApiService.ApiCallback() {
-                        @Override
-                        public void onSuccess(String message, org.json.JSONObject data) {
-                            handler.post(() -> {
-                                log("✅ Otomatik konum başarıyla kaydedildi: " + message);
-                            });
-                        }
-                        
-                        @Override
-                        public void onError(String error) {
-                            handler.post(() -> {
-                                log("❌ Otomatik konum kaydetme hatası: " + error);
-                            });
-                        }
-                    });
-                } else {
-                    log("⚠️ Konum alınamadı, otomatik konum kaydedilemedi");
-                }
-            } catch (Exception e) {
-                log("❌ Otomatik konum kaydetme hatası: " + e.getMessage());
-            }
-        }).start();
     }
 
     /**

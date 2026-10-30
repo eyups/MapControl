@@ -41,7 +41,7 @@
     <string name="settings_version_latest_failed">Güncel Versiyon: Yüklenemedi</string>
     <string name="settings_version_latest_error">Güncel Versiyon: Hata</string>
     <string name="settings_install_title">Kurulum</string>
-    <string name="settings_install_body">Bu uygulama https://vnoisy.dev adresinden ücretsiz olarak kurulabilir.</string>
+    <string name="settings_install_body">Bu uygulama Roadmate Cloud üzerinden kurulabilir.</string>
     <string name="settings_changelog_title">Güncelleme Notları</string>
     <string name="settings_changelog_not_found">Güncelleme notu bulunamadı.</string>
     <string name="settings_changelog_load_failed">Güncelleme notları yüklenemedi. (HTTP %1$d)</string>
