@@ -147,7 +147,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 context.getString(R.string.ck_home_vehicle_visual)).span(8);
         card.status(StatusBadge.nominal(context, context.getString(R.string.ck_home_vehicle_visual_hint)));
         vehicleView = new android.widget.ImageView(context);
-        vehicleView.setImageResource(R.drawable.t18_vehicle);
+        vehicleView.setImageResource(R.drawable.t18_vehicle_black);
         vehicleView.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
         vehicleView.setContentDescription(context.getString(R.string.ck_home_vehicle_visual_hint));
         vehicleView.setAlpha(0f);
