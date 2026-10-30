@@ -87,7 +87,6 @@ import com.mapcontrol.ui.builder.FileUploadTabBuilder;
 import com.mapcontrol.ui.builder.HomeTabBuilder;
 import com.mapcontrol.ui.builder.LauncherTabBuilder;
 import com.mapcontrol.ui.builder.DriverProfilesTabBuilder;
-import com.mapcontrol.ui.builder.ComfortTabBuilder;
 import com.mapcontrol.ui.builder.DrivingHistoryTabBuilder;
 import com.mapcontrol.ui.builder.LogTabBuilder;
 import com.mapcontrol.ui.builder.ProfileTabBuilder;
@@ -135,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int TAB_EQUALIZER = 11;
     private static final int TAB_DRIVER_PROFILES = 13;
     private static final int TAB_DRIVING_HISTORY = 14;
-    private static final int TAB_COMFORT = 15;
     private static final int TAB_VALET = 16;
     private static final int TAB_HOME = 17;
     public static final int TAB_CLIMATE_AUTOMATION = 18;
@@ -197,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
     private VehicleInfoTabBuilder vehicleInfoTabBuilder;
     private DrivingHistoryTabBuilder drivingHistoryTabBuilder;
     private ScrollView drivingHistoryScrollView;
-    private ComfortTabBuilder comfortTabBuilder;
     private ValetTabBuilder valetTabBuilder;
     private HomeTabBuilder homeTabBuilder;
     private ScrollView homeScrollView;
@@ -822,7 +819,6 @@ public class MainActivity extends AppCompatActivity {
 
         welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
         equalizerTabBuilder = new EqualizerTabBuilder(this);
-        comfortTabBuilder = new ComfortTabBuilder(this, prefs, msg -> MainActivity.this.log(msg));
         valetTabBuilder = new ValetTabBuilder(this, msg -> MainActivity.this.log(msg),
                 this::onValetStateChanged);
         driverProfilesTabBuilder = new DriverProfilesTabBuilder(this, msg -> MainActivity.this.log(msg),
@@ -1421,8 +1417,6 @@ public class MainActivity extends AppCompatActivity {
             addTabChild(parent, equalizerTabBuilder.getScrollView(), matchParent);
         } else if (tabIndex == TAB_DRIVER_PROFILES) {
             addTabChild(parent, driverProfilesTabBuilder.getScrollView(), matchParent);
-        } else if (tabIndex == TAB_COMFORT) {
-            addTabChild(parent, comfortTabBuilder.getScrollView(), matchParent);
         } else if (tabIndex == TAB_VALET) {
             addTabChild(parent, valetTabBuilder.getScrollView(), matchParent);
         } else if (tabIndex == TAB_HOME) {
@@ -1562,10 +1556,6 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_DRIVER_PROFILES) {
             if (topBarTitle != null) {
                 topBarTitle.setText(getString(R.string.side_rail_driver_profiles));
-            }
-        } else if (tabIndex == TAB_COMFORT) {
-            if (topBarTitle != null) {
-                topBarTitle.setText(getString(R.string.side_rail_comfort));
             }
         } else if (tabIndex == TAB_VALET) {
             if (topBarTitle != null) {
@@ -2177,9 +2167,6 @@ public class MainActivity extends AppCompatActivity {
         }
         if (driverProfilesTabBuilder != null) {
             driverProfilesTabBuilder.rebuild();
-        }
-        if (comfortTabBuilder != null) {
-            comfortTabBuilder.rebuild();
         }
         if (valetTabBuilder != null) {
             valetTabBuilder.rebuild();

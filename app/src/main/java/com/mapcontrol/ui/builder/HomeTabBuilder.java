@@ -44,7 +44,6 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     }
 
     private static final int TAB_VEHICLE_INFO = 9;
-    private static final int TAB_COMFORT = 15;
     private static final int TAB_VALET = 16;
     private static final int TAB_DRIVING_HISTORY = 14;
     private static final String PREFS = "MapControlPrefs";
@@ -185,7 +184,9 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         row2Lp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         card.addContent(row2, row2Lp);
-        row2.addView(quick(context.getString(R.string.ck_home_comfort), TAB_COMFORT, context.getString(R.string.ck_home_comfort)),
+        row2.addView(quick(context.getString(R.string.ck_sub_climate),
+                        CockpitNavModel.TAB_CLIMATE_AUTOMATION,
+                        context.getString(R.string.ck_sub_climate)),
                 new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         row2.addView(new View(context), new LinearLayout.LayoutParams(
                 CockpitTokens.dim(context, R.dimen.ck_space_sm), 1));

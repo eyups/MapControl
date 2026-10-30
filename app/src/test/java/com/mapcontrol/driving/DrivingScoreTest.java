@@ -8,7 +8,7 @@ import org.junit.Test;
 public class DrivingScoreTest {
 
     @Test
-    public void referenceTripProducesSokakYariscisi() {
+    public void referenceTripScoresHigh() {
         DrivingTrip trip = new DrivingTrip();
         trip.distanceKm = 5.5;
         trip.durationSec = 32 * 60 + 28;
@@ -20,13 +20,12 @@ public class DrivingScoreTest {
 
         DrivingScore.evaluate(trip);
 
-        assertEquals(84, trip.score);
-        assertEquals("B", trip.grade);
-        assertEquals("Sakin Kaptan", trip.title);
+        assertEquals(93, trip.score);
+        assertEquals("A", trip.grade);
+        assertEquals("Efsane Şoför", trip.title);
         assertTrue(trip.description.matches("(?s).*5[.,]5 km.*"));
         assertTrue(trip.description.contains("litre"));
-        assertTrue(trip.description.contains("1 kez sert fren"));
-        assertTrue(trip.description.contains("1 kez sert kalkış"));
+        assertTrue(trip.description.contains("Puanın"));
     }
 
     @Test

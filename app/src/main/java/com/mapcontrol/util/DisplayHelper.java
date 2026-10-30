@@ -30,6 +30,7 @@ import com.mapcontrol.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 public final class DisplayHelper {
@@ -520,34 +521,7 @@ public final class DisplayHelper {
 
     private static View buildBootSplashOverlay(Context ctx) {
         FrameLayout root = new FrameLayout(ctx);
-
-        // Katman 1: soft, renkler arası lerp yapan gradient
-        AnimatedGradientView bgGradient = new AnimatedGradientView(ctx);
-        bgGradient.setId(R.id.boot_splash_gradient);
-        root.addView(bgGradient, new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
-
-        // Katman 2: hareketli harita grid'i
-        MapGridView grid = new MapGridView(ctx);
-        grid.setId(R.id.boot_splash_grid);
-        root.addView(grid, new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
-
-        // Katman 3: merkezde parlayan halo (radial)
-        View halo = new View(ctx);
-        halo.setId(R.id.boot_splash_halo);
-        android.content.res.Resources res = ctx.getResources();
-        halo.setBackground(new RadialHaloDrawable(
-                UiStyles.color(ctx, R.color.accentColor),
-                UiStyles.color(ctx, R.color.transparent),
-                res.getInteger(R.integer.boot_splash_halo_center_alpha),
-                res.getInteger(R.integer.boot_splash_halo_mid_alpha)));
-        int haloSize = dp(ctx, 480);
-        FrameLayout.LayoutParams haloLp = new FrameLayout.LayoutParams(haloSize, haloSize);
-        haloLp.gravity = Gravity.CENTER;
-        root.addView(halo, haloLp);
+        root.setBackgroundColor(CockpitTokens.color(ctx, R.color.ck_bg_base));
 
         // Katman 4: merkez içerik
         LinearLayout center = new LinearLayout(ctx);
@@ -578,7 +552,7 @@ public final class DisplayHelper {
         wordmark.setText("RoadDeck");
         wordmark.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
         wordmark.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
-        wordmark.setTypeface(null, Typeface.BOLD);
+        wordmark.setTypeface(CockpitTokens.inter(ctx, CockpitTokens.WEIGHT_SEMIBOLD));
         wordmark.setLetterSpacing(0.18f);
         wordmark.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams wmLp = new LinearLayout.LayoutParams(
@@ -591,8 +565,8 @@ public final class DisplayHelper {
         TextView tagline = new TextView(ctx);
         tagline.setId(R.id.boot_splash_tagline);
         tagline.setText(R.string.splash_map_waiting);
-        tagline.setTextColor(UiStyles.color(ctx, R.color.textSecondaryCool));
-        tagline.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        tagline.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+        CockpitTokens.bodySm(tagline);
         tagline.setLetterSpacing(0.12f);
         tagline.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams tagLp = new LinearLayout.LayoutParams(
@@ -602,17 +576,20 @@ public final class DisplayHelper {
         tagline.setLayoutParams(tagLp);
         center.addView(tagline);
 
-        // Konum pini + radar dalgaları
-        RadarPinView radar = new RadarPinView(ctx,
-                UiStyles.color(ctx, R.color.accentColor));
-        radar.setId(R.id.boot_splash_bar);
-        int radarW = dp(ctx, 96);
-        int radarH = dp(ctx, 96);
-        LinearLayout.LayoutParams radarLp = new LinearLayout.LayoutParams(radarW, radarH);
-        radarLp.gravity = Gravity.CENTER_HORIZONTAL;
-        radarLp.topMargin = dp(ctx, 24);
-        radar.setLayoutParams(radarLp);
-        center.addView(radar);
+        android.widget.ProgressBar progress = new android.widget.ProgressBar(ctx,
+                null, android.R.attr.progressBarStyleHorizontal);
+        progress.setId(R.id.boot_splash_bar);
+        progress.setIndeterminate(true);
+        progress.setProgressTintList(android.content.res.ColorStateList.valueOf(
+                CockpitTokens.color(ctx, R.color.ck_accent)));
+        progress.setProgressBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                CockpitTokens.color(ctx, R.color.ck_surface_2)));
+        LinearLayout.LayoutParams progressLp = new LinearLayout.LayoutParams(
+                dp(ctx, 180), dp(ctx, 2));
+        progressLp.gravity = Gravity.CENTER_HORIZONTAL;
+        progressLp.topMargin = dp(ctx, 28);
+        progress.setLayoutParams(progressLp);
+        center.addView(progress);
 
         FrameLayout.LayoutParams centerLp = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -626,113 +603,20 @@ public final class DisplayHelper {
 
     private static void startBootSplashAnimations(View root) {
         bootSplashAnimators.clear();
-
         root.setAlpha(0f);
-        root.animate().alpha(1f).setDuration(360).start();
+        root.animate().alpha(1f).setDuration(300).start();
 
-        View gradient = root.findViewById(R.id.boot_splash_gradient);
-        View grid = root.findViewById(R.id.boot_splash_grid);
-        View halo = root.findViewById(R.id.boot_splash_halo);
         View center = root.findViewById(R.id.boot_splash_center);
-        View bar = root.findViewById(R.id.boot_splash_bar);
-        View logo = root.findViewById(R.id.boot_splash_logo);
-        View tagline = root.findViewById(R.id.boot_splash_tagline);
-
-        if (gradient instanceof AnimatedGradientView) {
-            ValueAnimator flow = ValueAnimator.ofFloat(0f, 1f);
-            flow.setDuration(10_000);
-            flow.setRepeatCount(ValueAnimator.INFINITE);
-            flow.setInterpolator(new LinearInterpolator());
-            final AnimatedGradientView g = (AnimatedGradientView) gradient;
-            flow.addUpdateListener(a -> g.setProgress((float) a.getAnimatedValue()));
-            flow.start();
-            bootSplashAnimators.add(flow);
-        }
-
-        if (grid instanceof MapGridView) {
-            ValueAnimator scroll = ValueAnimator.ofFloat(0f, 1f);
-            scroll.setDuration(8000);
-            scroll.setRepeatCount(ValueAnimator.INFINITE);
-            scroll.setInterpolator(new LinearInterpolator());
-            final MapGridView g = (MapGridView) grid;
-            scroll.addUpdateListener(a -> g.setProgress((float) a.getAnimatedValue()));
-            scroll.start();
-            bootSplashAnimators.add(scroll);
-        }
-
-        if (halo != null) {
-            halo.setAlpha(0.0f);
-            ObjectAnimator fadeIn = ObjectAnimator.ofFloat(halo, View.ALPHA, 0f, 0.85f);
-            fadeIn.setDuration(900);
-            fadeIn.setInterpolator(new AccelerateDecelerateInterpolator());
-            fadeIn.start();
-            bootSplashAnimators.add(fadeIn);
-
-            ObjectAnimator pulseX = ObjectAnimator.ofFloat(halo, View.SCALE_X, 0.95f, 1.08f);
-            ObjectAnimator pulseY = ObjectAnimator.ofFloat(halo, View.SCALE_Y, 0.95f, 1.08f);
-            ObjectAnimator pulseA = ObjectAnimator.ofFloat(halo, View.ALPHA, 0.65f, 0.95f);
-            for (ObjectAnimator a : new ObjectAnimator[]{pulseX, pulseY, pulseA}) {
-                a.setDuration(2200);
-                a.setStartDelay(900);
-                a.setInterpolator(new AccelerateDecelerateInterpolator());
-                a.setRepeatCount(ValueAnimator.INFINITE);
-                a.setRepeatMode(ValueAnimator.REVERSE);
-            }
-            AnimatorSet pulse = new AnimatorSet();
-            pulse.playTogether(pulseX, pulseY, pulseA);
-            pulse.start();
-            bootSplashAnimators.add(pulse);
-        }
-
         if (center != null) {
             center.setAlpha(0f);
-            center.setTranslationY(dp(root.getContext(), 18));
+            center.setTranslationY(dp(root.getContext(), 12));
             center.animate()
                     .alpha(1f)
                     .translationY(0f)
-                    .setStartDelay(220)
-                    .setDuration(520)
+                    .setStartDelay(120)
+                    .setDuration(420)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
                     .start();
-        }
-
-        if (logo != null) {
-            ObjectAnimator floatY = ObjectAnimator.ofFloat(logo, View.TRANSLATION_Y,
-                    0f, -dp(root.getContext(), 4), 0f);
-            floatY.setDuration(3200);
-            floatY.setRepeatCount(ValueAnimator.INFINITE);
-            floatY.setInterpolator(new AccelerateDecelerateInterpolator());
-            floatY.start();
-            bootSplashAnimators.add(floatY);
-        }
-
-        if (tagline != null) {
-            ObjectAnimator blink = ObjectAnimator.ofFloat(tagline, View.ALPHA, 0.55f, 1f);
-            blink.setDuration(1400);
-            blink.setRepeatCount(ValueAnimator.INFINITE);
-            blink.setRepeatMode(ValueAnimator.REVERSE);
-            blink.setInterpolator(new AccelerateDecelerateInterpolator());
-            blink.start();
-            bootSplashAnimators.add(blink);
-        }
-
-        if (bar instanceof RadarPinView) {
-            final RadarPinView radar = (RadarPinView) bar;
-            ValueAnimator pulse = ValueAnimator.ofFloat(0f, 1f);
-            pulse.setDuration(2200);
-            pulse.setRepeatCount(ValueAnimator.INFINITE);
-            pulse.setInterpolator(new LinearInterpolator());
-            pulse.addUpdateListener(a -> radar.setProgress((float) a.getAnimatedValue()));
-            pulse.start();
-            bootSplashAnimators.add(pulse);
-
-            ObjectAnimator pinBounce = ObjectAnimator.ofFloat(radar, View.TRANSLATION_Y,
-                    0f, -dp(root.getContext(), 3), 0f);
-            pinBounce.setDuration(1800);
-            pinBounce.setRepeatCount(ValueAnimator.INFINITE);
-            pinBounce.setInterpolator(new AccelerateDecelerateInterpolator());
-            pinBounce.start();
-            bootSplashAnimators.add(pinBounce);
         }
     }
 

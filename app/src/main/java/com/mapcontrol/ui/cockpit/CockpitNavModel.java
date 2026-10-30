@@ -25,7 +25,6 @@ public final class CockpitNavModel {
     public static final int TAB_EQUALIZER = 11;
     public static final int TAB_DRIVER_PROFILES = 13;
     public static final int TAB_DRIVING_HISTORY = 14;
-    public static final int TAB_COMFORT = 15;
     public static final int TAB_VALET = 16;
     public static final int TAB_HOME = 17;
     public static final int TAB_CLIMATE_AUTOMATION = 18;
