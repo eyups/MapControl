@@ -1375,4 +1375,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_page_roadmate_sub">Manage telemetry and drive synchronization.</string>
     <string name="ck_page_log_sub">Inspect system logs and diagnostic tools.</string>
     <string name="ck_page_settings_sub">Language, theme, TTS and system settings.</string>
+    <string name="profiles_settings_summary_title">Profile settings</string>
+    <string name="profiles_summary_empty">No profile-specific settings saved.</string>
+    <string name="profiles_assist_count">%d active</string>
+    <string name="profiles_configured">Configured</string>
+    <string name="profiles_customized">Customized</string>
 </resources>

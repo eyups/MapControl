@@ -221,6 +221,28 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
         }
     }
 
+    /** Aktif profilin güncel scoped ayarlarını salt-okunur bir harita olarak verir. */
+    public synchronized Map<String, Object> scopedSettings(String id) {
+        Profile p = find(id);
+        if (p == null) {
+            return Collections.emptyMap();
+        }
+        if (id.equals(activeId)) {
+            syncActiveFromPrefs();
+        }
+        Map<String, Object> result = new java.util.LinkedHashMap<>();
+        Iterator<String> keys = p.settings.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            try {
+                JSONObject encoded = p.settings.getJSONObject(key);
+                result.put(key, encoded.opt("v"));
+            } catch (JSONException ignored) {
+            }
+        }
+        return result;
+    }
+
     public synchronized void setApplyOnStart(String id, boolean enabled) {
         Profile p = find(id);
         if (p != null) {

@@ -1394,4 +1394,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_page_roadmate_sub">Telemetri ve sürüş senkronizasyonunu yönetin.</string>
     <string name="ck_page_log_sub">Sistem kayıtlarını ve tanılama araçlarını inceleyin.</string>
     <string name="ck_page_settings_sub">Dil, tema, TTS ve sistem ayarları.</string>
+    <string name="profiles_settings_summary_title">Profile özel ayarlar</string>
+    <string name="profiles_summary_empty">Bu profilde kayıtlı özel ayar yok.</string>
+    <string name="profiles_assist_count">%d etkin</string>
+    <string name="profiles_configured">Ayarlandı</string>
+    <string name="profiles_customized">Özel</string>
 </resources>

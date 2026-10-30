@@ -362,6 +362,7 @@ public class DriverProfilesTabBuilder {
         content.setOrientation(LinearLayout.VERTICAL);
         content.setPadding(dp(16), dp(8), dp(16), dp(8));
         addSeatSection(content, profile);
+        addProfileSettingsSummary(content, profile);
         addAdvancedItems(content, profile);
         ScrollView scroll = new ScrollView(context);
         scroll.addView(content);
@@ -370,6 +371,116 @@ public class DriverProfilesTabBuilder {
                 .setView(scroll)
                 .setPositiveButton(R.string.profiles_ok, null)
                 .show();
+    }
+
+    private void addProfileSettingsSummary(LinearLayout parent,
+            DriverProfileManager.Profile profile) {
+        TextView title = new TextView(context);
+        title.setText(R.string.profiles_settings_summary_title);
+        CockpitTokens.labelCaps(title);
+        title.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_md), 0,
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        parent.addView(title);
+
+        java.util.Map<String, Object> settings = manager.scopedSettings(profile.id);
+        addSummaryRow(parent, context.getString(R.string.profiles_seat_label),
+                profile.seatSlot > 0
+                        ? context.getString(R.string.profiles_slot_n, profile.seatSlot)
+                        : context.getString(R.string.profiles_slot_none));
+        addSummaryRow(parent, context.getString(R.string.profiles_apply_on_start_title),
+                context.getString(profile.applyOnStart
+                        ? R.string.common_on : R.string.common_off));
+
+        Object drive = settings.get("driveModeSetting");
+        if (drive instanceof Number) {
+            addSummaryRow(parent, context.getString(R.string.ck_drive_memory),
+                    driveLabel(((Number) drive).intValue()));
+        }
+        int assist = 0;
+        assist += isActiveAssist(settings, "issSetting", 0);
+        assist += isActiveAssist(settings, "spdLimitSetting", 2);
+        assist += isActiveAssist(settings, "ldwSetting", 2);
+        assist += isActiveAssist(settings, "ldpSetting", 2);
+        assist += isActiveAssist(settings, "fcwSetting", 2);
+        assist += isActiveAssist(settings, "aebSetting", 2);
+        assist += isActiveAssist(settings, "cpdSetting", 2);
+        addSummaryRow(parent, context.getString(R.string.ck_sub_assist),
+                context.getString(R.string.profiles_assist_count, assist));
+
+        boolean climate = Boolean.TRUE.equals(settings.get("tempAutoEnabled"))
+                || Boolean.TRUE.equals(settings.get("recircAutoEnabled"));
+        addSummaryRow(parent, context.getString(R.string.ck_sub_climate),
+                context.getString(climate ? R.string.common_on : R.string.common_off));
+        if (settings.containsKey("comfortSunroofSetting")
+                || settings.containsKey("comfortSunshadeSetting")) {
+            addSummaryRow(parent, context.getString(R.string.side_rail_sunroof_automation),
+                    context.getString(R.string.profiles_configured));
+        }
+        if (hasText(settings.get("welcomeDesignId"))
+                || hasText(settings.get("welcomeCustomText"))
+                || hasText(settings.get("welcomeAudioFilePath"))) {
+            addSummaryRow(parent, context.getString(R.string.side_rail_welcome_sound),
+                    context.getString(R.string.profiles_customized));
+        }
+        addSummaryRow(parent, context.getString(R.string.profiles_advanced_items_short),
+                String.valueOf(profile.items.size()));
+        if (settings.isEmpty()) {
+            TextView empty = new TextView(context);
+            empty.setText(R.string.profiles_summary_empty);
+            CockpitTokens.bodySm(empty);
+            empty.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            empty.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_sm), 0,
+                    CockpitTokens.dim(context, R.dimen.ck_space_sm));
+            parent.addView(empty);
+        }
+    }
+
+    private static boolean hasText(Object value) {
+        return value instanceof String && !((String) value).trim().isEmpty();
+    }
+
+    private static int isActiveAssist(java.util.Map<String, Object> settings,
+            String key, int activeValue) {
+        Object value = settings.get(key);
+        return value instanceof Number && ((Number) value).intValue() == activeValue ? 1 : 0;
+    }
+
+    private String driveLabel(int mode) {
+        switch (mode) {
+            case 0: return context.getString(R.string.ck_drive_eco);
+            case 1: return context.getString(R.string.ck_drive_normal);
+            case 2: return context.getString(R.string.ck_drive_sport);
+            case 3: return context.getString(R.string.ck_drive_snow);
+            case 4: return context.getString(R.string.ck_drive_mud);
+            case 5: return context.getString(R.string.ck_drive_offroad);
+            case 7: return context.getString(R.string.ck_drive_sand);
+            default: return context.getString(R.string.ck_drive_none);
+        }
+    }
+
+    private void addSummaryRow(LinearLayout parent, String label, String value) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        CockpitSurfaces.level1(row);
+        TextView labelView = new TextView(context);
+        labelView.setText(label);
+        CockpitTokens.bodySm(labelView);
+        row.addView(labelView, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView valueView = new TextView(context);
+        valueView.setText(value);
+        CockpitTokens.bodySm(valueView);
+        valueView.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        row.addView(valueView);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_xs);
+        parent.addView(row, lp);
     }
 
     private void startGuestProfile() {
