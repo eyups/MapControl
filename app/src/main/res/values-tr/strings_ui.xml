@@ -1152,7 +1152,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_roadmate_paired_title">Bağlantı Yönetimi</string>
     <string name="ck_roadmate_actions">İşlemler</string>
     <string name="ck_home_vehicle_visual">Araç</string>
-    <string name="ck_home_vehicle_visual_hint">T18FL4 araç görünümü</string>
+    <string name="ck_home_vehicle_visual_hint">Sürükleyerek 360° döndür</string>
     <string name="ck_roadmate_encryption">Uçtan Uca Şifreleme</string>
     <string name="ck_roadmate_encryption_sub">TLS 1.3 / AES-256 GCM şifrelenmiş tünel</string>
     <string name="ck_roadmate_actions_sub">Sistem Teşhis &amp; Senkronizasyon Konsolu</string>
