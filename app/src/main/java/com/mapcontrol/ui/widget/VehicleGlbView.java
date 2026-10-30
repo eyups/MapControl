@@ -219,8 +219,8 @@ public final class VehicleGlbView extends FrameLayout {
      * Daha küçük eye mesafesi = ekranda daha büyük araç.
      */
     private static final float DEFAULT_CAMERA_EYE_X = 0f;
-    private static final float DEFAULT_CAMERA_EYE_Y = 0.38f;
-    private static final float DEFAULT_CAMERA_EYE_Z = 0.30f;
+    private static final float DEFAULT_CAMERA_EYE_Y = 0.30f;
+    private static final float DEFAULT_CAMERA_EYE_Z = -0.40f;
 
     /** Interior: kullanıcı ince ayarı. */
     private static final float INTERIOR_CENTER_X = 0f;

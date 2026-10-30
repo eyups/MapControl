@@ -1336,5 +1336,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_roadmate_unpaired_hint">Eşleştirme tamamlanınca bulut işlemleri burada açılır.</string>
     <string name="ck_roadmate_actions">İşlemler</string>
     <string name="ck_home_vehicle_visual">Araç</string>
-    <string name="ck_home_vehicle_visual_hint">Sürükleyerek 360° döndür</string>
+    <string name="ck_home_vehicle_visual_hint">T18FL4 araç görünümü</string>
 </resources>

@@ -22,7 +22,6 @@ import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.MetricView;
 import com.mapcontrol.ui.cockpit.StatusBadge;
-import com.mapcontrol.ui.widget.VehicleGlbView;
 import com.mapcontrol.valet.ValetModeManager;
 import com.mapcontrol.vehicle.VehicleMetricsFormatter;
 import com.mapcontrol.vehicle.VehicleMetricsRepository;
@@ -65,7 +64,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private StatusBadge statusBadge;
     private CockpitCard onboardingCard;
     private View lastDriveCard;
-    private VehicleGlbView vehicleView;
+    private android.widget.ImageView vehicleView;
     private volatile boolean tabVisible;
 
     public HomeTabBuilder(Context context, VehicleMetricsRepository repository, HomeCallback callback) {
@@ -91,9 +90,6 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
     public void stopListening() {
         tabVisible = false;
-        if (vehicleView != null) {
-            vehicleView.onHostStop();
-        }
         repository.removeListener(this);
     }
 
@@ -150,26 +146,16 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         CockpitCard card = new CockpitCard(context,
                 context.getString(R.string.ck_home_vehicle_visual)).span(8);
         card.status(StatusBadge.nominal(context, context.getString(R.string.ck_home_vehicle_visual_hint)));
-        android.widget.FrameLayout visualHost = new android.widget.FrameLayout(context);
-        android.widget.ImageView placeholder = new android.widget.ImageView(context);
-        placeholder.setImageResource(R.drawable.ic_launcher_vehicle_top);
-        placeholder.setScaleType(android.widget.ImageView.ScaleType.CENTER_INSIDE);
-        placeholder.setColorFilter(CockpitTokens.color(context, R.color.ck_text_muted),
-                android.graphics.PorterDuff.Mode.SRC_IN);
-        placeholder.setAlpha(0.55f);
-        visualHost.addView(placeholder, new android.widget.FrameLayout.LayoutParams(
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT));
-        vehicleView = new VehicleGlbView(context);
+        vehicleView = new android.widget.ImageView(context);
+        vehicleView.setImageResource(R.drawable.t18_vehicle);
+        vehicleView.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
         vehicleView.setContentDescription(context.getString(R.string.ck_home_vehicle_visual_hint));
-        visualHost.addView(vehicleView, new android.widget.FrameLayout.LayoutParams(
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
-                android.widget.FrameLayout.LayoutParams.MATCH_PARENT));
-        vehicleView.post(() -> {
-            vehicleView.onHostStart();
-            vehicleView.spin360Once();
-        });
-        card.addContent(visualHost, new LinearLayout.LayoutParams(
+        vehicleView.setAlpha(0f);
+        vehicleView.setScaleX(0.96f);
+        vehicleView.setScaleY(0.96f);
+        vehicleView.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(320)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
+        card.addContent(vehicleView, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, 240)));
         return card;
     }
