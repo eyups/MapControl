@@ -697,9 +697,11 @@ public class ProjectionTabBuilder {
                 ClusterNavOverlayOffsets.Provider.YANDEX,
                 () -> YandexClusterNavOverlay.getInstance(context).applyStoredOffsets());
 
-        // Navigasyon davranışını konu kartlarına böl; Google/Yandex ayrı.
-        java.util.List<LinearLayout> topicCards = new java.util.ArrayList<>();
-        LinearLayout topicCard = null;
+        // Navigasyon ayarlarını anlamlı 2x2 karta topla.
+        LinearLayout googleCard = createSectionCard();
+        LinearLayout yandexCard = createSectionCard();
+        LinearLayout advancedCard = createSectionCard();
+        LinearLayout target = leftCard;
         for (int i = 0; i < mainCardContainer.getChildCount(); ) {
             View child = mainCardContainer.getChildAt(i);
             boolean divider = !(child instanceof android.view.ViewGroup)
@@ -707,38 +709,29 @@ public class ProjectionTabBuilder {
                     && child.getLayoutParams().height == 1;
             if (divider) {
                 mainCardContainer.removeViewAt(i);
-                topicCard = null;
                 continue;
             }
-            String text = child instanceof TextView
-                    ? ((TextView) child).getText().toString() : "";
-            boolean newTopic = (text.startsWith("Yandex") || text.startsWith("Google Maps"))
-                    && text.contains("Cluster")
-                    && topicCard != null && topicCard.getChildCount() > 0;
-            if (text.startsWith("Yandex") && topicCard != null
-                    && topicCard.getChildCount() > 0) {
-                newTopic = true; // Google ve Yandex ayri kart
-            }
-            if (newTopic) {
-                topicCard = null;
-            }
-            if (topicCard == null) {
-                topicCard = new LinearLayout(context);
-                topicCard.setOrientation(LinearLayout.VERTICAL);
-                com.mapcontrol.ui.cockpit.CockpitSurfaces.level1(topicCard);
-                topicCards.add(topicCard);
+            if (child instanceof TextView) {
+                String text = ((TextView) child).getText().toString();
+                if (text.startsWith("Yandex")) {
+                    target = yandexCard;
+                } else if (text.contains("Harita kaydırma")) {
+                    target = advancedCard;
+                } else if (text.startsWith("Başlatma") || text.startsWith("Kapanış")
+                        || text.startsWith("Harita kontrol")) {
+                    target = leftCard;
+                } else if (text.startsWith("Google Maps")) {
+                    target = googleCard;
+                }
             }
             mainCardContainer.removeViewAt(i);
-            topicCard.addView(child);
+            target.addView(child);
         }
 
         projectionGrid.add(leftCard, 4);
-        for (int i = 0; i < topicCards.size(); i++) {
-            projectionGrid.add(topicCards.get(i), 4);
-        }
-        if (topicCards.size() % 2 == 1) {
-            projectionGrid.add(new View(context), 4);
-        }
+        projectionGrid.add(googleCard, 4);
+        projectionGrid.add(yandexCard, 4);
+        projectionGrid.add(advancedCard, 4);
         return scrollView;
     }
 
