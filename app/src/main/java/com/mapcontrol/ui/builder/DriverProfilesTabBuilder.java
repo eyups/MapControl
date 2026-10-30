@@ -187,12 +187,21 @@ public class DriverProfilesTabBuilder {
         LinearLayout.LayoutParams editLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         editLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
-        edit.setOnClickListener(v -> showProfileSettings(profile));
+        edit.setOnClickListener(v -> showEditProfileDialog(profile));
         actions.addView(edit, editLp);
         LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         actionsLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
         card.addContent(actions, actionsLp);
+
+        TextView advanced = new TextView(context);
+        advanced.setText(R.string.profiles_advanced_settings_link);
+        CockpitTokens.bodySm(advanced);
+        advanced.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        advanced.setGravity(Gravity.CENTER);
+        advanced.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_sm), 0, 0);
+        advanced.setOnClickListener(v -> showProfileSettings(profile));
+        card.addContent(advanced);
         return card;
     }
 
