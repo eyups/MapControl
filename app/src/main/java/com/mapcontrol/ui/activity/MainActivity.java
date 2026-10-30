@@ -100,6 +100,7 @@ import com.mapcontrol.ui.builder.TopBarBuilder;
 import com.mapcontrol.ui.builder.VehicleInfoTabBuilder;
 import com.mapcontrol.ui.builder.WelcomeSoundTabBuilder;
 import com.mapcontrol.ui.builder.WifiTabBuilder;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitModal;
 import com.mapcontrol.ui.cockpit.CockpitNavModel;
 import com.mapcontrol.ui.cockpit.CockpitSubTabBar;
@@ -1372,6 +1373,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabContentArea.removeAllViews();
         attachTabContent(tabIndex);
+        CockpitLegacyStyler.apply(tabContentArea);
 
         applyTabChrome(tabIndex);
         ThemeManager.applyCyberTypeface(tabContentArea);
@@ -1459,6 +1461,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addTabChild(FrameLayout parent, View child, FrameLayout.LayoutParams lp) {
+        CockpitLegacyStyler.apply(child);
         if (child.getParent() instanceof android.view.ViewGroup) {
             ((android.view.ViewGroup) child.getParent()).removeView(child);
         }

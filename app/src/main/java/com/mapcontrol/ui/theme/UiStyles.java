@@ -227,25 +227,10 @@ public final class UiStyles {
         }
     }
 
-    /** Lists every option's outcome; the selected one is highlighted, the rest dimmed. */
+    /** Seçili seçeneğin kısa açıklaması; eski madde işaretli liste yerine tek satır. */
     private static CharSequence buildOptionsHelp(Context context, String[] labels, String[] helps, int selected) {
-        android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder();
-        for (int i = 0; i < labels.length; i++) {
-            if (i > 0) {
-                sb.append('\n');
-            }
-            int start = sb.length();
-            sb.append(i == selected ? "● " : "○ ").append(labels[i]).append(" — ").append(helps[i]);
-            boolean active = i == selected;
-            sb.setSpan(new android.text.style.ForegroundColorSpan(
-                    color(context, active ? R.color.textPrimary : R.color.textHint)),
-                    start, sb.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            if (active) {
-                sb.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
-                        start, sb.length(), android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-        return sb;
+        int index = Math.max(0, Math.min(selected, Math.min(labels.length, helps.length) - 1));
+        return labels[index] + " — " + helps[index];
     }
 
     /**
