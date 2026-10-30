@@ -346,16 +346,17 @@ public class DrivingAnalysisActivity extends Activity {
             LinearLayout dashboardRow = new LinearLayout(this);
             dashboardRow.setOrientation(LinearLayout.HORIZONTAL);
             dashboardRow.setBaselineAligned(false);
+            dashboardRow.setWeightSum(2f);
 
             LinearLayout.LayoutParams insightColLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.35f);
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
             dashboardRow.addView(insightCard, insightColLp);
 
             LinearLayout rightColumn = new LinearLayout(this);
             rightColumn.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams rightColLp = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            rightColLp.setMarginStart(dp(14));
+            rightColLp.setMarginStart(dp(12));
             dashboardRow.addView(rightColumn, rightColLp);
 
             rightColumn.addView(harshCard, new LinearLayout.LayoutParams(
@@ -366,6 +367,16 @@ public class DrivingAnalysisActivity extends Activity {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             eventsLp.topMargin = dp(10);
             rightColumn.addView(eventsCard, eventsLp);
+
+            // Sol kart, sağdaki iki kartın toplam yüksekliğine kadar uzasın;
+            // aksi halde AKILLI ANALİZ'in altında boş bir alan kalıyor.
+            dashboardRow.addOnLayoutChangeListener((v, left, top, right, bottom,
+                    oldLeft, oldTop, oldRight, oldBottom) -> {
+                int target = rightColumn.getHeight();
+                if (target > 0 && insightCard.getMinimumHeight() != target) {
+                    insightCard.setMinimumHeight(target);
+                }
+            });
 
             LinearLayout.LayoutParams dashboardLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -429,14 +440,31 @@ public class DrivingAnalysisActivity extends Activity {
             LinearLayout visualRow = new LinearLayout(this);
             visualRow.setOrientation(LinearLayout.HORIZONTAL);
             visualRow.setBaselineAligned(false);
+            visualRow.setWeightSum(2f);
             LinearLayout.LayoutParams leftVisualLp = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            leftVisualLp.setMarginEnd(dp(5));
+            leftVisualLp.setMarginEnd(dp(6));
             visualRow.addView(distributionCard, leftVisualLp);
             LinearLayout.LayoutParams rightVisualLp = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            rightVisualLp.setMarginStart(dp(5));
+            rightVisualLp.setMarginStart(dp(6));
             visualRow.addView(penaltyCard, rightVisualLp);
+
+            // İki kart aynı satırda aynı yükseklikte bitsin.
+            visualRow.addOnLayoutChangeListener((v, left, top, right, bottom,
+                    oldLeft, oldTop, oldRight, oldBottom) -> {
+                int target = Math.max(distributionCard.getHeight(), penaltyCard.getHeight());
+                if (target <= 0) {
+                    return;
+                }
+                if (distributionCard.getMinimumHeight() != target) {
+                    distributionCard.setMinimumHeight(target);
+                }
+                if (penaltyCard.getMinimumHeight() != target) {
+                    penaltyCard.setMinimumHeight(target);
+                }
+            });
+
             LinearLayout.LayoutParams visualRowLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
