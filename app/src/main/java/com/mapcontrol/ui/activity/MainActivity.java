@@ -1343,7 +1343,9 @@ public class MainActivity extends AppCompatActivity {
             sideRailBuilder.setSelectionForTabIndex(tabIndex);
         }
         if (subTabBar != null) {
-            subTabBar.setDomain(CockpitNavModel.domainForTab(tabIndex), tabIndex);
+            CockpitNavModel.Domain domain = CockpitNavModel.domainForTab(tabIndex);
+            subTabBar.setDomain(domain, tabIndex);
+            subTabBar.setVisibility(domain.items.size() <= 1 ? View.GONE : View.VISIBLE);
         }
 
         // TopBar buton container'ını temizle
@@ -1493,7 +1495,7 @@ public class MainActivity extends AppCompatActivity {
         if (child.getParent() instanceof android.view.ViewGroup) {
             ((android.view.ViewGroup) child.getParent()).removeView(child);
         }
-        if (child == launcherScrollView) {
+        if (child == launcherScrollView || child == homeScrollView) {
             parent.addView(child, lp);
             return;
         }
@@ -1662,8 +1664,9 @@ public class MainActivity extends AppCompatActivity {
             topBarBuilder.setTopBarVisible(!onLauncherHome);
             topBarBuilder.setLauncherBackButtonVisible(active && !onLauncherHome);
             if (subTabBar != null) {
-                subTabBar.setVisibility(onLauncherHome ? android.view.View.GONE
-                        : android.view.View.VISIBLE);
+                boolean singleItemDomain = CockpitNavModel.domainForTab(currentTab).items.size() <= 1;
+                subTabBar.setVisibility(onLauncherHome || singleItemDomain
+                        ? android.view.View.GONE : android.view.View.VISIBLE);
             }
         }
         ImmersiveFullscreenHelper.setImmersiveFullscreen(this, active);
