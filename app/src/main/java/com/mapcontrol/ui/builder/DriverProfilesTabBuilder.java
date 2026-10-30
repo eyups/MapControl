@@ -353,6 +353,7 @@ public class DriverProfilesTabBuilder {
         Intent intent = new Intent(context, DmsFaceProfileActivity.class);
         intent.putExtra(DmsFaceProfileActivity.EXTRA_PREFILL_NAME, profile.name);
         intent.putExtra(DmsFaceProfileActivity.EXTRA_PREFILL_SEAT, profile.seatSlot);
+        intent.putExtra(DmsFaceProfileActivity.EXTRA_LOCK_IDENTITY, true);
         context.startActivity(intent);
     }
 

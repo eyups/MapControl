@@ -71,6 +71,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
     private static final long TONE_FRAME_INTERVAL_MS = 80L;
     public static final String EXTRA_PREFILL_NAME = "prefillFaceName";
     public static final String EXTRA_PREFILL_SEAT = "prefillFaceSeat";
+    public static final String EXTRA_LOCK_IDENTITY = "lockFaceIdentity";
 
     private final Handler uiHandler = new Handler();
     private TextureView preview;
@@ -181,6 +182,8 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
                 : launchIntent.getStringExtra(EXTRA_PREFILL_NAME);
         int prefillSeat = launchIntent == null ? 0
                 : launchIntent.getIntExtra(EXTRA_PREFILL_SEAT, 0);
+        boolean lockIdentity = launchIntent != null
+                && launchIntent.getBooleanExtra(EXTRA_LOCK_IDENTITY, false);
         selectedMemory = prefillSeat >= 1 && prefillSeat <= FaceProfileStore.MAX_PROFILES
                 ? prefillSeat : pickNextAvailableMemory();
         buildScreen();
@@ -195,6 +198,17 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
         }
         refreshProfilesListUi();
         updateMemoryButtonsUi();
+        if (lockIdentity) {
+            nameInput.setEnabled(false);
+            nameInput.setFocusable(false);
+            nameInput.setAlpha(0.8f);
+            for (Button button : memoryButtons) {
+                if (button != null) {
+                    button.setEnabled(false);
+                    button.setAlpha(0.65f);
+                }
+            }
+        }
 
         if (!CarSeatMemoryManager.getInstance(this).hasExplicitModePreference()) {
             uiHandler.postDelayed(this::showModeSelectionDialog, 400L);
