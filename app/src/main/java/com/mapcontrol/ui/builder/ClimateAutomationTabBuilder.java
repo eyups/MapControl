@@ -244,7 +244,11 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         });
         recircCard.addContent(recircRow);
         bottomGrid.add(recircCard, 4);
-        root.addView(bottomGrid);
+        bottomGrid.add(new View(context), 4); // sag yari bos: kart tam genislige yayilmasin
+        LinearLayout.LayoutParams gridLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        gridLp.topMargin = dp(16, density);
+        root.addView(bottomGrid, gridLp);
 
         engine.addListener(this);
         return root;
