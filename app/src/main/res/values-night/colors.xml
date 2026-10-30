@@ -186,4 +186,27 @@
     <color name="avatar_8">#A07E5A</color>
     <color name="avatar_9">#7080C0</color>
     <color name="avatar_10">#C85C5C</color>
+
+    <!-- Cockpit redesign tokens (DESIGN.md) -->
+    <color name="ck_bg_base">#0F1216</color>
+    <color name="ck_bg_recessed">#161B22</color>
+    <color name="ck_surface_1">#1D242C</color>
+    <color name="ck_surface_2">#252E38</color>
+    <color name="ck_stroke">#2D3748</color>
+    <color name="ck_stroke_modal">#1FFFFFFF</color>
+    <color name="ck_accent">#00B4D8</color>
+    <color name="ck_accent_active">#00D2C4</color>
+    <color name="ck_accent_stroke_30">#4D00B4D8</color>
+    <color name="ck_critical">#EF4444</color>
+    <color name="ck_caution">#F59E0B</color>
+    <color name="ck_nominal">#10B981</color>
+    <color name="ck_critical_bg">#33EF4444</color>
+    <color name="ck_caution_bg">#26F59E0B</color>
+    <color name="ck_nominal_bg">#2610B981</color>
+    <color name="ck_text_high">#F8FAFC</color>
+    <color name="ck_text_medium">#94A3B8</color>
+    <color name="ck_text_muted">#475569</color>
+    <color name="ck_on_accent">#0F1216</color>
+    <color name="ck_scrim">#B3000000</color>
+    <color name="ck_ripple">#33FFFFFF</color>
 </resources>

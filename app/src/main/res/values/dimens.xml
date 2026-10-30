@@ -93,4 +93,31 @@
     <dimen name="equalizer_slider_height">112dp</dimen>
     <dimen name="equalizer_thumb_size">72dp</dimen>
     <dimen name="equalizer_track_height">24dp</dimen>
+
+    <!-- Cockpit shell tokens -->
+    <dimen name="ck_statusbar_h">56dp</dimen>
+    <dimen name="ck_rail_w_collapsed">96dp</dimen>
+    <dimen name="ck_rail_w_expanded">240dp</dimen>
+    <dimen name="ck_margin">24dp</dimen>
+    <dimen name="ck_gutter">16dp</dimen>
+    <dimen name="ck_space_xs">4dp</dimen>
+    <dimen name="ck_space_sm">8dp</dimen>
+    <dimen name="ck_space_md">16dp</dimen>
+    <dimen name="ck_space_lg">24dp</dimen>
+    <dimen name="ck_space_xl">32dp</dimen>
+    <dimen name="ck_touch_min">64dp</dimen>
+    <dimen name="ck_touch_primary">72dp</dimen>
+    <dimen name="ck_radius_sm">4dp</dimen>
+    <dimen name="ck_radius_default">8dp</dimen>
+    <dimen name="ck_radius_md">12dp</dimen>
+    <dimen name="ck_radius_lg">16dp</dimen>
+    <dimen name="ck_radius_xl">24dp</dimen>
+    <dimen name="ck_card_padding">20dp</dimen>
+    <dimen name="ck_chip_h">48dp</dimen>
+    <dimen name="ck_toggle_w">72dp</dimen>
+    <dimen name="ck_toggle_h">40dp</dimen>
+    <dimen name="ck_input_h">64dp</dimen>
+    <dimen name="ck_stroke">1dp</dimen>
+    <dimen name="ck_subtab_h">48dp</dimen>
+    <dimen name="ck_rail_item_h">80dp</dimen>
 </resources>
