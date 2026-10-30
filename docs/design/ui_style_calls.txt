@@ -1,0 +1,1290 @@
+app/src/main/java/com/mapcontrol/MapControlApplication.java:28:        UiStyles.setUiModeOverride(getResources().getConfiguration());
+app/src/main/java/com/mapcontrol/MapControlApplication.java:37:                UiStyles.setUiModeOverride(newConfig);
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:60:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:68:        description.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:88:        codeInput.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:89:        codeInput.setHintTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:97:        pairButton.setTextColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:98:        UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:99:                pairButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:113:        startStopButton.setTextColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:114:        UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:115:                startStopButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:121:        shareLocationSwitch.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:128:        logUploadButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:129:        UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:130:                logUploadButton, UiStyles.color(context, R.color.buttonNeutral));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:136:        vdbusButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:137:        UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:138:                vdbusButton, UiStyles.color(context, R.color.buttonNeutral));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:144:        updateButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:145:        UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:146:                updateButton, UiStyles.color(context, R.color.buttonNeutral));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:152:        backupButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:153:        UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:154:                backupButton, UiStyles.color(context, R.color.buttonNeutral));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:160:        restoreButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:161:        UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:162:                restoreButton, UiStyles.color(context, R.color.buttonNeutral));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:386:            UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:387:                    startStopButton, UiStyles.color(context, R.color.buttonDanger));
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:390:            UiStyles.applySolidRoundedBackground(
+app/src/main/java/com/mapcontrol/cloud/CloudTabBuilder.java:391:                    startStopButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:152:        scrim.setBackgroundColor(UiStyles.color(themedContext, R.color.modal_overlay_scrim));
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:158:        UiStyles.applySolidRoundedBackgroundDp(card,
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:159:                UiStyles.color(themedContext, R.color.surfaceCard), 18f);
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:172:        titleView.setTextColor(UiStyles.color(themedContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:180:        btnClose.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:190:        subtitle.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:198:                UiStyles.color(themedContext, R.color.dividerWhite12)));
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:369:                t1.setTextColor(UiStyles.color(themedContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/DisplayRunningAppsOverlay.java:372:                t2.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/FloatingBackButtonManager.java:394:                ColorStateList.valueOf(UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/manager/FloatingBackButtonManager.java:580:        UiStyles.applySolidRoundedBackgroundDp(cardInner,
+app/src/main/java/com/mapcontrol/manager/FloatingBackButtonManager.java:581:                UiStyles.color(context, R.color.surfaceCard), FloatingOverlayBarSpec.BAR_CORNER_DP);
+app/src/main/java/com/mapcontrol/manager/FloatingBackButtonManager.java:801:        int cardC = UiStyles.color(context, R.color.surfaceCard);
+app/src/main/java/com/mapcontrol/manager/FloatingBackButtonManager.java:802:        UiStyles.applySolidRoundedBackgroundDp(cardInner, cardC, FloatingOverlayBarSpec.BAR_CORNER_DP);
+app/src/main/java/com/mapcontrol/manager/FloatingOverlayBarSpec.java:70:        int px = UiStyles.dimenPx(ctx, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/manager/FloatingOverlayBarSpec.java:79:        int fill = UiStyles.color(ctx, R.color.surfaceCardInner);
+app/src/main/java/com/mapcontrol/manager/FloatingOverlayBarSpec.java:90:        int rippleRgb = UiStyles.color(ctx, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/manager/FloatingOverlayBarSpec.java:109:        UiStyles.applySolidRoundedBackgroundDp(b, surfaceCardArgb, BAR_CORNER_DP);
+app/src/main/java/com/mapcontrol/manager/FloatingProjectionControlsManager.java:222:        int textC = UiStyles.color(context, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/manager/FloatingProjectionControlsManager.java:223:        int cardC = UiStyles.color(context, R.color.surfaceCard);
+app/src/main/java/com/mapcontrol/manager/FloatingProjectionControlsManager.java:270:        b.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingProjectionControlsManager.java:279:            DrawableCompat.setTint(dr, UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingProjectionControlsManager.java:285:                b, UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:172:            DrawableCompat.setTint(d, UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:178:        btnToggle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:190:        UiStyles.styleOemButton(btnToggle, UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:285:            UiStyles.applySolidRoundedBackgroundDp(quickInner,
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:286:                    UiStyles.color(context, R.color.surfaceCard), FloatingOverlayBarSpec.BAR_CORNER_DP);
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:304:        b.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:313:            DrawableCompat.setTint(d, UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:319:        UiStyles.styleOemButton(b, UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:356:        b.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:364:            DrawableCompat.setTint(d, UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/FloatingQuickActionsManager.java:367:        UiStyles.styleOemButton(b, UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:216:        scrimView.setBackgroundColor(UiStyles.color(themedContext, R.color.modal_overlay_scrim));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:222:        UiStyles.applySolidRoundedBackgroundDp(cardView,
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:223:                UiStyles.color(themedContext, R.color.surfaceCard), 18f);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:236:        titleView.setTextColor(UiStyles.color(themedContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:244:        closeBtn.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:254:        subtitleView.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:262:                UiStyles.color(themedContext, R.color.dividerWhite12)));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:288:        clearBtn.setTextColor(UiStyles.color(themedContext, R.color.textLoading));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:452:        int scrim = UiStyles.color(appContext, R.color.modal_overlay_scrim);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:453:        int card = UiStyles.color(appContext, R.color.surfaceCard);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:454:        int textPri = UiStyles.color(appContext, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:455:        int textHint = UiStyles.color(appContext, R.color.textHint);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:456:        int textLoad = UiStyles.color(appContext, R.color.textLoading);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:457:        int div = UiStyles.color(appContext, R.color.dividerWhite12);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:462:            UiStyles.applySolidRoundedBackgroundDp(cardView, card, 18f);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:542:        t1.setTextColor(UiStyles.color(themedContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:545:        t2.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:601:            int tPri = UiStyles.color(appContext, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:602:            int tHi = UiStyles.color(appContext, R.color.textHint);
+app/src/main/java/com/mapcontrol/manager/ProjectionVDBusTargetPickerManager.java:608:                bg.setColor(UiStyles.color(appContext, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:106:        scrim.setBackgroundColor(UiStyles.color(themedContext, R.color.modal_overlay_scrim));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:112:        UiStyles.applySolidRoundedBackgroundDp(card,
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:113:                UiStyles.color(themedContext, R.color.surfaceCard), 18f);
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:126:        title.setTextColor(UiStyles.color(themedContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:134:        btnClose.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:144:        subtitle.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:154:        searchInput.setTextColor(UiStyles.color(themedContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:155:        searchInput.setHintTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:156:        UiStyles.applySolidRoundedBackgroundDp(searchInput,
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:157:                UiStyles.color(themedContext, R.color.surfaceCardInner), 12f);
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:167:                UiStyles.color(themedContext, R.color.dividerWhite12)));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:190:        btnClear.setTextColor(UiStyles.color(themedContext, R.color.textLoading));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:339:                t1.setTextColor(UiStyles.color(themedContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/manager/TargetAppPickerOverlay.java:342:                t2.setTextColor(UiStyles.color(themedContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/manager/WebServerManager.java:324:            String bg = String.format("#%06X", 0xFFFFFF & UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/manager/WebServerManager.java:325:            String fg = String.format("#%06X", 0xFFFFFF & UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/nav/GoogleMapsClusterNavOverlay.java:436:        etaStatusView.setTextColor(UiStyles.color(ctx, R.color.textMuted));
+app/src/main/java/com/mapcontrol/nav/GoogleMapsClusterNavOverlay.java:486:        labelView.setTextColor(UiStyles.color(ctx, R.color.textMuted));
+app/src/main/java/com/mapcontrol/nav/GoogleMapsClusterNavOverlay.java:507:            tv.setTextColor(UiStyles.color(ctx, R.color.cluster_nav_maneuver_text));
+app/src/main/java/com/mapcontrol/nav/GoogleMapsClusterNavOverlay.java:509:            tv.setTextColor(UiStyles.color(ctx, R.color.cluster_nav_maneuver_subtext));
+app/src/main/java/com/mapcontrol/nav/GoogleMapsClusterNavOverlay.java:520:        tv.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/nav/YandexClusterNavOverlay.java:430:        etaStatusView.setTextColor(UiStyles.color(ctx, R.color.textMuted));
+app/src/main/java/com/mapcontrol/nav/YandexClusterNavOverlay.java:468:        labelView.setTextColor(UiStyles.color(ctx, R.color.textMuted));
+app/src/main/java/com/mapcontrol/nav/YandexClusterNavOverlay.java:489:            tv.setTextColor(UiStyles.color(ctx, R.color.cluster_nav_maneuver_text));
+app/src/main/java/com/mapcontrol/nav/YandexClusterNavOverlay.java:491:            tv.setTextColor(UiStyles.color(ctx, R.color.cluster_nav_maneuver_subtext));
+app/src/main/java/com/mapcontrol/nav/YandexClusterNavOverlay.java:502:        tv.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/AdasProbeActivity.java:269:        styleButton(startButton, UiStyles.color(this, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/AdasProbeActivity.java:275:        styleButton(stopButton, UiStyles.color(this, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/activity/AdasProbeActivity.java:284:        styleButton(clearButton, UiStyles.color(this, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/activity/AdasProbeActivity.java:312:        styleButton(cabinButton, UiStyles.color(this, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/AdasProbeActivity.java:897:        UiStyles.styleOemButton(button, color);
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:47:        root.setBackgroundColor(UiStyles.color(this, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:51:        backBar.setBackgroundColor(UiStyles.color(this, R.color.surfaceBar));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:56:        btnBack.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:57:        UiStyles.styleOemButton(btnBack, UiStyles.color(this, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:65:        title.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:71:        tvOut.setTextColor(UiStyles.color(this, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:101:        int gap = UiStyles.dimenPx(this, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:102:        int btnColor = UiStyles.color(this, R.color.buttonSecondaryMuted);
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:113:        temperatureTestButton.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:115:        UiStyles.styleOemButton(temperatureTestButton, UiStyles.color(this, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:132:        automationDiagnosticsButton.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:134:        UiStyles.styleOemButton(automationDiagnosticsButton,
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:135:                UiStyles.color(this, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:149:        liveAutomationCaptureButton.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:151:        UiStyles.styleOemButton(liveAutomationCaptureButton,
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:152:                UiStyles.color(this, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:175:        seatMemoryTestButton.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:177:        UiStyles.styleOemButton(seatMemoryTestButton,
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:178:                UiStyles.color(this, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:201:        vehicleVdbusDiscoveryButton.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:203:        UiStyles.styleOemButton(vehicleVdbusDiscoveryButton,
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:204:                UiStyles.color(this, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:316:        b.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/ClusterVDBusTestActivity.java:318:        UiStyles.styleOemButton(b, color);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:202:        int textPrimary = UiStyles.color(this, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:203:        int textSecondary = UiStyles.color(this, R.color.textSecondaryCool);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:208:        UiStyles.setRootBackground(root);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:225:        UiStyles.applySolidRoundedBackgroundDp(backBtn, 0xFF263244, 12f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:246:        UiStyles.applySolidRoundedBackgroundDp(modeButton, 0xFF1E3A8A, 10f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:259:        UiStyles.applySolidRoundedBackgroundDp(clearButton, 0xFFB91C1C, 12f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:277:        UiStyles.setGlassCardBackground(leftCard);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:348:        UiStyles.setGlassCardBackground(enrollCard);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:380:        UiStyles.applySolidRoundedBackgroundDp(nameInput, 0xFF1E293B, 10f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:431:        UiStyles.applySolidRoundedBackgroundDp(enrollButton, 0xFF2563EB, 12f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:442:        UiStyles.setGlassCardBackground(listCard);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:463:        UiStyles.setGlassCardBackground(doorSlotsCard);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:505:            UiStyles.applySolidRoundedBackgroundDp(
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:531:        int textSecondary = UiStyles.color(this, R.color.textSecondaryCool);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:554:            UiStyles.applySolidRoundedBackgroundDp(row, 0xFF1E293B, 10f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:578:                subTv.setTextColor(UiStyles.color(this, R.color.textAccent));
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:593:                UiStyles.applySolidRoundedBackgroundDp(updateBtn, 0xFF0284C7, 8f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:613:                UiStyles.applySolidRoundedBackgroundDp(
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:628:            UiStyles.applySolidRoundedBackgroundDp(delBtn, 0xFFB91C1C, 8f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:689:        UiStyles.applySolidRoundedBackgroundDp(modeButton, door ? 0xFF0D9488 : 0xFF2563EB, 10f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:727:            UiStyles.applySolidRoundedBackgroundDp(slotRow, 0xFF1E293B, 8f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:756:            UiStyles.applySolidRoundedBackgroundDp(calBtn, 0xFF0284C7, 8f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:941:            UiStyles.applySolidRoundedBackgroundDp(enrollButton, 0xFFB91C1C, 12f);
+app/src/main/java/com/mapcontrol/ui/activity/DmsFaceProfileActivity.java:946:            UiStyles.applySolidRoundedBackgroundDp(
+app/src/main/java/com/mapcontrol/ui/activity/IdDiscoveryActivity.java:61:        root.setBackgroundColor(UiStyles.color(this, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/ui/activity/IdDiscoveryActivity.java:65:        bar.setBackgroundColor(UiStyles.color(this, R.color.surfaceBar));
+app/src/main/java/com/mapcontrol/ui/activity/IdDiscoveryActivity.java:74:        title.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/IdDiscoveryActivity.java:99:            box.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/IdDiscoveryActivity.java:333:        b.setTextColor(UiStyles.color(this, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/activity/IdDiscoveryActivity.java:334:        UiStyles.styleOemButton(b, UiStyles.color(this, colorRes));
+app/src/main/java/com/mapcontrol/ui/activity/IdDiscoveryActivity.java:343:        t.setTextColor(UiStyles.color(this, colorRes));
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:316:        ThemeManager.applyActivityTheme(this);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:448:        UiStyles.setRootBackground(mainRootContainer);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:480:        mainContent.setBackgroundColor(UiStyles.color(this, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:515:        UiStyles.setTabContentBackdrop(tabContentArea);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:531:                        webServerStatusText.setTextColor(UiStyles.color(MainActivity.this, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:547:                        webServerStatusText.setTextColor(UiStyles.color(MainActivity.this, R.color.textDialogButtonSecondary));
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:564:                        webServerStatusText.setTextColor(UiStyles.color(MainActivity.this, R.color.statusErrorBright));
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1008:        UiStyles.setUiModeOverride(getResources().getConfiguration());
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1045:        ThemeManager.applyActivityTheme(this);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1050:        ThemeManager.applyCyberTypeface(mainRoot);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1051:        if (ThemeManager.isCyber(this) && mainRoot instanceof android.view.ViewGroup) {
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1143:        Drawable background = UiStyles.drawable(this, R.drawable.bg_root_gradient);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1358:        ThemeManager.applyCyberTypeface(tabContentArea);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1621:        Drawable veil = UiStyles.drawable(this, R.drawable.bg_root_gradient);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1892:        UiStyles.setUiModeOverride(newConfig);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1900:            UiStyles.setRootBackground(mainRootContainer);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1903:            UiStyles.setTabContentBackdrop(tabContentArea);
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:1966:            shellHost.setBackgroundColor(UiStyles.color(this, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/activity/MainActivity.java:2066:                    webServerStatusText.setTextColor(UiStyles.color(this, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:201:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:203:        tabContent.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:207:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:209:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:212:        appsListScrollView.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:246:        btnRefreshApps.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:247:        btnRefreshApps.setBackgroundColor(UiStyles.color(ctx, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:249:        UiStyles.setButtonIconOnlyTinted(btnRefreshApps, R.drawable.ic_mdi_refresh,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:250:                UiStyles.color(ctx, R.color.textPrimary), ctx.getString(R.string.apps_cd_refresh_list));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:266:        btnDownloadedFiles.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:267:        btnDownloadedFiles.setBackgroundColor(UiStyles.color(ctx, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:269:        UiStyles.setButtonIconOnlyTinted(btnDownloadedFiles, R.drawable.ic_mdi_folder,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:270:                UiStyles.color(ctx, R.color.textPrimary), ctx.getString(R.string.apps_cd_downloads));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:281:        btnModeToggle.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:282:        btnModeToggle.setBackgroundColor(UiStyles.color(ctx, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:300:        int destructive = UiStyles.color(ctx, R.color.textDestructive);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:301:        int iconGap = UiStyles.dimenPx(ctx, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:306:        UiStyles.setButtonStartIconTinted(btnDeleteOps, R.drawable.ic_mdi_delete, destructive, iconGap);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:313:        UiStyles.setButtonStartIconTinted(btnDeleteSelf, R.drawable.ic_mdi_delete, destructive, iconGap);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:332:        button.setBackgroundColor(UiStyles.color(button.getContext(), R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:351:        UiStyles.setButtonStartIconTinted(btnModeToggle, icon,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:352:                UiStyles.color(context, R.color.textPrimary),
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:353:                UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:369:                    loadingText.setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:388:                    errorText.setTextColor(UiStyles.color(context, R.color.statusErrorBright));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:449:                UiStyles.applySolidRoundedBackgroundDp(appCard,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:450:                        UiStyles.color(context, R.color.surfaceCardInner), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:459:                cardParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:482:                nameText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:489:                statusText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:511:                UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:512:                actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:533:                removeButton.setTextColor(UiStyles.color(context, R.color.textDestructive));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:534:                removeButton.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:540:                removeParams.setMargins(UiStyles.dimenPx(context, R.dimen.spacing_medium), 0, 0, 0);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:559:                emptyIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textMuted)));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:564:                emptyText.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:697:        loadingText.setTextColor(UiStyles.color(context, reconnecting ? R.color.textSecondaryCool : R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:800:                emptyIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textMuted)));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:804:                emptyText.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:827:        UiStyles.applySolidRoundedBackgroundDp(section,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:828:                UiStyles.color(context, R.color.surfaceCardElevated), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:833:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:841:            warn.setTextColor(UiStyles.color(context, R.color.statusWarning));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:861:        sectionParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:902:        UiStyles.applySolidRoundedBackgroundDp(appCard,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:903:                UiStyles.color(context, R.color.surfaceCardInner), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:911:        cardParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:942:        nameText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:950:            statusText.setTextColor(UiStyles.color(context, R.color.statusSuccess));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:953:            statusText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:956:            statusText.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:969:            companionText.setTextColor(UiStyles.color(context, R.color.statusWarning));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:995:            actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:996:            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1003:            actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1004:            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1008:            actionButton.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1009:            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1015:            actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1016:            UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1032:            removeButton.setTextColor(UiStyles.color(context, R.color.textDestructive));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1033:            removeButton.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1039:            removeParams.setMargins(UiStyles.dimenPx(context, R.dimen.spacing_medium), 0, 0, 0);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1133:        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(UiStyles.color(context, R.color.statusSuccess));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1134:        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1135:        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(UiStyles.color(context, R.color.statusNeutralGray));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1297:        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(UiStyles.color(context, R.color.statusErrorBright));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1300:        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(UiStyles.color(context, R.color.statusNeutralGray));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1332:        status.setTextColor(UiStyles.color(context, R.color.statusSuccess));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1335:        button.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1336:        UiStyles.styleOemButton(button, UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1337:        UiStyles.clearButtonCompoundDrawables(button);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1366:        int iconGap = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1367:        int iconColor = UiStyles.color(context, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1375:            status.setTextColor(UiStyles.color(context, R.color.statusInfo));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1376:            UiStyles.styleOemButton(button, UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1377:            UiStyles.setButtonStartIconTinted(button, R.drawable.ic_mdi_timer_sand, iconColor, iconGap);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1383:            status.setTextColor(UiStyles.color(context, R.color.statusInfo));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1384:            UiStyles.styleOemButton(button, UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1385:            UiStyles.setButtonStartIconTinted(button, R.drawable.ic_mdi_package_variant, iconColor, iconGap);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1391:            status.setTextColor(UiStyles.color(context, R.color.statusError));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1392:            UiStyles.styleOemButton(button, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1393:            UiStyles.setButtonStartIconTinted(button, R.drawable.ic_mdi_download, iconColor, iconGap);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1671:            dialogLayout.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1675:            headerLayout.setBackgroundColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1684:            titleText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1691:            subtitleText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1704:                deleteAllButton.setTextColor(UiStyles.color(context, R.color.textDestructive));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1705:                deleteAllButton.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1707:                UiStyles.setButtonStartIconTinted(deleteAllButton, R.drawable.ic_mdi_delete,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1708:                        UiStyles.color(context, R.color.textDestructive),
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1709:                        UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1738:            scrollView.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1758:                        UiStyles.color(context, R.color.textSecondaryCool)));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1762:                emptyText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1777:                    fileCard.setPadding(UiStyles.dimenPx(context, R.dimen.spacing_medium),
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1778:                            UiStyles.dimenPx(context, R.dimen.spacing_medium),
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1779:                            UiStyles.dimenPx(context, R.dimen.spacing_medium),
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1780:                            UiStyles.dimenPx(context, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1781:                    UiStyles.applySolidRoundedBackgroundDp(fileCard,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1782:                            UiStyles.color(context, R.color.surfaceCardElevated), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1786:                    cardParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.oem_card_margin));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1791:                    UiStyles.applySolidRoundedBackgroundDp(iconBox,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1792:                            UiStyles.color(context, R.color.buttonPrimary), 12f);
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1801:                            UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1815:                    nameText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1824:                    sizeText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1837:                    installButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1838:                    UiStyles.styleOemButton(installButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1842:                    UiStyles.setButtonStartIconTinted(installButton, R.drawable.ic_mdi_package_variant,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1843:                            UiStyles.color(context, R.color.textPrimary),
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1844:                            UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1848:                    deleteButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1849:                    UiStyles.styleOemButton(deleteButton, UiStyles.color(context, R.color.buttonDestructiveBg));
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1852:                    UiStyles.setButtonIconOnlyTinted(deleteButton, R.drawable.ic_mdi_delete,
+app/src/main/java/com/mapcontrol/ui/builder/AppsTabBuilder.java:1853:                            UiStyles.color(context, R.color.textPrimary), context.getString(R.string.apps_cd_delete_file));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:62:                UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:68:        assistTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:82:        assistSubtitle.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:152:                cardBg.setColor(UiStyles.color(context, R.color.assistCardActive));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:154:                cardBg.setStroke((int) (2 * density), UiStyles.color(context, R.color.assistStrokeActive));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:156:                cardBg.setColor(UiStyles.color(context, R.color.assistCardIdle));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:158:                cardBg.setStroke((int) (1 * density), UiStyles.color(context, R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:169:            iconView.setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:178:            titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:188:            statusView.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:195:            onChip.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:197:            onChip.setBackgroundColor(UiStyles.color(context, R.color.chipOn));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:257:        cpdDisclaimer.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:274:            newBg.setColor(UiStyles.color(context, R.color.assistCardActive));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:276:            newBg.setStroke((int) (2 * density), UiStyles.color(context, R.color.assistStrokeActive));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:278:            newBg.setColor(UiStyles.color(context, R.color.assistCardIdle));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:280:            newBg.setStroke((int) (1 * density), UiStyles.color(context, R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/AssistTabBuilder.java:283:        iconViews[cardIndex].setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/AutomationTabBuilder.java:42:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360AutoView.java:44:    private UiStyles.BinarySegmentHandle enableSegment;
+app/src/main/java/com/mapcontrol/ui/builder/Camera360AutoView.java:253:        UiStyles.styleOemButton(actionButton, ui.themeColor(R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/Camera360AutoView.java:273:        UiStyles.styleOemButton(viewer, ui.themeColor(R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/Camera360AutoView.java:274:        UiStyles.setButtonStartIconTinted(viewer, R.drawable.ic_mdi_play, 0xFFFFFFFF, ui.dp(8));
+app/src/main/java/com/mapcontrol/ui/builder/Camera360AutoView.java:288:        int inset = UiStyles.dimenPx(ui.context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360AutoView.java:296:        enableSegment = UiStyles.addBinarySegmentedControl(ui.context, enableColumn,
+app/src/main/java/com/mapcontrol/ui/builder/Camera360ClipViewer.java:400:        UiStyles.styleOemButton(b, fill);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360ClipViewer.java:401:        UiStyles.setButtonStartIconTinted(b, iconRes, Color.WHITE, ui.dp(6));
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:85:    private UiStyles.BinarySegmentHandle usbAutoSegment;
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:143:    private UiStyles.TernarySegmentHandle resSegment;
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:144:    private UiStyles.BinarySegmentHandle separateSegment;
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:392:        return UiStyles.color(context, colorRes);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:1098:        int labelInset = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:1129:        resSegment = UiStyles.addTernarySegmentedControl(context, resColumn,
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:1150:        separateSegment = UiStyles.addBinarySegmentedControl(context, sepColumn,
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:1181:        usbAutoSegment = UiStyles.addBinarySegmentedControl(context, usbAutoColumn,
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:1287:        UiStyles.styleOemButton(refresh, themeColor(R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/Camera360TabBuilder.java:1288:        UiStyles.setButtonStartIconTinted(refresh, R.drawable.ic_mdi_refresh,
+app/src/main/java/com/mapcontrol/ui/builder/Camera360Ui.java:53:        return UiStyles.color(context, colorRes);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360Ui.java:284:                    UiStyles.setBackgroundRes(items[i], R.drawable.bg_segment_thumb);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360Ui.java:297:        UiStyles.setBackgroundRes(track, R.drawable.bg_segment_track);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360Ui.java:298:        int tpad = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/Camera360Ui.java:307:            t.setMinHeight(UiStyles.dimenPx(context, R.dimen.button_height));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:67:        titleIconBackground.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:73:        titleIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.oemAccent)));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:85:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:92:        subtitle.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:116:                UiStyles.color(context, R.color.automationCardSurface),
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:117:                UiStyles.color(context, R.color.automationCardStroke), density, 20));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:127:        statusIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.oemAccent)));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:141:        sensorLabel.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:147:        liveStatusView.setTextColor(UiStyles.color(context, R.color.automationText));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:155:        indicatorBackground.setColor(UiStyles.color(context, R.color.statusWarning));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:164:                UiStyles.color(context, R.color.automationCardSurface),
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:165:                UiStyles.color(context, R.color.automationCardStroke), density, 20));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:185:        masterTitle.setTextColor(UiStyles.color(context, R.color.automationText));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:191:                UiStyles.color(context, R.color.oemAccent),
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:192:                UiStyles.color(context, R.color.outlineMuted)));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:194:                UiStyles.color(context, R.color.assistStrokeActive),
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:195:                UiStyles.color(context, R.color.outline)));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:244:        outerBg.setColor(UiStyles.color(context, R.color.automationPanel));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:246:        outerBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:265:        sectionTitle.setTextColor(UiStyles.color(context, R.color.automationText));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:272:        seatBadge.setTextColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:275:        badgeBg.setColor((UiStyles.color(context, R.color.oemAccent) & 0x00FFFFFF) | 0x22000000);
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:310:        outerBg.setColor(UiStyles.color(context, R.color.automationPanel));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:312:        outerBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:325:        sectionTitle.setTextColor(UiStyles.color(context, R.color.automationText));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:360:        outerBg.setColor(UiStyles.color(context, R.color.automationPanel));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:362:        outerBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:375:        sectionTitle.setTextColor(UiStyles.color(context, R.color.automationText));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:466:        iconBackground.setColor(UiStyles.color(context, R.color.automationIconSurface));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:468:        iconBackground.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:481:        name.setTextColor(UiStyles.color(context, R.color.automationText));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:493:                UiStyles.color(context, R.color.oemAccent),
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:494:                UiStyles.color(context, R.color.outlineMuted)));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:496:                UiStyles.color(context, R.color.assistStrokeActive),
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:497:                UiStyles.color(context, R.color.outline)));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:509:        delayLabel.setTextColor(UiStyles.color(context, R.color.automationTextMuted));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:542:        conditionDesc.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:635:            levelLabel.setTextColor(UiStyles.color(context, R.color.automationTextMuted));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:695:        int accent = UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:703:                UiStyles.color(context, R.color.outline)));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:748:            bg.setColor(UiStyles.color(context, R.color.automationCardSurface));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:749:            bg.setStroke(dp(2, density), UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:751:            bg.setColor(UiStyles.color(context, R.color.automationCardSurface));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:752:            bg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:778:            background.setColor(UiStyles.color(context, colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/ClimateAutomationTabBuilder.java:888:        return UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:43:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:44:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:50:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:55:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:62:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:71:        UiStyles.addTernarySegmentedControl(context, card,
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:88:        UiStyles.addTernarySegmentedControl(context, card,
+app/src/main/java/com/mapcontrol/ui/builder/ComfortTabBuilder.java:105:        UiStyles.addBinarySegmentedControl(context, card,
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:92:        UiStyles.setGlassCardBackground(centerCard);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:100:        title.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:107:        subtitle.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:127:        UiStyles.applySolidRoundedBackgroundDp(screenCard, 0xFF1E293B, 14f);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:150:        UiStyles.applySolidRoundedBackgroundDp(doorCard, 0xFF1E293B, 14f);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:196:        UiStyles.applySolidRoundedBackgroundDp(
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:197:                topBar, UiStyles.color(activity, R.color.automationCardSurface), 12f);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:216:        UiStyles.applySolidRoundedBackgroundDp(changeModeBtn, 0xFF334155, 8f);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:228:        UiStyles.setGlassCardBackground(mainCard);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:235:        title.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:241:        description.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:250:        UiStyles.applySolidRoundedBackgroundDp(
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:251:                toggleRow, UiStyles.color(activity, R.color.automationCardSurface), 12f);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:260:        toggleLabel.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:288:        status.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:301:        UiStyles.applySolidRoundedBackgroundDp(profilesButton, 0xFF2563EB, 12f);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:313:        UiStyles.setGlassCardBackground(profilesCard);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:323:        profilesTitle.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:418:            empty.setTextColor(UiStyles.color(activity, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:428:            UiStyles.applySolidRoundedBackgroundDp(
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:429:                    row, UiStyles.color(activity, R.color.automationCardSurface), 10f);
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:440:            nameTv.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DmsFaceRecognitionTabBuilder.java:454:                badge.setTextColor(UiStyles.color(activity, R.color.textAccent));
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:45:                UiStyles.drawable(context, R.drawable.bg_segment_thumb);
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:61:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:66:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:68:        UiStyles.setGlassCardBackground(tabContent);
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:89:                UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:95:        driveModeTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:108:        if (ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:113:        int trackPad = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:118:        driveModeTrackParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:164:            int keyPadH = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:197:            modeIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:204:            modeTitle.setTextColor(UiStyles.color(context, isSelected ? R.color.textPrimary : R.color.textPrimary85));
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:217:            indicator.setBackgroundColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:280:                            modeIcons[i].setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/DriveModeTabBuilder.java:284:                            modeTitles[i].setTextColor(UiStyles.color(context, isSelected ? R.color.textPrimary : R.color.textPrimary85));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:73:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:87:            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:110:            detailLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:121:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:123:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:139:        lp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:164:        name.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:170:        subtitle.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:187:        renameLp.setMarginEnd(UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:190:        deleteLp.setMarginStart(UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:196:        actionsLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:211:        UiStyles.applySolidRoundedBackgroundDp(row, UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:215:        accent.setBackgroundColor(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:231:        name.setTextColor(UiStyles.color(context, isActive ? R.color.oemAccent : R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:239:            badge.setTextColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:270:            chip.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:272:            UiStyles.styleOemButton(chip, UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:293:        UiStyles.addBinarySegmentedControl(context, parent,
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:316:        UiStyles.applySolidRoundedBackgroundDp(toggle,
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:317:                UiStyles.color(context, R.color.surfaceCardInner), 12f);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:322:        label.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:330:        mark.setTextColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:349:        toggleLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:350:        toggleLp.bottomMargin = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:370:            enabled.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:481:        int pad = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:490:        label.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:492:        label.setPadding(0, pad, 0, UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:503:        int gapPx = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:554:        icon.setColorFilter(UiStyles.color(context, R.color.textOnGold),
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:562:        check.setColorFilter(UiStyles.color(context, R.color.oemAccent),
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:567:        checkBg.setColor(UiStyles.color(context, R.color.textOnGold));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:581:        background.setColor(UiStyles.color(context, ProfileAvatars.colorRes(avatar)));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:585:                    UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:632:        b.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:633:        UiStyles.styleOemButton(b, UiStyles.color(context, colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/DriverProfilesTabBuilder.java:650:        view.setTextColor(UiStyles.color(context, colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:128:                    UiStyles.color(context, R.color.textSecondary), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:139:                UiStyles.color(context, R.color.textSecondary), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:164:            bg.setColor(UiStyles.color(context, selected
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:168:                    UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:170:            chip.setTextColor(UiStyles.color(context, selected
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:195:        background.setColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:198:                UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:207:                UiStyles.color(context, R.color.textPrimary), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:211:                UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:269:        background.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:274:                UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:288:                    UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:296:                    UiStyles.color(context, R.color.textHint), false));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:307:        bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:318:                UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:322:                23, UiStyles.color(context, R.color.textPrimary), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:334:                UiStyles.color(context, R.color.textSecondary), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:347:                11, UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:360:                UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:368:        bars.configure(UiStyles.color(context, R.color.oemAccent),
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:369:                UiStyles.color(context, R.color.surfaceCardElevated),
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:370:                UiStyles.color(context, R.color.textHint), week,
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:396:                    UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:403:                ? UiStyles.color(context, R.color.textHint)
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:425:                UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:437:                UiStyles.color(context, R.color.textSecondary), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:447:        refresh.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:449:        UiStyles.styleOemButton(refresh,
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:450:                UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:473:        background.setColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:476:                UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:494:                    UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:526:        return text(date, 13, UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:535:                22, UiStyles.color(context, R.color.textPrimary), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:541:                    UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:573:                        UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:577:                        UiStyles.color(context, R.color.textPrimary), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:618:                    9, UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:629:                UiStyles.color(context, R.color.textPrimary), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:633:                UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:660:                UiStyles.color(context, R.color.textHint), true);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:672:            return UiStyles.color(context, R.color.textHint);
+app/src/main/java/com/mapcontrol/ui/builder/DrivingHistoryTabBuilder.java:688:                return UiStyles.color(context, R.color.textHint);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:75:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:99:            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:131:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:133:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:141:        UiStyles.addBinarySegmentedControl(context, card,
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:204:        UiStyles.setBackgroundRes(track, R.drawable.bg_segment_track);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:205:        int pad = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:220:            chip.setMinHeight(UiStyles.dimenPx(context, R.dimen.button_height));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:233:        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:234:        lp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:246:                UiStyles.setBackgroundRes(chip, R.drawable.bg_segment_thumb);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:247:                chip.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:251:                chip.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:266:            hz.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:268:            int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:269:            hz.setPadding(h, UiStyles.dimenPx(context, R.dimen.spacing_small), h, 0);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:325:        int accent = UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:326:        int thumbPx = UiStyles.dimenPx(context, R.dimen.equalizer_thumb_size);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:327:        int trackPx = UiStyles.dimenPx(context, R.dimen.equalizer_track_height);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:339:                UiStyles.color(context, R.color.buttonInactive)));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:344:        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:347:                UiStyles.dimenPx(context, R.dimen.equalizer_slider_height));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:348:        lp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:357:        value.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:358:        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:368:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/EqualizerTabBuilder.java:378:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:53:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:66:            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:97:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:99:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:107:        fileUploadTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:117:        fileUploadDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:125:        btnWebServerToggle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:128:        UiStyles.styleOemButton(btnWebServerToggle, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:133:        webServerToggleParams.setMargins(0, 0, 0, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/FileUploadTabBuilder.java:154:        webServerStatusText.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:140:            GradientDrawable bg = rounded(UiStyles.color(context, R.color.buttonDanger), dp(10));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:369:            statusText.setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:376:        statusText.setTextColor(UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:395:        bg.setColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:397:        bg.setStroke(Math.max(1, Math.round(dp(1))), UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:417:        badge.setBackground(rounded(UiStyles.color(context, R.color.surfaceCardElevated), dp(8)));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:436:        bg.setColor(UiStyles.color(context, R.color.surfaceCardElevated));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:438:        bg.setStroke(Math.max(1, Math.round(dp(1))), UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:452:        accent.setBackgroundColor(UiStyles.color(context, accentColor));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:477:        button.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:479:        UiStyles.styleOemButton(button, UiStyles.color(context, bgColor));
+app/src/main/java/com/mapcontrol/ui/builder/HomeTabBuilder.java:488:        view.setTextColor(UiStyles.color(context, colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:147:        root.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:154:        int cardGap = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_card_gap);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:242:            UiStyles.setGlassCardBackground(quickAccessCard);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:245:            UiStyles.setGlassCardBackground(vehicleCard);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:248:            UiStyles.setGlassCardBackground(musicDriveCard);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:251:            UiStyles.setBackgroundRes(musicDriveTabTrack, R.drawable.bg_segment_track);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:257:            quickAccessTitleView.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:261:                    UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:265:                    UiStyles.color(context, R.color.textDestructive));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:269:                    UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:272:            shortcutsLabelView.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:292:        int accent = UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:310:            view.setTextColor(UiStyles.color(view.getContext(), colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:349:                ? UiStyles.color(context, R.color.textPrimary)
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:350:                : UiStyles.color(context, R.color.textMuted);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:355:                ? UiStyles.color(context, R.color.textDestructive)
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:356:                : UiStyles.color(context, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:468:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:469:        int pad = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:482:        titleView.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:490:        int headerBtnSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_control_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:492:        gearButton.setColorFilter(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:506:        exitButton.setColorFilter(UiStyles.color(context, R.color.textDestructive));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:520:        exitLp.setMarginStart(UiStyles.dimenPx(context, R.dimen.spacing_tiny));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:541:        appsScrollLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:546:        divider.setBackgroundColor(UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:550:                Math.max(1, UiStyles.dimenPx(context, R.dimen.spacing_tiny) / 2));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:551:        dividerLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:552:        dividerLp.bottomMargin = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:563:        gridLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:574:        int iconTint = UiStyles.color(context, R.color.textSecondary);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:575:        int labelColor = UiStyles.color(context, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:588:                UiStyles.setBackgroundRes(slot, R.drawable.bg_launcher_icon_slot);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:621:        int gap = Math.max(1, UiStyles.dimenPx(context, R.dimen.spacing_tiny) / 2);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:657:        int gap = Math.max(1, UiStyles.dimenPx(context, R.dimen.spacing_tiny) / 2);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:678:        int slotSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_quick_slot_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:679:        int iconSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_quick_icon_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:681:        UiStyles.setBackgroundRes(slot, R.drawable.bg_launcher_icon_slot);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:776:        label.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:790:        int slotSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_quick_slot_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:791:        int iconSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_quick_icon_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:793:        UiStyles.setBackgroundRes(slot, R.drawable.bg_launcher_icon_slot);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:827:                icon.setColorFilter(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:925:        int pad = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:933:            row.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1131:        icon.setColorFilter(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1156:        int slotSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_quick_slot_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1157:        int iconSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_quick_icon_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1162:        UiStyles.setBackgroundRes(slot, slotBg);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1183:        label.setTextColor(UiStyles.color(context, colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1184:        label.setPadding(0, UiStyles.dimenPx(context, R.dimen.spacing_tiny), 0, 0);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1189:        int spacing = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1220:        hostLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1239:        UiStyles.setBackgroundRes(track, R.drawable.bg_segment_track);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1240:        int tpad = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1279:        tab.setMinHeight(UiStyles.dimenPx(context, R.dimen.button_height));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1286:            UiStyles.setBackgroundRes(musicTab, R.drawable.bg_segment_thumb);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1287:            musicTab.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1290:            driveTab.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1293:            UiStyles.setBackgroundRes(driveTab, R.drawable.bg_segment_thumb);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1294:            driveTab.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1297:            musicTab.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1330:        divider.setBackgroundColor(UiStyles.color(context, R.color.glassStroke));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1333:                Math.max(1, UiStyles.dimenPx(context, R.dimen.spacing_tiny) / 2));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1334:        dividerLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1335:        dividerLp.bottomMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1348:        fuelLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1361:        speedValueView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1371:        unit.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1382:        gearLabelView.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1391:        powerStatusView.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1427:        mediaHost.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1433:        int mediaPad = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1441:        int thumbSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_media_art_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1446:        UiStyles.applySolidRoundedBackgroundDp(albumArtView,
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1447:                UiStyles.color(context, R.color.surfaceCard), 10f);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1451:        thumbLp.bottomMargin = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1463:        artistLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1471:        progressRow.setPadding(0, UiStyles.dimenPx(context, R.dimen.spacing_small), 0, 0);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1481:        progressLp.setMargins(UiStyles.dimenPx(context, R.dimen.spacing_tiny), 0,
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1482:                UiStyles.dimenPx(context, R.dimen.spacing_tiny), 0);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1498:        int controlSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_media_control_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1526:        volumeRowLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1542:        int emptyPad = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1546:        emptyIcon.setColorFilter(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1547:        int emptyIconSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_media_art_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1556:        mediaEmptyTitleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1558:        mediaEmptyTitleView.setPadding(0, UiStyles.dimenPx(context, R.dimen.spacing_small), 0, 0);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1564:        mediaEmptyBodyView.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1580:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1581:        int pad = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1594:        titleView.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1608:        bodyLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1623:        label.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1625:        label.setPadding(0, 0, UiStyles.dimenPx(context, R.dimen.spacing_tiny), 0);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1633:        value.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1644:        int padV = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1655:        label.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1664:        value.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1675:        barLp.topMargin = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1692:        label.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1703:        value.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1713:        valueLp.setMarginStart(UiStyles.dimenPx(context, R.dimen.spacing_tiny));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1725:        textView.setTextColor(UiStyles.color(context, colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1738:        row.setPadding(0, UiStyles.dimenPx(context, R.dimen.spacing_tiny), 0, 0);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1763:        UiStyles.setBackgroundRes(slot, R.drawable.bg_launcher_icon_slot);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1770:        int iconSize = UiStyles.dimenPx(context, R.dimen.launcher_dashboard_media_control_icon_size);
+app/src/main/java/com/mapcontrol/ui/builder/LauncherDashboardBuilder.java:1774:        icon.setColorFilter(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherTabBuilder.java:43:        scrollView.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/LauncherTabBuilder.java:49:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:66:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:74:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:76:        UiStyles.setGlassCardBackground(glassShell);
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:90:        logTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:98:        btnCameraTest.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:100:        UiStyles.styleOemButton(btnCameraTest, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:102:        UiStyles.setButtonStartIconTinted(btnCameraTest, R.drawable.ic_mdi_camera,
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:103:                UiStyles.color(context, R.color.textPrimary),
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:104:                UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:127:        btnDmsFaces.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:129:        UiStyles.styleOemButton(btnDmsFaces, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:141:        btnWelcome.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:144:        UiStyles.styleOemButton(btnWelcome, UiStyles.color(context, R.color.buttonWelcome));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:146:        UiStyles.setButtonStartIconTinted(btnWelcome, R.drawable.ic_mdi_bell,
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:147:                UiStyles.color(context, R.color.textPrimary),
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:148:                UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:157:        btnClearLogs.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:159:        btnClearLogs.setBackgroundColor(UiStyles.color(context, R.color.buttonDestructiveBg));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:161:        UiStyles.setButtonIconOnlyTinted(btnClearLogs, R.drawable.ic_mdi_delete,
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:162:                UiStyles.color(context, R.color.textPrimary), "Kayıtları temizle");
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:168:        UiStyles.applySolidRoundedBackgroundDp(ttsCard,
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:169:                UiStyles.color(context, R.color.surfaceCard), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:179:        ttsSectionTitle.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:186:        ttsInput.setTextColor(UiStyles.color(context, R.color.textTertiary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:187:        ttsInput.setHintTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:196:        ttsFieldBg.setColor(UiStyles.color(context, R.color.logFieldBg));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:198:        ttsFieldBg.setStroke(1, UiStyles.color(context, R.color.outlineStrong));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:213:        btnReadAloud.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:216:        UiStyles.styleOemButton(btnReadAloud, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:230:        btnIflytek.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:233:        UiStyles.styleOemButton(btnIflytek, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:253:        btnIflytekStop.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:255:        UiStyles.styleOemButton(btnIflytekStop, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:272:        btnClusterVDBusTest.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:273:        UiStyles.styleOemButton(btnClusterVDBusTest, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:285:        btnValueWatcher.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:286:        UiStyles.styleOemButton(btnValueWatcher, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:301:        btnDriveFollow.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:302:        UiStyles.styleOemButton(btnDriveFollow, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:319:        btnAdasProbe.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:320:        UiStyles.styleOemButton(btnAdasProbe, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:328:        btnTsrMonitor.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:329:        UiStyles.styleOemButton(btnTsrMonitor, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:337:        btnFrontProbe.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:338:        UiStyles.styleOemButton(btnFrontProbe, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:346:        btnIdDiscovery.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:347:        UiStyles.styleOemButton(btnIdDiscovery, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:378:        terminalContainer.setBackgroundColor(UiStyles.color(context, R.color.logTerminalChrome));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:383:        terminalHeader.setBackgroundColor(UiStyles.color(context, R.color.surfaceColor));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:392:        redDot.setTextColor(UiStyles.color(context, R.color.terminalDotRed));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:399:        yellowDot.setTextColor(UiStyles.color(context, R.color.terminalDotYellow));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:406:        greenDot.setTextColor(UiStyles.color(context, R.color.terminalDotGreen));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:416:        terminalPath.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:431:        logScrollView.setBackgroundColor(UiStyles.color(context, R.color.logTerminalChrome));
+app/src/main/java/com/mapcontrol/ui/builder/LogTabBuilder.java:435:        logsTextView.setTextColor(UiStyles.color(context, R.color.textTertiary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:72:    private UiStyles.BinarySegmentHandle profileAutoLocationSegmentHandle;
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:99:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:104:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:106:        UiStyles.setGlassCardBackground(profileTabContent);
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:113:        cardBg.setColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:115:        cardBg.setStroke(1, UiStyles.color(context, R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:120:        profileLoginStatusText.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:127:        profileEmailLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:137:        inputBg.setColor(UiStyles.color(context, R.color.surfaceColor));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:139:        inputBg.setStroke(1, UiStyles.color(context, R.color.outlineMuted));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:141:        profileEmailInput.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:142:        profileEmailInput.setHintTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:152:        profileCodeLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:162:        profileCodeInput.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:163:        profileCodeInput.setHintTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:177:        profileSendCodeButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:178:        UiStyles.styleOemButton(profileSendCodeButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:189:        profileLoginButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:190:        UiStyles.styleOemButton(profileLoginButton, UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:203:        profileLogoutButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:204:        UiStyles.styleOemButton(profileLogoutButton, UiStyles.color(context, R.color.buttonDanger));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:216:        profilePlatformButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:217:        UiStyles.styleOemButton(profilePlatformButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:258:            UiStyles.clearButtonCompoundDrawables(profileSendCodeButton);
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:267:                            UiStyles.clearButtonCompoundDrawables(profileSendCodeButton);
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:346:        actionsCardBg.setColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:348:        actionsCardBg.setStroke(1, UiStyles.color(context, R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:354:        actionsTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:366:        profileSaveDataButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:367:        UiStyles.styleOemButton(profileSaveDataButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:380:        profileLoadDataButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:381:        UiStyles.styleOemButton(profileLoadDataButton, UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:604:        profileSaveLocationButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:605:        UiStyles.styleOemButton(profileSaveLocationButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:619:        autoLocationTitle.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:627:        autoLocationDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:637:        profileAutoLocationSegmentHandle = UiStyles.addBinarySegmentedControl(context, autoLocationSegmentBlock,
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:676:            UiStyles.clearButtonCompoundDrawables(profileSaveLocationButton);
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:725:                    UiStyles.clearButtonCompoundDrawables(profileSaveLocationButton);
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:932:        UiStyles.setButtonStartIconTinted(profileSendCodeButton, R.drawable.ic_mdi_email_outline,
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:933:                UiStyles.color(context, R.color.textPrimary),
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:934:                UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:939:        UiStyles.setButtonStartIconTinted(profileSaveLocationButton, R.drawable.ic_mdi_map_marker,
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:940:                UiStyles.color(context, R.color.textPrimary),
+app/src/main/java/com/mapcontrol/ui/builder/ProfileTabBuilder.java:941:                UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:89:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:94:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:96:        UiStyles.setGlassCardBackground(projectionTabContent);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:108:        projectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:118:        projectionStatus.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:132:        btnOpen.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:135:        UiStyles.styleOemButton(btnOpen, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:145:        btnClose.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:148:        UiStyles.styleOemButton(btnClose, UiStyles.color(context, R.color.statusErrorBright));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:180:        appTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:189:        UiStyles.applySolidRoundedBackgroundDp(appCard,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:190:                UiStyles.color(context, R.color.surfaceCard), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:203:        UiStyles.applySolidRoundedBackgroundDp(iconBox,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:204:                UiStyles.color(context, R.color.surfaceCardInner), 12f);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:213:        mapIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:226:        targetAppLabel.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:237:        appDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:250:        btnSelectApp.setTextColor(UiStyles.color(context, R.color.textPrimary80));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:253:        UiStyles.styleOemButton(btnSelectApp, UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:263:        btnLaunchOnCluster.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:266:        UiStyles.styleOemButton(btnLaunchOnCluster, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:301:        mainGroupTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:310:        UiStyles.applySolidRoundedBackgroundDp(mainCardContainer,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:311:                UiStyles.color(context, R.color.surfaceCard), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:320:        section1Title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:328:        section1Desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:332:        final UiStyles.TernarySegmentHandle[] powerHandle = new UiStyles.TernarySegmentHandle[1];
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:333:        powerHandle[0] = UiStyles.addTernarySegmentedControl(context, mainCardContainer,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:356:        sectionDivider1.setBackgroundColor(UiStyles.color(context, R.color.dividerWhite12));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:365:        section2Title.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:373:        section2Desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:382:        UiStyles.addBinarySegmentedControl(context, autoCloseBlock,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:397:        sectionDivider2.setBackgroundColor(UiStyles.color(context, R.color.dividerWhite12));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:406:        mapKeyTitle.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:414:        mapKeyDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:423:        UiStyles.addBinarySegmentedControl(context, mapControlBlock,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:442:        sectionDividerMaps.setBackgroundColor(UiStyles.color(context, R.color.dividerWhite12));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:451:        mapsNavTitle.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:459:        mapsNavDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:469:        final UiStyles.BinarySegmentHandle[] mapsNavHandle = new UiStyles.BinarySegmentHandle[1];
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:470:        mapsNavHandle[0] = UiStyles.addBinarySegmentedControl(context, mapsNavBlock,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:496:        googleMapsNavSummaryText.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:506:        mapSwipeTitle.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:514:        mapSwipeDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:524:        final UiStyles.BinarySegmentHandle[] mapSwipeHandle = new UiStyles.BinarySegmentHandle[1];
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:525:        mapSwipeHandle[0] = UiStyles.addBinarySegmentedControl(context, mapSwipeBlock,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:562:        mapsClusterTitle.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:570:        mapsClusterDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:580:        UiStyles.addBinarySegmentedControl(context, mapsClusterBlock,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:610:        yandexTitle.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:618:        yandexDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:628:        final UiStyles.BinarySegmentHandle[] yandexHandle = new UiStyles.BinarySegmentHandle[1];
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:629:        yandexHandle[0] = UiStyles.addBinarySegmentedControl(context, yandexBlock,
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:733:        title.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:743:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:769:        btnResetLayout.setTextColor(UiStyles.color(context, R.color.textPrimary80));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:771:        UiStyles.styleOemButton(btnResetLayout, UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:857:        cardTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:922:        label.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:928:        value.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:974:        label.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:980:        value.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:1019:        int accent = UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:1020:        int thumbPx = UiStyles.dimenPx(context, R.dimen.equalizer_thumb_size);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:1021:        int trackPx = UiStyles.dimenPx(context, R.dimen.equalizer_track_height);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:1033:                UiStyles.color(context, R.color.buttonInactive)));
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:1041:        int h = UiStyles.dimenPx(context, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/ProjectionTabBuilder.java:1044:                UiStyles.dimenPx(context, R.dimen.equalizer_slider_height));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:67:    private UiStyles.BinarySegmentHandle launcherModeSegmentHandle;
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:68:    private UiStyles.BinarySegmentHandle languageSegmentHandle;
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:92:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:117:            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:180:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:182:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:190:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:201:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:207:        boolean cyber = ThemeManager.isCyber(context);
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:208:        UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:217:                    if (targetCyber == ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:220:                    ThemeManager.setCyber(context, targetCyber);
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:233:            preview.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:234:            int pad = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:236:            UiStyles.applySolidRoundedBackground(preview,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:237:                    UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:250:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:260:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:267:        languageSegmentHandle = UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:291:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:301:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:307:        UiStyles.addBinarySegmentedControl(context, parentContainer, null,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:324:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:334:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:346:        UiStyles.addTernarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:390:        keyLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:406:        voiceLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:422:        status.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:431:        UiStyles.styleOemButton(save, UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:432:        if (ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:467:        field.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:468:        field.setHintTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:473:        bg.setColor(UiStyles.color(context, R.color.logFieldBg));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:475:        bg.setStroke(1, UiStyles.color(context, R.color.outlineStrong));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:484:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:494:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:502:        status.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:514:        UiStyles.styleOemButton(generate, UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:531:        UiStyles.styleOemButton(delete, UiStyles.color(context, R.color.statusError));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:558:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:568:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:575:        UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:587:        UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:603:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:614:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:620:        UiStyles.BinarySegmentHandle[] usbHandle = new UiStyles.BinarySegmentHandle[1];
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:621:        usbHandle[0] = UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:629:        UiStyles.BinarySegmentHandle[] wifiHandle = new UiStyles.BinarySegmentHandle[1];
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:630:        wifiHandle[0] = UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:644:    private void applyAdbSetting(boolean wifi, boolean on, UiStyles.BinarySegmentHandle handle) {
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:684:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:694:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:702:        UiStyles.styleOemButton(toggle, UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:703:        if (ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:723:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:733:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:740:        UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:757:        floatingBackButtonTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:767:        floatingBackButtonDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:776:        iconLegendTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:786:        iconLegendBody.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:798:        final UiStyles.BinarySegmentHandle[] floatingHandleRef = new UiStyles.BinarySegmentHandle[1];
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:799:        floatingHandleRef[0] = UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:863:        appInfoTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:873:        versionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:888:        versionText.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:898:        latestVersionText.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:907:        freeInstallTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:917:        freeInstallText.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:926:        changelogTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:937:        changelogText.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1081:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1091:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1099:        launcherModeSegmentHandle = UiStyles.addBinarySegmentedControl(context, parentContainer,
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1114:        launcherHomeSettingsLink.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1130:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1140:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1149:        currentLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1158:        UiStyles.styleOemButton(pickButton, UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/SettingsTabBuilder.java:1159:        if (ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:98:        UiStyles.setRailPanelBackground(sideRail);
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:136:        appTitleText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:235:        UiStyles.setRailPanelBackground(sideRail);
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:450:            UiStyles.setRailPanelBackground(sideRail);
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:453:            appTitleText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:547:        view.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:580:        iconView.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textSecondary)));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:588:        textView.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:626:        iconView.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textSecondary)));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:636:        textView.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:653:            UiStyles.setBackgroundRes(row, R.drawable.bg_nav_pill_selected);
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:655:                icon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.oemAccent)));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:658:                label.setTextColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:664:                icon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textSecondary)));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:667:                label.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:674:        if (ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:712:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SideRailBuilder.java:719:        message.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:100:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:105:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:107:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:123:        noteText.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:146:            statusText.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:149:            statusText.setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:152:            statusText.setTextColor(UiStyles.color(context, R.color.statusErrorBright));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:174:        UiStyles.applySolidRoundedBackground(row, UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:191:        slotLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:208:        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:209:        lp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:223:                    UiStyles.color(context, R.color.textSecondary)));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:225:            name.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:229:            name.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:292:        UiStyles.addTernarySegmentedControl(context, parent,
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:314:        lp.setMargins(0, UiStyles.dimenPx(context, R.dimen.spacing_small), 0,
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:315:                UiStyles.dimenPx(context, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:320:        int accent = UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:323:                UiStyles.color(context, R.color.surfaceCardElevated),
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:324:                UiStyles.color(context, R.color.outlineSubtle),
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:325:                UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:336:        startButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:337:        UiStyles.styleOemButton(startButton, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:338:        UiStyles.setButtonStartIconTinted(startButton, R.drawable.ic_mdi_view_split,
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:339:                UiStyles.color(context, R.color.textPrimary),
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:340:                UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:344:                UiStyles.dimenPx(context, R.dimen.button_height) * 5 / 4);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:345:        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:346:        lp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:393:        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:395:        infoLp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:403:            header.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:410:            rowLp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:422:        off.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:423:        UiStyles.styleOemButton(off, UiStyles.color(context, R.color.buttonSecondaryMuted));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:431:                UiStyles.dimenPx(context, R.dimen.button_height));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:432:        offLp.setMargins(h, UiStyles.dimenPx(context, R.dimen.spacing_small), h, 0);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:504:        int accent = UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:505:        int idle = UiStyles.color(context, R.color.textSecondary);
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:512:            bg.setCornerRadius(UiStyles.dimenPx(context, R.dimen.oem_button_radius));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:513:            bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:517:                bg.setStroke(Math.round(1 * density), UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:535:        UiStyles.applySolidRoundedBackground(gestureInfo,
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:536:                UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:542:            none.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:557:        big.setTint(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:573:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:580:        how.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:588:        where.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:611:        warn.setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:654:        divider.setBackgroundColor(UiStyles.color(context, R.color.dividerWhite12));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:665:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SplitScreenTabBuilder.java:675:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:162:        titleIconBackground.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:169:        titleIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.oemAccent)));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:182:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:189:        subtitle.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:207:        condBg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:209:        condBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:216:        tvCondLabel.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:222:        tvConditionTitle.setTextColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:230:        tvLiveLux.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:253:        tvConditionAdvice.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:274:        tvStatusMessage.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:296:        tvLabel.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:304:        tvVal.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:334:        masterTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:340:        masterDesc.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:420:        subtitle.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:715:        tvTitle.setTextColor(selected ? UiStyles.color(context, R.color.oemAccent) : UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:721:        tvDesc.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:749:            bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:750:            bg.setStroke(dp(2, density), UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:752:            bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:753:            bg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:761:            title.setTextColor(selected ? UiStyles.color(context, R.color.oemAccent) : UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:844:        bg.setColor(UiStyles.color(context, R.color.automationPanel));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:846:        bg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:862:        tv.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:876:        tvLabel.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:883:        tvVal.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:912:            bg.setColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:917:            bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:918:            bg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:919:            btn.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:953:        tvTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/SunroofAutomationTabBuilder.java:960:            tvDesc.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/TemperatureAutomationUi.java:44:        UiStyles.addBinarySegmentedControl(context, header,
+app/src/main/java/com/mapcontrol/ui/builder/TemperatureAutomationUi.java:63:            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/TemperatureAutomationUi.java:92:        int pad = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/TemperatureAutomationUi.java:94:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/TemperatureAutomationUi.java:108:        lp.bottomMargin = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/TemperatureAutomationUi.java:122:        UiStyles.addBinarySegmentedControl(context, parent, title,
+app/src/main/java/com/mapcontrol/ui/builder/TemperatureAutomationUi.java:206:        view.setTextColor(UiStyles.color(context, colorRes));
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:77:        UiStyles.setGlassCardBackground(launcherBackButton);
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:80:                ColorStateList.valueOf(UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:89:        titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:116:        if (ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:122:            cyberBadge.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:123:            cyberBadge.setBackground(ThemeManager.cyberBadgeBackground(context));
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:147:        UiStyles.setBackgroundRes(topBarDivider, R.drawable.bg_topbar_divider);
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:191:            titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:194:            UiStyles.setGlassCardBackground(launcherBackButton);
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:196:                    ColorStateList.valueOf(UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/ui/builder/TopBarBuilder.java:199:            UiStyles.setBackgroundRes(topBarDivider, R.drawable.bg_topbar_divider);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:65:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:358:        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:360:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:365:        TextView view = text(text, 20, UiStyles.color(context, R.color.textPrimary), true);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:371:        TextView view = text(text, 13, UiStyles.color(context, R.color.textSecondary), false);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:382:        TextView view = text(text, 12, UiStyles.color(context, R.color.textHint), false);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:393:        return text(text, 12, UiStyles.color(context, R.color.textSecondary), false);
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:435:        input.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:436:        input.setHintTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:439:        bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:442:                UiStyles.color(context, R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:455:        toggle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:467:        button.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:468:        UiStyles.styleOemButton(button, UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:476:        column.addView(text(label, 10, UiStyles.color(context, R.color.textHint), true));
+app/src/main/java/com/mapcontrol/ui/builder/ValetTabBuilder.java:477:        TextView valueView = text(value, 20, UiStyles.color(context, R.color.textPrimary), true);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:110:        int margin = UiStyles.dimenPx(uiContext, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:115:        int inner = UiStyles.dimenPx(uiContext, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:117:        UiStyles.setGlassCardBackground(contentRoot);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:122:        title.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:129:        intro.setTextColor(UiStyles.color(uiContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:130:        intro.setPadding(0, UiStyles.dimenPx(uiContext, R.dimen.spacing_small), 0,
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:131:                UiStyles.dimenPx(uiContext, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:137:        statusText.setTextColor(UiStyles.color(uiContext, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:138:        statusText.setPadding(0, 0, 0, UiStyles.dimenPx(uiContext, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:144:        int btnGap = UiStyles.dimenPx(uiContext, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:157:        actionRowLp.bottomMargin = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:171:            int gutter = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:207:        button.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:209:        UiStyles.styleOemButton(button, UiStyles.color(uiContext, backgroundColorResId));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:210:        int padH = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:334:        tv.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:335:        int top = UiStyles.dimenPx(uiContext, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:336:        tv.setPadding(0, top, 0, UiStyles.dimenPx(uiContext, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:343:        int padV = UiStyles.dimenPx(uiContext, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:349:        labelTv.setTextColor(UiStyles.color(uiContext, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/VehicleInfoTabBuilder.java:355:        valueTv.setTextColor(UiStyles.color(uiContext, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:71:        int primary = UiStyles.color(context, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:95:        int primary = UiStyles.color(context, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:96:        int secondary = UiStyles.color(context, R.color.textSecondary);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:100:        scrollView.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:104:        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:106:        mainContainer.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:118:        subtitle.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:132:        ttsInput.setHintTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:171:            chipBg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:173:            chipBg.setStroke(1, UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:192:        tagsHelp.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:203:        ttsStatus.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:264:        usbStatus.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:278:        steps.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:290:        UiStyles.addBinarySegmentedControl(context, autoPlayBlock,
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:308:        formHost.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:343:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:360:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:367:        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:381:        bg.setColor(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:385:            bg.setStroke(1, UiStyles.color(context, R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:391:        text.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:402:        bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:404:        bg.setStroke(1, UiStyles.color(context, R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:412:        bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:415:                UiStyles.color(context, R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:422:        int primary = UiStyles.color(context, R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:423:        int secondary = UiStyles.color(context, R.color.textSecondary);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:428:        sectionTitle.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:435:        sectionDesc.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:524:        lineInput.setHintTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:526:        inputBg.setColor(UiStyles.color(context, R.color.surfaceColor));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:528:        inputBg.setStroke(1, UiStyles.color(context, R.color.outlineMuted));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:559:        lineHelp.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:567:        UiStyles.styleOemButton(btnPreview, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:581:        label.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:596:            chip.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:600:            UiStyles.applySolidRoundedBackgroundDp(chip,
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:601:                    UiStyles.color(context, R.color.surfaceCardInner), 8f);
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:645:            bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:648:                    UiStyles.color(context, selected ? R.color.oemAccent : R.color.outline));
+app/src/main/java/com/mapcontrol/ui/builder/WelcomeSoundScreenBuilder.java:652:            title.setTextColor(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:58:        wifiTabContent.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:59:        int outerPad = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:76:            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:107:        UiStyles.setGlassCardBackground(card);
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:108:        int innerPad = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:117:        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:129:        wifiStatusLine.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:130:        wifiStatusLine.setPadding(16, 0, 16, UiStyles.dimenPx(context, R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:131:        wifiStatusLine.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:138:        controlButtonsRow.setPadding(16, UiStyles.dimenPx(context, R.dimen.spacing_small),
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:139:                16, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:141:        controlButtonsRow.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:146:        btnWifiToggle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:148:        UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:159:        btnScanWifi.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:161:        UiStyles.styleOemButton(btnScanWifi, UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:162:        if (com.mapcontrol.ui.theme.ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:178:        wifiListScrollView.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:203:        wifiIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textPrimary)));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:209:        wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:228:                UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:231:                UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.primaryDarkColor));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:244:                UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:247:                wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:256:                wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:262:            wifiStatusIcon.setTextColor(UiStyles.color(context, connected ? R.color.accentHighlight : R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:264:            wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:300:                        emptyText.setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:362:                emptyText.setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:425:                emptyIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textMuted)));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:430:                noNetworks.setTextColor(UiStyles.color(context, R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:471:        UiStyles.applySolidRoundedBackgroundDp(wifiCard,
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:472:                UiStyles.color(context, R.color.surfaceCardInner), 16f);
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:489:        iconImg.setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:506:        ssidText.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:554:            detailText.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:557:            detailText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:574:                    UiStyles.color(context, R.color.accentHighlight)));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:645:        dialogLayout.setBackgroundColor(UiStyles.color(context, R.color.cardColor));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:649:        titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:657:        networkName.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:666:        passwordInput.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:667:        passwordInput.setHintTextColor(UiStyles.color(context, R.color.statusNeutralGray));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:670:        passwordInput.setBackgroundColor(UiStyles.color(context, R.color.surfaceColor));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:693:                pos.setTextColor(UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/ui/builder/WifiTabBuilder.java:698:                neg.setTextColor(UiStyles.color(context, R.color.statusErrorBright));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:71:        if (ThemeManager.isCyber(context)) {
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:72:            return ThemeManager.cyberColor(context, colorRes);
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:79:        Drawable cyber = ThemeManager.cyberDrawable(context, drawableRes);
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:110:        if (ThemeManager.isCyber(view.getContext())) {
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:114:                        ThemeManager.cyberColor(view.getContext(), R.color.outline));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:126:        if (ThemeManager.isCyber(view.getContext())) {
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:130:                        ThemeManager.cyberColor(view.getContext(), R.color.outline));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:140:        if (ThemeManager.isCyber(button.getContext())) {
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:262:            rowTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:291:        help.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:428:            rowTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:457:        help.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:477:                    tv.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/theme/UiStyles.java:481:                    tv.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:67:                        UiStyles.color(context, R.color.root_gradient_start),
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:68:                        UiStyles.color(context, R.color.boot_splash_grad_b),
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:69:                        UiStyles.color(context, R.color.root_gradient_center),
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:70:                        UiStyles.color(context, R.color.root_gradient_end)
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:74:        int accent = UiStyles.color(context, R.color.boot_splash_grad_accent);
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:89:        int ringColor = UiStyles.color(context, R.color.oemAccent);
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:105:        clock.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:114:        day.setTextColor(UiStyles.color(context, R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:128:        ruleBg.setColor(UiStyles.color(context, R.color.oemAccent));
+app/src/main/java/com/mapcontrol/ui/welcome/SignatureWelcomeDesign.java:136:        name.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherClockSwipeLayout.java:382:        view.setColorFilter(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:58:        int pad = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:73:        clockView.setTextColor(UiStyles.color(getContext(), R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:83:        dateView.setTextColor(UiStyles.color(getContext(), R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:88:        dateLp.topMargin = UiStyles.dimenPx(getContext(), R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:98:        weatherRowLp.topMargin = UiStyles.dimenPx(getContext(), R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:108:        glyphLp.setMarginEnd(UiStyles.dimenPx(getContext(), R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:115:        weatherTempView.setTextColor(UiStyles.color(getContext(), R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:118:        tempLp.setMarginEnd(UiStyles.dimenPx(getContext(), R.dimen.spacing_small));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:125:        weatherLabelView.setTextColor(UiStyles.color(getContext(), R.color.textSecondary));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:137:        statsRowLp.topMargin = UiStyles.dimenPx(getContext(), R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:172:        value.setTextColor(UiStyles.color(getContext(), R.color.textPrimary));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:182:        caption.setTextColor(UiStyles.color(getContext(), R.color.textMuted));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:188:        captionLp.topMargin = UiStyles.dimenPx(getContext(), R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:195:        divider.setBackgroundColor(UiStyles.color(getContext(), R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:202:                UiStyles.dimenPx(getContext(), R.dimen.launcher_lite_divider_height));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:203:        lp.topMargin = UiStyles.dimenPx(getContext(), R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:224:        int gap = UiStyles.dimenPx(getContext(), R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:259:        int primary = UiStyles.color(getContext(), R.color.textPrimary);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:260:        int muted = UiStyles.color(getContext(), R.color.textMuted);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:261:        int secondary = UiStyles.color(getContext(), R.color.textSecondary);
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:285:            weatherDivider.setBackgroundColor(UiStyles.color(getContext(), R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/ui/widget/LauncherLitePanelView.java:288:            statsDivider.setBackgroundColor(UiStyles.color(getContext(), R.color.outlineSubtle));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:32:        scrollView.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:107:        scrollView.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:133:        dialogLayout.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:138:        titleView.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:146:        messageView.setTextColor(UiStyles.color(context, R.color.textMessage));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:156:            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(UiStyles.color(context, R.color.surfaceColor)));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:159:        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:160:        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(UiStyles.color(context, R.color.textDialogButtonSecondary));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:183:                    textView.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:205:            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(UiStyles.color(context, R.color.buttonSuccessBright));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:210:            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(UiStyles.color(context, R.color.statusErrorBright));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:215:            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(UiStyles.color(context, R.color.textLoading));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:224:        mainContainer.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:232:        titleContainer.setBackgroundColor(UiStyles.color(context, R.color.surfaceCard));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:237:        titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:244:        subtitleView.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:254:        contentContainer.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:262:        messageView.setTextColor(UiStyles.color(context, R.color.textMessage));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:269:            dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(UiStyles.color(dialog.getContext(), R.color.surfaceColor)));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:274:                positiveButton.setTextColor(UiStyles.color(dialog.getContext(), R.color.textPrimary));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:278:                positiveBg.setColor(UiStyles.color(dialog.getContext(), R.color.buttonPrimary));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:284:                negativeButton.setTextColor(UiStyles.color(dialog.getContext(), R.color.textSecondary));
+app/src/main/java/com/mapcontrol/util/DialogHelper.java:285:                negativeButton.setBackgroundColor(UiStyles.color(dialog.getContext(), R.color.transparent));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:108:        root.setBackgroundColor(UiStyles.color(ctx, R.color.preparing_overlay_root));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:141:        spinner.setColorFilter(UiStyles.color(ctx, R.color.accentColor));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:152:        title.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:166:        sub.setTextColor(UiStyles.color(ctx, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:188:        int accent = UiStyles.color(ctx, R.color.accentColor);
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:542:                UiStyles.color(ctx, R.color.accentColor),
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:543:                UiStyles.color(ctx, R.color.transparent),
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:578:        wordmark.setTextColor(UiStyles.color(ctx, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:593:        tagline.setTextColor(UiStyles.color(ctx, R.color.textSecondaryCool));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:606:                UiStyles.color(ctx, R.color.accentColor));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:761:                    UiStyles.color(ctx, R.color.boot_splash_grad_a),
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:762:                    UiStyles.color(ctx, R.color.boot_splash_grad_b),
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:763:                    UiStyles.color(ctx, R.color.boot_splash_grad_c),
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:764:                    UiStyles.color(ctx, R.color.boot_splash_grad_d),
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:765:                    UiStyles.color(ctx, R.color.boot_splash_grad_accent),
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:852:            linePaint.setColor(UiStyles.color(ctx, R.color.map_grid_line_accent));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:856:            glowPaint.setColor(UiStyles.color(ctx, R.color.map_grid_glow_accent));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:859:            vignetteTransparent = UiStyles.color(ctx, R.color.transparent);
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:860:            vignetteEdge = UiStyles.color(ctx, R.color.map_grid_vignette_edge);
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:969:            pinDotPaint.setColor(UiStyles.color(ctx, R.color.boot_splash_pin_dot));
+app/src/main/java/com/mapcontrol/util/DisplayHelper.java:972:            pinShadowPaint.setColor(UiStyles.color(ctx, R.color.boot_splash_pin_shadow));
+app/src/main/java/com/mapcontrol/util/OnboardingHelper.java:82:        next.setBackground(pill(UiStyles.color(ctx, R.color.accentColor), 0, 0));
+app/src/main/java/com/mapcontrol/util/OnboardingHelper.java:115:        int accent = UiStyles.color(ctx, R.color.accentColor);
+app/src/main/java/com/mapcontrol/util/OnboardingHelper.java:120:            chip.setBackground(pill(UiStyles.color(ctx, R.color.surfaceCardInner), accent, dp(ctx, 1)));
+app/src/main/java/com/mapcontrol/util/OnboardingHelper.java:143:        tv.setTextColor(UiStyles.color(ctx, colorRes));
+app/src/main/java/com/mapcontrol/util/PermissionProbeDialog.java:48:        root.setBackgroundColor(UiStyles.color(activity, R.color.backgroundPage));
+app/src/main/java/com/mapcontrol/util/PermissionProbeDialog.java:54:        title.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/util/PermissionProbeDialog.java:60:        legend.setTextColor(UiStyles.color(activity, R.color.textHint));
+app/src/main/java/com/mapcontrol/util/PermissionProbeDialog.java:68:        summary.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/util/PermissionProbeDialog.java:91:                window.setBackgroundDrawable(new ColorDrawable(UiStyles.color(activity, R.color.backgroundPage)));
+app/src/main/java/com/mapcontrol/util/PermissionProbeDialog.java:98:                        .setTextColor(UiStyles.color(activity, R.color.textDialogButtonSecondary));
+app/src/main/java/com/mapcontrol/util/PermissionProbeDialog.java:165:        detail.setTextColor(UiStyles.color(context, R.color.textHint));
+app/src/main/java/com/mapcontrol/vehicle/DriveModeStyle.java:70:        return UiStyles.color(context, res);
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:112:        int pad = UiStyles.dimenPx(activity, R.dimen.spacing_medium);
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:113:        int gap = UiStyles.dimenPx(activity, R.dimen.spacing_small);
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:114:        int minTile = UiStyles.dimenPx(activity, R.dimen.vehicle_picker_tile_min);
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:115:        int maxTile = UiStyles.dimenPx(activity, R.dimen.vehicle_picker_tile_max);
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:145:        icon.setColorFilter(UiStyles.color(activity, R.color.accentHighlight));
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:157:        hint.setTextColor(UiStyles.color(activity, R.color.textHint));
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:211:        int inner = UiStyles.dimenPx(activity, R.dimen.spacing_tiny);
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:213:        UiStyles.setGlassCardBackground(tile);
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:236:        label.setTextColor(UiStyles.color(activity, R.color.textPrimary));
+app/src/main/java/com/mapcontrol/vehicle/material/VehicleMaterialPickerDialog.java:238:        label.setPadding(0, UiStyles.dimenPx(activity, R.dimen.spacing_tiny), 0, 0);
