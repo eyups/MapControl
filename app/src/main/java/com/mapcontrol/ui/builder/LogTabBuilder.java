@@ -20,6 +20,8 @@ import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.activity.CameraActivity;
 import com.mapcontrol.ui.activity.DmsFaceProfileActivity;
@@ -63,17 +65,18 @@ public class LogTabBuilder {
         tabContent = new LinearLayout(context);
         tabContent.setOrientation(LinearLayout.VERTICAL);
         tabContent.setBaselineAligned(false);
-        int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        tabContent.setPadding(margin, margin, margin, margin);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        tabContent.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
         tabContent.setBackgroundColor(Color.TRANSPARENT);
-        tabContent.setVisibility(android.view.View.GONE);
+        tabContent.setVisibility(android.view.View.VISIBLE);
 
         LinearLayout glassShell = new LinearLayout(context);
         glassShell.setOrientation(LinearLayout.VERTICAL);
         glassShell.setBaselineAligned(false);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        int inner = CockpitTokens.dim(context, R.dimen.ck_card_padding);
         glassShell.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(glassShell);
+        CockpitSurfaces.level1(glassShell);
         LinearLayout.LayoutParams shellParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0, 1f);
@@ -86,9 +89,7 @@ public class LogTabBuilder {
 
         TextView logTitle = new TextView(context);
         logTitle.setText(R.string.log_system_logs);
-        logTitle.setTextSize(20);
-        logTitle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        logTitle.setTypeface(null, android.graphics.Typeface.BOLD);
+        CockpitTokens.headlineSm(logTitle);
         LinearLayout.LayoutParams logTitleParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         logControlPanel.addView(logTitle, logTitleParams);
@@ -96,8 +97,9 @@ public class LogTabBuilder {
         Button btnCameraTest = new Button(context);
         btnCameraTest.setText(R.string.log_camera_test);
         btnCameraTest.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnCameraTest.setTextSize(14);
-        UiStyles.styleOemButton(btnCameraTest, UiStyles.color(context, R.color.buttonPrimary));
+        btnCameraTest.setTextSize(15);
+        UiStyles.styleOemButton(btnCameraTest, CockpitTokens.color(context, R.color.ck_accent));
+        btnCameraTest.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
         btnCameraTest.setPadding(16, 8, 16, 8);
         UiStyles.setButtonStartIconTinted(btnCameraTest, R.drawable.ic_mdi_camera,
                 UiStyles.color(context, R.color.textPrimary),
@@ -125,8 +127,9 @@ public class LogTabBuilder {
         Button btnDmsFaces = new Button(context);
         btnDmsFaces.setText(R.string.log_dms_face_profiles);
         btnDmsFaces.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnDmsFaces.setTextSize(14);
-        UiStyles.styleOemButton(btnDmsFaces, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnDmsFaces.setTextSize(15);
+        UiStyles.styleOemButton(btnDmsFaces, CockpitTokens.color(context, R.color.ck_surface_2));
+        btnDmsFaces.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         btnDmsFaces.setPadding(16, 8, 16, 8);
         btnDmsFaces.setOnClickListener(v ->
                 context.startActivity(new Intent(context, DmsFaceProfileActivity.class)));
@@ -139,9 +142,10 @@ public class LogTabBuilder {
         Button btnWelcome = new Button(context);
         btnWelcome.setText(R.string.log_welcome);
         btnWelcome.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnWelcome.setTextSize(14);
-        btnWelcome.setTypeface(null, Typeface.BOLD);
-        UiStyles.styleOemButton(btnWelcome, UiStyles.color(context, R.color.buttonWelcome));
+        btnWelcome.setTextSize(15);
+        btnWelcome.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnWelcome, CockpitTokens.color(context, R.color.ck_surface_2));
+        btnWelcome.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         btnWelcome.setPadding(16, 8, 16, 8);
         UiStyles.setButtonStartIconTinted(btnWelcome, R.drawable.ic_mdi_bell,
                 UiStyles.color(context, R.color.textPrimary),
@@ -156,18 +160,20 @@ public class LogTabBuilder {
         Button btnClearLogs = new Button(context);
         btnClearLogs.setTextColor(UiStyles.color(context, R.color.textPrimary));
         btnClearLogs.setTextSize(20);
-        btnClearLogs.setBackgroundColor(UiStyles.color(context, R.color.buttonDestructiveBg));
+        btnClearLogs.setBackgroundColor(CockpitTokens.color(context, R.color.ck_critical_bg));
         btnClearLogs.setPadding(0, 0, 0, 0);
         UiStyles.setButtonIconOnlyTinted(btnClearLogs, R.drawable.ic_mdi_delete,
-                UiStyles.color(context, R.color.textPrimary), "Kayıtları temizle");
+                CockpitTokens.color(context, R.color.ck_critical), "Kayıtları temizle");
         LinearLayout.LayoutParams clearLogsParams = new LinearLayout.LayoutParams(56, 56);
         logControlPanel.addView(btnClearLogs, clearLogsParams);
 
         LinearLayout ttsCard = new LinearLayout(context);
         ttsCard.setOrientation(LinearLayout.VERTICAL);
-        UiStyles.applySolidRoundedBackgroundDp(ttsCard,
-                UiStyles.color(context, R.color.surfaceCard), 16f);
-        ttsCard.setPadding(16, 14, 16, 14);
+        CockpitSurfaces.level2(ttsCard);
+        ttsCard.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
         LinearLayout.LayoutParams ttsCardParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -175,17 +181,16 @@ public class LogTabBuilder {
 
         TextView ttsSectionTitle = new TextView(context);
         ttsSectionTitle.setText(R.string.log_tts_section);
-        ttsSectionTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
-        ttsSectionTitle.setTextColor(UiStyles.color(context, R.color.textSecondary));
+        CockpitTokens.labelCaps(ttsSectionTitle);
         ttsCard.addView(ttsSectionTitle, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         ttsInput = new EditText(context);
         ttsInput.setHint(R.string.log_tts_hint);
-        ttsInput.setTextColor(UiStyles.color(context, R.color.textTertiary));
-        ttsInput.setHintTextColor(UiStyles.color(context, R.color.textMuted));
-        ttsInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        ttsInput.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        ttsInput.setHintTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        ttsInput.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         ttsInput.setTypeface(Typeface.MONOSPACE);
         ttsInput.setMinLines(2);
         ttsInput.setMaxLines(5);
@@ -268,9 +273,9 @@ public class LogTabBuilder {
 
         Button btnClusterVDBusTest = new Button(context);
         btnClusterVDBusTest.setText(R.string.log_cluster_test);
-        btnClusterVDBusTest.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        btnClusterVDBusTest.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(btnClusterVDBusTest, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnClusterVDBusTest.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        btnClusterVDBusTest.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(btnClusterVDBusTest, CockpitTokens.color(context, R.color.ck_surface_2));
         btnClusterVDBusTest.setPadding(16, 12, 16, 12);
         btnClusterVDBusTest.setOnClickListener(v ->
                 context.startActivity(new Intent(context, ClusterVDBusTestActivity.class)));
@@ -281,9 +286,9 @@ public class LogTabBuilder {
 
         Button btnValueWatcher = new Button(context);
         btnValueWatcher.setText(R.string.log_value_watcher_start);
-        btnValueWatcher.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        btnValueWatcher.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(btnValueWatcher, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnValueWatcher.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        btnValueWatcher.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(btnValueWatcher, CockpitTokens.color(context, R.color.ck_surface_2));
         btnValueWatcher.setPadding(16, 12, 16, 12);
         btnValueWatcher.setOnClickListener(v -> {
             if (valueWatcher.isRunning()) {
@@ -297,9 +302,9 @@ public class LogTabBuilder {
 
         Button btnDriveFollow = new Button(context);
         btnDriveFollow.setText(R.string.log_drive_follow_start);
-        btnDriveFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        btnDriveFollow.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(btnDriveFollow, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnDriveFollow.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        btnDriveFollow.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(btnDriveFollow, CockpitTokens.color(context, R.color.ck_surface_2));
         btnDriveFollow.setPadding(16, 12, 16, 12);
         btnDriveFollow.setOnClickListener(v -> {
             if (driveFollowLogger.isRunning()) {
@@ -315,36 +320,36 @@ public class LogTabBuilder {
         btnAdasProbe.setText(R.string.log_adas_probe);
         // ADAS/FCM kaynakları araçta güvenilir değil; kazara araç hattı okumayı önle.
         btnAdasProbe.setVisibility(android.view.View.VISIBLE);
-        btnAdasProbe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        btnAdasProbe.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(btnAdasProbe, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnAdasProbe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        btnAdasProbe.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(btnAdasProbe, CockpitTokens.color(context, R.color.ck_surface_2));
         btnAdasProbe.setPadding(16, 12, 16, 12);
         btnAdasProbe.setOnClickListener(v ->
                 context.startActivity(new Intent(context, AdasProbeActivity.class)));
 
         Button btnTsrMonitor = new Button(context);
         btnTsrMonitor.setText(R.string.log_tsr_monitor);
-        btnTsrMonitor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        btnTsrMonitor.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(btnTsrMonitor, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnTsrMonitor.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        btnTsrMonitor.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(btnTsrMonitor, CockpitTokens.color(context, R.color.ck_surface_2));
         btnTsrMonitor.setPadding(16, 12, 16, 12);
         btnTsrMonitor.setOnClickListener(v ->
                 context.startActivity(new Intent(context, TrafficSignMonitorActivity.class)));
 
         Button btnFrontProbe = new Button(context);
         btnFrontProbe.setText(R.string.log_front_probe);
-        btnFrontProbe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        btnFrontProbe.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(btnFrontProbe, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnFrontProbe.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        btnFrontProbe.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(btnFrontProbe, CockpitTokens.color(context, R.color.ck_surface_2));
         btnFrontProbe.setPadding(16, 12, 16, 12);
         btnFrontProbe.setOnClickListener(v ->
                 context.startActivity(new Intent(context, FrontObjectProbeActivity.class)));
 
         Button btnIdDiscovery = new Button(context);
         btnIdDiscovery.setText(R.string.log_id_discovery);
-        btnIdDiscovery.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        btnIdDiscovery.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(btnIdDiscovery, UiStyles.color(context, R.color.buttonSecondaryMuted));
+        btnIdDiscovery.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        btnIdDiscovery.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        UiStyles.styleOemButton(btnIdDiscovery, CockpitTokens.color(context, R.color.ck_surface_2));
         btnIdDiscovery.setPadding(16, 12, 16, 12);
         btnIdDiscovery.setOnClickListener(v ->
                 context.startActivity(new Intent(context, IdDiscoveryActivity.class)));
@@ -375,12 +380,12 @@ public class LogTabBuilder {
 
         LinearLayout terminalContainer = new LinearLayout(context);
         terminalContainer.setOrientation(LinearLayout.VERTICAL);
-        terminalContainer.setBackgroundColor(UiStyles.color(context, R.color.logTerminalChrome));
+        terminalContainer.setBackgroundColor(CockpitTokens.color(context, R.color.ck_bg_recessed));
         terminalContainer.setPadding(0, 0, 0, 0);
 
         LinearLayout terminalHeader = new LinearLayout(context);
         terminalHeader.setOrientation(LinearLayout.HORIZONTAL);
-        terminalHeader.setBackgroundColor(UiStyles.color(context, R.color.surfaceColor));
+        terminalHeader.setBackgroundColor(CockpitTokens.color(context, R.color.ck_surface_1));
         terminalHeader.setPadding(16, 12, 16, 12);
         terminalHeader.setGravity(android.view.Gravity.CENTER_VERTICAL);
 
@@ -413,9 +418,9 @@ public class LogTabBuilder {
 
         TextView terminalPath = new TextView(context);
         terminalPath.setText("/var/log/syslog/vehicle_core.log");
-        terminalPath.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-        terminalPath.setTextSize(11);
-        terminalPath.setTypeface(android.graphics.Typeface.MONOSPACE);
+        terminalPath.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        terminalPath.setTextSize(15);
+        terminalPath.setTypeface(CockpitTokens.mono(context));
         LinearLayout.LayoutParams pathParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         pathParams.gravity = android.view.Gravity.END;
@@ -428,13 +433,13 @@ public class LogTabBuilder {
         logScrollView = new ScrollView(context);
         logScrollView.setFillViewport(true);
         logScrollView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
-        logScrollView.setBackgroundColor(UiStyles.color(context, R.color.logTerminalChrome));
+        logScrollView.setBackgroundColor(CockpitTokens.color(context, R.color.ck_bg_recessed));
         logScrollView.setPadding(12, 12, 12, 12);
 
         logsTextView = new TextView(context);
-        logsTextView.setTextColor(UiStyles.color(context, R.color.textTertiary));
-        logsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        logsTextView.setTypeface(android.graphics.Typeface.MONOSPACE);
+        logsTextView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        logsTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        logsTextView.setTypeface(CockpitTokens.mono(context));
         logsTextView.setPadding(10, 12, 10, 12);
         logsTextView.setLineSpacing(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, 5f, context.getResources().getDisplayMetrics()), 1.0f);
