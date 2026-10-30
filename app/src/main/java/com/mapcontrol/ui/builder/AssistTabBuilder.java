@@ -32,9 +32,9 @@ public class AssistTabBuilder {
     private final Context context;
     private final SharedPreferences prefs;
     private final AssistCallback callback;
-    private final CardHolder[] holders = new CardHolder[7];
-    private final boolean[] active = new boolean[7];
-    private final int[] savedValues = new int[7];
+    private final CardHolder[] holders = new CardHolder[8];
+    private final boolean[] active = new boolean[8];
+    private final int[] savedValues = new int[8];
 
     private static final Object[][] ASSIST_CARDS = {
             {R.string.assist_card_iss, R.drawable.ic_mdi_restart, 0, -1, "issSetting", "ISS"},
@@ -43,7 +43,9 @@ public class AssistTabBuilder {
             {R.string.assist_card_ldp, R.drawable.ic_mdi_shield_car, 2, -1, "ldpSetting", "LDP"},
             {R.string.assist_card_fcw, R.drawable.ic_mdi_car_brake_alert, 2, -1, "fcwSetting", "FCW"},
             {R.string.assist_card_aeb, R.drawable.ic_mdi_car_brake_abs, 2, -1, "aebSetting", "AEB"},
-            {R.string.assist_card_cpd, R.drawable.ic_mdi_car_seat, 2, -1, "cpdSetting", "CPD"}
+            {R.string.assist_card_cpd, R.drawable.ic_mdi_car_seat, 2, -1, "cpdSetting", "CPD"},
+            {R.string.assist_card_child_lock, R.drawable.ic_mdi_shield_car, 1, 0,
+                    "childLockSetting", "Arka Cam Çocuk Kilidi"}
     };
 
     public AssistTabBuilder(Context context, SharedPreferences prefs, AssistCallback callback) {
@@ -85,27 +87,6 @@ public class AssistTabBuilder {
             grid.add(buildCard(i), 4);
         }
 
-        CockpitCard cpd = new CockpitCard(context, context.getString(R.string.ck_assist_cpd_note)).span(4);
-        cpd.status(StatusBadge.advisory(context, context.getString(R.string.ck_assist_hardware_dep)));
-        TextView note = new TextView(context);
-        CockpitTokens.bodySm(note);
-        note.setText(R.string.assist_cpd_disclaimer);
-        note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        cpd.addContent(note);
-        grid.add(cpd, 4);
-        final CockpitCard cpdToggleCard = holders[ASSIST_CARDS.length - 1] != null
-                ? holders[ASSIST_CARDS.length - 1].card : null;
-        if (cpdToggleCard != null) {
-            cpd.addOnLayoutChangeListener((v, left, top, right, bottom,
-                    oldLeft, oldTop, oldRight, oldBottom) -> {
-                int targetHeight = v.getHeight();
-                if (targetHeight > 0
-                        && cpdToggleCard.getMinimumHeight() < targetHeight) {
-                    cpdToggleCard.setMinimumHeight(targetHeight);
-                }
-            });
-        }
-
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         return scrollView;
@@ -138,6 +119,9 @@ public class AssistTabBuilder {
         body.addView(icon, new LinearLayout.LayoutParams(
                 CockpitTokens.dp(context, 40), CockpitTokens.dp(context, 40)));
 
+        View spacer = new View(context);
+        body.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+
         CockpitToggle toggle = new CockpitToggle(context);
         toggle.setChecked(active[index], false);
         LinearLayout.LayoutParams toggleLp = new LinearLayout.LayoutParams(
@@ -146,6 +130,20 @@ public class AssistTabBuilder {
         toggleLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         body.addView(toggle, toggleLp);
         card.addContent(body);
+
+        if ("cpdSetting".equals(settingKey)) {
+            TextView note = new TextView(context);
+            CockpitTokens.bodySm(note);
+            note.setText(R.string.assist_cpd_disclaimer);
+            note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            card.addContent(note);
+        } else if ("childLockSetting".equals(settingKey)) {
+            TextView note = new TextView(context);
+            CockpitTokens.bodySm(note);
+            note.setText(R.string.assist_child_lock_desc);
+            note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            card.addContent(note);
+        }
 
         holders[index] = new CardHolder(card, badge, toggle);
 
@@ -209,12 +207,26 @@ public class AssistTabBuilder {
             case "fcwSetting": return context.getString(R.string.assist_status_fcw);
             case "aebSetting": return context.getString(R.string.assist_status_aeb);
             case "cpdSetting": return context.getString(R.string.assist_status_cpd);
+            case "childLockSetting": return context.getString(R.string.assist_status_child_lock);
             default: return context.getString(R.string.assist_status_active);
         }
     }
 
     private void trySendCarInfoValue(String settingKey, boolean disable, String logPrefix) {
         try {
+            if ("childLockSetting".equals(settingKey)) {
+                if (CarInfoProxy.getInstance().isServiceConnnected()) {
+                    // ID_CAR_WINDOW_PROHIBIT is a momentary hardware-button pulse.
+                    CarInfoProxy.getInstance().sendItemValue(
+                            VDEventCarInfo.MODULE_CAR_SETTING,
+                            CarSettingID.ID_CAR_WINDOW_PROHIBIT,
+                            1);
+                    callback.log("✅ Arka Cam Çocuk Kilidi pulse gönderildi");
+                } else {
+                    callback.log("🔌 CarInfoProxy bağlı değil, çocuk kilidi gönderilemedi");
+                }
+                return;
+            }
             int currentPowerMode = prefs.getInt("lastPowerMode", -1);
             int[] pwrItems = CarInfoProxy.getInstance().getItemValues(
                     VDEventCarInfo.MODULE_READONLY_INFO,

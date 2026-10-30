@@ -428,6 +428,7 @@ public class MapControlService extends Service {
                                                         applySpdLimitIfNeeded();
                                                         handler.postDelayed(() -> {
                                                             applyCpdIfNeeded();
+                                                            handler.postDelayed(this::applyChildLockMemoryIfNeeded, 200);
                                                         }, 100);
                                                     }, 100);
                                                 }, 100);
@@ -933,6 +934,31 @@ public class MapControlService extends Service {
         } catch (Exception e) {
             log("❌ applyAebInternal hatası: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Sürücü "Arka Cam Çocuk Kilidi" hafızasını açtıysa, her yeni kontak/ON
+     * geçişinde bir kez OEM toggle pulse'i gönder. Aynı sürüşte fiziksel
+     * tuşla yapılan değişikliklere tekrar müdahale edilmez.
+     */
+    private void applyChildLockMemoryIfNeeded() {
+        try {
+            SharedPreferences prefs = getSharedPreferences("MapControlPrefs", MODE_PRIVATE);
+            if (prefs.getInt("childLockSetting", 0) != 1) {
+                return;
+            }
+            if (!CarInfoProxy.getInstance().isServiceConnnected()) {
+                log("🔌 CarInfoProxy bağlı değil, çocuk kilidi otomatik uygulanamadı");
+                return;
+            }
+            CarInfoProxy.getInstance().sendItemValue(
+                    VDEventCarInfo.MODULE_CAR_SETTING,
+                    CarSettingID.ID_CAR_WINDOW_PROHIBIT,
+                    1);
+            log("🔒 Arka Cam Çocuk Kilidi otomatik pulse gönderildi (ID_CAR_WINDOW_PROHIBIT)");
+        } catch (Exception e) {
+            log("❌ applyChildLockMemoryIfNeeded hatası: " + e.getMessage());
         }
     }
 

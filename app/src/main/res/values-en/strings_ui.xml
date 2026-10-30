@@ -232,6 +232,9 @@
     <string name="assist_card_aeb">Automatic emergency braking</string>
     <string name="assist_card_cpd">CPD (child presence detection)</string>
     <string name="assist_cpd_disclaimer">CPD: In-car child detection. Depends on hardware and software; may not work on every model (e.g. some Tiggo 8 trims). Verify on your vehicle.</string>
+    <string name="assist_card_child_lock">Rear window child lock</string>
+    <string name="assist_child_lock_desc">Automatically applies the rear child lock when the ignition is turned on. It won’t override a physical unlock during the same drive.</string>
+    <string name="assist_status_child_lock">ON</string>
     <string name="assist_status_not_set">Not configured</string>
     <string name="assist_status_iss">ISS off</string>
     <string name="assist_status_spd">Warning off</string>
