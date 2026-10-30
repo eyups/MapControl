@@ -16,6 +16,9 @@ import android.widget.Toast;
 import androidx.core.graphics.ColorUtils;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.widget.SplitRatioView;
 import com.mapcontrol.ui.widget.SwipeGestureIconView;
@@ -100,38 +103,50 @@ public class SplitScreenTabBuilder {
         int margin = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
         outer.setPadding(margin, margin, margin, margin);
 
-        LinearLayout card = new LinearLayout(context);
-        card.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        card.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(card);
-        outer.addView(card, matchWrap());
-        scrollView.addView(outer, new ScrollView.LayoutParams(
+        CockpitGrid grid = new CockpitGrid(context);
+        outer.addView(grid, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        addSectionTitle(card, R.string.split_title, 8);
-        addSectionDesc(card, R.string.split_desc);
+        LinearLayout left = createSectionCard();
+        LinearLayout right = createSectionCard();
+
+        addSectionTitle(left, R.string.split_title, 8);
+        addSectionDesc(left, R.string.split_desc);
 
         statusText = new TextView(context);
         statusText.setTextSize(14);
-        statusText.setTypeface(null, Typeface.BOLD);
+        statusText.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
         statusText.setPadding(16, 0, 16, 4);
-        card.addView(statusText, matchWrap());
+        left.addView(statusText, matchWrap());
         noteText = new TextView(context);
         noteText.setTextSize(13);
         noteText.setTextColor(UiStyles.color(context, R.color.textHint));
         noteText.setPadding(16, 0, 16, 12);
-        card.addView(noteText, matchWrap());
+        left.addView(noteText, matchWrap());
         refreshStatus();
 
-        addAppRow(card, 0);
-        addAppRow(card, 1);
-        addRatioSection(card);
-        addStartButton(card);
-        addDivider(card);
-        addGestureSection(card);
+        addAppRow(left, 0);
+        addAppRow(left, 1);
+        addRatioSection(left);
+        addStartButton(left);
+
+        addGestureSection(right);
+        grid.add(left, 4);
+        grid.add(right, 4);
+        scrollView.addView(outer, new ScrollView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         return scrollView;
+    }
+
+    private LinearLayout createSectionCard() {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        int inner = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        card.setPadding(inner, inner, inner, inner);
+        CockpitSurfaces.level1(card);
+        return card;
     }
 
     // ------------------------------------------------------------------ durum
@@ -339,11 +354,13 @@ public class SplitScreenTabBuilder {
                 UiStyles.color(context, R.color.textPrimary),
                 UiStyles.dimenPx(context, R.dimen.spacing_small));
         startButton.setOnClickListener(v -> onStartClicked());
+        startButton.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        startButton.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                UiStyles.dimenPx(context, R.dimen.button_height) * 5 / 4);
-        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
-        lp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_small));
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                UiStyles.dimenPx(context, R.dimen.ck_touch_primary));
+        int h = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        lp.setMargins(h, 0, h, CockpitTokens.dim(context, R.dimen.ck_space_sm));
         parent.addView(startButton, lp);
     }
 
