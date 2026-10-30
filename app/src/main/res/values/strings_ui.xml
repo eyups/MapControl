@@ -1199,4 +1199,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_sunroof_canbus_online">CAN-BUS ONLINE</string>
     <string name="ck_sunroof_active">ACTIVE</string>
     <string name="ck_sunroof_passive">PASSIVE</string>
+    <string name="ck_sunroof_page_title">Smart Sunroof Automation</string>
+    <string name="ck_sunroof_page_sub">Closes the roof in strong sun; opens it in cloudy weather or at sunset.</string>
 </resources>

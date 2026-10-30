@@ -1215,4 +1215,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_sunroof_canbus_online">CAN-BUS ONLINE</string>
     <string name="ck_sunroof_active">AKTİF</string>
     <string name="ck_sunroof_passive">PASİF</string>
+    <string name="ck_sunroof_page_title">Akıllı Cam Tavan Otomasyonu</string>
+    <string name="ck_sunroof_page_sub">Güneş yakıyorsa tavanı kapatır; bulutlu havada veya gün batımında açar.</string>
 </resources>

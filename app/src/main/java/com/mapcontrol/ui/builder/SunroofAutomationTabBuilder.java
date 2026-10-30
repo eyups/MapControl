@@ -118,6 +118,12 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         root.setOrientation(LinearLayout.VERTICAL);
         int pagePadding = dp(compactLayout ? 12 : 20, density);
         root.setPadding(pagePadding, dp(12, density), pagePadding, dp(32, density));
+        root.addView(buildHeader(density, compactLayout));
+
+        LinearLayout.LayoutParams startupLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        startupLp.topMargin = dp(8, density);
+        root.addView(buildStartupGrid(), startupLp);
 
         if (isPortrait) {
             root.addView(buildLiveConditionCard(density));
@@ -141,13 +147,11 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
             columns.addView(leftColumn, weightedCard(0, dp(8, density)));
             columns.addView(rightColumn, weightedCard(dp(8, density), 0));
-            root.addView(columns);
+            LinearLayout.LayoutParams columnsLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            columnsLp.topMargin = dp(12, density);
+            root.addView(columns, columnsLp);
         }
-
-        LinearLayout.LayoutParams startupLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        startupLp.topMargin = dp(12, density);
-        root.addView(buildStartupGrid(), startupLp);
 
         engine.addListener(this);
         return root;
@@ -237,12 +241,12 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         heading.setOrientation(LinearLayout.VERTICAL);
 
         TextView title = new TextView(context);
-        title.setText("Akıllı Cam Tavan Otomasyonu");
+        title.setText(R.string.ck_sunroof_page_title);
         com.mapcontrol.ui.cockpit.CockpitTokens.headlineMd(title);
         heading.addView(title);
 
         TextView subtitle = new TextView(context);
-        subtitle.setText("Güneş yakıyorsa tavanı kapatır; bulutlu havada veya gün batımında açar.");
+        subtitle.setText(R.string.ck_sunroof_page_sub);
         com.mapcontrol.ui.cockpit.CockpitTokens.bodySm(subtitle);
         subtitle.setTextColor(com.mapcontrol.ui.cockpit.CockpitTokens.color(context, R.color.ck_text_medium));
         heading.addView(subtitle);
