@@ -32,7 +32,7 @@ import java.util.function.Consumer;
  */
 public final class WelcomeSoundScreenBuilder {
 
-    private static final int FORM_MAX_WIDTH_DP = 1400;
+    private static final int FORM_MAX_WIDTH_DP = 1120;
 
     private WelcomeSoundScreenBuilder() {
     }
@@ -117,6 +117,16 @@ public final class WelcomeSoundScreenBuilder {
         subtitle.setTextColor(UiStyles.color(context, R.color.textSecondary));
         subtitle.setPadding(0, 4, 0, 16);
         mainContainer.addView(subtitle);
+
+        boolean wide = false; // iki kolon, tasarim galerisi yatay genisligi nedeniyle gecici olarak kapali
+        LinearLayout leftColumn = null;
+        LinearLayout rightColumn = null;
+        if (wide) {
+            leftColumn = new LinearLayout(context);
+            leftColumn.setOrientation(LinearLayout.VERTICAL);
+            rightColumn = new LinearLayout(context);
+            rightColumn.setOrientation(LinearLayout.VERTICAL);
+        }
 
         // 1) TTS ile ses üretimi
         LinearLayout ttsCard = sectionCard(context);
@@ -205,7 +215,7 @@ public final class WelcomeSoundScreenBuilder {
         ttsStatus.setTextColor(UiStyles.color(context, R.color.textHint));
         ttsStatus.setPadding(0, 8, 0, 0);
         ttsCard.addView(ttsStatus);
-        mainContainer.addView(ttsCard, cardParams(context));
+        addCard(context, mainContainer, leftColumn, ttsCard);
 
         // 2) Ses kaynağı
         LinearLayout sourceCard = sectionCard(context);
@@ -285,7 +295,7 @@ public final class WelcomeSoundScreenBuilder {
         steps.setLineSpacing(0f, 1.2f);
         steps.setPadding(0, 8, 0, 0);
         sourceCard.addView(steps);
-        mainContainer.addView(sourceCard, cardParams(context));
+        addCard(context, mainContainer, rightColumn, sourceCard);
 
         // 3) Açılış davranışı
         LinearLayout behaviorCard = sectionCard(context);
@@ -302,24 +312,36 @@ public final class WelcomeSoundScreenBuilder {
                 autoPlayInitial,
                 onAutoPlayCommitted);
         behaviorCard.addView(autoPlayBlock);
-        mainContainer.addView(behaviorCard, cardParams(context));
+        addCard(context, mainContainer, leftColumn, behaviorCard);
 
         // 4) Giriş tasarımı
         LinearLayout designCard = sectionCard(context);
         Button btnPreview = addDesignPicker(context, designCard, selectedDesignId,
                 onDesignCommitted, customLine, onLineCommitted);
-        mainContainer.addView(designCard, cardParams(context));
+        addCard(context, mainContainer, rightColumn, designCard);
+
+        if (wide) {
+            LinearLayout columns = new LinearLayout(context);
+            columns.setOrientation(LinearLayout.HORIZONTAL);
+            columns.setBaselineAligned(false);
+            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            leftLp.setMarginEnd(8);
+            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            rightLp.setMarginStart(8);
+            columns.addView(leftColumn, leftLp);
+            columns.addView(rightColumn, rightLp);
+            mainContainer.addView(columns, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+        }
 
         FrameLayout formHost = new FrameLayout(context);
         formHost.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
-        int density = Math.round(context.getResources().getDisplayMetrics().density);
-        int screenWidthPx = Math.round(context.getResources().getConfiguration().screenWidthDp
-                * context.getResources().getDisplayMetrics().density);
-        int maxWidthPx = FORM_MAX_WIDTH_DP * density;
-        int formWidthPx = Math.min(maxWidthPx, Math.max(0, screenWidthPx - 2 * margin));
         FrameLayout.LayoutParams formLp = new FrameLayout.LayoutParams(
-                formWidthPx, FrameLayout.LayoutParams.WRAP_CONTENT,
-                Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.TOP);
         mainContainer.setLayoutParams(formLp);
         formHost.addView(mainContainer);
         scrollView.addView(formHost, new ScrollView.LayoutParams(
@@ -339,6 +361,15 @@ public final class WelcomeSoundScreenBuilder {
         editable.insert(start, prefix + tag + suffix);
         input.setSelection(start + prefix.length() + tag.length() + suffix.length());
         input.requestFocus();
+    }
+
+    private static void addCard(Context context, LinearLayout main,
+            LinearLayout column, View card) {
+        if (column != null) {
+            column.addView(card, cardParams(context));
+        } else {
+            main.addView(card, cardParams(context));
+        }
     }
 
     private static LinearLayout sectionCard(Context context) {
