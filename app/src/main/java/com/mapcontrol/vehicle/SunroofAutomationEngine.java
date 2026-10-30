@@ -53,6 +53,8 @@ public final class SunroofAutomationEngine implements VehicleLightSensorManager.
     public static final String KEY_RAIN_GUARD = "sunroof_auto_rain_guard";
     public static final String KEY_SPEED_GUARD = "sunroof_auto_speed_guard";
     public static final String KEY_SPEED_LIMIT = "sunroof_auto_speed_limit";
+    public static final String KEY_CLOSE_AT_HIGH_SPEED = "sunroof_auto_close_at_high_speed";
+    public static final int HIGH_SPEED_CLOSE_LIMIT = 100;
     public static final String KEY_CLOSE_ON_IGNITION_OFF = "sunroof_auto_close_on_ignition_off";
     public static final String KEY_CLOSE_AT_NIGHT = "sunroof_auto_close_at_night";
     public static final String KEY_SIMULATED_RAIN = "sunroof_auto_simulated_rain";
@@ -137,6 +139,7 @@ public final class SunroofAutomationEngine implements VehicleLightSensorManager.
     private static final long RAIN_HOLD_DURATION_MS = 25_000L; // Silecek duraksamalarında yağmurun kesilmemesi için 25 sn koruma süresi
     private volatile long lastRainDetectedTimestampMs = 0L;
     private volatile boolean rainCloseTriggered = false;
+    private volatile boolean highSpeedCloseTriggered = false;
 
     // Son 1-2 dakikalık ışık ortalaması (Rolling Average Lux)
     // Kırmızı ışık ve köprü altı gibi geçici gölgelerde anlık düşüşlerin tavanı gereksiz açmasını engeller
@@ -385,6 +388,30 @@ public final class SunroofAutomationEngine implements VehicleLightSensorManager.
             return;
         }
 
+        // 3b. Yüksek Hızda Otomatik Kapatma (ana otomasyondan bağımsız emniyet)
+        int currentSpeed = metrics.preferredSpeed();
+        Boolean sunroofOpenNow = metrics.sunroofOpenOrNull();
+        boolean closeAtHighSpeed = prefs.getBoolean(KEY_CLOSE_AT_HIGH_SPEED, true);
+        if (!Boolean.TRUE.equals(sunroofOpenNow)) {
+            highSpeedCloseTriggered = false;
+        }
+        if (closeAtHighSpeed && currentSpeed > HIGH_SPEED_CLOSE_LIMIT
+                && Boolean.TRUE.equals(sunroofOpenNow) && !highSpeedCloseTriggered) {
+            pendingTarget = null;
+            conditionMetSinceTimestamp = 0L;
+            controller.closeSunroof(false);
+            highSpeedCloseTriggered = true;
+            lastMovementTimestamp = now;
+            lastActionDescription = "Yüksek hız (" + currentSpeed + " km/s) — Tavan kapatıldı";
+            lastActionTimestamp = System.currentTimeMillis();
+            logEvent("Yüksek hızda otomatik kapatma: " + currentSpeed + " km/s");
+            notifyStatusChanged();
+            return;
+        }
+        if (!closeAtHighSpeed || currentSpeed <= HIGH_SPEED_CLOSE_LIMIT) {
+            highSpeedCloseTriggered = false;
+        }
+
         // 4. Ana Açma/Kapatma Anahtarı Kontrolü
         if (!enabled) {
             pendingTarget = null;
@@ -448,7 +475,6 @@ public final class SunroofAutomationEngine implements VehicleLightSensorManager.
         }
 
         // 6. Hız Korumaları
-        int currentSpeed = metrics.preferredSpeed();
         boolean isInitialStartupOpen = initialStartupPending && Boolean.TRUE.equals(targetAction);
 
         // A. Minimum Hız Koruması (Kullanıcı Kuralı: Kırmızı ışık / dur-kalkta gölgede açılmayı engeller)

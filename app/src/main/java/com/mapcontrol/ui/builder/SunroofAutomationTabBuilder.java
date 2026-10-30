@@ -85,6 +85,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
     private CockpitToggle switchRainGuard;
     private CockpitToggle switchSpeedGuard;
     private CockpitToggle switchCloseAtNight;
+    private CockpitToggle switchCloseAtHighSpeed;
 
     // Seçilebilir Mod Kartları
     private LinearLayout cardModeSmart;
@@ -802,6 +803,14 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
                 "Yüksek Hız Koruması",
                 "100 km/s üzerinde rüzgar uğultusu ve mekanik hasarı önlemek için tavan açılmaz.",
                 SunroofAutomationEngine.KEY_SPEED_GUARD,
+                true,
+                density);
+
+        switchCloseAtHighSpeed = createSwitchRow(
+                card,
+                "Yüksek Hızda Otomatik Kapatma",
+                "100 km/s üzerinde cam tavan açıksa otomatik kapatır.",
+                SunroofAutomationEngine.KEY_CLOSE_AT_HIGH_SPEED,
                 true,
                 density);
 
