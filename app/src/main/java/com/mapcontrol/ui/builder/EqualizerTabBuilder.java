@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.mapcontrol.R;
 import com.mapcontrol.audio.AudioEqualizerController;
+import com.mapcontrol.ui.cockpit.CockpitSegmented;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 /**
@@ -39,7 +41,7 @@ public class EqualizerTabBuilder {
     private boolean updatingSliders;
     private TextView gainValue;
     private SeekBar gainBar;
-    private TextView[] presetChips;
+    private CockpitSegmented presetSegment;
     private TextView[] bandValues;
     private SeekBar[] bandBars;
 
@@ -199,57 +201,41 @@ public class EqualizerTabBuilder {
     }
 
     private void addPresetRow(LinearLayout parent) {
-        LinearLayout track = new LinearLayout(context);
-        track.setOrientation(LinearLayout.HORIZONTAL);
-        UiStyles.setBackgroundRes(track, R.drawable.bg_segment_track);
-        int pad = UiStyles.dimenPx(context, R.dimen.spacing_tiny);
-        track.setPadding(pad, pad, pad, pad);
-
         int[] labels = {
                 R.string.equalizer_preset_flat,
                 R.string.equalizer_preset_bass,
                 R.string.equalizer_preset_vocal,
                 R.string.equalizer_preset_treble
         };
-        presetChips = new TextView[PRESET_IDS.length];
-        for (int i = 0; i < PRESET_IDS.length; i++) {
-            TextView chip = new TextView(context);
-            chip.setText(labels[i]);
-            chip.setTextSize(15);
-            chip.setGravity(Gravity.CENTER);
-            chip.setMinHeight(UiStyles.dimenPx(context, R.dimen.button_height));
-            chip.setPadding(pad, pad, pad, pad);
-            final String presetId = PRESET_IDS[i];
-            chip.setOnClickListener(v -> onPresetSelected(presetId));
-            track.addView(chip, new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-            presetChips[i] = chip;
+        java.util.List<String> texts = new java.util.ArrayList<>();
+        for (int label : labels) {
+            texts.add(context.getString(label));
         }
-        stylePresetChips();
-
+        int initial = 0;
+        for (int i = 0; i < PRESET_IDS.length; i++) {
+            if (PRESET_IDS[i].equals(preset)) {
+                initial = i;
+                break;
+            }
+        }
+        presetSegment = new CockpitSegmented(context, texts, initial, index ->
+                onPresetSelected(PRESET_IDS[index]));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
-        lp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_medium));
-        parent.addView(track, lp);
+                CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        int h = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        lp.setMargins(h, 0, h, CockpitTokens.dim(context, R.dimen.ck_space_md));
+        parent.addView(presetSegment, lp);
     }
 
     private void stylePresetChips() {
-        if (presetChips == null) {
+        if (presetSegment == null) {
             return;
         }
-        for (int i = 0; i < presetChips.length; i++) {
-            boolean selected = PRESET_IDS[i].equals(preset);
-            TextView chip = presetChips[i];
-            if (selected) {
-                UiStyles.setBackgroundRes(chip, R.drawable.bg_segment_thumb);
-                chip.setTextColor(UiStyles.color(context, R.color.textPrimary));
-                chip.setTypeface(null, Typeface.BOLD);
-            } else {
-                chip.setBackgroundColor(Color.TRANSPARENT);
-                chip.setTextColor(UiStyles.color(context, R.color.textSecondary));
-                chip.setTypeface(null, Typeface.NORMAL);
+        for (int i = 0; i < PRESET_IDS.length; i++) {
+            if (PRESET_IDS[i].equals(preset)) {
+                presetSegment.syncSelection(i);
+                return;
             }
         }
     }
@@ -262,9 +248,8 @@ public class EqualizerTabBuilder {
             final int index = i;
             TextView hz = new TextView(context);
             hz.setText(formatHz(i < centerHz.length ? centerHz[i] : 0));
-            hz.setTextSize(15);
+            CockpitTokens.bodySm(hz);
             hz.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            hz.setTypeface(null, Typeface.BOLD);
             int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
             hz.setPadding(h, UiStyles.dimenPx(context, R.dimen.spacing_small), h, 0);
             parent.addView(hz, matchWrap());
@@ -353,7 +338,7 @@ public class EqualizerTabBuilder {
     private TextView addValueLabel(LinearLayout parent, String text) {
         TextView value = new TextView(context);
         value.setText(text);
-        value.setTextSize(14);
+        CockpitTokens.bodySm(value);
         value.setTextColor(UiStyles.color(context, R.color.textSecondary));
         int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
         value.setPadding(h, 0, h, 0);
@@ -364,9 +349,7 @@ public class EqualizerTabBuilder {
     private void addSectionTitle(LinearLayout parent, int textRes) {
         TextView title = new TextView(context);
         title.setText(textRes);
-        title.setTextSize(18);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        title.setTypeface(null, Typeface.BOLD);
+        CockpitTokens.labelCaps(title);
         title.setPadding(16, 24, 16, 8);
         parent.addView(title, matchWrap());
     }
@@ -374,8 +357,8 @@ public class EqualizerTabBuilder {
     private void addSectionDesc(LinearLayout parent, int textRes) {
         TextView desc = new TextView(context);
         desc.setText(textRes);
-        desc.setTextSize(13);
-        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+        CockpitTokens.bodySm(desc);
+        desc.setTextColor(UiStyles.color(context, R.color.textSecondary));
         desc.setPadding(16, 0, 16, 12);
         parent.addView(desc, matchWrap());
     }

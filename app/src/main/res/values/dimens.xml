@@ -91,7 +91,7 @@
 
     <!-- Ekolayzer: araç ekranında parmakla tutulacak kaydırıcı -->
     <dimen name="equalizer_slider_height">112dp</dimen>
-    <dimen name="equalizer_thumb_size">72dp</dimen>
+    <dimen name="equalizer_thumb_size">40dp</dimen>
     <dimen name="equalizer_track_height">24dp</dimen>
 
     <!-- Cockpit shell tokens -->
