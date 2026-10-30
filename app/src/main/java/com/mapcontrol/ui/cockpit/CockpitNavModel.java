@@ -32,6 +32,7 @@ public final class CockpitNavModel {
     public static final int TAB_SPLIT_SCREEN = 21;
     public static final int TAB_SUNROOF_AUTOMATION = 22;
     public static final int TAB_ASSIST = 23;
+    public static final int TAB_ROADMATE = 24;
 
     public static final String PREF_LAST_DOMAIN = "cockpitLastDomain";
     public static final String PREF_LAST_TAB = "cockpitLastTab";
@@ -119,7 +120,8 @@ public final class CockpitNavModel {
             list.add(new Domain(4, R.string.ck_domain_apps, R.drawable.ic_mdi_package_variant)
                     .add(TAB_APPS, R.string.side_rail_apps, R.drawable.ic_mdi_cellphone)
                     .add(TAB_WIFI, R.string.side_rail_wifi, R.drawable.ic_mdi_wifi)
-                    .add(TAB_FILE, R.string.side_rail_web, R.drawable.ic_mdi_web));
+                    .add(TAB_FILE, R.string.side_rail_web, R.drawable.ic_mdi_web)
+                    .add(TAB_ROADMATE, R.string.ck_roadmate_title, R.drawable.ic_mdi_web));
 
             list.add(new Domain(5, R.string.ck_domain_settings, R.drawable.ic_mdi_cog)
                     .add(TAB_SETTINGS, R.string.ck_sub_general, R.drawable.ic_mdi_cog)

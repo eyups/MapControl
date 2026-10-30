@@ -1332,4 +1332,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_settings_cat_app">Uygulama</string>
     <string name="web_qr_title">QR ile bağlan</string>
     <string name="ck_web_hint">Telefon veya bilgisayardan aynı ağa bağlanın, QR kodu okutun veya adresi tarayıcıya yazın. Yükleme sayfası yalnız yerel ağda açılır.</string>
+    <string name="ck_roadmate_title">Roadmate</string>
+    <string name="ck_roadmate_unpaired_hint">Eşleştirme tamamlanınca bulut işlemleri burada açılır.</string>
 </resources>

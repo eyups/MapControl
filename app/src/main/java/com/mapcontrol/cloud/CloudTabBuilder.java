@@ -12,11 +12,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
+import com.mapcontrol.ui.cockpit.CockpitToggleRow;
+import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
 import java.util.Locale;
@@ -36,8 +38,9 @@ public final class CloudTabBuilder {
     private final EditText codeInput;
     private final Button pairButton;
     private final LinearLayout pairedRow;
+    private final TextView actionsPlaceholder;
     private final Button startStopButton;
-    private final Switch shareLocationSwitch;
+    private final CockpitToggleRow shareLocationRow;
     private final Button logUploadButton;
     private final Button vdbusButton;
     private final Button updateButton;
@@ -55,7 +58,7 @@ public final class CloudTabBuilder {
         this.root.setOrientation(LinearLayout.VERTICAL);
 
         TextView title = new TextView(context);
-        title.setText(R.string.settings_cloud_title);
+        title.setText(R.string.ck_roadmate_title);
         title.setTextSize(18);
         title.setTextColor(UiStyles.color(context, R.color.textPrimary));
         title.setTypeface(null, Typeface.BOLD);
@@ -66,18 +69,31 @@ public final class CloudTabBuilder {
         description.setText(R.string.settings_cloud_desc);
         description.setTextSize(13);
         description.setTextColor(UiStyles.color(context, R.color.textHint));
-        description.setPadding(dp(16), 0, dp(16), dp(8));
+        description.setPadding(dp(16), 0, dp(16), dp(12));
         root.addView(description, matchWidth());
+
+        LinearLayout columns = new LinearLayout(context);
+        columns.setOrientation(LinearLayout.HORIZONTAL);
+        columns.setBaselineAligned(false);
+        LinearLayout pairCard = new LinearLayout(context);
+        pairCard.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout actionsCard = new LinearLayout(context);
+        actionsCard.setOrientation(LinearLayout.VERTICAL);
+        int cardPad = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        pairCard.setPadding(cardPad, cardPad, cardPad, cardPad);
+        actionsCard.setPadding(cardPad, cardPad, cardPad, cardPad);
+        CockpitSurfaces.level1(pairCard);
+        CockpitSurfaces.level1(actionsCard);
 
         status = new TextView(context);
         status.setTextSize(13);
-        status.setPadding(dp(16), 0, dp(16), dp(10));
-        root.addView(status, matchWidth());
+        status.setPadding(0, 0, 0, dp(10));
+        pairCard.addView(status, matchWidth());
 
         unpairedRow = new LinearLayout(context);
         unpairedRow.setOrientation(LinearLayout.HORIZONTAL);
         unpairedRow.setGravity(Gravity.CENTER_VERTICAL);
-        unpairedRow.setPadding(dp(16), 0, dp(16), dp(10));
+        unpairedRow.setPadding(0, 0, 0, dp(10));
         codeInput = new EditText(context);
         codeInput.setHint(R.string.settings_cloud_pair_hint);
         codeInput.setSingleLine(true);
@@ -102,11 +118,18 @@ public final class CloudTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         pairLp.setMarginStart(dp(8));
         unpairedRow.addView(pairButton, pairLp);
-        root.addView(unpairedRow, matchWidth());
+        pairCard.addView(unpairedRow, matchWidth());
+
+        actionsPlaceholder = new TextView(context);
+        actionsPlaceholder.setText(R.string.ck_roadmate_unpaired_hint);
+        actionsPlaceholder.setTextSize(14);
+        actionsPlaceholder.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+        actionsPlaceholder.setPadding(0, dp(8), 0, dp(8));
+        actionsCard.addView(actionsPlaceholder, matchWidth());
 
         pairedRow = new LinearLayout(context);
         pairedRow.setOrientation(LinearLayout.VERTICAL);
-        pairedRow.setPadding(dp(16), 0, dp(16), dp(8));
+        pairedRow.setPadding(0, 0, 0, 0);
 
         startStopButton = new Button(context);
         startStopButton.setAllCaps(false);
@@ -115,12 +138,12 @@ public final class CloudTabBuilder {
                 startStopButton, UiStyles.color(context, R.color.buttonPrimary));
         pairedRow.addView(startStopButton, matchWidth());
 
-        shareLocationSwitch = new Switch(context);
-        shareLocationSwitch.setText(R.string.settings_cloud_share_location);
-        shareLocationSwitch.setTextSize(14);
-        shareLocationSwitch.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        shareLocationSwitch.setPadding(0, dp(8), 0, 0);
-        pairedRow.addView(shareLocationSwitch, matchWidth());
+        shareLocationRow = new CockpitToggleRow(context, R.drawable.ic_mdi_map,
+                context.getString(R.string.settings_cloud_share_location), null,
+                config.shareLocation());
+        LinearLayout.LayoutParams shareLp = matchWidth();
+        shareLp.topMargin = dp(8);
+        pairedRow.addView(shareLocationRow, shareLp);
 
         logUploadButton = new Button(context);
         logUploadButton.setText(R.string.settings_cloud_send_log);
@@ -161,7 +184,17 @@ public final class CloudTabBuilder {
         UiStyles.applySolidRoundedBackground(
                 restoreButton, UiStyles.color(context, R.color.buttonNeutral));
         pairedRow.addView(restoreButton, matchWidth());
-        root.addView(pairedRow, matchWidth());
+        actionsCard.addView(pairedRow, matchWidth());
+
+        LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        leftLp.setMarginEnd(8);
+        LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        rightLp.setMarginStart(8);
+        columns.addView(pairCard, leftLp);
+        columns.addView(actionsCard, rightLp);
+        root.addView(columns, matchWidth());
 
         pairButton.setOnClickListener(view -> pair());
         startStopButton.setOnClickListener(view -> toggleRunning());
@@ -170,8 +203,7 @@ public final class CloudTabBuilder {
         updateButton.setOnClickListener(view -> checkUpdate());
         backupButton.setOnClickListener(view -> backupProfiles());
         restoreButton.setOnClickListener(view -> confirmRestoreProfiles());
-        shareLocationSwitch.setChecked(config.shareLocation());
-        shareLocationSwitch.setOnCheckedChangeListener((buttonView, checked) -> {
+        shareLocationRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
             config.setShareLocation(checked);
             logger.accept("Konum paylaşımı: " + (checked ? "açık" : "kapalı"));
         });
@@ -365,6 +397,7 @@ public final class CloudTabBuilder {
         boolean running = manager.isRunning();
         unpairedRow.setVisibility(paired ? View.GONE : View.VISIBLE);
         pairedRow.setVisibility(paired ? View.VISIBLE : View.GONE);
+        actionsPlaceholder.setVisibility(paired ? View.GONE : View.VISIBLE);
 
         if (manager.getState() == CloudManager.State.PAIRING) {
             status.setText(R.string.settings_cloud_pairing);
@@ -391,9 +424,9 @@ public final class CloudTabBuilder {
                     startStopButton, UiStyles.color(context, R.color.buttonPrimary));
         }
         startStopButton.setEnabled(paired);
-        shareLocationSwitch.setEnabled(paired);
-        if (shareLocationSwitch.isChecked() != config.shareLocation()) {
-            shareLocationSwitch.setChecked(config.shareLocation());
+        shareLocationRow.getToggle().setEnabled(paired);
+        if (shareLocationRow.getToggle().isChecked() != config.shareLocation()) {
+            shareLocationRow.setCheckedSilently(config.shareLocation());
         }
     }
 

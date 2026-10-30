@@ -77,6 +77,7 @@ import com.mapcontrol.ui.builder.AssistTabBuilder;
 import com.mapcontrol.ui.builder.DriveModeTabBuilder;
 
 import com.mapcontrol.service.DmsFaceRecognitionManager;
+import com.mapcontrol.cloud.CloudTabBuilder;
 import com.mapcontrol.ui.builder.Camera360TabBuilder;
 import com.mapcontrol.ui.builder.ClimateAutomationTabBuilder;
 import com.mapcontrol.ui.builder.SunroofAutomationTabBuilder;
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
     private Camera360TabBuilder camera360TabBuilder;
     private android.view.View camera360TabContent;
     private SplitScreenTabBuilder splitScreenTabBuilder;
+    private CloudTabBuilder roadmateTabBuilder;
     /** Bu görev, Android'in Ana Ekran (HOME) isteğiyle mi başlatıldı? */
     private boolean launchedAsHome;
     private int currentTab = 17; // 17=Ana Sayfa, 0=Wi-Fi, 1=Web, 2=Profil, 3=Yansıtma, 4=LOG, 5=Uygulamalar, 6=Hafıza, 7=Ayarlar, 8=Açılış Sesi, 9=Araç Bilgi, 10=Ana Ekran (Launcher), 11=Ekolayzer
@@ -843,6 +845,7 @@ public class MainActivity extends AppCompatActivity {
 
         splitScreenTabBuilder = new SplitScreenTabBuilder(this,
                 msg -> MainActivity.this.log(msg));
+        roadmateTabBuilder = new CloudTabBuilder(this, msg -> MainActivity.this.log("[Roadmate] " + msg));
 
         climateAutomationTabBuilder = new ClimateAutomationTabBuilder(this, prefs,
                 msg -> MainActivity.this.log(msg));
@@ -1425,6 +1428,10 @@ public class MainActivity extends AppCompatActivity {
                 addTabChild(parent, splitScreenTabBuilder.getScrollView(), matchParent);
                 splitScreenTabBuilder.onTabVisible();
             }
+        } else if (tabIndex == CockpitNavModel.TAB_ROADMATE) {
+            if (roadmateTabBuilder != null) {
+                addTabChild(parent, roadmateTabBuilder.getView(), matchParent);
+            }
         } else if (tabIndex == TAB_LAUNCHER) {
             if (launcherScrollView != null) {
                 addTabChild(parent, launcherScrollView, matchParent);
@@ -1567,6 +1574,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_SPLIT_SCREEN) {
             if (topBarTitle != null) {
                 topBarTitle.setText(R.string.side_rail_split_screen);
+            }
+        } else if (tabIndex == CockpitNavModel.TAB_ROADMATE) {
+            if (topBarTitle != null) {
+                topBarTitle.setText(R.string.ck_roadmate_title);
             }
         } else if (tabIndex == TAB_SUNROOF_AUTOMATION) {
             if (topBarTitle != null) {
@@ -2434,6 +2445,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         if (topBarBuilder != null) {
             topBarBuilder.release();
+        }
+        if (roadmateTabBuilder != null) {
+            roadmateTabBuilder.release();
         }
         ApkSessionInstaller.clearListener(apkSessionListener);
         if (sBenchHost == this) {

@@ -26,7 +26,6 @@ import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
 import com.mapcontrol.driving.DrivingCoach;
-import com.mapcontrol.cloud.CloudTabBuilder;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTestData;
 import com.mapcontrol.driving.DrivingTripStore;
@@ -71,7 +70,6 @@ public class SettingsTabBuilder {
     private UiStyles.BinarySegmentHandle launcherModeSegmentHandle;
     private UiStyles.BinarySegmentHandle languageSegmentHandle;
     private TextView launcherHomeSettingsLink;
-    private CloudTabBuilder cloudTabBuilder;
 
     public SettingsTabBuilder(Context context, SharedPreferences prefs, SettingsCallback callback) {
         this.context = context;
@@ -82,10 +80,6 @@ public class SettingsTabBuilder {
     }
 
     public ScrollView build() {
-        if (cloudTabBuilder != null) {
-            cloudTabBuilder.release();
-            cloudTabBuilder = null;
-        }
         scrollView = new ScrollView(context);
         scrollView.setBackgroundColor(Color.TRANSPARENT);
         scrollView.setPadding(0, 0, 0, 0);
@@ -151,7 +145,6 @@ public class SettingsTabBuilder {
             LinearLayout app = sectionGroup();
             createAppInfoSection(app);
             createBootAutostartSection(app);
-            createCloudSection(app);
 
             CockpitLegacyStyler.applySectionHeadings(vehicle);
             CockpitLegacyStyler.applySectionHeadings(app);
@@ -219,7 +212,6 @@ public class SettingsTabBuilder {
         createDrivingTestDataSection(card);
         createAppInfoSection(card);
         createBootAutostartSection(card);
-        createCloudSection(card);
         createAdbSection(card);
         createSystemStatsSection(card);
         createPermissionsSection(card);
@@ -237,14 +229,6 @@ public class SettingsTabBuilder {
         group.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_sm), 0,
                 CockpitTokens.dim(context, R.dimen.ck_space_sm), 0);
         return group;
-    }
-
-    private void createCloudSection(LinearLayout parentContainer) {
-        cloudTabBuilder = new CloudTabBuilder(context,
-                message -> callback.log("[Bulut] " + message));
-        parentContainer.addView(cloudTabBuilder.getView(), new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
     private LinearLayout createSettingsCard() {
@@ -1270,10 +1254,6 @@ public class SettingsTabBuilder {
 
     public void release() {
         handler.removeCallbacksAndMessages(null);
-        if (cloudTabBuilder != null) {
-            cloudTabBuilder.release();
-            cloudTabBuilder = null;
-        }
     }
 
 }
