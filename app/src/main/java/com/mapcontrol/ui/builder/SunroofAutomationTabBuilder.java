@@ -70,6 +70,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
 
     // Canlı Gösterge View'ları
     private TextView tvConditionTitle;
+    private ImageView conditionIcon;
     private TextView tvLiveLux;
     private TextView tvConditionAdvice;
     private TextView tvSunroofState;
@@ -281,12 +282,23 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         conditionHeader.addView(liveBadge);
         conditionBox.addView(conditionHeader);
 
+        LinearLayout conditionTitleRow = new LinearLayout(context);
+        conditionTitleRow.setOrientation(LinearLayout.HORIZONTAL);
+        conditionTitleRow.setGravity(Gravity.CENTER_VERTICAL);
+        conditionTitleRow.setPadding(0, dp(3, density), 0, dp(1, density));
+        conditionIcon = new ImageView(context);
+        conditionIcon.setImageResource(R.drawable.ic_ck_sun);
+        conditionIcon.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
+        conditionTitleRow.addView(conditionIcon, new LinearLayout.LayoutParams(
+                dp(26, density), dp(26, density)));
         tvConditionTitle = new TextView(context);
         tvConditionTitle.setTextSize(20);
         tvConditionTitle.setTypeface(null, Typeface.BOLD);
-        tvConditionTitle.setTextColor(UiStyles.color(context, R.color.oemAccent));
-        tvConditionTitle.setPadding(0, dp(3, density), 0, dp(1, density));
-        conditionBox.addView(tvConditionTitle);
+        tvConditionTitle.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        tvConditionTitle.setPadding(dp(8, density), 0, 0, 0);
+        conditionTitleRow.addView(tvConditionTitle, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        conditionBox.addView(conditionTitleRow);
 
         // Anlık Ölçülen Lux Değeri
         tvLiveLux = new TextView(context);
@@ -300,6 +312,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         SunroofAutomationEngine.Status initStatus = initialEngine.buildStatus();
         if (initStatus != null) {
             tvConditionTitle.setText(initStatus.conditionTitle);
+            updateConditionIcon(initStatus.conditionTitle);
             String src = initStatus.luxSource != null && !initStatus.luxSource.isEmpty() ? " (" + initStatus.luxSource + ")" : "";
             if (initStatus.averageLux > 0 && Math.abs(initStatus.currentLux - initStatus.averageLux) > 2500f) {
                 tvLiveLux.setText(String.format(Locale.getDefault(), "Ölçülen Işık: %,d lx (Ort: %,d lx)%s",
@@ -326,7 +339,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         badgesRow.setPadding(0, dp(10, density), 0, 0);
 
         tvSunroofState = createCompactBadge(badgesRow, "Cam Tavan", "Bağlantı bekleniyor", density, false);
-        tvRainState = createCompactBadge(badgesRow, "Yağmur", "Kuru ☀️", density, false);
+        tvRainState = createCompactBadge(badgesRow, "Yağmur", "Kuru", density, false);
         tvSpeed = createCompactBadge(badgesRow, "Araç Hızı", "0 km/s", density, true);
         conditionBox.addView(badgesRow);
 
@@ -341,6 +354,26 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         card.addView(tvStatusMessage);
 
         return card;
+    }
+
+    private void updateConditionIcon(String condition) {
+        if (conditionIcon == null) return;
+        int icon;
+        if (condition == null) {
+            icon = R.drawable.ic_ck_sun;
+        } else if (condition.contains("Yağmur")) {
+            icon = R.drawable.ic_ck_rain;
+        } else if (condition.contains("Gece") || condition.contains("Karanlık")) {
+            icon = R.drawable.ic_ck_night;
+        } else if (condition.contains("Akşam")) {
+            icon = R.drawable.ic_ck_sunset;
+        } else if (condition.contains("Bulut")) {
+            icon = R.drawable.ic_ck_sun_cloud;
+        } else {
+            icon = R.drawable.ic_ck_sun;
+        }
+        conditionIcon.setImageResource(icon);
+        conditionIcon.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
     }
 
     private TextView createCompactBadge(LinearLayout parent, String label, String initialValue, float density, boolean isLast) {
@@ -435,21 +468,21 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         int currentMode = prefs.getInt(SunroofAutomationEngine.KEY_MODE, SunroofAutomationEngine.MODE_SMART_COMFORT);
 
         cardModeSmart = createModeSelectableCard(
-                "🌟 Akıllı Güneş Koruması (Önerilen)",
+                R.drawable.ic_ck_star, "Akıllı Güneş Koruması (Önerilen)",
                 "Yakıcı dik güneşte kapatır; bulutlu havada, gölgede, akşam ve gece açık tutar.",
                 SunroofAutomationEngine.MODE_SMART_COMFORT,
                 currentMode == SunroofAutomationEngine.MODE_SMART_COMFORT,
                 density);
 
         cardModeShadeOnly = createModeSelectableCard(
-                "☁️ Sadece Gölgede Aç",
+                R.drawable.ic_ck_cloud, "Sadece Gölgede Aç",
                 "Güneş ışığından çok rahatsız olanlar için; en ufak güneşte kapatır, gölgede açık tutar.",
                 SunroofAutomationEngine.MODE_SHADE_ONLY,
                 currentMode == SunroofAutomationEngine.MODE_SHADE_ONLY,
                 density);
 
         cardModeOpenAir = createModeSelectableCard(
-                "🌤️ Açık Hava Keyfi",
+                R.drawable.ic_ck_sun, "Açık Hava Keyfi",
                 "Tavanın sürekli açık kalmasını sevenler için; sadece aşırı yakıcı güneşte kapatır.",
                 SunroofAutomationEngine.MODE_OPEN_AIR,
                 currentMode == SunroofAutomationEngine.MODE_OPEN_AIR,
@@ -469,9 +502,9 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         LinearLayout sensRow = new LinearLayout(context);
         sensRow.setOrientation(LinearLayout.HORIZONTAL);
 
-        btnSensSensitive = createSensitivityButton("🌿 Hassas\n(Erken Kapat)", SunroofAutomationEngine.SENSITIVITY_SENSITIVE, currentSens, density);
-        btnSensBalanced = createSensitivityButton("⚖️ Dengeli\n(Tavsiye Edilen)", SunroofAutomationEngine.SENSITIVITY_BALANCED, currentSens, density);
-        btnSensBroad = createSensitivityButton("🕶️ Geniş\n(Geç Kapat)", SunroofAutomationEngine.SENSITIVITY_BROAD, currentSens, density);
+        btnSensSensitive = createSensitivityButton(R.drawable.ic_mdi_leaf, "Hassas\n(Erken Kapat)", SunroofAutomationEngine.SENSITIVITY_SENSITIVE, currentSens, density);
+        btnSensBalanced = createSensitivityButton(R.drawable.ic_ck_balance, "Dengeli\n(Tavsiye Edilen)", SunroofAutomationEngine.SENSITIVITY_BALANCED, currentSens, density);
+        btnSensBroad = createSensitivityButton(R.drawable.ic_ck_sunglasses, "Geniş\n(Geç Kapat)", SunroofAutomationEngine.SENSITIVITY_BROAD, currentSens, density);
 
         sensRow.addView(btnSensSensitive, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         sensRow.addView(btnSensBalanced, createMarginLayoutParams(dp(6, density), 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
@@ -504,7 +537,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         populateGestureGrid(density);
 
         TextView tvInfo = new TextView(context);
-        tvInfo.setText("⚠️ Bir kaydırma yalnızca tek özelliğe atanabilir. Bölünmüş ekran veya harita kaydırmada kullanılan bir hareketi seçerseniz uyarı alırsınız.");
+        tvInfo.setText("Bir kaydırma yalnızca tek özelliğe atanabilir. Bölünmüş ekran veya harita kaydırmada kullanılan bir hareketi seçerseniz uyarı alırsınız.");
         tvInfo.setTextSize(10);
         tvInfo.setTextColor(0xFF38BDF8);
         tvInfo.setPadding(dp(2, density), dp(6, density), 0, 0);
@@ -549,14 +582,16 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         int code = SunroofGestureStore.getCode(context, action);
         boolean conflicted = code != SunroofGestureStore.GESTURE_OFF
                 && GestureConflicts.findOwnerLabel(context, code, GestureConflicts.slotOf(action)) != 0;
-        View pill = createOptionAPill(gestureArrow(code),
-                conflicted ? gestureLabel(code) + " ⚠" : gestureLabel(code),
+        View pill = createOptionAPill(gestureIcon(code),
+                conflicted ? gestureLabel(code) + " (!)" : gestureLabel(code),
                 actionTitle(action), actionColor(action), density,
                 () -> gestureManager.handleGestureAction(action, "Hızlı Buton"));
         cell.addView(pill);
 
         TextView change = new TextView(context);
-        change.setText("✎ " + context.getString(R.string.sunroof_gesture_change));
+        change.setText(context.getString(R.string.sunroof_gesture_change));
+        change.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ck_edit, 0, 0, 0);
+        change.setCompoundDrawablePadding(dp(4, density));
         change.setTextSize(11);
         change.setTextColor(0xFF38BDF8);
         change.setClickable(true);
@@ -583,7 +618,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             int code = codes.get(i);
             StringBuilder label = new StringBuilder();
             if (code == current) {
-                label.append("✓ ");
+                label.append("• ");
             }
             label.append(code == SunroofGestureStore.GESTURE_OFF
                     ? context.getString(R.string.split_gesture_off)
@@ -591,7 +626,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             if (code != SunroofGestureStore.GESTURE_OFF) {
                 int owner = GestureConflicts.findOwnerLabel(context, code, slot);
                 if (owner != 0) {
-                    label.append("  ⚠ ").append(context.getString(
+                    label.append(" (!) ").append(context.getString(
                             R.string.gesture_in_use_by, context.getString(owner)));
                 }
             }
@@ -643,20 +678,20 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         }
     }
 
-    private static String gestureArrow(int code) {
+    private static int gestureIcon(int code) {
         if (!SplitScreenGesture.isValid(code)) {
-            return "🚫";
+            return R.drawable.ic_ck_warning;
         }
         switch (SplitScreenGesture.directionOf(code)) {
             case SplitScreenGesture.LEFT:
-                return "⬅️";
+                return R.drawable.ic_ck_arrow_left;
             case SplitScreenGesture.RIGHT:
-                return "➡️";
+                return R.drawable.ic_ck_arrow_right;
             case SplitScreenGesture.DOWN:
-                return "⬇️";
+                return R.drawable.ic_ck_arrow_down;
             case SplitScreenGesture.UP:
             default:
-                return "⬆️";
+                return R.drawable.ic_ck_arrow_up;
         }
     }
 
@@ -688,7 +723,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         }
     }
 
-    private View createOptionAPill(String arrow, String subtext, String actionTitle, int color, float density, Runnable action) {
+    private View createOptionAPill(int iconRes, String subtext, String actionTitle, int color, float density, Runnable action) {
         LinearLayout pill = new LinearLayout(context);
         pill.setOrientation(LinearLayout.HORIZONTAL);
         pill.setGravity(Gravity.CENTER_VERTICAL);
@@ -702,11 +737,12 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         bg.setStroke(dp(1, density), 0x33000000 | (color & 0x00FFFFFF));
         pill.setBackground(bg);
 
-        TextView tvArrow = new TextView(context);
-        tvArrow.setText(arrow);
-        tvArrow.setTextSize(15);
-        tvArrow.setPadding(0, 0, dp(8, density), 0);
-        pill.addView(tvArrow);
+        ImageView icon = new ImageView(context);
+        icon.setImageResource(iconRes);
+        icon.setColorFilter(color);
+        LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(dp(22, density), dp(22, density));
+        iconLp.rightMargin = dp(8, density);
+        pill.addView(icon, iconLp);
 
         LinearLayout textCol = new LinearLayout(context);
         textCol.setOrientation(LinearLayout.VERTICAL);
@@ -773,7 +809,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         return card;
     }
 
-    private LinearLayout createModeSelectableCard(String title, String desc, int modeId, boolean selected, float density) {
+    private LinearLayout createModeSelectableCard(int iconRes, String title, String desc, int modeId, boolean selected, float density) {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(dp(14, density), dp(10, density), dp(14, density), dp(10, density));
@@ -785,12 +821,25 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         lp.topMargin = dp(6, density);
         card.setLayoutParams(lp);
 
+        LinearLayout titleRow = new LinearLayout(context);
+        titleRow.setOrientation(LinearLayout.HORIZONTAL);
+        titleRow.setGravity(Gravity.CENTER_VERTICAL);
+        ImageView modeIcon = new ImageView(context);
+        modeIcon.setImageResource(iconRes);
+        modeIcon.setColorFilter(selected ? CockpitTokens.color(context, R.color.ck_accent)
+                : CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(
+                dp(20, density), dp(20, density));
+        iconLp.rightMargin = dp(8, density);
+        titleRow.addView(modeIcon, iconLp);
         TextView tvTitle = new TextView(context);
         tvTitle.setText(title);
         tvTitle.setTextSize(14);
         tvTitle.setTypeface(null, Typeface.BOLD);
         tvTitle.setTextColor(selected ? UiStyles.color(context, R.color.oemAccent) : UiStyles.color(context, R.color.textPrimary));
-        card.addView(tvTitle);
+        titleRow.addView(tvTitle, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        card.addView(titleRow);
 
         TextView tvDesc = new TextView(context);
         tvDesc.setText(desc);
@@ -833,10 +882,32 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
     }
 
     private void updateModeCardTitleColor(LinearLayout card, boolean selected) {
-        if (card != null && card.getChildCount() > 0 && card.getChildAt(0) instanceof TextView) {
-            TextView title = (TextView) card.getChildAt(0);
-            title.setTextColor(selected ? UiStyles.color(context, R.color.oemAccent) : UiStyles.color(context, R.color.textPrimary));
+        TextView title = findTitle(card);
+        if (title != null) {
+            title.setTextColor(selected ? UiStyles.color(context, R.color.oemAccent)
+                    : UiStyles.color(context, R.color.textPrimary));
         }
+        if (card != null && card.getChildCount() > 0 && card.getChildAt(0) instanceof LinearLayout) {
+            View first = ((LinearLayout) card.getChildAt(0)).getChildAt(0);
+            if (first instanceof ImageView) {
+                ((ImageView) first).setColorFilter(selected
+                        ? CockpitTokens.color(context, R.color.ck_accent)
+                        : CockpitTokens.color(context, R.color.ck_text_medium));
+            }
+        }
+    }
+
+    private TextView findTitle(LinearLayout card) {
+        if (card == null) return null;
+        for (int i = 0; i < card.getChildCount(); i++) {
+            View child = card.getChildAt(i);
+            if (child instanceof TextView) return (TextView) child;
+            if (child instanceof LinearLayout) {
+                TextView nested = findTitle((LinearLayout) child);
+                if (nested != null) return nested;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -847,6 +918,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             }
             if (tvConditionTitle != null) {
                 tvConditionTitle.setText(status.conditionTitle);
+                updateConditionIcon(status.conditionTitle);
             }
             if (liveBadge != null) {
                 liveBadge.setLevel(status.connected ? StatusBadge.NOMINAL : StatusBadge.ADVISORY);
@@ -876,10 +948,10 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
                     tvSunroofState.setText(status.connected ? "Hareketli / Bilinmiyor" : "Bağlı Değil");
                     tvSunroofState.setTextColor(0xFFFBBF24); // Sarı
                 } else if (status.sunroofOpen) {
-                    tvSunroofState.setText("Açık 🪟");
+                    tvSunroofState.setText("Açık");
                     tvSunroofState.setTextColor(0xFF22C55E); // Yeşil
                 } else {
-                    tvSunroofState.setText("Kapalı 🔒");
+                    tvSunroofState.setText("Kapalı");
                     tvSunroofState.setTextColor(0xFF38BDF8); // Cyan
                 }
             }
@@ -887,10 +959,10 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             // Yağmur
             if (tvRainState != null) {
                 if (status.isRaining) {
-                    tvRainState.setText("🌧️ Yağmur Algılandı!");
+                    tvRainState.setText("Yağmur algılandı");
                     tvRainState.setTextColor(0xFFEF4444); // Kırmızı
                 } else {
-                    tvRainState.setText("Kuru ☀️");
+                    tvRainState.setText("Kuru");
                     tvRainState.setTextColor(0xFF22C55E); // Yeşil
                 }
             }
@@ -965,11 +1037,13 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         return tvVal;
     }
 
-    private Button createSensitivityButton(String label, int sensLevel, int currentSens, float density) {
+    private Button createSensitivityButton(int iconRes, String label, int sensLevel, int currentSens, float density) {
         Button btn = new Button(context);
         btn.setText(label);
         btn.setTextSize(11);
-        btn.setPadding(dp(4, density), dp(8, density), dp(4, density), dp(8, density));
+        btn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, iconRes, 0, 0);
+        btn.setCompoundDrawablePadding(dp(2, density));
+        btn.setPadding(dp(4, density), dp(6, density), dp(4, density), dp(6, density));
         updateSensitivityButtonStyle(btn, sensLevel == currentSens, density);
 
         btn.setOnClickListener(v -> {

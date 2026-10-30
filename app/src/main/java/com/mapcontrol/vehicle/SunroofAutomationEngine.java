@@ -601,27 +601,27 @@ public final class SunroofAutomationEngine implements VehicleLightSensorManager.
         String conditionAdvice;
 
         if (isRaining) {
-            conditionTitle = "🌧️ Yağmur Algılandı";
+            conditionTitle = "Yağmur Algılandı";
             conditionAdvice = "Islanmayı önlemek için cam tavan güvenlik amacıyla kilitli tutuluyor.";
         } else if (lux < 0) {
             conditionTitle = "Sensör Bekleniyor...";
             conditionAdvice = "Araç ortam ışık sensöründen veri okunuyor.";
         } else if (lux >= getSunThreshold(sensitivity)) {
-            conditionTitle = "☀️🔥 Yakıcı / Dik Güneş";
+            conditionTitle = "Yakıcı / Dik Güneş";
             conditionAdvice = "Kabin ısınmasını ve güneşi engellemek için cam tavan kapalı tutuluyor.";
         } else if (lux <= getNightThreshold(sensitivity)) {
             if (closeAtNight) {
-                conditionTitle = "🌙 Gece / Karanlık";
+                conditionTitle = "Gece / Karanlık";
                 conditionAdvice = "Hava karanlık olduğu için cam tavan kapalı tutuluyor.";
             } else {
-                conditionTitle = "🌙 Akşam / Gece";
+                conditionTitle = "Akşam / Gece";
                 conditionAdvice = "Yakıcı güneş yok, ferah sürüş için cam tavan açık tutuluyor.";
             }
         } else if (lux <= 10500f) {
-            conditionTitle = "🌆 Akşamüstü / Loş Işık";
+            conditionTitle = "Akşamüstü / Loş Işık";
             conditionAdvice = "Yakıcı güneş yok, ferah sürüş için cam tavan açık tutuluyor.";
         } else {
-            conditionTitle = "⛅ Tatlı Gün Işığı / Bulutlu";
+            conditionTitle = "Tatlı Gün Işığı / Bulutlu";
             conditionAdvice = "Işık rahatsız etmiyor, ferah sürüş için cam tavan açık tutuluyor.";
         }
 
