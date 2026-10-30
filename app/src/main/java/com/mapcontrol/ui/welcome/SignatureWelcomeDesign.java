@@ -298,11 +298,10 @@ public final class SignatureWelcomeDesign implements WelcomeDesign {
     }
 
     private static Typeface outfit(Context context, int weight) {
-        Typeface base = ResourcesCompat.getFont(context, R.font.outfit);
-        if (base == null) {
-            return Typeface.create("sans-serif-light", Typeface.NORMAL);
-        }
-        return Typeface.create(base, weight, false);
+        int w = weight >= 600 ? com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD
+                : weight >= 500 ? com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_MEDIUM
+                : com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_REGULAR;
+        return com.mapcontrol.ui.cockpit.CockpitTokens.inter(context, w);
     }
 
     private static int dp(Context context, int value) {

@@ -142,12 +142,8 @@ public class DrivingAnalysisActivity extends Activity {
     }
 
     private Typeface loadDisplayTypeface() {
-        try {
-            Typeface face = ResourcesCompat.getFont(this, R.font.outfit);
-            return face != null ? face : Typeface.create("sans-serif", Typeface.NORMAL);
-        } catch (Exception ignored) {
-            return Typeface.create("sans-serif", Typeface.NORMAL);
-        }
+        return com.mapcontrol.ui.cockpit.CockpitTokens.inter(this,
+                com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD);
     }
 
     private void buildUi() {
