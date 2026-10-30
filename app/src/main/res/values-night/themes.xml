@@ -10,6 +10,4 @@
         <item name="android:statusBarColor">@color/boot_splash_gradient_mid</item>
         <item name="android:navigationBarColor">@color/boot_splash_gradient_mid</item>
     </style>
-
-    <style name="Theme.AppCompat.Light.NoActionBar" parent="Theme.MapControl" />
 </resources>

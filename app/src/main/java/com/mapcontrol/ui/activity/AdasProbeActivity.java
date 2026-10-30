@@ -41,6 +41,7 @@ import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.extra.project.carinfo.proxy.Constants;
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.SystemLogBuffer;
 import com.mapcontrol.vehicle.material.OemEolConfigReader;
@@ -344,6 +345,7 @@ public class AdasProbeActivity extends Activity {
         root.addView(scroll, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
+        CockpitLegacyStyler.apply(root);
         setContentView(root);
         if (!ENABLE_VEHICLE_READS) {
             configView.setText("ADAS/FCM araç okumaları güvenli modda devre dışı.\n"

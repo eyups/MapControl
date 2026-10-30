@@ -9,12 +9,9 @@
     <string name="experimental_feature_warning_ok">Tamam</string>
     <string name="common_loading">Yükleniyor…</string>
     <string name="common_error_prefix">Hata: %1$s</string>
-    <string name="common_unknown">Bilinmiyor</string>
     <string name="common_not_selected">(seçilmedi)</string>
     <string name="common_close">✕</string>
     <string name="common_clear">Temizle</string>
-    <string name="common_em_dash">—</string>
-
     <string name="settings_language_section_title">Dil / Language</string>
     <string name="settings_language_section_desc">Uygulama arayüz dili. Değişince ekran yenilenir.</string>
     <string name="settings_language_tr">Türkçe</string>
@@ -73,53 +70,12 @@
 
     <string name="wifi_not_connected">Bağlı değil</string>
     <string name="wifi_turn_on">Wi-Fi Aç</string>
-    <string name="wifi_turn_off">Wi-Fi Kapat</string>
     <string name="wifi_refresh">Yenile</string>
-    <string name="wifi_connected_to">Bağlı: %1$s</string>
     <string name="wifi_scanning">Taranıyor…</string>
-    <string name="wifi_no_networks">Ağ bulunamadı</string>
     <string name="wifi_password_title">Wi-Fi şifresi</string>
     <string name="wifi_password_hint">Şifre</string>
     <string name="wifi_connect">Bağlan</string>
     <string name="wifi_cancel">İptal</string>
-    <string name="wifi_connecting">Bağlanıyor…</string>
-    <string name="wifi_connected">Bağlandı</string>
-    <string name="wifi_connect_failed">Bağlantı başarısız</string>
-
-    <string name="profile_email_label">E-posta Adresi</string>
-    <string name="profile_code_label">Doğrulama Kodu</string>
-    <string name="profile_send_code">Kod Gönder</string>
-    <string name="profile_sending_code">Gönderiliyor…</string>
-    <string name="profile_code_sent">Kod Gönderildi</string>
-    <string name="profile_login">Giriş Yap</string>
-    <string name="profile_verifying">Doğrulanıyor…</string>
-    <string name="profile_logout">Çıkış Yap</string>
-    <string name="profile_open_platform">Platforma Gir</string>
-    <string name="profile_data_management">Veri Yönetimi</string>
-    <string name="profile_save_changes">Son Değişiklikleri Sakla</string>
-    <string name="profile_load_changes">Son Değişiklikleri Getir</string>
-    <string name="profile_saving">Kaydediliyor…</string>
-    <string name="profile_loading">Yükleniyor…</string>
-    <string name="profile_auto_location_title">Araç Kapanınca Otomatik Konum Kaydet</string>
-    <string name="profile_auto_location_desc">Araç kapanınca ne olsun?</string>
-    <string name="profile_save_location">Mevcut Konumu Kaydet</string>
-    <string name="profile_fetching_location">Konum alınıyor…</string>
-    <string name="profile_waiting_location">Konum bekleniyor…</string>
-    <string name="profile_logged_in_status">Giriş Mevcut\nE-posta: %1$s</string>
-    <string name="profile_login_prompt">Ayarlarınızı kaydetmek için giriş yapın</string>
-    <string name="profile_login_required">Önce giriş yapmalısınız</string>
-    <string name="profile_token_missing">Token bulunamadı</string>
-    <string name="profile_email_required">E-posta adresi gerekli</string>
-    <string name="profile_code_required">Doğrulama kodu gerekli</string>
-    <string name="profile_logged_out">Çıkış yapıldı</string>
-    <string name="profile_no_internet">İnternet bağlantısı yok</string>
-    <string name="profile_no_data">Veri bulunamadı</string>
-    <string name="profile_restart_failed">Uygulama yeniden başlatılamadı</string>
-    <string name="profile_restart_manual">Veriler yüklendi, uygulamayı manuel olarak yeniden başlatabilirsiniz</string>
-    <string name="profile_location_permission">Konum izni gerekli</string>
-    <string name="profile_location_failed">Konum alınamadı, lütfen GPS\'in açık olduğundan emin olun</string>
-    <string name="profile_qr_failed">QR kod oluşturulamadı: %1$s</string>
-
     <string name="projection_title">Yansıtma Kontrolü</string>
     <string name="projection_status_off">Yansıtma kapalı</string>
     <string name="projection_open">Yansıt</string>
@@ -216,7 +172,6 @@
     <string name="apps_install_start_failed">Kurulum başlatılamadı: %1$s</string>
     <string name="apps_install_error">Kurulum hatası: %1$s</string>
     <string name="apps_installed_success">Uygulama kuruldu!</string>
-    <string name="apps_json_load_failed">JSON yüklenemedi: %1$d</string>
     <string name="apps_self_uninstall">Uygulama kendisini siliyor…</string>
     <string name="apps_mode_local">Yerel</string>
     <string name="apps_mode_server">Sunucu</string>
@@ -237,7 +192,6 @@
 
     <string name="assist_title">Araç ve Sürücü Yardımları</string>
     <string name="assist_subtitle">Sürüş güvenliği ve konfor ayarları</string>
-    <string name="assist_chip_on">Açık</string>
     <string name="drive_modes_title">Sürüş Modları</string>
 
     <string name="splash_preparing_title">Uygulama Hazırlanıyor</string>
@@ -278,11 +232,6 @@
 
     <string name="log_system_logs">Sistem Kayıtları</string>
     <string name="log_camera_test">Kamera Test</string>
-    <string name="log_hab_test">HAB Test</string>
-    <string name="log_qcarcam_test">QCARCAM Liste</string>
-    <string name="log_hab_native_test">HAB Native</string>
-    <string name="log_hab_session_test">HAB Oturum</string>
-    <string name="log_hab_stream_test">HAB Stream</string>
     <string name="log_welcome">Hoşgeldin</string>
     <string name="log_tts_section">Metin (klavye) — Sesle oku (sistem TTS)</string>
     <string name="log_read_aloud">Sesle oku</string>
@@ -315,8 +264,6 @@
     <string name="dialog_decline">Kabul Etmiyorum</string>
     <string name="dialog_back">Geri</string>
     <string name="dialog_auto_select">Otomatik Seç</string>
-    <string name="dialog_yes_pull">Evet, Çek</string>
-    <string name="dialog_restart">Yeniden Başlat</string>
     <string name="dialog_welcome_title">Hoş Geldiniz</string>
     <string name="dialog_legal_subtitle">Yasal Uyarı ve Kullanım Koşulları</string>
     <string name="dialog_legal_disclaimer">### Yasal Uyarı ve Sorumluluk Reddi\n1. **Ücretsiz Dağıtım:** Bu yazılım, herhangi bir ücret talep edilmeksizin tamamen ücretsiz olarak dağıtılmaktadır. Yazılım içinde belirtilen içerikler ayrı bir ücret karşılığında satılmaz.\n2. **Kullanıcı Onayı ve Risk Kabulü:** Kullanıcı, cihazın bellek (hafıza) ayarlarını veya araç konfigürasyonlarını kendi rızasıyla ve bilinciyle değiştirdiğini onaylar.\n3. **Sorumluluk Reddi:** Geliştirici, bu değişiklikler veya uygulamanın kullanımı sonucunda ortaya çıkabilecek hiçbir doğrudan veya dolaylı zarardan, veri kaybından veya arızadan **sorumlu değildir ve hiçbir yükümlülük kabul etmez.**\n**Onay:** Lütfen uygulamayı kullanmaya başlamadan önce yukarıdaki tüm bilgileri **okuduğunuzu, anladığınızu ve kabul ettiğinizi** onaylayın.</string>
@@ -326,8 +273,6 @@
     <string name="dialog_safety_aeb_title">Aktif Acil Fren Sistemi</string>
     <string name="dialog_safety_message">Bu güvenlik özelliğini devre dışı bırakmak tamamen sizin sorumluluğunuzdadır.\n\nBu ayar, aracın güvenlik sistemlerini etkiler. Devre dışı bırakıldığında olası risklerden geliştirici sorumlu değildir.\n\nDevam etmek istiyor musunuz?</string>
 
-    <string name="apps_menu_delete_all">Tümünü Sil</string>
-    <string name="apps_menu_more_options">Diğer seçenekler</string>
     <string name="apps_delete_ops">Silme işlemleri</string>
     <string name="apps_delete_self">Kendini sil</string>
     <string name="apps_dialog_delete_all_title">Tümünü Sil</string>
@@ -347,32 +292,17 @@
     <string name="apps_dialog_reset_confirm_multi_suffix">, yüklü uygulama sayısı kadar onay vermeniz gerekebilir.</string>
     <string name="apps_dialog_reset_confirm_self">Sadece mevcut uygulama (com.mapcontrol) silinecek.</string>
 
-    <string name="profile_hint_email">ornek@email.com</string>
-    <string name="profile_hint_code">123456</string>
-    <string name="profile_dialog_pull_title">Verileri Çek</string>
-    <string name="profile_dialog_pull_message">Sunucudan son kayıtlı verilerinizi çekmek istiyor musunuz?\n\nNot: Mevcut ayarlarınızın üzerine yazılacaktır.</string>
-    <string name="profile_dialog_restart_title">Uygulama Yeniden Başlatılacak</string>
-    <string name="profile_dialog_restart_message">Son kayıtlı verileriniz başarıyla yüklendi.\n\nAyarların etkin olması için uygulamanın yeniden başlatılması gerekiyor.\n\nYeniden başlatmak istiyor musunuz?</string>
-    <string name="profile_auto_location_help_on">Araç kapanınca otomatik konum kaydet.</string>
-    <string name="profile_auto_location_help_off">Otomatik konum kaydetme kapalı.</string>
-
     <string name="target_picker_search_hint">Ara…</string>
 
     <string name="side_rail_wifi">Wi-Fi Yönetimi</string>
     <string name="side_rail_apps">Uygulama Yönetimi</string>
     <string name="side_rail_web">Web Yönetimi</string>
-    <string name="side_rail_profile">Profil</string>
-    <string name="side_rail_drive_mode">Hafıza Modu</string>
-    <string name="side_rail_camera">Kamera Test</string>
-        <string name="camera360_menu_title">Bir mod seçin</string>
+    <string name="camera360_menu_title">Bir mod seçin</string>
     <string name="camera360_menu_live">Canlı Önizleme</string>
     <string name="camera360_menu_live_sub">4 kamerayı canlı izle</string>
     <string name="camera360_menu_record">USB Kayıt</string>
     <string name="camera360_menu_record_sub">4 kamerayı USB’ye MP4 kaydet</string>
     <string name="camera360_usb_none">USB bellek takılı değil. Bir USB bellek takın.</string>
-    <string name="camera360_usb_info">USB: %1$s</string>
-    <string name="camera360_usb_space">Boş alan: %1$s / %2$s</string>
-    <string name="camera360_usb_fit">Bu alanla yaklaşık %1$s kayıt yapılabilir</string>
     <string name="camera360_usb_low">Yetersiz alan: en az %1$s boş alan gerekli</string>
     <string name="camera360_cam_signals">Kamera Sinyalleri</string>
     <string name="camera360_settings_title">Kayıt Ayarları</string>
@@ -383,7 +313,6 @@
     <string name="camera360_separate_help_on">Her açı ayrı MP4 dosyası olur</string>
     <string name="camera360_separate_help_off">4 açı tek mozaik MP4 olur</string>
     <string name="camera360_separate_short">4 Açıyı Ayrı Kaydet</string>
-    <string name="camera360_separate">4 açıyı ayrı dosyalar halinde kaydet</string>
     <string name="camera360_estimate">≈ %1$s/dk • 1 sa ≈ %2$s</string>
     <string name="camera360_estimate_separate">4 dosya • ≈ %1$s/dk • 1 sa ≈ %2$s</string>
     <string name="camera360_rec_start">Kaydı Başlat</string>
@@ -406,20 +335,13 @@
     <string name="camera360_rec_banner">● Kayıt devam ediyor - açmak için dokunun</string>
 <string name="camera360_title">Kamera 360</string>
     <string name="camera360_hint">Aracın çevresindeki 4 kamera canlı gösteriliyor. Büyütmek için bir kameraya dokunun, geri dönmek için tekrar dokunun.</string>
-    <string name="camera360_start">Önizlemeyi Başlat</string>
-    <string name="camera360_stop">Durdur</string>
-        <string name="camera360_tap_hint">Büyütmek için dokun</string>
     <string name="camera360_all">Tümü</string>
             <string name="camera360_right">Sağ</string>
     <string name="camera360_left">Sol</string>
     <string name="camera360_back">Arka</string>
     <string name="camera360_camera_word">Kamera</string>
 <string name="camera360_front">Ön</string>
-    <string name="camera360_dewarp">Düzeltme</string>
-    <string name="camera360_on">Açık</string>
-    <string name="camera360_off">Kapalı</string>
     <string name="camera360_live">Canlı. Kaynak kamera başına 25 fps.</string>
-    <string name="camera360_capture">1 Kare Çek</string>
     <string name="camera360_working">Kare çekiliyor...</string>
     <string name="camera360_err_id">Kamera girişi araç listesinde bulunamadı</string>
     <string name="camera360_err_format">Liste dışı kamera formatı: %1$s</string>
@@ -466,7 +388,6 @@
     <string name="camera360_auto_mode_quality_desc">4 açı ayrı dosya (f_m, r_m, l_m, b_m) · 640×400 · 3 dk klip · ≈%1$s/dk</string>
     <string name="camera360_auto_mode_perf_desc">Tek mozaik dosya (s_) · 960×600 · 3 dk klip · ≈%1$s/dk · daha az yük</string>
     <string name="camera360_auto_retention">Klipleri sakla</string>
-    <string name="camera360_days_short">%1$d gün</string>
     <string name="camera360_auto_blocked_usb">USB otomatik kayıt açık. Önce USB Kayıt ekranından kapatın.</string>
     <string name="camera360_auto_pause">Bu sürüşte durdur</string>
     <string name="camera360_auto_resume">Sürdür</string>
@@ -474,7 +395,6 @@
     <string name="camera360_auto_consent_title">Araç içi otomatik kayıt</string>
     <string name="camera360_auto_consent_ok">Onayla</string>
     <string name="camera360_cancel">Vazgeç</string>
-    <string name="camera360_auto_retention_confirm">%1$d günden eski klipler şimdi silinecek. Devam edilsin mi?</string>
     <string name="camera360_auto_recording_line">Kaydediyor · %1$s · %2$s</string>
     <string name="camera360_usb_auto">Kontakla otomatik kaydet</string>
     <string name="camera360_usb_auto_note">Kontak açık ve USB takılıyken bu ayarlarla 1 dakikalık klipler halinde kaydeder; USB dolunca durur.</string>
@@ -485,12 +405,6 @@
     <string name="camera360_viewer_summary">%1$d klip · %2$s</string>
     <string name="camera360_today">Bugün</string>
     <string name="camera360_yesterday">Dün</string>
-    <string name="camera360_del_in_days">%1$d gün %2$d sa sonra silinir</string>
-    <string name="camera360_del_in_hours">%1$d sa %2$d dk sonra silinir</string>
-    <string name="camera360_del_soon">Yakında silinecek</string>
-    <string name="camera360_del_off">Otomatik silme kapalı</string>
-    <string name="camera360_del_short_days">%1$dg</string>
-    <string name="camera360_del_short_hours">%1$dsa</string>
     <string name="camera360_export">USB\'ye Aktar</string>
     <string name="camera360_export_progress">Aktarılıyor… %%%1$d</string>
     <string name="camera360_export_done">Aktarıldı: %1$s</string>
@@ -510,10 +424,7 @@
     <string name="camera360_delete_title">Klipleri sil</string>
     <string name="camera360_delete_msg">%1$d klip (%2$s) kalıcı olarak silinecek. Bu işlem geri alınamaz.</string>
     <string name="camera360_deleted">%1$d klip silindi</string>
-    <string name="camera360_saved">Kare: %1$s B - raw kaydedildi: %2$s</string>
     <string name="side_rail_projection">Yansıtma</string>
-    <string name="side_rail_settings">Ayarlar</string>
-
     <string name="drive_mode_none">Hiçbiri</string>
 
     <string name="projection_status_on">Yansıtma aktif</string>
@@ -533,7 +444,6 @@
 
     <string name="launcher_shortcut_wifi">Wi-Fi</string>
     <string name="launcher_shortcut_web">Web</string>
-    <string name="launcher_shortcut_profile">Profil</string>
     <string name="launcher_shortcut_projection">Yansıtma</string>
     <string name="launcher_shortcut_apps">Uygulamalar</string>
     <string name="launcher_shortcut_drive">Hafıza</string>
@@ -566,7 +476,6 @@
     <string name="settings_permissions_title">İzinleri görüntüle</string>
     <string name="settings_permissions_desc">Her izni canlı dener. Yeşil gerçek çağrı geçti, kırmızı reddedildi veya hata verdi, sarı denenmedi.</string>
     <string name="settings_permissions_show">İzinleri görüntüle</string>
-    <string name="settings_permissions_hide">İzinleri gizle</string>
     <string name="settings_permissions_dialog_title">İzin testi</string>
     <string name="settings_permissions_running">İzinler deneniyor…</string>
     <string name="settings_permissions_summary">Geçen: %1$d    Olmayan: %2$d    Denenmeyen: %3$d</string>
@@ -655,16 +564,6 @@
     <string name="settings_perm_no">hayır</string>
     <string name="settings_perm_on">açık</string>
     <string name="settings_perm_off">kapalı</string>
-    <string name="settings_uninstall_button">RoadDeck uygulamasını kaldır</string>
-    <string name="settings_uninstall_title">RoadDeck kaldırılsın mı?</string>
-    <string name="settings_uninstall_message">Yalnızca RoadDeck uygulaması kaldırılacak. Android’in sistem onayı da açılacak.</string>
-    <string name="settings_uninstall_failed">Uygulama kaldırma ekranı açılamadı.</string>
-    <string name="wifi_global_stabilize_eyebrow">WI-FI YÖNETİMİ</string>
-    <string name="wifi_global_stabilize_title">Wi-Fi bağlantısı hazırlanıyor…</string>
-    <string name="wifi_global_toast_eyebrow_ok">BAĞLANTI HAZIR</string>
-    <string name="wifi_global_status_internet_ok">İnternet bağlantısı hazır</string>
-    <string name="wifi_global_toast_eyebrow_fail">BAĞLANTI KURULAMADI</string>
-    <string name="wifi_global_status_wifi_failed">Wi-Fi bağlantısı başarısız</string>
     <string name="cluster_test_temperature_button">Dış sıcaklık ham VDBus verisini oku (10 örnek)</string>
     <string name="cluster_test_temperature_running">Sıcaklık verileri okunuyor…</string>
     <string name="cluster_test_temperature_header">Dış sıcaklık teşhisi başladı: HVAC modülü=%1$d, Celsius ID=%2$d, Fahrenheit ID=%3$d. Kadrandaki değeri örnekler alınırken not edin.</string>
@@ -723,7 +622,6 @@
     <string name="cluster_test_vdbus_field_error">VDBus tablo alanı okunamadı %1$s: %2$s</string>
     <string name="cluster_test_vdbus_error">Genel VDBus taraması başarısız (%1$s): %2$s</string>
     <string name="cluster_test_vdbus_done">Genel araç VDBus taraması/dinlemesi durduruldu.</string>
-    <string name="side_rail_climate_automation">Otomasyon</string>
     <string name="side_rail_face_recognition">Yüz Tanıma</string>
     <string name="climate_auto_title">Konfor otomasyonu</string>
     <string name="climate_auto_subtitle">Araç termometresindeki dış ortam sıcaklığı seçtiğiniz eşiğe ulaşınca koltuk ısıtma, koltuk soğutma ve direksiyon ısıtma otomatik açılır.</string>
@@ -734,7 +632,6 @@
     <string name="climate_auto_status_no_temp">Dış ortam sıcaklığı henüz okunamadı</string>
     <string name="climate_auto_status_temp">Dış ortam: %1$.1f°C</string>
     <string name="climate_auto_sensor_label">ARAÇ TERMOMETRESİ · CANLI VERİ</string>
-    <string name="climate_auto_rules_heading">Otomasyon kuralları</string>
     <string name="climate_auto_compare_hint">Sıcaklık karşılaştırma koşulunu değiştir</string>
     <string name="climate_auto_driver_heat">Sürücü koltuk ısıtma</string>
     <string name="climate_auto_passenger_heat">Yolcu koltuk ısıtma</string>
@@ -743,7 +640,6 @@
     <string name="climate_auto_steer_heat">Direksiyon ısıtma</string>
     <string name="climate_auto_windshield">Ön cam ısıtma</string>
     <string name="climate_auto_rear_defrost">Arka cam ve ayna ısıtma</string>
-    <string name="climate_auto_climate">Klima (AUTO)</string>
     <string name="climate_auto_delay_off">Otomatik kapatılmaz (sürekli açık)</string>
     <string name="climate_auto_delay">Kontaktan %1$d dakika sonra kapatılır</string>
     <string name="climate_auto_temp">Eşik: %1$d°C</string>
@@ -762,7 +658,6 @@
     <string name="dms_recognition_no_match_yet">Son oturumda henüz tespit yapılmadı.</string>
     <string name="dms_recognition_last_match">Son tespit: %1$s · Koltuk Hafızası %2$d</string>
     <string name="dms_recognition_last_match_name">Son tespit: %1$s</string>
-    <string name="dms_recognition_notification">DMS kamera yüz tanıması etkin</string>
     <string name="dms_recognition_idle">Yüz tanıma kapalı.</string>
     <string name="dms_recognition_starting">DMS kamerası başlatılıyor…</string>
     <string name="dms_recognition_started">Arka plan yüz tanıma açıldı.</string>
@@ -780,8 +675,6 @@
     <string name="dms_recognition_waiting_for_power">Yüz tanıma hazır; kontak açılması bekleniyor.</string>
     <string name="dms_recognition_camera_released">Sürücü taraması tamamlandı; DMS kamerası serbest bırakıldı.</string>
     <string name="dms_recognition_ignition_off">Kontak kapalı; sonraki çalıştırma bekleniyor.</string>
-    <string name="dms_recognition_welcome_phrase">%1$s</string>
-    <string name="dms_recognition_tts_error">Ses motoru hazır olmadığı için sesli anons yapılamadı.</string>
     <string name="dms_recognition_no_profiles">Önce en az bir yüz profili ekleyin.</string>
     <string name="dms_recognition_profiles_updated">Yüz profilleri güncellendi.</string>
     <string name="dms_recognition_camera_permission">Yüz tanıma için kamera izni gerekiyor.</string>
@@ -797,20 +690,9 @@
     <string name="dms_face_name_hint">Kişinin adını girin (Örn: Hakan)</string>
     <string name="dms_face_local_notice">Kameraya düz bakın, isminizi girin ve koltuk hafızasını seçip taramayı başlatın. Kontak açıldığında sistem sizi tanıyıp koltuk hafızasını ayarlayacak ve sesli bildirim yapacaktır.</string>
     <string name="dms_face_local_notice_no_memory">Kameraya düz bakın, isminizi girin ve taramayı başlatın. Bu araçta koltuk hafızası olmadığı için yalnızca yüz tanıma ve sesli bildirim yapılır.</string>
-    <string name="dms_face_start">Başlat</string>
     <string name="dms_face_name_required">Lütfen kişinin adını girin.</string>
-    <string name="dms_face_name_exists">Bu isimle bir profil zaten kayıtlı.</string>
     <string name="dms_face_enroll_prompt">Yüzünüzü çerçeveye ortalayın · Taranıyor: %1$d / %2$d</string>
     <string name="dms_face_center_prompt">Lütfen yüzünüzü çerçeveye ortalayın ve kameraya bakın.</string>
-    <string name="dms_cluster_look_here">Lütfen buraya bakınız</string>
-    <string name="dms_cluster_scan_done">Tamamlandı</string>
-    <string-array name="dms_cluster_scan_steps">
-        <item>Düz karşıya bakın</item>
-        <item>Başınızı hafif sola çevirin</item>
-        <item>Başınızı hafif sağa çevirin</item>
-        <item>Biraz yukarı bakın</item>
-        <item>Biraz aşağı bakın</item>
-    </string-array>
     <string name="dms_face_adjust_prompt">Kameraya biraz daha yaklaşın ve yüzünüzün net göründüğünden emin olun.</string>
     <string name="dms_face_no_face">Yüz algılanmadı — Kameraya bakın</string>
     <string name="dms_face_saved">✓ %1$s kaydedildi (Koltuk Hafızası %2$d)</string>
@@ -835,11 +717,6 @@
     <string name="climate_auto_conflict_rejected">Çakışma Önleme: Isıtma ve havalandırma sıcaklık aralıkları çakışıyor! Birbirinden farklı eşikler belirleyin.</string>
 
 <string name="settings_theme_section_title">Arayüz teması</string>
-<string name="settings_theme_section_desc">Modern mevcut cam görünümünü korur. Cyber, terminal tarzı monokrom yeşil görünüme geçer.</string>
-<string name="settings_theme_modern">Modern</string>
-<string name="settings_theme_cyber">Cyber</string>
-<string name="settings_theme_modern_help">Mevcut cam/OEM düzeni.</string>
-<string name="settings_theme_cyber_help">Terminal CLI: yeşil fosfor, tarama çizgileri, köşesiz paneller.</string>
 <string name="settings_driving_test_title">Sürüş Karnesi test verisi</string>
 <string name="settings_driving_test_desc">14 rastgele sürüş oluşturur. Silme yalnızca test sürüşlerini kaldırır; gerçek sürüşler kalır.</string>
 <string name="settings_driving_test_generate">14 test sürüşü oluştur</string>
@@ -877,9 +754,6 @@
 <string name="driving_history_refresh">Yenile</string>
 <string name="driving_history_empty">Henüz kayıtlı sürüş yok. Araç hareket etmeye başladığında yolculuk otomatik kaydedilir.</string>
 <string name="driving_history_live">CANLI</string>
-<string name="driving_history_open">Raporu aç</string>
-<string name="driving_history_score_format">PUAN %1$d · NOT %2$s</string>
-<string name="driving_history_meta_format">%1$.1f km · %2$s · %3$d km/h</string>
 <string name="driving_history_duration">%1$d dk %2$02d sn</string>
 <string name="driving_history_points_label">PUAN</string>
 <string name="driving_history_grade_label">NOT</string>
@@ -890,28 +764,18 @@
 <string name="driving_history_live_now">ŞU AN</string>
 <string name="driving_current_section">GÜNCEL</string>
 <string name="driving_history_section">GEÇMİŞ</string>
-<string name="side_rail_comfort">Konfor</string>
 <string name="side_rail_valet">Vale Modu</string>
 <string name="wifi_networks_title">Wi-Fi Ağları</string>
 <string name="wifi_restricted_title">Wi‑Fi kısıtlı</string>
 <string name="wifi_restricted_message">Araçta kablosuz yansıtma/SoftAP aktifken Wi‑Fi RoadDeck\'den değiştirilemiyor. Yalnızca sistem Ayarları açıp kapatabilir.</string>
 <string name="wifi_restricted_open_settings">Wi‑Fi ayarlarını aç</string>
 <string name="side_rail_home">Ana Sayfa</string>
-<string name="side_rail_automation">Otomasyon</string>
-<string name="settings_comfort_title">Konfor ve otomasyon</string>
-<string name="settings_comfort_desc">Araç açıldığında bir kez ve yalnızca park halindeyken uygulanır. Yağmur sensörü kontrol edilmez.</string>
 <string name="settings_comfort_sunroof_title">Açılışta cam tavan</string>
 <string name="settings_comfort_sunroof_vent">Havalandırma</string>
 <string name="settings_comfort_sunroof_open">Açık</string>
-<string name="settings_comfort_sunroof_help_none">Cam tavana dokunulmaz</string>
-<string name="settings_comfort_sunroof_help_vent">Cam tavanı havalandırma konumuna kaldırır</string>
-<string name="settings_comfort_sunroof_help_open">Cam tavanı tamamen açar</string>
 <string name="settings_comfort_sunshade_title">Açılışta güneşlik</string>
 <string name="settings_comfort_sunshade_open">Açık</string>
 <string name="settings_comfort_sunshade_close">Kapalı</string>
-<string name="settings_comfort_sunshade_help_none">Güneşliğe dokunulmaz</string>
-<string name="settings_comfort_sunshade_help_open">Güneşliği açar</string>
-<string name="settings_comfort_sunshade_help_close">Güneşliği kapatır</string>
 <string name="settings_comfort_recirc_title">Trafikte iç sirkülasyon</string>
 <string name="settings_comfort_recirc_help_on">Yavaş, dur-kalk trafikte iç sirkülasyonu açar; yol açılınca veya 12 dakika sonra dış havaya döner. Klima çalışıyor olmalı.</string>
 <string name="settings_comfort_recirc_help_off">İç sirkülasyon otomatik değiştirilmez</string>
@@ -955,15 +819,11 @@
 <string name="profiles_title">Sürücü profilleri</string>
 <string name="profiles_edit">Profili düzenle</string>
 <string name="profiles_avatar_title">Avatar seç</string>
-<string name="profiles_desc">Her profil kendi hafıza ayarlarını saklar. Aktif profili değiştirince ayarlar anında yüklenir.</string>
 <string name="profiles_desc_short">Profil seçin; ayarlar anında yüklenir.</string>
 <string name="profiles_detail_subtitle">Koltuk, ayna ve otomasyon ayarları</string>
 <string name="profiles_seat_desc_short">Slot 1-3 koltuk ve aynaları saklar; sadece park halinde uygulanır.</string>
 <string name="profiles_advanced_items">Ek hafıza maddeleri (%1$d)</string>
-<string name="profiles_active_label">Aktif profil: %1$s</string>
 <string name="profiles_active_badge">Aktif</string>
-<string name="profiles_select">Seç</string>
-<string name="profiles_rename">Ad değiştir</string>
 <string name="profiles_delete">Sil</string>
 <string name="profiles_new">Yeni profil</string>
 <string name="profiles_name_hint">Profil adı</string>
@@ -974,10 +834,7 @@
 <string name="profiles_name_required">Bir ad gir</string>
 <string name="profiles_delete_last">Son profil silinemez</string>
 <string name="profiles_delete_confirm">%1$s profili silinsin mi?</string>
-<string name="profiles_included_title">Profil başına saklananlar</string>
-<string name="profiles_included_desc">Sürüş ve güvenlik hafızası, cam tavan ve güneşlik açılış ayarları, trafikte iç sirkülasyon, sıcaklık otomasyonu kuralları, karşılama ekranı ve sesi.</string>
 <string name="profiles_seat_title">Koltuk ve ayna hafızası</string>
-<string name="profiles_seat_desc">Araç içi hafıza slotları 1-3 kullanılır (koltuk ve dikiz aynaları). Slotlar tüm araç için ortaktır, her sürücüye farklı slot ver. Yalnızca P veya N viteste, park halinde uygulanır.</string>
 <string name="profiles_slot_none">Yok</string>
 <string name="profiles_slot_n">Slot %1$d</string>
 <string name="profiles_seat_save">Mevcut konumu kaydet</string>
@@ -989,7 +846,6 @@
 <string name="profiles_apply_on_start_title">Kontakta uygula</string>
 <string name="profiles_apply_on_start_on">Kontak açılınca koltuk hafızası ve ek maddeler uygulanır, yalnızca park halinde</string>
 <string name="profiles_apply_on_start_off">Otomatik uygulanan bir şey yok</string>
-<string name="profiles_items_title">Ek hafıza maddeleri</string>
 <string name="profiles_items_empty">Yok. Değişen değerleri Log sekmesindeki ID keşfinden ekle. Eklenen maddeler kapalı başlar.</string>
 <string name="profiles_items_refresh">Değerleri araçtan güncelle</string>
 <string name="profiles_item_remove">Kaldır</string>
@@ -1049,7 +905,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="adas_probe_cabin_start">CabinLAN 4105 dinle</string>
     <string name="adas_probe_cabin_stop">CabinLAN durdur</string>
     <string name="adas_probe_cabin_idle">CabinLAN 1114113 dinlenmiyor.</string>
-    <string name="adas_probe_cabin_waiting">CabinLAN 1114113 dinleniyor; 4105 bekleniyor…</string>
     <string name="camera360_recording_continues">● KAYIT DEVAM EDİYOR</string>
     <string name="log_tsr_monitor">TRAFİK LEVHASI MONİTÖRÜ</string>
     <string name="tsr_monitor_title">Trafik levhası monitörü</string>
@@ -1108,8 +963,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="split_gesture_how">Araç ekranına %1$d parmağınızı aynı anda değdirin, sonra %2$s kaydırın.</string>
     <string name="split_gesture_where">Kaydırmayı araç sistemi algılar. Hareketi araç ekranında, parmaklarınızı bir arada tutarak yapın.</string>
     <string name="split_gesture_need_pair">Önce iki uygulamayı da seçin. Hareket kayıtlı çifti açar.</string>
-    <string name="split_gesture_map_busy">Bu hareketi harita kaydırma kullanıyor. Önce Yansıtma ekranından kapatın.</string>
-    <string name="split_gesture_map_conflict">Harita kaydırma açık ve bu hareketi kullanıyor; bu yüzden bölünmüş ekran onu yok sayar.</string>
     <string name="split_dir_up">Yukarı</string>
     <string name="split_dir_down">Aşağı</string>
     <string name="split_dir_left">Sola</string>
@@ -1118,38 +971,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="split_dir_phrase_down">aşağı</string>
     <string name="split_dir_phrase_left">sola</string>
     <string name="split_dir_phrase_right">sağa</string>
-<string name="assist_card_dms">DMS (Sürücü Dikkat Alarmı)</string>
-<string name="assist_dms_disclaimer">Sürücü dikkat monitörü: Kabin kamerasıyla yorgunluk ve dikkat dağınıklığı alarmı. Donanım ve yazılıma bağlıdır; her modelde çalışmayabilir. Araçta etkisini kontrol edin.</string>
-<string name="assist_status_dms">DMS Kapalı</string>
 <string name="dialog_early_access_disclaimer">Bu özellik erken erişim aşamasındadır. Lütfen kullanırken dikkatli olunuz ve aracınızda bulunmayan bir işlevi zorlamayınız.\n\nYapılan işlemler tamamen kullanıcının sorumluluğundadır. Geliştirici, bu özelliğin kullanımından kaynaklanan hiçbir zarardan, veri kaybından veya arızadan sorumluluk kabul etmez.</string>
     <string name="side_rail_sunroof_automation">Cam Tavan</string>
 <string name="sunroof_auto_title">Cam Tavan Lux Otomasyonu</string>
-<string name="sunroof_auto_subtitle">Araç ortam ışığı (lux) sensörüne, yağmur algısına ve hız durumuna göre akıllı cam tavan ve perde yönetimi.</string>
-<string name="sunroof_auto_status_card_title">Canlı Sensör ve Araç Durumu</string>
-<string name="sunroof_auto_live_lux_label">ÖLÇÜLEN ORTAM IŞIĞI (LUX)</string>
-<string name="sunroof_auto_badge_sunroof">Tavan Durumu</string>
-<string name="sunroof_auto_badge_rain">Yağmur Sensörü</string>
-<string name="sunroof_auto_badge_speed">Araç Hızı</string>
-<string name="sunroof_auto_controls_card_title">Manuel Kontroller ve Simülatör</string>
-<string name="sunroof_auto_sim_title">Lux Simülasyon Test Modu</string>
-<string name="sunroof_auto_master_switch_title">Otomatik Cam Tavanı Etkinleştir</string>
-<string name="sunroof_auto_master_switch_desc">Işık seviyesine göre cam tavanı otomatik açar veya kapatır.</string>
-<string name="sunroof_auto_mode_title">Çalışma Mantığı (Mod Seçimi)</string>
-<string name="sunroof_auto_mode_open_air">Açık Hava Modu (Gündüz Aç / Gece ve Tünelde Kapat)</string>
-<string name="sunroof_auto_mode_sun_protect">Güneş Koruması Modu (Aşırı Güneşte Kapat / Gölgede Aç)</string>
-<string name="sunroof_auto_open_lux_title">Açılma Işık Eşiği</string>
-<string name="sunroof_auto_close_lux_title">Kapanma Işık Eşiği</string>
-<string name="sunroof_auto_debounce_title">Kararlılık / Gecikme Süresi</string>
-<string name="sunroof_auto_cooldown_title">Motor Koruma Bekleme Süresi</string>
-<string name="sunroof_auto_safety_card_title">Güvenlik Korumaları ve Entegrasyon</string>
-<string name="sunroof_auto_rain_guard_title">Yağmur Güvenlik Koruması</string>
-<string name="sunroof_auto_rain_guard_desc">Yağmur algılandığında tavanı derhal kapatır ve açılmasını engeller.</string>
-<string name="sunroof_auto_speed_guard_title">Yüksek Hız Güvenlik Limiti</string>
-<string name="sunroof_auto_speed_guard_desc">Belirlenen hızın üzerinde rüzgar gürültüsü ve hasarı önlemek için tavan açılmaz.</string>
-<string name="sunroof_auto_close_on_off_title">Araç Kapanınca Otomatik Kapat</string>
-<string name="sunroof_auto_close_on_off_desc">Kontak kapatıldığında açık kalan cam tavanı otomatik kapatır.</string>
-<string name="sunroof_auto_control_shade_title">Güneşlik / Perde Kontrolü</string>
-<string name="sunroof_auto_control_shade_desc">Cam tavan hareketiyle birlikte tavan perdesini de senkronize yönetir.</string>
 <string name="split_gesture_conflict">Bu kaydırmayı \"%1$s\" özelliği kullanıyor; bölünmüş ekran onu kullanamaz.</string>
 <string name="gesture_conflict_title">Kaydırma zaten kullanılıyor</string>
 <string name="gesture_conflict_subtitle">Farklı bir kaydırma seçin</string>
@@ -1166,24 +990,17 @@ IDCU=%5$s   5GTBox=%6$s</string>
 <string name="sunroof_gesture_change">Hareketi değiştir</string>
 
     <!-- Bulut -->
-    <string name="settings_cloud_title">Bulut</string>
     <string name="settings_cloud_desc">Telemetri ve tamamlanan sürüşleri sunucuya gönderir. Yalnızca Başlat’a basınca çalışır.</string>
     <string name="settings_cloud_status_unpaired">Eşleştirilmedi</string>
-    <string name="settings_cloud_status_ready">Hazır</string>
-    <string name="settings_cloud_status_pairing">Eşleştiriliyor…</string>
-    <string name="settings_cloud_status_running">Çalışıyor</string>
-    <string name="settings_cloud_status_error">Bulut hatası</string>
     <string name="settings_cloud_pair_hint">Eşleştirme kodu</string>
     <string name="settings_cloud_pair_action">Eşleştir</string>
     <string name="settings_cloud_pairing">Eşleştiriliyor…</string>
-    <string name="settings_cloud_paired">Eşleştirildi</string>
     <string name="settings_cloud_start">Başlat</string>
     <string name="settings_cloud_stop">Durdur</string>
     <string name="settings_cloud_running">Çalışıyor</string>
     <string name="settings_cloud_ready">Eşleştirildi; başlatmaya hazır</string>
     <string name="settings_cloud_share_location">Konum paylaş</string>
     <string name="settings_cloud_invalid_code">8 karakterlik kodu girin.</string>
-    <string name="settings_cloud_revoked">Cihaz iptal edildi; yeniden eşleştirin.</string>
     <string name="settings_cloud_pair_failed">Eşleştirme başarısız.</string>
     <string name="settings_cloud_error">Bulut hatası.</string>
 
@@ -1250,8 +1067,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_sub_log">Log</string>
     <string name="ck_rail_expand">Menüyü genişlet</string>
     <string name="ck_rail_collapse">Menüyü daralt</string>
-    <string name="ck_offline">Bağlı değil</string>
-
     <string name="ck_rail_cockpit">Kokpit</string>
     <string name="ck_rail_vehicle">Araç</string>
     <string name="ck_rail_safety">Güvenlik</string>
@@ -1268,7 +1083,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_home_greeting_evening">İyi akşamlar</string>
     <string name="ck_home_vehicle_card">Araç Durumu</string>
     <string name="ck_home_connecting">Bağlantı bekleniyor</string>
-    <string name="ck_home_connected">Bağlı</string>
     <string name="ck_home_fuel">Yakıt</string>
     <string name="ck_home_range">Menzil</string>
     <string name="ck_home_odo">Odometre</string>
@@ -1276,7 +1090,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_home_quick">Hızlı İşlemler</string>
     <string name="ck_home_vehicle_info">Araç Bilgisi</string>
     <string name="ck_home_drive_report">Sürüş Karnesi</string>
-    <string name="ck_home_comfort">Konfor</string>
     <string name="ck_home_valet">Vale Modu</string>
     <string name="ck_home_active">Aktif</string>
     <string name="ck_home_valet_body">Kişisel sekmeler gizli. Hız, alan ve saat sınırları uygulanıyor.</string>
@@ -1289,7 +1102,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_home_in_progress">Devam ediyor</string>
     <string name="ck_home_completed">Tamamlandı</string>
     <string name="ck_home_no_record">Kayıt yok</string>
-    <string name="ck_home_score">Puan</string>
     <string name="ck_home_drive">Sürüş</string>
     <string name="ck_home_view_all">Tüm sürüşleri gör</string>
     <string name="ck_vi_drive">Sürüş</string>
@@ -1362,8 +1174,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_apply_on_start_short_on">Açık</string>
     <string name="profiles_apply_on_start_short_off">Kapalı</string>
     <string name="profiles_advanced_items_short">Ek ayarlar</string>
-    <string name="profiles_sync_apply">Ayarları Eşitle</string>
-    <string name="profiles_activate">Bu Profile Geçiş Yap</string>
     <string name="profiles_role_primary">Birincil Sürücü</string>
     <string name="profiles_role_secondary">İkinci Sürücü</string>
     <string name="profiles_ready_badge">HAZIR</string>
@@ -1399,4 +1209,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_assist_count">%d etkin</string>
     <string name="profiles_configured">Ayarlandı</string>
     <string name="profiles_customized">Özel</string>
+    <string name="profiles_summary_drive_mode">Sürüş modu</string>
 </resources>

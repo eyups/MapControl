@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.manager.ClusterVDBusBenchManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.vehicle.ClimateAutomationVdbusDiagnostics;
@@ -228,6 +229,7 @@ public class ClusterVDBusTestActivity extends AppCompatActivity implements Clust
                 0, 1f);
         root.addView(scroll, scrollLp);
 
+        CockpitLegacyStyler.apply(root);
         setContentView(root);
     }
 

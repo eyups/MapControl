@@ -93,16 +93,8 @@ public final class UiStyles {
         setBackgroundRes(view, R.drawable.bg_root_gradient);
     }
 
-    public static void setRailPanelBackground(View view) {
-        setBackgroundRes(view, R.drawable.bg_rail_panel);
-    }
-
     public static void setGlassCardBackground(View view) {
         setBackgroundRes(view, R.drawable.bg_card_glass);
-    }
-
-    public static void setTabContentBackdrop(View view) {
-        view.setBackgroundColor(color(view.getContext(), R.color.tabContentScrim));
     }
 
     public static void applySolidRoundedBackground(View view, int colorArgb) {
@@ -153,15 +145,6 @@ public final class UiStyles {
      * Optional real blur on supported API levels; safe no-op where unsupported.
      * Prefer glass drawables for content-heavy regions — blur affects descendants.
      */
-    public static void applyOptionalBackdropBlur(View view, float radiusPx) {
-        // Cockpit tasarımı blur kullanmaz; geriye dönük API uyumluluğu için no-op.
-    }
-
-    public static void clearRenderEffect(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            view.setRenderEffect(null);
-        }
-    }
 
     /**
      * OEM-style two-segment control (hap). {@link #setLeftSelected} updates visuals and runs

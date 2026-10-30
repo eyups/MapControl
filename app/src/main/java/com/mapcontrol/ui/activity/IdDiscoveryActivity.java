@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.vehicle.ComfortCommands;
@@ -130,6 +131,7 @@ public class IdDiscoveryActivity extends AppCompatActivity {
         results.setOrientation(LinearLayout.VERTICAL);
         col.addView(results);
 
+        CockpitLegacyStyler.apply(root);
         setContentView(root);
     }
 

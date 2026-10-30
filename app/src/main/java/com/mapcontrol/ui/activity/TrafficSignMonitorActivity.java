@@ -21,6 +21,7 @@ import com.desaysv.ivi.vdb.IVDBusNotify;
 import com.desaysv.ivi.vdb.event.VDEvent;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.util.SystemLogBuffer;
 
 import java.text.SimpleDateFormat;
@@ -224,6 +225,7 @@ public class TrafficSignMonitorActivity extends Activity {
         labels.put(CarSettingID.ID_CAR_SPD_LIMIT_WARN_SET,
                 "201  Hız uyarı ayarı");
 
+        CockpitLegacyStyler.apply(root);
         setContentView(root);
         renderValues();
     }

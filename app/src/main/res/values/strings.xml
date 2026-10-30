@@ -14,11 +14,6 @@
     <string name="yandex_cluster_nav_toast_service_wait">Accessibility service connecting…</string>
     <string name="log_tts_hint">Enter text to read aloud</string>
     <string name="log_tts_welcome_phrase">Welcome to the RoadDeck log screen</string>
-    <string name="web_server_toast_wifi_ok_title">Wi‑Fi connected</string>
-    <string name="web_server_toast_wifi_ok_sub">Internet connection is active.</string>
-    <string name="web_server_toast_wifi_off_title">Could not connect to Wi‑Fi</string>
-    <string name="web_server_toast_wifi_off_sub">No network or not connected yet. Check Wi‑Fi or hotspot on startup.</string>
-    <string name="floating_qa_no_apps_on_display">No open apps found for this display (dumpsys mismatch).</string>
     <string name="floating_qa_usage_access_required">Grant usage access in Settings for the open apps list; redirecting.</string>
     <string name="floating_qa_no_recent_apps">No matching (foreground) apps in the last hour. Open apps and try again.</string>
     <string name="floating_qa_open_apps">Open apps</string>
@@ -31,8 +26,6 @@
     <string name="floating_qa_label_display1">Display 1</string>
     <string name="floating_qa_label_display2">Display 2</string>
     <string name="floating_qa_label_toggle">Quick</string>
-    <string name="floating_qa_settings_title">Floating quick actions</string>
-    <string name="floating_qa_settings_desc">Open apps on displays 1 and 2. Tap the single button (⚡) to expand; « closes. Draggable.</string>
     <string name="floating_hub_icon_legend_title">Icons on the floating bar</string>
     <string name="floating_hub_icon_legend_body">Left arrow — System back (short tap); long press on left arrow while menu open — close menu
 Box — Pick target app for map projection
@@ -43,7 +36,6 @@ Double left arrow — Collapse quick actions
 Phone — Foreground apps on display 1
 Monitor — Foreground apps on display 2</string>
     <string name="welcome_sound_title">Welcome Screen</string>
-    <string name="welcome_sound_back">Back</string>
     <string name="welcome_sound_steps">1. Download a sound file on your phone (mp3, wav, m4a, ogg, flac, aac, wma, amr).\n2. Plug the USB drive into the car. The file shows on this screen. Touch its name.\n3. If you have no USB drive, send the file to Downloads from the Web screen, then touch Choose sound.</string>
 
     <string name="welcome_tts_title">Welcome voice with TTS</string>
@@ -90,10 +82,6 @@ Monitor — Foreground apps on display 2</string>
     <string name="welcome_sound_folder_error">Could not access Downloads folder</string>
     <string name="welcome_sound_pick_first">Select a sound file first</string>
     <string name="welcome_sound_stopped">Stopped</string>
-    <string name="nav_section_connect">CONNECT</string>
-    <string name="nav_section_vehicle">VEHICLE</string>
-    <string name="nav_section_media">MEDIA</string>
-    <string name="nav_section_system">SYSTEM</string>
     <string name="side_rail_welcome_sound">Welcome Screen</string>
     <string name="welcome_design_section_title">Entrance design</string>
     <string name="welcome_design_section_desc">Shown on the main screen when the vehicle starts.</string>
@@ -121,7 +109,6 @@ Monitor — Foreground apps on display 2</string>
     <string name="vehicle_info_engmode_launch_fail">EngMode app not found</string>
     <string name="vehicle_info_engmode_launch_denied">Could not open EngMode (permission denied)</string>
     <string name="vehicle_info_loading">Fetching information…</string>
-    <string name="vehicle_info_ready">Last read completed.</string>
     <string name="vehicle_info_tab_idle">Data loads and updates live when you open this tab.</string>
     <string name="vehicle_info_listening">Live updates on — refreshes as gauges change.</string>
     <string name="vehicle_info_unavailable">Vehicle information is unavailable right now.</string>
@@ -162,19 +149,14 @@ Monitor — Foreground apps on display 2</string>
     <string name="vehicle_info_etm_only_title">Tank liters and capacity</string>
     <string name="vehicle_info_etm_only_body">*</string>
     <string name="launcher_dashboard_speed_unit">km/h</string>
-    <string name="launcher_dashboard_tap_details">Tap for details</string>
-    <string name="launcher_dashboard_card_driving">Driving</string>
-    <string name="launcher_dashboard_card_media">Vehicle</string>
     <string name="launcher_dashboard_card_clock">Clock and status</string>
     <string name="launcher_dashboard_tab_music">Music</string>
     <string name="launcher_dashboard_tab_drive">Driving</string>
     <string name="launcher_dashboard_card_fuel_motor">Fuel and engine</string>
     <string name="launcher_dashboard_card_quick">Quick access</string>
-    <string name="launcher_dashboard_quick_apps_label">Apps</string>
     <string name="launcher_dashboard_quick_shortcuts_label">RoadDeck</string>
     <string name="launcher_dashboard_quick_add">Add app</string>
     <string name="launcher_dashboard_quick_pick_title">Choose app</string>
-    <string name="launcher_dashboard_quick_system_suffix"> (System)</string>
     <string name="launcher_dashboard_quick_cleared">App removed</string>
     <string name="launcher_dashboard_quick_empty_list">No app available to add</string>
     <string name="launcher_dashboard_quick_exit">Exit mode</string>
@@ -197,10 +179,6 @@ Monitor — Foreground apps on display 2</string>
     <string name="launcher_swipe_action_cluster_open">Turn cluster projection on</string>
     <string name="launcher_swipe_action_cluster_close">Turn cluster projection off</string>
     <string name="launcher_swipe_pick_app">Choose an app…</string>
-    <string name="launcher_dashboard_quick_menu_launcher_mode">Launcher mode</string>
-    <string name="launcher_dashboard_launcher_mode_title">Launcher mode</string>
-    <string name="launcher_dashboard_display_mode_3d">3D Model</string>
-    <string name="launcher_dashboard_display_mode_lite">Lite</string>
     <string name="launcher_lite_stat_speed_unit">km/h</string>
     <string name="launcher_lite_stat_gear">gear</string>
     <string name="launcher_lite_stat_fuel">fuel</string>
@@ -217,22 +195,8 @@ Monitor — Foreground apps on display 2</string>
     <string name="weather_showers">Showers</string>
     <string name="weather_thunder">Thunderstorm</string>
     <string name="weather_unknown">Weather</string>
-    <string name="launcher_dashboard_quick_list_all_title">All apps</string>
-    <string name="launcher_dashboard_quick_count_settings">Shortcut count</string>
     <string name="launcher_dashboard_quick_count_title">How many quick access apps to show?</string>
     <string name="launcher_dashboard_quick_count_option">%d apps</string>
-    <string name="launcher_dashboard_card_pose">3D model position</string>
-    <string name="launcher_dashboard_pose_apply">Show</string>
-    <string name="launcher_dashboard_interior_mode">Interior view</string>
-    <string name="launcher_dashboard_exterior_mode">Exterior view</string>
-    <string name="launcher_dashboard_trunk_open">Open trunk</string>
-    <string name="launcher_dashboard_trunk_close">Close trunk</string>
-    <string name="launcher_dashboard_trunk_blocked_moving">Trunk cannot open while the vehicle is moving</string>
-    <string name="launcher_dashboard_sunroof_open">Open sunroof</string>
-    <string name="launcher_dashboard_sunroof_close">Close sunroof</string>
-    <string name="launcher_dashboard_doors_open">Open doors</string>
-    <string name="launcher_dashboard_doors_close">Close doors</string>
-    <string name="launcher_dashboard_drive_mode">Drive mode: %1$s</string>
     <string name="launcher_dashboard_gear_label">Gear: %1$s</string>
     <string name="launcher_dashboard_rpm_label">RPM</string>
     <string name="launcher_dashboard_trip_label">Trip</string>
@@ -244,8 +208,6 @@ Monitor — Foreground apps on display 2</string>
     <string name="launcher_dashboard_stat_low_fuel">Low fuel</string>
     <string name="launcher_dashboard_low_fuel_yes">Yes</string>
     <string name="launcher_dashboard_low_fuel_no">No</string>
-    <string name="launcher_dashboard_stat_battery">Battery</string>
-    <string name="launcher_dashboard_stat_gear">Gear</string>
     <string name="launcher_dashboard_loading">Loading vehicle data…</string>
     <string name="launcher_dashboard_model_loading">Loading 3D model…</string>
     <string name="launcher_dashboard_model_load_failed">Could not load 3D model</string>
@@ -263,10 +225,5 @@ Monitor — Foreground apps on display 2</string>
     <string name="launcher_media_volume_down">Volume down</string>
     <string name="launcher_media_volume_up">Volume up</string>
     <string name="launcher_media_mute">Mute</string>
-    <string name="launcher_dashboard_vehicle_fallback">Vehicle image</string>
     <string name="launcher_dashboard_vehicle_tap_select">Tap to choose vehicle image</string>
-    <string name="launcher_quick_control_lock">Central lock</string>
-    <string name="launcher_quick_control_trunk">Trunk</string>
-    <string name="launcher_quick_control_trunk_hint">Tap the vehicle to open/close trunk</string>
-    <string name="launcher_quick_control_back">Back</string>
-</resources>
+    </resources>

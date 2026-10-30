@@ -2,48 +2,32 @@
 <resources>
     <!-- Light / not-night palette (same names as values-night/) -->
     <color name="oemAccent">#00B4D8</color>
-    <color name="oemAccentPressed">#00D2C4</color>
     <color name="glassFill">#1D242C</color>
     <color name="glassStroke">#2D3748</color>
     <color name="segmentTrackFill">#161B22</color>
-    <color name="surfaceRail">#1D242C</color>
     <color name="outlineSubtle">#2D3748</color>
-    <color name="tabContentScrim">#00000000</color>
 
     <!-- Ana ekran kök gradienti (bg_root_gradient) — light -->
     <color name="root_gradient_start">#0F1216</color>
     <color name="root_gradient_center">#0F1216</color>
     <color name="root_gradient_end">#0F1216</color>
     <!-- Sol menü seçili satır (bg_nav_pill_selected) — light -->
-    <color name="nav_pill_selected_start">#252E38</color>
-    <color name="nav_pill_selected_end">#1D242C</color>
-
     <color name="primaryColor">#00B4D8</color>
     <color name="primaryDarkColor">#00B4D8</color>
-    <color name="primaryLightColor">#4CD6FB</color>
     <color name="accentColor">#00B4D8</color>
-    <color name="accent">#00B4D8</color>
-    <color name="accentPressed">#00D2C4</color>
     <color name="accentHighlight">#4CD6FB</color>
 
     <!-- Filament model clear — cam kart görünümüne opak eş (IVI şeffaf surface yok) -->
     <color name="filament_scene_clear">#0F1216</color>
 
-    <color name="backgroundColor">#0F1216</color>
     <color name="backgroundPage">#0F1216</color>
     <color name="surfaceColor">#1D242C</color>
     <color name="surfaceBar">#161B22</color>
     <color name="surfaceCard">#1D242C</color>
     <color name="surfaceCardInner">#252E38</color>
     <color name="surfaceCardElevated">#252E38</color>
-    <color name="cluster_nav_card_fill">#1D242C</color>
-    <color name="cluster_nav_card_stroke">#2D3748</color>
-    <color name="cluster_nav_maneuver_start">#00B4D8</color>
-    <color name="cluster_nav_maneuver_end">#00D2C4</color>
     <color name="cluster_nav_maneuver_text">#F8FAFC</color>
     <color name="cluster_nav_maneuver_subtext">#94A3B8</color>
-    <color name="cluster_nav_eta_fill">#1D242C</color>
-    <color name="cluster_nav_eta_stroke">#2D3748</color>
     <color name="cardColor">#1D242C</color>
 
     <color name="textPrimary">#F8FAFC</color>
@@ -54,57 +38,30 @@
     <color name="textMessage">#E1E2E8</color>
     <color name="textHint">#94A3B8</color>
     <color name="textPrimary87">#DEF8FAFC</color>
-    <color name="textPrimary85">#D9F8FAFC</color>
-    <color name="textPrimary70">#B3F8FAFC</color>
     <color name="textPrimary80">#CCF8FAFC</color>
     <color name="textDialogButtonSecondary">#94A3B8</color>
     <color name="textDestructive">#F59E0B</color>
     <color name="textLoading">#F59E0B</color>
 
     <color name="buttonPrimary">#00B4D8</color>
-    <color name="buttonSuccess">#10B981</color>
     <color name="buttonSuccessBright">#10B981</color>
     <color name="buttonDanger">#252E38</color>
-    <color name="buttonNeutral">#252E38</color>
-    <color name="buttonActive">#00B4D8</color>
     <color name="buttonInactive">#252E38</color>
     <color name="buttonDestructiveBg">#252E38</color>
-    <color name="chipOn">#00D2C4</color>
-
-    <color name="selectionRow">#252E38</color>
-    <color name="selectionBar">#00B4D8</color>
-    <color name="driveModeSelected">#252E38</color>
-    <color name="driveModeUnselected">#1D242C</color>
     <!-- Dashboard 3D / ikon sürüş modu tonları -->
     <color name="drive_mode_eco">#10B981</color>
     <color name="drive_mode_normal">#00B4D8</color>
     <color name="drive_mode_sport">#F59E0B</color>
 
-    <color name="assistCardActive">#252E38</color>
-    <color name="assistStrokeActive">#00B4D8</color>
-    <color name="assistCardIdle">#1D242C</color>
-    <color name="assistStrokeIdle">#2D3748</color>
-
     <color name="automationPanel">#0F1216</color>
     <color name="automationCardSurface">#1D242C</color>
-    <color name="automationIconSurface">#252E38</color>
     <color name="automationCardStroke">#2D3748</color>
-    <color name="automationIconGlyph">#F8FAFC</color>
     <color name="automationText">#F8FAFC</color>
     <color name="automationTextMuted">#94A3B8</color>
 
     <color name="outline">#2D3748</color>
     <color name="outlineMuted">#3D494D</color>
-    <color name="dividerColor">#2D3748</color>
     <color name="dividerWhite12">#1FFFFFFF</color>
-
-    <color name="logBackground">#0F1216</color>
-    <color name="logText">#4CD6FB</color>
-    <color name="logPanelBg">#161B22</color>
-    <color name="logButtonBg">#252E38</color>
-
-    <color name="wifiItemBackground">#1D242C</color>
-    <color name="wifiItemPressed">#252E38</color>
 
     <color name="statusSuccess">#10B981</color>
     <color name="statusWarning">#F59E0B</color>
@@ -116,54 +73,19 @@
     <color name="transparent">#00000000</color>
 
     <color name="logFieldBg">#161B22</color>
-    <color name="logTerminalChrome">#161B22</color>
     <color name="outlineStrong">#2D3748</color>
-    <color name="textTertiary">#94A3B8</color>
     <color name="buttonSecondaryMuted">#252E38</color>
-    <color name="buttonWelcome">#00B4D8</color>
-    <color name="buttonGold">#F59E0B</color>
     <color name="textOnGold">#0F1216</color>
     <color name="terminalDotRed">#EF4444</color>
     <color name="terminalDotYellow">#F59E0B</color>
     <color name="terminalDotGreen">#10B981</color>
-    <color name="wifiScreenBg">#00000000</color>
-
-    <color name="wifi_toast_global_eyebrow_ok">#2D6A4F</color>
-    <color name="wifi_toast_global_eyebrow_fail">#8B4518</color>
-    <color name="wifi_toast_global_text_primary">#171A20</color>
-    <color name="wifi_toast_global_icon_tint_ok">#3D8A5E</color>
-    <color name="wifi_toast_global_icon_tint_fail">#B85C40</color>
-    <color name="wifi_toast_preparing_eyebrow">#3568A0</color>
-    <color name="wifi_toast_preparing_icon">#4586C5</color>
-
     <!-- Wi-Fi global toast card + halo (bg_global_wifi_toast_*) — light -->
-    <color name="wifi_toast_success_grad_start">#FFF2FAF6</color>
-    <color name="wifi_toast_success_grad_center">#FFE8F4ED</color>
-    <color name="wifi_toast_success_grad_end">#FFDCEEE4</color>
-    <color name="wifi_toast_success_stroke">#6688B898</color>
-    <color name="wifi_toast_error_grad_start">#FFFDF3F3</color>
-    <color name="wifi_toast_error_grad_center">#FFF5E8E8</color>
-    <color name="wifi_toast_error_grad_end">#FFEBDCDC</color>
-    <color name="wifi_toast_error_stroke">#70D08080</color>
-    <color name="wifi_toast_preparing_grad_start">#FFF0F5FA</color>
-    <color name="wifi_toast_preparing_grad_center">#FFE6EEF8</color>
-    <color name="wifi_toast_preparing_grad_end">#FFDCE6F2</color>
-    <color name="wifi_toast_preparing_stroke">#7080A8D0</color>
-    <color name="wifi_toast_halo_ok_grad_start">#88C8E8D8</color>
-    <color name="wifi_toast_halo_ok_grad_center">#55A0C8B0</color>
-    <color name="wifi_toast_halo_ok_grad_end">#30687870</color>
-    <color name="wifi_toast_halo_ok_stroke">#6690C8B8</color>
-    <color name="wifi_toast_halo_error_grad_start">#90F0C8C8</color>
-    <color name="wifi_toast_halo_error_grad_center">#60E0A0A0</color>
-    <color name="wifi_toast_halo_error_grad_end">#40C08080</color>
-    <color name="wifi_toast_halo_error_stroke">#70F0B0A8</color>
     <color name="wifi_toast_halo_preparing_grad_start">#88B8D8F0</color>
     <color name="wifi_toast_halo_preparing_grad_center">#5598B8D8</color>
     <color name="wifi_toast_halo_preparing_grad_end">#307898C0</color>
     <color name="wifi_toast_halo_preparing_stroke">#66A0C0E8</color>
 
     <color name="preparing_overlay_root">#E60F1216</color>
-    <color name="boot_splash_gradient_edge">#FF0F1216</color>
     <color name="boot_splash_gradient_mid">#FF161B22</color>
     <color name="boot_splash_grad_a">#FF0F1216</color>
     <color name="boot_splash_grad_b">#FF161B22</color>
@@ -209,5 +131,4 @@
     <color name="ck_text_muted">#475569</color>
     <color name="ck_on_accent">#0F1216</color>
     <color name="ck_scrim">#B3000000</color>
-    <color name="ck_ripple">#33FFFFFF</color>
-</resources>
+    </resources>

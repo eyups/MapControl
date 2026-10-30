@@ -393,7 +393,7 @@ public class DriverProfilesTabBuilder {
 
         Object drive = settings.get("driveModeSetting");
         if (drive instanceof Number) {
-            addSummaryRow(parent, context.getString(R.string.ck_drive_memory),
+            addSummaryRow(parent, context.getString(R.string.profiles_summary_drive_mode),
                     driveLabel(((Number) drive).intValue()));
         }
         int assist = 0;

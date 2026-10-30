@@ -49,14 +49,14 @@ public class DrivingAnalysisActivity extends Activity {
     public static final String EXTRA_SPEAK_TEXT = "com.mapcontrol.extra.SPEAK_TEXT";
     public static final String EXTRA_SPEAK_CACHE_ID = "com.mapcontrol.extra.SPEAK_CACHE_ID";
 
-    private static final int BG = 0xFF0F1216;
-    private static final int CARD = 0xFF1D242C;
-    private static final int BORDER = 0xFF2D3748;
-    private static final int AMBER = 0xFFF59E0B;
-    private static final int CYAN = 0xFF00B4D8;
-    private static final int TEXT = 0xFFF8FAFC;
-    private static final int MUTED = 0xFF94A3B8;
-    private static final int RED_EVENT = 0xFFEF4444;
+    private int BG;
+    private int CARD;
+    private int BORDER;
+    private int AMBER;
+    private int CYAN;
+    private int TEXT;
+    private int MUTED;
+    private int RED_EVENT;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
     private DrivingSessionRecorder recorder;
@@ -104,6 +104,7 @@ public class DrivingAnalysisActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_MapControl_Driving);
         super.onCreate(savedInstanceState);
+        initPalette();
         displayTypeface = loadDisplayTypeface();
         long requestedTripId = getIntent().getLongExtra(EXTRA_TRIP_ID, 0L);
         if (requestedTripId > 0L) {
@@ -147,12 +148,32 @@ public class DrivingAnalysisActivity extends Activity {
                 com.mapcontrol.ui.cockpit.CockpitTokens.WEIGHT_SEMIBOLD);
     }
 
+    private void initPalette() {
+        BG = color(R.color.ck_bg_base);
+        CARD = color(R.color.ck_surface_1);
+        BORDER = color(R.color.ck_stroke);
+        AMBER = color(R.color.ck_accent);
+        CYAN = color(R.color.ck_accent);
+        TEXT = color(R.color.ck_text_high);
+        MUTED = color(R.color.ck_text_medium);
+        RED_EVENT = color(R.color.ck_critical);
+    }
+
+    private int color(int resId) {
+        return com.mapcontrol.ui.cockpit.CockpitTokens.color(this, resId);
+    }
+
     private void buildUi() {
         FrameLayout root = new FrameLayout(this);
-        GradientDrawable background = new GradientDrawable(
-                GradientDrawable.Orientation.TL_BR,
-                new int[]{0xFF0F1216, 0xFF161B22, 0xFF0F1216});
-        root.setBackground(background);
+        root.setBackgroundColor(BG);
+
+        LinearLayout shell = new LinearLayout(this);
+        shell.setOrientation(LinearLayout.VERTICAL);
+        root.addView(shell, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT));
+        shell.addView(buildHeader(), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(56)));
 
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
@@ -161,9 +182,8 @@ public class DrivingAnalysisActivity extends Activity {
         scroll.setFocusableInTouchMode(false);
         scroll.setVerticalScrollBarEnabled(false);
         scroll.setHorizontalScrollBarEnabled(false);
-        root.addView(scroll, new FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT));
+        shell.addView(scroll, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
 
         LinearLayout content = new LinearLayout(this);
         content.setOrientation(LinearLayout.VERTICAL);
@@ -172,20 +192,10 @@ public class DrivingAnalysisActivity extends Activity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        LinearLayout.LayoutParams headerLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(46));
-        content.addView(buildHeader(), headerLp);
-
         LinearLayout hero = new LinearLayout(this);
         hero.setOrientation(isWide() ? LinearLayout.HORIZONTAL : LinearLayout.VERTICAL);
         hero.setGravity(isWide() ? Gravity.CENTER_VERTICAL : Gravity.CENTER_HORIZONTAL);
         hero.setPadding(0, dp(12), 0, dp(12));
-        GradientDrawable heroGlow = new GradientDrawable();
-        heroGlow.setGradientType(GradientDrawable.RADIAL_GRADIENT);
-        heroGlow.setColors(new int[]{0x26FFB000, 0x00000000});
-        heroGlow.setGradientCenter(0.28f, 0.42f);
-        heroGlow.setGradientRadius(dp(330));
-        hero.setBackground(heroGlow);
 
         scoreRing = new DrivingScoreRingView(this);
         scoreRing.setTypeface(displayTypeface);
@@ -463,23 +473,29 @@ public class DrivingAnalysisActivity extends Activity {
         LinearLayout header = new LinearLayout(this);
         header.setOrientation(LinearLayout.HORIZONTAL);
         header.setGravity(Gravity.CENTER_VERTICAL);
+        header.setPadding(dp(12), 0, dp(24), 0);
+        header.setBackgroundColor(BG);
 
-        TextView back = text("‹", 34, TEXT, false);
+        TextView back = text("‹", 30, TEXT, false);
         back.setGravity(Gravity.CENTER);
-        back.setPadding(0, 0, dp(18), dp(2));
+        back.setContentDescription(getString(R.string.dms_face_back));
         back.setOnClickListener(v -> finish());
-        header.addView(back, new LinearLayout.LayoutParams(dp(32), dp(44)));
+        header.addView(back, new LinearLayout.LayoutParams(dp(72), dp(56)));
 
-        TextView title = text("MAPCONTROL", 13, 0xFF94A3B8, true);
-        title.setLetterSpacing(0.22f);
-        header.addView(title, new LinearLayout.LayoutParams(0,
+        LinearLayout copy = new LinearLayout(this);
+        copy.setOrientation(LinearLayout.VERTICAL);
+        TextView title = text("Sürüş Karnesi", 20, TEXT, true);
+        copy.addView(title);
+        TextView subtitle = text("Sürüş raporu", 12, MUTED, false);
+        copy.addView(subtitle);
+        header.addView(copy, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        TextView close = text("KAPAT", 12, 0xFF94A3B8, true);
+        TextView close = text("KAPAT", 12, MUTED, true);
         close.setLetterSpacing(0.16f);
-        close.setPadding(dp(16), dp(8), dp(16), dp(8));
+        close.setGravity(Gravity.CENTER);
         close.setOnClickListener(v -> finish());
-        header.addView(close);
+        header.addView(close, new LinearLayout.LayoutParams(dp(88), dp(56)));
         return header;
     }
 
@@ -935,10 +951,10 @@ public class DrivingAnalysisActivity extends Activity {
         background.setCornerRadius(dp(10));
         if (primary) {
             background.setColor(AMBER);
-            button.setTextColor(Color.BLACK);
+            button.setTextColor(color(R.color.ck_on_accent));
         } else {
-            background.setColor(0xFF252E38);
-            background.setStroke(Math.max(1, Math.round(dp(1))), 0xFF2D3748);
+            background.setColor(color(R.color.ck_surface_2));
+            background.setStroke(Math.max(1, Math.round(dp(1))), BORDER);
             button.setTextColor(TEXT);
         }
         button.setBackground(background);

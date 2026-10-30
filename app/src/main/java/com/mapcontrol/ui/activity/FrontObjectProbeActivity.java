@@ -22,6 +22,7 @@ import com.desaysv.ivi.vdb.client.VDBus;
 import com.desaysv.ivi.vdb.event.VDEvent;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -186,6 +187,7 @@ public class FrontObjectProbeActivity extends Activity {
         root.addView(scroll, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
+        CockpitLegacyStyler.apply(root);
         setContentView(root);
     }
 

@@ -1,168 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_gravity="center_vertical"
-    android:orientation="vertical"
     android:id="@+id/root_view"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundPage">
-    <!-- Geri Dön Butonu Bar -->
+    android:background="@color/ck_bg_base">
+
     <LinearLayout
+        android:id="@+id/camera_top_bar"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/surfaceBar"
-        android:padding="16dp"
-        android:gravity="center_vertical">
+        android:layout_height="@dimen/ck_statusbar_h"
+        android:background="@color/ck_bg_base"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/ck_margin"
+        android:paddingEnd="@dimen/ck_margin">
+
         <Button
             android:id="@+id/btn_back"
-            android:text="← Geri Dön"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:layout_height="@dimen/ck_statusbar_h"
+            android:minWidth="88dp"
+            android:minHeight="@dimen/ck_statusbar_h"
+            android:paddingStart="@dimen/ck_space_md"
+            android:paddingEnd="@dimen/ck_space_md"
+            android:background="@android:color/transparent"
             android:fontFamily="@font/inter"
-            android:textColor="@color/textPrimary"
-            android:backgroundTint="@color/buttonPrimary"
-            android:padding="12dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:minHeight="64dp"
-            android:minWidth="120dp"
-            android:elevation="4dp"/>
+            android:text="‹ Kamera 360"
+            android:textAllCaps="false"
+            android:textColor="@color/ck_text_high"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/camera_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter"
+            android:text="@string/camera360_title"
+            android:textColor="@color/ck_text_high"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="@dimen/ck_space_sm">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/ck_surface_1"
+            android:padding="@dimen/ck_space_xs">
             <TextView
-                android:textSize="18sp"
-                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text1"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textPrimary"/>
+                android:fontFamily="@font/inter"
+                android:padding="@dimen/ck_space_sm"
+                android:textColor="@color/ck_text_high"
+                android:textSize="15sp" />
             <TextureView
                 android:id="@+id/tv_surface_camera1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/ck_space_sm"
+            android:background="@color/ck_surface_1"
+            android:padding="@dimen/ck_space_xs">
             <TextView
-                android:textSize="18sp"
-                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text2"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textPrimary"/>
+                android:fontFamily="@font/inter"
+                android:padding="@dimen/ck_space_sm"
+                android:textColor="@color/ck_text_high"
+                android:textSize="15sp" />
             <TextureView
                 android:id="@+id/tv_surface_camera2"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingStart="@dimen/ck_space_sm"
+        android:paddingEnd="@dimen/ck_space_sm"
+        android:paddingBottom="@dimen/ck_space_sm">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/ck_surface_1"
+            android:padding="@dimen/ck_space_xs">
             <TextView
-                android:textSize="18sp"
-                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text3"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textPrimary"/>
+                android:fontFamily="@font/inter"
+                android:padding="@dimen/ck_space_sm"
+                android:textColor="@color/ck_text_high"
+                android:textSize="15sp" />
             <TextureView
                 android:id="@+id/tv_surface_camera3"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/ck_space_sm"
+            android:background="@color/ck_surface_1"
+            android:padding="@dimen/ck_space_xs">
             <TextView
-                android:textSize="18sp"
-                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text4"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textPrimary"/>
+                android:fontFamily="@font/inter"
+                android:padding="@dimen/ck_space_sm"
+                android:textColor="@color/ck_text_high"
+                android:textSize="15sp" />
             <TextureView
                 android:id="@+id/tv_surface_camera4"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/ll_item3"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:paddingStart="@dimen/ck_space_sm"
+        android:paddingEnd="@dimen/ck_space_sm"
+        android:paddingBottom="@dimen/ck_space_sm">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="@color/ck_surface_1"
+            android:padding="@dimen/ck_space_xs">
             <TextView
-                android:textSize="18sp"
-                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text5"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textPrimary"/>
+                android:fontFamily="@font/inter"
+                android:padding="@dimen/ck_space_sm"
+                android:textColor="@color/ck_text_high"
+                android:textSize="15sp" />
             <TextureView
                 android:id="@+id/tv_surface_camera5"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/ck_space_sm"
+            android:background="@color/ck_surface_1"
+            android:padding="@dimen/ck_space_xs">
             <TextView
-                android:textSize="18sp"
-                android:fontFamily="@font/inter"
                 android:id="@+id/camera_text6"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textPrimary"/>
+                android:fontFamily="@font/inter"
+                android:padding="@dimen/ck_space_sm"
+                android:textColor="@color/ck_text_high"
+                android:textSize="15sp" />
             <TextureView
                 android:id="@+id/tv_surface_camera6"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
-
