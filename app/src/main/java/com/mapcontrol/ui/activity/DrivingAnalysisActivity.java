@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -504,20 +505,39 @@ public class DrivingAnalysisActivity extends Activity {
         header.setPadding(dp(12), 0, dp(24), 0);
         header.setBackgroundColor(BG);
 
-        TextView back = text("‹", 30, TEXT, false);
-        back.setGravity(Gravity.CENTER);
-        back.setContentDescription(getString(R.string.dms_face_back));
-        back.setOnClickListener(v -> finish());
-        header.addView(back, new LinearLayout.LayoutParams(dp(72), dp(56)));
+        // Geri dönüş alanı: ok + başlık birlikte tıklanabilir olsun.
+        LinearLayout backArea = new LinearLayout(this);
+        backArea.setOrientation(LinearLayout.HORIZONTAL);
+        backArea.setGravity(Gravity.CENTER_VERTICAL);
+        backArea.setClickable(true);
+        backArea.setFocusable(true);
+        backArea.setContentDescription("Geri Dön");
+        backArea.setOnClickListener(v -> finish());
+        backArea.setPadding(0, 0, dp(20), 0);
+        backArea.setMinimumWidth(dp(280));
+
+        ImageView back = new ImageView(this);
+        back.setImageResource(R.drawable.ic_ck_arrow_left);
+        back.setColorFilter(TEXT);
+        back.setScaleType(ImageView.ScaleType.CENTER);
+        back.setContentDescription("Geri Dön");
+        backArea.addView(back, new LinearLayout.LayoutParams(dp(64), dp(56)));
 
         LinearLayout copy = new LinearLayout(this);
         copy.setOrientation(LinearLayout.VERTICAL);
         TextView title = text("Sürüş Karnesi", 20, TEXT, true);
         copy.addView(title);
-        TextView subtitle = text("Sürüş raporu", 12, MUTED, false);
+        TextView subtitle = text("Geri Dön", 12, MUTED, false);
         copy.addView(subtitle);
-        header.addView(copy, new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        backArea.addView(copy, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        header.addView(backArea, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+
+        View spacer = new View(this);
+        header.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
 
         TextView close = text("KAPAT", 12, MUTED, true);
         close.setLetterSpacing(0.16f);
