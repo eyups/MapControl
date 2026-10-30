@@ -22,7 +22,7 @@ import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.MetricView;
 import com.mapcontrol.ui.cockpit.StatusBadge;
-import com.mapcontrol.ui.widget.VehicleModelHostView;
+import com.mapcontrol.ui.widget.VehicleGlbView;
 import com.mapcontrol.valet.ValetModeManager;
 import com.mapcontrol.vehicle.VehicleMetricsFormatter;
 import com.mapcontrol.vehicle.VehicleMetricsRepository;
@@ -65,7 +65,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private StatusBadge statusBadge;
     private CockpitCard onboardingCard;
     private View lastDriveCard;
-    private VehicleModelHostView vehicleView;
+    private VehicleGlbView vehicleView;
     private volatile boolean tabVisible;
 
     public HomeTabBuilder(Context context, VehicleMetricsRepository repository, HomeCallback callback) {
@@ -160,13 +160,15 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         visualHost.addView(placeholder, new android.widget.FrameLayout.LayoutParams(
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT));
-        vehicleView = new VehicleModelHostView(context);
-        vehicleView.setGlowVisible(false);
+        vehicleView = new VehicleGlbView(context);
         vehicleView.setContentDescription(context.getString(R.string.ck_home_vehicle_visual_hint));
-        vehicleView.onHostStart();
         visualHost.addView(vehicleView, new android.widget.FrameLayout.LayoutParams(
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT));
+        vehicleView.post(() -> {
+            vehicleView.onHostStart();
+            vehicleView.spin360Once();
+        });
         card.addContent(visualHost, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, 240)));
         return card;
