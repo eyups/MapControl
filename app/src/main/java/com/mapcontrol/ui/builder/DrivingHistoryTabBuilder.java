@@ -22,6 +22,7 @@ import com.mapcontrol.driving.DrivingTrendBarsView;
 import com.mapcontrol.driving.DrivingTrends;
 import com.mapcontrol.ui.activity.DrivingAnalysisActivity;
 import com.mapcontrol.ui.cockpit.CockpitButton;
+import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitChip;
 import com.mapcontrol.ui.cockpit.CockpitEmptyState;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
@@ -129,11 +130,14 @@ public class DrivingHistoryTabBuilder {
             String message = filterDays > 0
                     ? "Seçilen dönemde kayıtlı sürüş yok."
                     : context.getString(R.string.driving_history_empty);
-            CockpitEmptyState empty = new CockpitEmptyState(context,
-                    R.drawable.ic_mdi_road_variant, message);
-            listContainer.addView(empty, new LinearLayout.LayoutParams(
+            CockpitCard emptyCard = new CockpitCard(context);
+            emptyCard.addContent(new CockpitEmptyState(context,
+                    R.drawable.ic_mdi_road_variant, message));
+            LinearLayout.LayoutParams emptyLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            emptyLp.bottomMargin = dp(12);
+            listContainer.addView(emptyCard, emptyLp);
         }
     }
 
@@ -190,12 +194,15 @@ public class DrivingHistoryTabBuilder {
         cardLp.bottomMargin = dp(12);
         card.setLayoutParams(cardLp);
 
-        TextView title = text("EKO TREND", 13,
-                UiStyles.color(context, R.color.textPrimary), true);
-        title.setLetterSpacing(0.12f);
+        TextView title = new TextView(context);
+        title.setText("EKO TREND");
+        CockpitTokens.labelCaps(title);
+        title.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         card.addView(title);
-        TextView subtitle = text("Bu hafta ve bu ay, önceki dönemle karşılaştırma", 12,
-                UiStyles.color(context, R.color.textHint), false);
+        TextView subtitle = new TextView(context);
+        subtitle.setText("Bu hafta ve bu ay, önceki dönemle karşılaştırma");
+        CockpitTokens.bodySm(subtitle);
+        subtitle.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         LinearLayout.LayoutParams subtitleLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -257,22 +264,23 @@ public class DrivingHistoryTabBuilder {
         background.setCornerRadius(dp(10));
         card.setBackground(background);
 
-        TextView eyebrow = text(label, 10,
-                UiStyles.color(context, R.color.textHint), true);
-        eyebrow.setLetterSpacing(0.12f);
+        TextView eyebrow = new TextView(context);
+        eyebrow.setText(label);
+        CockpitTokens.labelCaps(eyebrow);
+        eyebrow.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         card.addView(eyebrow);
 
         if (trip != null) {
             TextView value = text(trip.title + "  ·  " + trip.score + " puan",
-                    13, gradeColor(trip.grade), true);
+                    15, gradeColor(trip.grade), true);
             LinearLayout.LayoutParams valueLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
             valueLp.topMargin = dp(4);
             card.addView(value, valueLp);
 
-            TextView meta = text(bestMeta(trip), 11,
-                    UiStyles.color(context, R.color.textHint), false);
+            TextView meta = text(bestMeta(trip), 15,
+                    CockpitTokens.color(context, R.color.ck_text_medium), false);
             LinearLayout.LayoutParams metaLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -301,9 +309,10 @@ public class DrivingHistoryTabBuilder {
         LinearLayout textColumn = new LinearLayout(context);
         textColumn.setOrientation(LinearLayout.VERTICAL);
 
-        TextView periodLabel = text(label, 10,
-                UiStyles.color(context, R.color.textHint), true);
-        periodLabel.setLetterSpacing(0.12f);
+        TextView periodLabel = new TextView(context);
+        periodLabel.setText(label);
+        CockpitTokens.labelCaps(periodLabel);
+        periodLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         textColumn.addView(periodLabel);
         TextView score = text(current.hasData() ? current.avgScore + " puan" : "—",
                 23, UiStyles.color(context, R.color.textPrimary), true);
@@ -317,8 +326,8 @@ public class DrivingHistoryTabBuilder {
 
         String consumptionText = current.hasConsumption
                 ? String.format(appLocale(), "%.1f L/100 km", current.avgConsumptionL100) : "—";
-        TextView consumption = text("Tüketim: " + consumptionText, 12,
-                UiStyles.color(context, R.color.textSecondary), false);
+        TextView consumption = text("Tüketim: " + consumptionText, 15,
+                CockpitTokens.color(context, R.color.ck_text_medium), false);
         LinearLayout.LayoutParams consumptionLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -331,7 +340,7 @@ public class DrivingHistoryTabBuilder {
 
         TextView meta = text(current.tripCount + " sürüş · "
                         + String.format(appLocale(), "%.1f km", current.distanceKm),
-                11, UiStyles.color(context, R.color.textHint), false);
+                15, CockpitTokens.color(context, R.color.ck_text_medium), false);
         LinearLayout.LayoutParams metaLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -343,9 +352,10 @@ public class DrivingHistoryTabBuilder {
         LinearLayout chartColumn = new LinearLayout(context);
         chartColumn.setOrientation(LinearLayout.VERTICAL);
         chartColumn.setGravity(Gravity.END);
-        TextView chartLabel = text(week ? "7 GÜN" : "5 HAFTA", 10,
-                UiStyles.color(context, R.color.textHint), true);
-        chartLabel.setLetterSpacing(0.12f);
+        TextView chartLabel = new TextView(context);
+        chartLabel.setText(week ? "7 GÜN" : "5 HAFTA");
+        CockpitTokens.labelCaps(chartLabel);
+        chartLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         chartLabel.setGravity(Gravity.END);
         chartColumn.addView(chartLabel);
         DrivingTrendBarsView bars = new DrivingTrendBarsView(context);
@@ -379,8 +389,8 @@ public class DrivingHistoryTabBuilder {
     private TextView deltaView(double current, double previous, boolean hasComparison,
             boolean lowerIsBetter, String unit) {
         if (!hasComparison) {
-            TextView neutral = text("Önceki dönem verisi yok", 11,
-                    UiStyles.color(context, R.color.textHint), false);
+            TextView neutral = text("Önceki dönem verisi yok", 15,
+                    CockpitTokens.color(context, R.color.ck_text_medium), false);
             neutral.setPadding(0, dp(2), 0, 0);
             return neutral;
         }
@@ -391,7 +401,7 @@ public class DrivingHistoryTabBuilder {
                 : (better ? 0xFF2E7D32 : 0xFFC62828);
         String arrow = Math.abs(delta) < 0.05 ? "±" : (delta > 0 ? "▲" : "▼");
         TextView view = text(String.format(appLocale(), "%s %.1f %s", arrow,
-                Math.abs(delta), unit), 11, color, true);
+                Math.abs(delta), unit), 15, color, true);
         view.setPadding(0, dp(2), 0, 0);
         return view;
     }
@@ -420,8 +430,10 @@ public class DrivingHistoryTabBuilder {
         header.setOrientation(LinearLayout.HORIZONTAL);
         header.setGravity(Gravity.CENTER_VERTICAL);
 
-        TextView subtitle = text(R.string.driving_history_subtitle, 14,
-                UiStyles.color(context, R.color.textSecondary), false);
+        TextView subtitle = new TextView(context);
+        subtitle.setText(R.string.driving_history_subtitle);
+        CockpitTokens.bodySm(subtitle);
+        subtitle.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         subtitle.setPadding(0, 0, dp(12), 0);
         header.addView(subtitle, new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
@@ -498,7 +510,7 @@ public class DrivingHistoryTabBuilder {
         if (trip.testData) {
             date = "TEST · " + date;
         }
-        return text(date, 13, UiStyles.color(context, R.color.textHint), false);
+        return text(date, 15, CockpitTokens.color(context, R.color.ck_text_medium), false);
     }
 
     private LinearLayout titleLine(DrivingTrip trip, boolean withArrow) {
@@ -507,7 +519,7 @@ public class DrivingHistoryTabBuilder {
         row.setGravity(Gravity.CENTER_VERTICAL);
         TextView title = text(trip.title != null && !trip.title.isEmpty()
                 ? trip.title : context.getString(R.string.side_rail_driving_report),
-                22, UiStyles.color(context, R.color.textPrimary), true);
+                22, CockpitTokens.color(context, R.color.ck_text_high), true);
         title.setPadding(0, dp(3), 0, 0);
         row.addView(title, new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
@@ -544,12 +556,13 @@ public class DrivingHistoryTabBuilder {
                 int index = start + i;
                 LinearLayout cell = new LinearLayout(context);
                 cell.setOrientation(LinearLayout.VERTICAL);
-                TextView label = text(labels[index], 9,
-                        UiStyles.color(context, R.color.textHint), true);
-                label.setLetterSpacing(0.1f);
+                TextView label = new TextView(context);
+                label.setText(labels[index]);
+                CockpitTokens.labelCaps(label);
+                label.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
                 cell.addView(label);
                 TextView value = text(values[index], 16,
-                        UiStyles.color(context, R.color.textPrimary), true);
+                        CockpitTokens.color(context, R.color.ck_text_high), true);
                 value.setMaxLines(1);
                 cell.addView(value);
                 LinearLayout.LayoutParams cellLp = new LinearLayout.LayoutParams(
@@ -589,9 +602,10 @@ public class DrivingHistoryTabBuilder {
                     wide ? 18 : 16, color, true);
             liveValue.setLetterSpacing(0.08f);
             group.addView(liveValue);
-            TextView liveLabel = text(R.string.driving_history_live_now,
-                    9, UiStyles.color(context, R.color.textHint), true);
-            liveLabel.setLetterSpacing(0.12f);
+            TextView liveLabel = new TextView(context);
+            liveLabel.setText(R.string.driving_history_live_now);
+            CockpitTokens.labelCaps(liveLabel);
+            liveLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
             group.addView(liveLabel);
             panel.addView(group);
             return panel;
@@ -604,9 +618,10 @@ public class DrivingHistoryTabBuilder {
                 UiStyles.color(context, R.color.textPrimary), true);
         pointsValue.setIncludeFontPadding(false);
         points.addView(pointsValue);
-        TextView pointsLabel = text(R.string.driving_history_points_label, 9,
-                UiStyles.color(context, R.color.textHint), true);
-        pointsLabel.setLetterSpacing(0.12f);
+        TextView pointsLabel = new TextView(context);
+        pointsLabel.setText(R.string.driving_history_points_label);
+        CockpitTokens.labelCaps(pointsLabel);
+        pointsLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         points.addView(pointsLabel);
         panel.addView(points);
 
@@ -631,9 +646,10 @@ public class DrivingHistoryTabBuilder {
         gradeValue.setBackground(pill);
         grade.addView(gradeValue);
 
-        TextView gradeLabel = text(R.string.driving_history_grade_label, 9,
-                UiStyles.color(context, R.color.textHint), true);
-        gradeLabel.setLetterSpacing(0.12f);
+        TextView gradeLabel = new TextView(context);
+        gradeLabel.setText(R.string.driving_history_grade_label);
+        CockpitTokens.labelCaps(gradeLabel);
+        gradeLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         grade.addView(gradeLabel);
         return panel;
     }
