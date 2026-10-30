@@ -26,7 +26,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitEmptyState;
+import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 
@@ -57,47 +59,29 @@ public class WifiTabBuilder {
     public LinearLayout build() {
         wifiTabContent = new LinearLayout(context);
         wifiTabContent.setOrientation(LinearLayout.VERTICAL);
-        wifiTabContent.setBackgroundColor(UiStyles.color(context, R.color.transparent));
-        int outerPad = UiStyles.dimenPx(context, R.dimen.oem_card_margin);
-        wifiTabContent.setPadding(outerPad, outerPad, outerPad, outerPad);
+        wifiTabContent.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        wifiTabContent.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
 
-        if (context.getResources().getConfiguration().screenWidthDp >= 1000) {
-            LinearLayout columns = new LinearLayout(context);
-            columns.setOrientation(LinearLayout.HORIZONTAL);
-            columns.setBaselineAligned(false);
+        CockpitCard control = new CockpitCard(context,
+                context.getString(R.string.topbar_wifi_management));
+        LinearLayout controlBody = new LinearLayout(context);
+        controlBody.setOrientation(LinearLayout.VERTICAL);
+        control.addContent(controlBody);
+        addStatusAndControls(controlBody);
+        wifiTabContent.addView(control, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            LinearLayout left = createCard();
-            addPanelTitle(left, R.string.topbar_wifi_management);
-            addStatusAndControls(left);
-
-            LinearLayout right = createCard();
-            addPanelTitle(right, R.string.wifi_networks_title);
-            right.addView(createNetworkList(), new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, Math.round(220 * context.getResources().getDisplayMetrics().density)));
-
-            int gutter = UiStyles.dimenPx(context, R.dimen.spacing_medium);
-            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            leftLp.setMarginEnd(gutter / 2);
-            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
-                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            rightLp.setMarginStart(gutter / 2);
-            columns.addView(left, leftLp);
-            columns.addView(right, rightLp);
-            wifiTabContent.addView(columns, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-        } else {
-            LinearLayout card = createCard();
-            addPanelTitle(card, R.string.topbar_wifi_management);
-            addStatusAndControls(card);
-            card.addView(createNetworkList(), new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    Math.round(220 * context.getResources().getDisplayMetrics().density)));
-            wifiTabContent.addView(card, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
+        CockpitCard networks = new CockpitCard(context,
+                context.getString(R.string.wifi_networks_title));
+        LinearLayout.LayoutParams listLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, 360));
+        networks.addContent(createNetworkList(), listLp);
+        LinearLayout.LayoutParams networksLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        networksLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+        wifiTabContent.addView(networks, networksLp);
 
         updateWifiStatus();
         return wifiTabContent;
@@ -106,8 +90,8 @@ public class WifiTabBuilder {
     private LinearLayout createCard() {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.VERTICAL);
-        UiStyles.setGlassCardBackground(card);
-        int innerPad = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
+        CockpitSurfaces.level1(card);
+        int innerPad = CockpitTokens.dim(context, R.dimen.ck_card_padding);
         card.setPadding(innerPad, innerPad, innerPad, innerPad);
         return card;
     }
@@ -127,9 +111,9 @@ public class WifiTabBuilder {
     private void addStatusAndControls(LinearLayout card) {
         wifiStatusLine = new TextView(context);
         wifiStatusLine.setText(R.string.wifi_not_connected);
-        wifiStatusLine.setTextSize(13);
-        wifiStatusLine.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
-        wifiStatusLine.setPadding(16, 0, 16, UiStyles.dimenPx(context, R.dimen.spacing_small));
+        CockpitTokens.bodySm(wifiStatusLine);
+        wifiStatusLine.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        wifiStatusLine.setPadding(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
         wifiStatusLine.setBackgroundColor(UiStyles.color(context, R.color.transparent));
         card.addView(wifiStatusLine, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -137,17 +121,17 @@ public class WifiTabBuilder {
 
         LinearLayout controlButtonsRow = new LinearLayout(context);
         controlButtonsRow.setOrientation(LinearLayout.HORIZONTAL);
-        controlButtonsRow.setPadding(16, UiStyles.dimenPx(context, R.dimen.spacing_small),
-                16, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+        controlButtonsRow.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                0, 0);
         controlButtonsRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
         controlButtonsRow.setBackgroundColor(UiStyles.color(context, R.color.transparent));
 
         btnWifiToggle = new Button(context);
         btnWifiToggle.setText(R.string.wifi_turn_on);
-        btnWifiToggle.setTextSize(14);
-        btnWifiToggle.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnWifiToggle.setTypeface(null, android.graphics.Typeface.BOLD);
-        UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.buttonPrimary));
+        btnWifiToggle.setTextSize(16);
+        btnWifiToggle.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnWifiToggle, CockpitTokens.color(context, R.color.ck_accent));
+        btnWifiToggle.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
         btnWifiToggle.setPadding(24, 12, 24, 12);
         btnWifiToggle.setOnClickListener(v -> toggleWifi());
         LinearLayout.LayoutParams toggleParams = new LinearLayout.LayoutParams(
@@ -157,13 +141,10 @@ public class WifiTabBuilder {
 
         btnScanWifi = new Button(context);
         btnScanWifi.setText(R.string.wifi_refresh);
-        btnScanWifi.setTextSize(14);
-        btnScanWifi.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        btnScanWifi.setTypeface(null, android.graphics.Typeface.BOLD);
-        UiStyles.styleOemButton(btnScanWifi, UiStyles.color(context, R.color.oemAccent));
-        if (com.mapcontrol.ui.theme.ThemeManager.isCyber(context)) {
-            btnScanWifi.setTextColor(android.graphics.Color.BLACK);
-        }
+        btnScanWifi.setTextSize(16);
+        btnScanWifi.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnScanWifi, CockpitTokens.color(context, R.color.ck_surface_2));
+        btnScanWifi.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         btnScanWifi.setPadding(24, 12, 24, 12);
         btnScanWifi.setOnClickListener(v -> scanWifiNetworks());
         LinearLayout.LayoutParams scanParams = new LinearLayout.LayoutParams(
@@ -236,6 +217,9 @@ public class WifiTabBuilder {
             callback.log("Wi-Fi durumu güncellendi: " + (isWifiEnabled ? "AÇIK" : "KAPALI"));
             updateWifiStatusIcon();
 
+            if (!isWifiEnabled) {
+                showWifiOffState();
+            }
             if (isWifiEnabled) {
                 handler.postDelayed(this::scanWifiNetworks, 500);
             }
@@ -249,6 +233,18 @@ public class WifiTabBuilder {
                 wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textLoading));
             }
         }
+    }
+
+    private void showWifiOffState() {
+        if (wifiListContainer == null) {
+            return;
+        }
+        wifiListContainer.removeAllViews();
+        wifiListContainer.addView(new CockpitEmptyState(context,
+                R.drawable.ic_mdi_wifi, context.getString(R.string.wifi_off_label)),
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
     private void updateWifiStatusIcon() {
@@ -453,13 +449,12 @@ public class WifiTabBuilder {
         wifiCard.setClickable(true);
         wifiCard.setFocusable(true);
 
-        UiStyles.applySolidRoundedBackgroundDp(wifiCard,
-                UiStyles.color(context, R.color.surfaceCardInner), 16f);
+        CockpitSurfaces.level2(wifiCard);
 
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        cardParams.setMargins(0, 0, 0, 12);
+        cardParams.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
         wifiCard.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
 
         LinearLayout iconContainer = new LinearLayout(context);
@@ -488,9 +483,7 @@ public class WifiTabBuilder {
         TextView ssidText = new TextView(context);
         String ssid = result.SSID != null ? result.SSID : context.getString(R.string.wifi_hidden_network);
         ssidText.setText(ssid);
-        ssidText.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        ssidText.setTextSize(18);
-        ssidText.setTypeface(null, android.graphics.Typeface.NORMAL);
+        CockpitTokens.title(ssidText);
         infoContainer.addView(ssidText);
 
         LinearLayout detailRow = new LinearLayout(context);
@@ -536,12 +529,12 @@ public class WifiTabBuilder {
                 detailStr += sep + signalQuality;
             }
             detailText.setText(detailStr);
-            detailText.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+            detailText.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
         } else {
             detailText.setText(security + sep + signalQuality);
-            detailText.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+            detailText.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         }
-        detailText.setTextSize(13);
+        CockpitTokens.bodySm(detailText);
         detailRow.addView(detailText);
 
         infoContainer.addView(detailRow);
