@@ -102,6 +102,20 @@ public final class VehicleModelHostView extends FrameLayout {
         return glowLp;
     }
 
+    private void animateReveal() {
+        View target = carImageView.getVisibility() == VISIBLE ? carImageView : fallbackView;
+        target.setAlpha(0f);
+        target.setScaleX(0.96f);
+        target.setScaleY(0.96f);
+        target.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(300)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator())
+                .start();
+    }
+
     public void setGlowVisible(boolean visible) {
         glowView.setVisibility(visible ? VISIBLE : GONE);
     }
@@ -192,11 +206,13 @@ public final class VehicleModelHostView extends FrameLayout {
             carImageView.setImageBitmap(carBitmap);
             carImageView.setVisibility(VISIBLE);
             fallbackView.setVisibility(GONE);
+            post(this::animateReveal);
             return;
         }
         oemAssetsLoaded = false;
         carImageView.setVisibility(GONE);
         fallbackView.setVisibility(VISIBLE);
+        post(this::animateReveal);
     }
 
     private void startTransition(boolean backToNormal, String prefix, int fromFrame, int toFrame) {
