@@ -944,17 +944,20 @@ public class AppsTabBuilder {
             actionButton.setEnabled(false);
         } else if (hasUpdate) {
             actionButton.setText(R.string.apps_action_update);
-            actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
             UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.ck_accent));
             actionButton.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
+            actionButton.setEnabled(true);
+            actionButton.setAlpha(1f);
             actionButton.setOnClickListener(v -> {
                 callback.log(displayName + " güncelleniyor...");
                 requestInstall(packageName, displayName, downloadUrl, null);
             });
         } else if (isInstalled && !isLocked) {
             actionButton.setText(R.string.apps_action_open);
-            actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
             UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.buttonPrimary));
+            actionButton.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
+            actionButton.setEnabled(true);
+            actionButton.setAlpha(1f);
             actionButton.setOnClickListener(v -> launchApp(packageName));
         } else if (isLocked) {
             actionButton.setText(R.string.apps_action_locked);
@@ -965,13 +968,15 @@ public class AppsTabBuilder {
             bindLocalInstallButton(actionButton, statusText, displayName, readyFile);
         } else {
             actionButton.setText(R.string.apps_action_install);
-            actionButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
             UiStyles.styleOemButton(actionButton, UiStyles.color(context, R.color.ck_accent));
             actionButton.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
+            actionButton.setEnabled(true);
+            actionButton.setAlpha(1f);
             actionButton.setOnClickListener(v -> requestInstall(packageName, displayName, downloadUrl, null));
         }
 
         appRows.put(packageName, new AppRow(actionButton, statusText, displayName));
+
         if (trackProgress) {
             refreshRow(packageName);
         }
@@ -1288,10 +1293,10 @@ public class AppsTabBuilder {
         status.setText(context.getString(R.string.apps_status_local_ready, formatFileSize(readyFile.length())));
         status.setTextColor(UiStyles.color(context, R.color.statusSuccess));
         button.setEnabled(true);
+        button.setAlpha(1f);
         button.setText(R.string.apps_action_install_local);
-        button.setTextColor(UiStyles.color(context, R.color.textPrimary));
         UiStyles.styleOemButton(button, UiStyles.color(context, R.color.ck_accent));
-            button.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
+        button.setTextColor(UiStyles.color(context, R.color.ck_on_accent));
         UiStyles.clearButtonCompoundDrawables(button);
         button.setOnClickListener(v -> {
             String pkg = packageNameFromApkFile(readyFile);

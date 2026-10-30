@@ -75,7 +75,7 @@ public final class CockpitLegacyStyler {
         Typeface current = view.getTypeface();
         float sp = view.getTextSize() / view.getResources().getDisplayMetrics().scaledDensity;
         boolean caps = view.isAllCaps() || isAllCaps(view.getText());
-        if (caps && sp <= 16f && !(view instanceof EditText)) {
+        if (caps && sp <= 16f && !(view instanceof EditText) && !(view instanceof Button)) {
             CockpitTokens.labelCaps(view);
             return;
         }
@@ -91,6 +91,12 @@ public final class CockpitLegacyStyler {
         if (view instanceof EditText) {
             view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 16f);
             view.setTypeface(CockpitTokens.inter(view.getContext(), CockpitTokens.WEIGHT_REGULAR));
+            return;
+        }
+        if (view instanceof Button) {
+            view.setTypeface(CockpitTokens.inter(view.getContext(),
+                    CockpitTokens.WEIGHT_SEMIBOLD));
+            view.setAllCaps(false);
             return;
         }
         int style = current != null ? current.getStyle() : Typeface.NORMAL;
