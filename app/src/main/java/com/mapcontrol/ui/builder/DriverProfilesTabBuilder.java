@@ -186,7 +186,10 @@ public class DriverProfilesTabBuilder {
         editLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         edit.setOnClickListener(v -> showProfileSettings(profile));
         actions.addView(edit, editLp);
-        card.addContent(actions);
+        LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        actionsLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
+        card.addContent(actions, actionsLp);
         return card;
     }
 
