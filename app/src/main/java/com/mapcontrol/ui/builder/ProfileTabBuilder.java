@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,7 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import org.json.JSONObject;
 import com.mapcontrol.R;
 import com.mapcontrol.util.TargetPackageStore;
+import com.mapcontrol.ui.cockpit.CockpitGrid;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.api.ProfileApiService;
 import com.mapcontrol.ui.activity.MainActivity;
@@ -101,9 +103,12 @@ public class ProfileTabBuilder {
 
         profileTabContent = new LinearLayout(context);
         profileTabContent.setOrientation(LinearLayout.VERTICAL);
-        int inner = UiStyles.dimenPx(context, R.dimen.oem_card_inner_padding);
-        profileTabContent.setPadding(inner, inner, inner, inner);
-        UiStyles.setGlassCardBackground(profileTabContent);
+        profileTabContent.setPadding(0, 0, 0, 0);
+        profileTabContent.setBackgroundColor(Color.TRANSPARENT);
+        CockpitGrid profileGrid = new CockpitGrid(context);
+        profileTabContent.addView(profileGrid, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Giriş kartı
         LinearLayout loginCard = new LinearLayout(context);
@@ -239,11 +244,7 @@ public class ProfileTabBuilder {
             showPlatformQRDialog(platformUrl);
         });
 
-        LinearLayout.LayoutParams loginCardParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        loginCardParams.setMargins(16, 0, 16, 32);
-        profileTabContent.addView(loginCard, loginCardParams);
+        profileGrid.add(loginCard, 4);
 
         updateProfileLoginStatus();
 
@@ -475,11 +476,8 @@ public class ProfileTabBuilder {
         // (Bu builder dosyasında, devamı aşağıdaki "appendRemainingProfileUI(actionsCard)" metodunda.)
         appendRemainingProfileUI(actionsCard);
 
-        LinearLayout.LayoutParams actionsCardParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        actionsCardParams.setMargins(16, 0, 16, 32);
-        profileTabContent.addView(actionsCard, actionsCardParams);
+        profileGrid.add(actionsCard, 4);
+        profileGrid.add(new View(context), 4); // sag yari bos kalsin
 
         if (apiService != null && apiService.isLoggedIn()) {
             actionsCard.setVisibility(android.view.View.VISIBLE);
