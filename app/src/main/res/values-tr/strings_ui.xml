@@ -1249,4 +1249,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_stability">Kararlılık</string>
     <string name="voice_talk_clarity">Netlik &amp; Güç</string>
     <string name="voice_talk_sample">Merhaba, RoadDeck sesli asistanı hazır.</string>
+    <string name="voice_talk_no_extra_settings">Bu motor için ek ayar gerekmiyor.</string>
 </resources>

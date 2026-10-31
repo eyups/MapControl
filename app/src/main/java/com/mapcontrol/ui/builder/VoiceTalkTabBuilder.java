@@ -131,11 +131,10 @@ public class VoiceTalkTabBuilder {
             outer.addView(voiceCard, gap);
         }
 
-        buildEngineCard(engineCard);
-        buildVoiceCard(voiceCard);
+        buildEngineCard(engineCard, voiceCard);
     }
 
-    private void buildEngineCard(LinearLayout card) {
+    private void buildEngineCard(LinearLayout card, LinearLayout rightCard) {
         addTitle(card, R.string.settings_tts_section_title);
         addBody(card, R.string.settings_tts_section_desc, true);
 
@@ -153,10 +152,67 @@ public class VoiceTalkTabBuilder {
             prefs.edit().putString(MapControlSpeech.KEY_ENGINE, selected)
                     .putBoolean(MapControlSpeech.KEY_ENGINE_CONFIGURED, true).apply();
             addEngineHelp(card, index);
+            rebuildRightPanel(rightCard, index);
         });
         card.addView(engineSegmented, matchWrap());
         addEngineHelp(card, initialEngine);
+        rebuildRightPanel(rightCard, initialEngine);
+    }
 
+    private void addEngineHelp(LinearLayout card, int index) {
+        View old = card.findViewWithTag("engine_help");
+        if (old != null) card.removeView(old);
+        TextView help = new TextView(context);
+        help.setTag("engine_help");
+        help.setText(index == 2 ? R.string.settings_tts_iflytek_help
+                : (index == 1 ? R.string.settings_tts_elevenlabs_help
+                : R.string.settings_tts_sherpa_help));
+        CockpitTokens.bodySm(help);
+        help.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        help.setPadding(dp(4), dp(8), dp(4), dp(8));
+        int position = card.indexOfChild(engineSegmented) + 1;
+        card.addView(help, position, matchWrap());
+    }
+
+    private void rebuildRightPanel(LinearLayout card, int engineIndex) {
+        if (card == null) return;
+        card.removeAllViews();
+        voiceCards.clear();
+        keyField = null;
+        keyStatus = null;
+        balanceText = null;
+        activeVoice = null;
+        customVoice = null;
+        if (engineIndex == 1) {
+            buildElevenLabsPanel(card);
+        } else {
+            buildSimpleEnginePanel(card, engineIndex);
+        }
+    }
+
+    private void buildSimpleEnginePanel(LinearLayout card, int engineIndex) {
+        addTitle(card, engineIndex == 0 ? R.string.settings_tts_sherpa
+                : R.string.settings_tts_iflytek);
+        addBody(card, engineIndex == 0 ? R.string.settings_tts_sherpa_help
+                : R.string.settings_tts_iflytek_help, true);
+        TextView note = new TextView(context);
+        note.setText(R.string.voice_talk_no_extra_settings);
+        CockpitTokens.bodySm(note);
+        note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        note.setPadding(dp(4), dp(12), dp(4), dp(12));
+        card.addView(note, matchWrap());
+        CockpitButton listen = CockpitButton.primary(context,
+                context.getString(R.string.voice_talk_listen));
+        listen.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        listen.setOnClickListener(v -> {
+            MapControlSpeech.stop();
+            String sample = context.getString(R.string.voice_talk_sample);
+            MapControlSpeech.speak(context, sample, sample);
+        });
+        card.addView(listen, matchWrap());
+    }
+
+    private void buildElevenLabsPanel(LinearLayout card) {
         addLabel(card, R.string.settings_tts_api_key);
         LinearLayout keyRow = new LinearLayout(context);
         keyRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -227,26 +283,9 @@ public class VoiceTalkTabBuilder {
         CockpitTokens.bodySm(balanceText);
         balanceText.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         balanceText.setText(R.string.voice_talk_balance_unknown);
-        balanceText.setPadding(dp(4), dp(8), 0, 0);
+        balanceText.setPadding(dp(4), dp(8), 0, dp(16));
         card.addView(balanceText);
-    }
 
-    private void addEngineHelp(LinearLayout card, int index) {
-        View old = card.findViewWithTag("engine_help");
-        if (old != null) card.removeView(old);
-        TextView help = new TextView(context);
-        help.setTag("engine_help");
-        help.setText(index == 2 ? R.string.settings_tts_iflytek_help
-                : (index == 1 ? R.string.settings_tts_elevenlabs_help
-                : R.string.settings_tts_sherpa_help));
-        CockpitTokens.bodySm(help);
-        help.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        help.setPadding(dp(4), dp(8), dp(4), dp(8));
-        int position = card.indexOfChild(engineSegmented) + 1;
-        card.addView(help, position, matchWrap());
-    }
-
-    private void buildVoiceCard(LinearLayout card) {
         LinearLayout head = new LinearLayout(context);
         head.setOrientation(LinearLayout.HORIZONTAL);
         head.setGravity(Gravity.CENTER_VERTICAL);

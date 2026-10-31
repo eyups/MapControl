@@ -1233,4 +1233,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_stability">Stability</string>
     <string name="voice_talk_clarity">Clarity &amp; power</string>
     <string name="voice_talk_sample">Hello, RoadDeck voice assistant is ready.</string>
+    <string name="voice_talk_no_extra_settings">No extra settings for this engine.</string>
 </resources>
