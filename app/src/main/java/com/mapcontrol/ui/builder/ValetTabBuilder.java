@@ -171,15 +171,7 @@ public class ValetTabBuilder {
         noteLp.topMargin = dp(10);
         right.addView(note, noteLp);
 
-        Button startBtn = button("Vale Modu'nu başlat", true);
-        startBtn.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
-        startBtn.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
-        startBtn.setOnClickListener(v -> {
-            if (!ValetModeManager.hasPin(context)) {
-                showPinSetupDialog();
-                return;
-            }
-            new AlertDialog.Builder(context)
+        final Runnable startValet = () -> new AlertDialog.Builder(context)
                 .setTitle("Vale Modu başlatılsın mı?")
                 .setMessage("Araç park hâlinde olmalı. Modu bitirmek için PIN gerekir; "
                         + "hız ve alan sınırı uyarıları cihazda tutulur.")
@@ -198,6 +190,17 @@ public class ValetTabBuilder {
                 })
                 .setNegativeButton("Vazgeç", null)
                 .show();
+
+        Button startBtn = button("Vale Modu'nu başlat", true);
+        startBtn.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
+        startBtn.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
+        startBtn.setOnClickListener(v -> {
+            if (!ValetModeManager.hasPin(context)) {
+                // İlk kullanımda mevcut PIN yok; doğrudan PIN oluştur ve başlat akışına dön.
+                showPinSetupDialog(startValet);
+                return;
+            }
+            startValet.run();
         });
         LinearLayout.LayoutParams startLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -351,21 +354,32 @@ public class ValetTabBuilder {
     }
 
     private void showPinSetupDialog() {
+        showPinSetupDialog(null);
+    }
+
+    /**
+     * PIN yoksa yalnızca yeni PIN alanları gösterilir; mevcut PIN sorulmaz.
+     * PIN oluşturulduktan sonra afterCreate çalıştırılır (başlat akışı için).
+     */
+    private void showPinSetupDialog(Runnable afterCreate) {
+        boolean hasPin = ValetModeManager.hasPin(context);
         LinearLayout content = new LinearLayout(context);
         content.setOrientation(LinearLayout.VERTICAL);
         content.setPadding(dp(20), dp(8), dp(20), 0);
-        EditText current = pinField("Mevcut PIN");
+        EditText current = hasPin ? pinField("Mevcut PIN") : null;
         EditText next = pinField("Yeni PIN");
         EditText confirm = pinField("Yeni PIN tekrar");
-        content.addView(current);
+        if (hasPin) {
+            content.addView(current);
+        }
         content.addView(next);
         content.addView(confirm);
         new AlertDialog.Builder(context)
-                .setTitle("PIN değiştir")
+                .setTitle(hasPin ? "PIN değiştir" : "Vale PIN'i oluştur")
                 .setView(content)
                 .setNegativeButton("Vazgeç", null)
                 .setPositiveButton("Kaydet", (dialog, which) -> {
-                    if (!ValetModeManager.verifyPin(context, current.getText().toString())) {
+                    if (hasPin && !ValetModeManager.verifyPin(context, current.getText().toString())) {
                         Toast.makeText(context, "Mevcut PIN yanlış.", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -375,8 +389,11 @@ public class ValetTabBuilder {
                         return;
                     }
                     ValetModeManager.setPin(context, pin);
-                    log.accept("Vale PIN'i güncellendi.");
+                    log.accept(hasPin ? "Vale PIN'i güncellendi." : "Vale PIN'i oluşturuldu.");
                     notifyStateChanged();
+                    if (afterCreate != null) {
+                        afterCreate.run();
+                    }
                 })
                 .show();
     }
