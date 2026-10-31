@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.mapcontrol.R;
 import com.mapcontrol.ui.cockpit.CockpitGrid;
-import com.mapcontrol.ui.cockpit.CockpitToggle;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.welcome.WelcomeDesign;
@@ -76,8 +75,7 @@ public final class WelcomeSoundScreenBuilder {
         row.setOrientation(LinearLayout.VERTICAL);
         row.setClickable(true);
         row.setFocusable(true);
-        row.setPadding(16, 18, 16, 18);
-        row.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        row.setPadding(16, 14, 16, 14);
         TextView title = new TextView(context);
         title.setText(label);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -145,8 +143,7 @@ public final class WelcomeSoundScreenBuilder {
                 | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         ttsInput.setMinLines(2);
         ttsInput.setMaxLines(4);
-        ttsInput.setPadding(16, 18, 16, 18);
-        ttsInput.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        ttsInput.setPadding(14, 12, 14, 12);
         ttsInput.setBackground(fieldBackground(context));
         LinearLayout.LayoutParams ttsInputLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -179,8 +176,6 @@ public final class WelcomeSoundScreenBuilder {
             chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
             chip.setTextColor(primary);
             chip.setPadding(chipPadX, chipPadY, chipPadX, chipPadY);
-            chip.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_chip_h));
-            chip.setGravity(Gravity.CENTER);
             GradientDrawable chipBg = new GradientDrawable();
             chipBg.setColor(UiStyles.color(context, R.color.ck_surface_2));
             chipBg.setCornerRadius(8 * context.getResources().getDisplayMetrics().density);
@@ -210,10 +205,10 @@ public final class WelcomeSoundScreenBuilder {
         LinearLayout ttsGenerateRow = actionButtonRow(context,
                 context.getString(R.string.welcome_tts_generate), true);
         ttsGenerateRow.setMinimumWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
-        ttsGenerateRow.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
+        ttsGenerateRow.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
         LinearLayout.LayoutParams ttsGenLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                CockpitTokens.dim(context, R.dimen.ck_touch_primary));
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         ttsCard.addView(ttsGenerateRow, ttsGenLp);
         TextView ttsStatus = new TextView(context);
         ttsStatus.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
@@ -238,9 +233,7 @@ public final class WelcomeSoundScreenBuilder {
         tvFilePath.setText(R.string.welcome_sound_no_file_yet);
         tvFilePath.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
         tvFilePath.setTextColor(primary);
-        tvFilePath.setPadding(16, 18, 16, 18);
-        tvFilePath.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
-        tvFilePath.setGravity(Gravity.CENTER_VERTICAL);
+        tvFilePath.setPadding(14, 12, 14, 12);
         tvFilePath.setBackground(fieldBackground(context));
         LinearLayout.LayoutParams filePathParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -260,10 +253,12 @@ public final class WelcomeSoundScreenBuilder {
         rowSelect.setMinimumWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         playbackRow.setMinimumWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         LinearLayout.LayoutParams selectLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         selectLp.setMarginEnd(8);
         LinearLayout.LayoutParams playLp = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         playLp.setMarginStart(0);
         fileActions.addView(rowSelect, selectLp);
         fileActions.addView(playbackRow, playLp);
@@ -306,32 +301,17 @@ public final class WelcomeSoundScreenBuilder {
         LinearLayout behaviorCard = sectionCard(context);
         addSectionHeader(context, behaviorCard,
                 R.string.welcome_sound_autoplay_title, R.string.welcome_sound_autoplay_desc);
-        LinearLayout autoPlayRow = new LinearLayout(context);
-        autoPlayRow.setOrientation(LinearLayout.HORIZONTAL);
-        autoPlayRow.setGravity(Gravity.CENTER_VERTICAL);
-        autoPlayRow.setPadding(16, 8, 16, 8);
-        TextView autoPlayLabel = new TextView(context);
-        autoPlayLabel.setText(R.string.welcome_sound_autoplay_toggle);
-        CockpitTokens.bodyMd(autoPlayLabel);
-        autoPlayLabel.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        autoPlayRow.addView(autoPlayLabel, new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        CockpitToggle autoPlayToggle = new CockpitToggle(context);
-        autoPlayToggle.setChecked(autoPlayInitial, false);
-        autoPlayToggle.setOnCheckedChangeListener((button, checked) -> {
-            onAutoPlayCommitted.accept(checked);
-            callbackAutoPlayHelp(behaviorCard, checked);
-        });
-        autoPlayRow.addView(autoPlayToggle);
-        behaviorCard.addView(autoPlayRow);
-        TextView autoPlayHelp = new TextView(context);
-        autoPlayHelp.setText(context.getString(autoPlayInitial
-                ? R.string.welcome_sound_autoplay_on_help
-                : R.string.welcome_sound_autoplay_off_help));
-        CockpitTokens.bodySm(autoPlayHelp);
-        autoPlayHelp.setTextColor(UiStyles.color(context, R.color.textSecondary));
-        autoPlayHelp.setPadding(16, 0, 16, 8);
-        behaviorCard.addView(autoPlayHelp);
+        LinearLayout autoPlayBlock = new LinearLayout(context);
+        autoPlayBlock.setOrientation(LinearLayout.VERTICAL);
+        UiStyles.addBinarySegmentedControl(context, autoPlayBlock,
+                null,
+                context.getString(R.string.welcome_sound_autoplay_on),
+                context.getString(R.string.welcome_sound_autoplay_off),
+                context.getString(R.string.welcome_sound_autoplay_on_help),
+                context.getString(R.string.welcome_sound_autoplay_off_help),
+                autoPlayInitial,
+                onAutoPlayCommitted);
+        behaviorCard.addView(autoPlayBlock);
         addCard(context, mainContainer, grid, behaviorCard);
 
         // 4) Giriş tasarımı
@@ -407,19 +387,6 @@ public final class WelcomeSoundScreenBuilder {
         desc.setTextColor(UiStyles.color(context, R.color.textHint));
         desc.setPadding(0, 4, 0, 12);
         card.addView(desc);
-    }
-
-    private static void callbackAutoPlayHelp(LinearLayout card, boolean enabled) {
-        // The helper is the last TextView added to the behavior card.
-        if (card == null || card.getChildCount() == 0) {
-            return;
-        }
-        View last = card.getChildAt(card.getChildCount() - 1);
-        if (last instanceof TextView) {
-            ((TextView) last).setText(enabled
-                    ? R.string.welcome_sound_autoplay_on_help
-                    : R.string.welcome_sound_autoplay_off_help);
-        }
     }
 
     private static LinearLayout actionButtonRow(Context context, String label, boolean primary) {
@@ -512,8 +479,8 @@ public final class WelcomeSoundScreenBuilder {
             row.setOrientation(LinearLayout.VERTICAL);
             row.setClickable(true);
             row.setFocusable(true);
-            row.setPadding(14, 10, 14, 10);
-            row.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+            row.setPadding(16, 14, 16, 14);
+            row.setMinimumHeight(Math.round(84 * context.getResources().getDisplayMetrics().density));
 
             TextView title = new TextView(context);
             title.setText(design.titleRes());
@@ -524,8 +491,6 @@ public final class WelcomeSoundScreenBuilder {
             TextView help = new TextView(context);
             help.setText(design.helpRes());
             help.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            help.setMaxLines(2);
-            help.setEllipsize(android.text.TextUtils.TruncateAt.END);
             help.setTextColor(secondary);
             help.setPadding(0, 4, 0, 0);
             row.addView(help);
@@ -574,8 +539,7 @@ public final class WelcomeSoundScreenBuilder {
         lineInput.setSingleLine(true);
         lineInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS
                 | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        lineInput.setPadding(16, 18, 16, 18);
-        lineInput.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        lineInput.setPadding(16, 16, 16, 16);
         lineInput.setTextColor(primary);
         lineInput.setHintTextColor(UiStyles.color(context, R.color.textHint));
         GradientDrawable inputBg = new GradientDrawable();
@@ -624,10 +588,9 @@ public final class WelcomeSoundScreenBuilder {
         btnPreview.setPadding(24, 16, 24, 16);
         btnPreview.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         btnPreview.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
-        btnPreview.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
         LinearLayout.LayoutParams previewParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                CockpitTokens.dim(context, R.dimen.ck_touch_min));
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
         previewParams.setMargins(0, 8, 0, 0);
         parent.addView(btnPreview, previewParams);
         return btnPreview;
@@ -646,7 +609,7 @@ public final class WelcomeSoundScreenBuilder {
         LinearLayout row = new LinearLayout(context);
         row.setOrientation(LinearLayout.HORIZONTAL);
         String chars = "çğıİöşüÇĞÖŞÜ";
-        int size = Math.round(48 * context.getResources().getDisplayMetrics().density);
+        int size = Math.round(42 * context.getResources().getDisplayMetrics().density);
         for (int i = 0; i < chars.length(); i++) {
             final String ch = String.valueOf(chars.charAt(i));
             TextView chip = new TextView(context);
