@@ -459,7 +459,7 @@ public class SettingsTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         voiceLp.setMargins(16, 0, 16, 8);
-        parentContainer.addView(voiceField, voiceLp);
+        // Alan, seçicinin altında görünsün; parent'a aşağıda ekleniyor.
 
         TextView voiceSelector = createTtsSelector();
         voiceSelector.setOnClickListener(v -> {
@@ -492,6 +492,7 @@ public class SettingsTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         selectorLp.setMargins(16, 0, 16, 8);
         parentContainer.addView(voiceSelector, selectorLp);
+        parentContainer.addView(voiceField, voiceLp);
 
         if (manualVoice[0]) {
             voiceSelector.setText(R.string.settings_tts_voice_manual);
