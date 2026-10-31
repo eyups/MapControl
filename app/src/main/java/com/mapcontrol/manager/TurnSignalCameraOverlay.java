@@ -2,7 +2,9 @@ package com.mapcontrol.manager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.graphics.PixelFormat;
+import android.graphics.SurfaceTexture;
 import android.graphics.drawable.GradientDrawable;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
@@ -11,9 +13,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.Surface;
+import android.view.TextureView;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -31,7 +35,8 @@ final class TurnSignalCameraOverlay {
     private final CameraGlEngine engine = CameraGlEngine.createSecondary("turn-signal-camera");
     private WindowManager windowManager;
     private FrameLayout root;
-    private SurfaceView surfaceView;
+    private TextureView textureView;
+    private Surface cameraSurface;
     private TextView labelView;
     private int currentCam = -1;
 
@@ -65,9 +70,10 @@ final class TurnSignalCameraOverlay {
         }
         DisplayMetrics metrics = new DisplayMetrics();
         display.getRealMetrics(metrics);
-        int cardWidth = Math.min(CockpitTokens.dp(context, 640),
-                Math.max(CockpitTokens.dp(context, 320), metrics.widthPixels * 55 / 100));
-        int cardHeight = Math.max(CockpitTokens.dp(context, 190), cardWidth * 9 / 16);
+        int cardWidth = Math.min(CockpitTokens.dp(context, 520),
+                Math.max(CockpitTokens.dp(context, 280), metrics.widthPixels * 42 / 100));
+        int cardHeight = Math.max(CockpitTokens.dp(context, 170), cardWidth * 9 / 16);
+        int cornerRadius = CockpitTokens.dp(context, 18);
 
         FrameLayout overlayRoot = new FrameLayout(displayContext);
         overlayRoot.setBackgroundColor(Color.TRANSPARENT);
@@ -75,14 +81,15 @@ final class TurnSignalCameraOverlay {
         FrameLayout card = new FrameLayout(displayContext);
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(0xE6000000);
-        bg.setCornerRadius(CockpitTokens.dp(context, 16));
+        bg.setCornerRadius(cornerRadius);
         bg.setStroke(Math.max(1, CockpitTokens.dp(context, 2)), 0xFF00B4D8);
         card.setBackground(bg);
-        card.setClipToOutline(true);
+        applyRoundedOutline(card, cornerRadius);
 
-        SurfaceView surface = new SurfaceView(displayContext);
-        surface.setZOrderOnTop(false);
-        card.addView(surface, new FrameLayout.LayoutParams(
+        TextureView texture = new TextureView(displayContext);
+        texture.setOpaque(true);
+        applyRoundedOutline(texture, cornerRadius);
+        card.addView(texture, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         TextView labelText = new TextView(displayContext);
@@ -110,26 +117,39 @@ final class TurnSignalCameraOverlay {
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                        | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                        | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                 PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.TOP | Gravity.START;
 
-        surface.getHolder().addCallback(new SurfaceHolder.Callback() {
+        texture.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
-            public void surfaceCreated(SurfaceHolder holder) {
+            public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
+                cameraSurface = new Surface(surfaceTexture);
                 engine.setBigCam(cam);
-                engine.setPreviewSurface(holder.getSurface(), cardWidth, cardHeight);
+                engine.setPreviewSurface(cameraSurface, cardWidth, cardHeight);
                 engine.setPreviewEnabled(true);
             }
 
             @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                engine.setPreviewSurface(holder.getSurface(), width, height);
+            public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int width, int height) {
+                if (cameraSurface != null) {
+                    engine.setPreviewSurface(cameraSurface, width, height);
+                }
             }
 
             @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
+            public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
                 engine.clearPreviewSurface();
+                if (cameraSurface != null) {
+                    cameraSurface.release();
+                    cameraSurface = null;
+                }
+                return true;
+            }
+
+            @Override
+            public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
             }
         });
 
@@ -137,7 +157,7 @@ final class TurnSignalCameraOverlay {
             wm.addView(overlayRoot, params);
             windowManager = wm;
             root = overlayRoot;
-            surfaceView = surface;
+            textureView = texture;
             labelView = labelText;
             currentCam = cam;
         } catch (Throwable t) {
@@ -149,7 +169,7 @@ final class TurnSignalCameraOverlay {
         WindowManager wm = windowManager;
         FrameLayout overlay = root;
         root = null;
-        surfaceView = null;
+        textureView = null;
         labelView = null;
         windowManager = null;
         currentCam = -1;
@@ -165,6 +185,20 @@ final class TurnSignalCameraOverlay {
             engine.setPreviewEnabled(false);
             engine.clearPreviewSurface();
         }
+        if (cameraSurface != null) {
+            cameraSurface.release();
+            cameraSurface = null;
+        }
+    }
+
+    private static void applyRoundedOutline(View view, int radius) {
+        view.setClipToOutline(true);
+        view.setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View v, Outline outline) {
+                outline.setRoundRect(0, 0, v.getWidth(), v.getHeight(), radius);
+            }
+        });
     }
 
     private Display findClusterDisplay() {
