@@ -28,7 +28,6 @@ import java.net.URL;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
-import com.mapcontrol.driving.DrivingCoach;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTestData;
 import com.mapcontrol.driving.DrivingTripStore;
@@ -138,7 +137,6 @@ public class SettingsTabBuilder {
             createThemeSection(general);
             createLanguageSection(general);
             createTtsSection(general);
-            createDrivingCoachSection(general);
             createDrivingTestDataSection(general);
 
             LinearLayout system = sectionGroup();
@@ -225,7 +223,6 @@ public class SettingsTabBuilder {
         createThemeSection(card);
         createLanguageSection(card);
         createTtsSection(card);
-        createDrivingCoachSection(card);
         createDrivingTestDataSection(card);
         createAppInfoSection(card);
         createBootAutostartSection(card);
@@ -319,39 +316,6 @@ public class SettingsTabBuilder {
                     AppLocaleManager.setLocale(context, tag);
                     callback.log("Locale: " + tag);
                     callback.onLocaleChanged();
-                });
-    }
-
-    private void createDrivingCoachSection(LinearLayout parentContainer) {
-        TextView title = new TextView(context);
-        title.setText(R.string.settings_driving_coach_title);
-        title.setTextSize(18);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        title.setTypeface(null, android.graphics.Typeface.BOLD);
-        title.setPadding(16, 24, 16, 8);
-        parentContainer.addView(title, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        TextView desc = new TextView(context);
-        desc.setText(R.string.settings_driving_coach_desc);
-        desc.setTextSize(13);
-        desc.setTextColor(UiStyles.color(context, R.color.textHint));
-        desc.setPadding(16, 0, 16, 12);
-        parentContainer.addView(desc, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        UiStyles.addBinarySegmentedControl(context, parentContainer, null,
-                context.getString(R.string.settings_driving_coach_off),
-                context.getString(R.string.settings_driving_coach_on),
-                context.getString(R.string.settings_driving_coach_off_help),
-                context.getString(R.string.settings_driving_coach_on_help),
-                !DrivingCoach.isEnabled(context),
-                enabledSelected -> {
-                    boolean enabled = !enabledSelected;
-                    DrivingCoach.setEnabled(context, enabled);
-                    callback.log("Sürüş koçu: " + (enabled ? "açık" : "kapalı"));
                 });
     }
 

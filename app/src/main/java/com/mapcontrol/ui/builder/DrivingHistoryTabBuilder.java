@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mapcontrol.R;
+import com.mapcontrol.driving.DrivingCoach;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTrip;
 import com.mapcontrol.driving.DrivingTripStore;
@@ -28,6 +29,7 @@ import com.mapcontrol.ui.cockpit.CockpitEmptyState;
 import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
+import com.mapcontrol.ui.cockpit.CockpitToggle;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.AppLocaleManager;
 
@@ -157,6 +159,26 @@ public class DrivingHistoryTabBuilder {
 
         View spacer = new View(context);
         row.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+
+        LinearLayout coachGroup = new LinearLayout(context);
+        coachGroup.setOrientation(LinearLayout.HORIZONTAL);
+        coachGroup.setGravity(Gravity.CENTER_VERTICAL);
+        TextView coachLabel = new TextView(context);
+        coachLabel.setText(R.string.settings_driving_coach_title);
+        CockpitTokens.bodySm(coachLabel);
+        coachLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        coachLabel.setPadding(0, 0, dp(8), 0);
+        coachGroup.addView(coachLabel);
+        CockpitToggle coachToggle = new CockpitToggle(context);
+        coachToggle.setChecked(DrivingCoach.isEnabled(context), false);
+        coachToggle.setOnCheckedChangeListener((button, checked) ->
+                DrivingCoach.setEnabled(context, checked));
+        coachGroup.addView(coachToggle);
+        LinearLayout.LayoutParams coachLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        coachLp.setMarginEnd(dp(16));
+        row.addView(coachGroup, coachLp);
 
         CockpitButton refresh = CockpitButton.secondary(context,
                 context.getString(R.string.driving_history_refresh));
