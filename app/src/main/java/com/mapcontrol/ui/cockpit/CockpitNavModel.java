@@ -92,11 +92,11 @@ public final class CockpitNavModel {
                     .add(TAB_VEHICLE_INFO, R.string.side_rail_vehicle_info,
                             R.drawable.ic_mdi_speedometer)
                     .add(TAB_DRIVE_MODE, R.string.ck_sub_drive_mode, R.drawable.ic_mdi_car)
+                    .add(TAB_ASSIST, R.string.ck_sub_assist, R.drawable.ic_mdi_shield_car)
                     .add(TAB_CLIMATE_AUTOMATION, R.string.ck_sub_climate,
                             R.drawable.ic_mdi_thermometer)
                     .add(TAB_SUNROOF_AUTOMATION, R.string.side_rail_sunroof_automation,
-                            R.drawable.ic_mdi_car_sunroof)
-                    .add(TAB_ASSIST, R.string.ck_sub_assist, R.drawable.ic_mdi_shield_car));
+                            R.drawable.ic_mdi_car_sunroof));
 
             list.add(new Domain(6, R.string.ck_domain_driver, R.drawable.ic_mdi_account)
                     .add(TAB_DRIVING_HISTORY, R.string.side_rail_driving_report,
