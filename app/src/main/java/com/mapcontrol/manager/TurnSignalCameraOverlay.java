@@ -105,8 +105,7 @@ final class TurnSignalCameraOverlay {
         card.addView(labelText, labelLp);
 
         FrameLayout.LayoutParams cardLp = new FrameLayout.LayoutParams(
-                cardWidth, cardHeight, Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-        cardLp.topMargin = CockpitTokens.dp(context, 16);
+                cardWidth, cardHeight, Gravity.CENTER);
         overlayRoot.addView(card, cardLp);
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
