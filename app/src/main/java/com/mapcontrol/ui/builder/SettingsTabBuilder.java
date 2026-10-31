@@ -170,9 +170,8 @@ public class SettingsTabBuilder {
                 row.setFocusableInTouchMode(false);
                 row.clickRow(v -> {
                     for (CockpitListRow other : categoryRows) {
-                        other.setBackground(CockpitSurfaces.outlined(context,
-                                CockpitTokens.color(context, R.color.ck_surface_1),
-                                CockpitTokens.color(context, R.color.ck_stroke), 16f));
+                        other.setBackground(CockpitSurfaces.rounded(context,
+                                CockpitTokens.color(context, R.color.ck_surface_1), 16f));
                     }
                     selectedRow[0] = row;
                     row.setBackground(CockpitSurfaces.outlined(context,
