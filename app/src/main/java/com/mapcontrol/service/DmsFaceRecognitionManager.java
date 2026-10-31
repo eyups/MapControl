@@ -637,7 +637,10 @@ public final class DmsFaceRecognitionManager {
                     publishStatus(context.getString(R.string.dms_recognition_camera_released));
                 }
             }
-            cameraHandler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
+            Handler handler = cameraHandler;
+            if (handler != null && recognitionStarted) {
+                handler.postDelayed(this, TimeUnit.SECONDS.toMillis(1));
+            }
         }
     };
 
