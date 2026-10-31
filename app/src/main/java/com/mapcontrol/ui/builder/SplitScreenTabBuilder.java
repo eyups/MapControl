@@ -17,6 +17,7 @@ import androidx.core.graphics.ColorUtils;
 
 import com.mapcontrol.R;
 import com.mapcontrol.ui.cockpit.CockpitGrid;
+import com.mapcontrol.ui.cockpit.CockpitSegmented;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
@@ -55,6 +56,9 @@ public class SplitScreenTabBuilder {
     private TextView[] appNames = new TextView[2];
     private SplitRatioView ratioPreview;
     private LinearLayout gestureInfo;
+    private LinearLayout gestureGridRow;
+    private CockpitSegmented fingerSegmented;
+    private int activeFingerCount = 2;
     private final List<GestureCell> gestureCells = new ArrayList<>();
     private boolean starting;
 
@@ -111,16 +115,13 @@ public class SplitScreenTabBuilder {
         LinearLayout left = createSectionCard();
         LinearLayout right = createSectionCard();
 
-        addSectionTitle(left, R.string.split_title, 8);
-        addSectionDesc(left, R.string.split_desc);
-
         statusText = new TextView(context);
-        statusText.setTextSize(14);
+        statusText.setTextSize(15);
         statusText.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
         statusText.setPadding(16, 0, 16, 4);
         left.addView(statusText, matchWrap());
         noteText = new TextView(context);
-        noteText.setTextSize(13);
+        noteText.setTextSize(15);
         noteText.setTextColor(UiStyles.color(context, R.color.textHint));
         noteText.setPadding(16, 0, 16, 12);
         left.addView(noteText, matchWrap());
@@ -131,6 +132,10 @@ public class SplitScreenTabBuilder {
         addRatioSection(left);
         addStartButton(left);
 
+        int savedGesture = SplitScreenStore.getGestureCode(context);
+        if (SplitScreenGesture.isValid(savedGesture)) {
+            activeFingerCount = SplitScreenGesture.fingersOf(savedGesture);
+        }
         addGestureSection(right);
         grid.add(left, 4);
         grid.add(right, 4);
@@ -172,6 +177,17 @@ public class SplitScreenTabBuilder {
         } else {
             noteText.setVisibility(View.GONE);
         }
+        updateStartEnabled();
+    }
+
+    private void updateStartEnabled() {
+        if (startButton == null) {
+            return;
+        }
+        SplitScreenLauncher.Capability cap = SplitScreenLauncher.probe(context);
+        boolean supported = cap.usable() || cap.canEnableFreeform;
+        startButton.setEnabled(supported);
+        startButton.setAlpha(supported ? 1f : 0.5f);
     }
 
     // ------------------------------------------------------------- uygulamalar
@@ -202,7 +218,7 @@ public class SplitScreenTabBuilder {
 
         TextView slotLabel = new TextView(context);
         slotLabel.setText(slot == 0 ? R.string.split_app1 : R.string.split_app2);
-        slotLabel.setTextSize(13);
+        slotLabel.setTextSize(15);
         slotLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
         texts.addView(slotLabel, matchWrap());
 
@@ -324,7 +340,7 @@ public class SplitScreenTabBuilder {
 
         float density = context.getResources().getDisplayMetrics().density;
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                Math.round(260 * density), LinearLayout.LayoutParams.WRAP_CONTENT);
+                Math.round(190 * density), Math.round(64 * density));
         lp.gravity = Gravity.CENTER_HORIZONTAL;
         lp.setMargins(0, UiStyles.dimenPx(context, R.dimen.spacing_small), 0,
                 UiStyles.dimenPx(context, R.dimen.spacing_medium));
@@ -354,11 +370,12 @@ public class SplitScreenTabBuilder {
                 UiStyles.color(context, R.color.textPrimary),
                 UiStyles.dimenPx(context, R.dimen.spacing_small));
         startButton.setOnClickListener(v -> onStartClicked());
+        updateStartEnabled();
         startButton.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
         startButton.setMaxWidth(CockpitTokens.dim(context, R.dimen.ck_action_max_w));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                UiStyles.dimenPx(context, R.dimen.ck_touch_primary));
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                UiStyles.dimenPx(context, R.dimen.ck_touch_min));
         int h = CockpitTokens.dim(context, R.dimen.ck_space_md);
         lp.setMargins(h, 0, h, CockpitTokens.dim(context, R.dimen.ck_space_sm));
         parent.addView(startButton, lp);
@@ -405,32 +422,40 @@ public class SplitScreenTabBuilder {
         addSectionTitle(parent, R.string.split_gesture_title, 8);
         addSectionDesc(parent, R.string.split_gesture_desc);
 
+        List<String> fingerLabels = new ArrayList<>();
+        for (int fingers : SplitScreenGesture.FINGER_COUNTS) {
+            fingerLabels.add(context.getString(R.string.split_gesture_row_fingers, fingers));
+        }
+        int initialIndex = 0;
+        for (int i = 0; i < SplitScreenGesture.FINGER_COUNTS.length; i++) {
+            if (SplitScreenGesture.FINGER_COUNTS[i] == activeFingerCount) {
+                initialIndex = i;
+                break;
+            }
+        }
+        fingerSegmented = new CockpitSegmented(context, fingerLabels, initialIndex, index -> {
+            activeFingerCount = SplitScreenGesture.FINGER_COUNTS[index];
+            renderGestureRow();
+            refreshGestureUi();
+        });
+        LinearLayout.LayoutParams segmentedLp = matchWrap();
+        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
+        segmentedLp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_small));
+        parent.addView(fingerSegmented, segmentedLp);
+
+        gestureGridRow = new LinearLayout(context);
+        gestureGridRow.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams rowLp = matchWrap();
+        rowLp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_medium));
+        parent.addView(gestureGridRow, rowLp);
+
         gestureInfo = new LinearLayout(context);
         gestureInfo.setOrientation(LinearLayout.VERTICAL);
-        int h = UiStyles.dimenPx(context, R.dimen.spacing_medium);
         LinearLayout.LayoutParams infoLp = matchWrap();
         infoLp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_medium));
         parent.addView(gestureInfo, infoLp);
 
-        for (int fingers : SplitScreenGesture.FINGER_COUNTS) {
-            TextView header = new TextView(context);
-            header.setText(context.getString(R.string.split_gesture_row_fingers, fingers));
-            header.setTextSize(15);
-            header.setTypeface(null, Typeface.BOLD);
-            header.setTextColor(UiStyles.color(context, R.color.textPrimary));
-            header.setPadding(16, 8, 16, 6);
-            parent.addView(header, matchWrap());
-
-            LinearLayout row = new LinearLayout(context);
-            row.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams rowLp = matchWrap();
-            rowLp.setMargins(h, 0, h, UiStyles.dimenPx(context, R.dimen.spacing_small));
-            parent.addView(row, rowLp);
-
-            for (int direction : SplitScreenGesture.DIRECTIONS) {
-                addGestureCell(row, SplitScreenGesture.code(fingers, direction));
-            }
-        }
+        renderGestureRow();
 
         Button off = new Button(context);
         off.setText(R.string.split_gesture_off);
@@ -452,6 +477,17 @@ public class SplitScreenTabBuilder {
         refreshGestureUi();
     }
 
+    private void renderGestureRow() {
+        if (gestureGridRow == null) {
+            return;
+        }
+        gestureGridRow.removeAllViews();
+        gestureCells.clear();
+        for (int direction : SplitScreenGesture.DIRECTIONS) {
+            addGestureCell(gestureGridRow, SplitScreenGesture.code(activeFingerCount, direction));
+        }
+    }
+
     private void addGestureCell(LinearLayout row, int code) {
         float density = context.getResources().getDisplayMetrics().density;
         LinearLayout cell = new LinearLayout(context);
@@ -471,7 +507,7 @@ public class SplitScreenTabBuilder {
 
         TextView label = new TextView(context);
         label.setText(directionLabel(SplitScreenGesture.directionOf(code)));
-        label.setTextSize(13);
+        label.setTextSize(15);
         label.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams labelLp = matchWrap();
         labelLp.topMargin = Math.round(4 * density);
@@ -593,7 +629,7 @@ public class SplitScreenTabBuilder {
         TextView how = new TextView(context);
         how.setText(context.getString(R.string.split_gesture_how, fingers,
                 directionPhrase(direction)));
-        how.setTextSize(14);
+        how.setTextSize(15);
         how.setTextColor(UiStyles.color(context, R.color.textPrimary87));
         how.setLineSpacing(3, 1.05f);
         how.setPadding(0, Math.round(6 * density), 0, 0);
@@ -601,7 +637,7 @@ public class SplitScreenTabBuilder {
 
         TextView where = new TextView(context);
         where.setText(R.string.split_gesture_where);
-        where.setTextSize(13);
+        where.setTextSize(15);
         where.setTextColor(UiStyles.color(context, R.color.textHint));
         where.setLineSpacing(3, 1.05f);
         where.setPadding(0, Math.round(6 * density), 0, 0);
@@ -623,7 +659,7 @@ public class SplitScreenTabBuilder {
     private void addInfoWarning(String text) {
         TextView warn = new TextView(context);
         warn.setText(text);
-        warn.setTextSize(13);
+        warn.setTextSize(15);
         warn.setTypeface(null, Typeface.BOLD);
         warn.setTextColor(UiStyles.color(context, R.color.textLoading));
         warn.setPadding(0, Math.round(10 * context.getResources().getDisplayMetrics().density), 0, 0);
@@ -688,7 +724,7 @@ public class SplitScreenTabBuilder {
     private void addSectionDesc(LinearLayout parent, int textRes) {
         TextView desc = new TextView(context);
         desc.setText(textRes);
-        desc.setTextSize(13);
+        desc.setTextSize(15);
         desc.setTextColor(UiStyles.color(context, R.color.textHint));
         desc.setLineSpacing(3, 1.05f);
         desc.setPadding(16, 0, 16, 12);
