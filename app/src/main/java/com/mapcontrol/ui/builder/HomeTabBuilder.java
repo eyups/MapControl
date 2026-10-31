@@ -360,7 +360,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         scoreRing.setAccentColor(CockpitTokens.color(context, R.color.ck_accent));
         scoreRing.setTrackColor(CockpitTokens.color(context, R.color.ck_surface_1));
         scoreRing.setScore(trip.score, false);
-        hero.addView(scoreRing, new LinearLayout.LayoutParams(dp(64), dp(64)));
+        hero.addView(scoreRing, new LinearLayout.LayoutParams(dp(78), dp(78)));
 
         LinearLayout copy = new LinearLayout(context);
         copy.setOrientation(LinearLayout.VERTICAL);
