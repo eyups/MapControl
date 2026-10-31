@@ -1,4 +1,5 @@
 package com.mapcontrol.ui.builder;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +51,15 @@ import com.mapcontrol.vehicle.material.MaterialVehicleResources;
 import com.mapcontrol.vehicle.material.VehicleMaterialPickerDialog;
 
 public class SettingsTabBuilder {
+    private static final String[][] ELEVENLABS_VOICES = {
+            {"Seyfullah", "mF7tIc9VLrznhGooGjaT"},
+            {"Hasan Yasin", "tILIOdKERNNbBHVEXk7I"},
+            {"Adam", "J17lijyP1BHYcM7ld0Rg"},
+            {"Doga", "IuRRIAcbQK5AQk1XevPj"},
+            {"İrem", "uvU9jrgGLWNPeNA4NgNT"},
+            {"Lisa", "LYfSi2g3Frvxg50fRl91"}
+    };
+    private static final int MANUAL_VOICE_INDEX = ELEVENLABS_VOICES.length;
     public interface SettingsCallback {
         void log(String message);
         String getCarToken();
@@ -429,20 +439,66 @@ public class SettingsTabBuilder {
         parentContainer.addView(keyField, keyLp);
 
         TextView voiceLabel = new TextView(context);
-        voiceLabel.setText(R.string.settings_tts_voice_id);
+        voiceLabel.setText(R.string.settings_tts_voice_select);
         voiceLabel.setTextSize(13);
         voiceLabel.setTextColor(UiStyles.color(context, R.color.textSecondary));
         voiceLabel.setPadding(16, 8, 16, 4);
         parentContainer.addView(voiceLabel);
 
+        final String effectiveVoice = MapControlSpeech.voiceId(context);
+        final int presetIndex = voicePresetIndex(effectiveVoice);
+        final boolean[] manualVoice = {presetIndex < 0};
+        final String[] selectedVoice = {
+                presetIndex >= 0 ? ELEVENLABS_VOICES[presetIndex][1] : ""
+        };
+
         EditText voiceField = createTtsField(InputType.TYPE_CLASS_TEXT);
         voiceField.setHint(R.string.settings_tts_voice_hint);
-        voiceField.setText(MapControlSpeech.voiceId(context));
+        voiceField.setText(effectiveVoice);
         LinearLayout.LayoutParams voiceLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         voiceLp.setMargins(16, 0, 16, 8);
         parentContainer.addView(voiceField, voiceLp);
+
+        TextView voiceSelector = createTtsSelector();
+        voiceSelector.setOnClickListener(v -> {
+            String[] labels = new String[ELEVENLABS_VOICES.length + 1];
+            for (int i = 0; i < ELEVENLABS_VOICES.length; i++) {
+                labels[i] = ELEVENLABS_VOICES[i][0];
+            }
+            labels[MANUAL_VOICE_INDEX] = context.getString(R.string.settings_tts_voice_manual);
+            int checked = manualVoice[0] ? MANUAL_VOICE_INDEX : voicePresetIndex(selectedVoice[0]);
+            if (checked < 0) checked = MANUAL_VOICE_INDEX;
+            new AlertDialog.Builder(context)
+                    .setTitle(R.string.settings_tts_voice_dialog)
+                    .setSingleChoiceItems(labels, checked, (dialog, which) -> {
+                        if (which == MANUAL_VOICE_INDEX) {
+                            manualVoice[0] = true;
+                            selectedVoice[0] = "";
+                            voiceSelector.setText(R.string.settings_tts_voice_manual);
+                        } else {
+                            manualVoice[0] = false;
+                            selectedVoice[0] = ELEVENLABS_VOICES[which][1];
+                            voiceSelector.setText(ELEVENLABS_VOICES[which][0] + "  ▾");
+                        }
+                        updateVoiceFieldVisibility(manualVoice[0], voiceField);
+                        dialog.dismiss();
+                    })
+                    .show();
+        });
+        LinearLayout.LayoutParams selectorLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        selectorLp.setMargins(16, 0, 16, 8);
+        parentContainer.addView(voiceSelector, selectorLp);
+
+        if (manualVoice[0]) {
+            voiceSelector.setText(R.string.settings_tts_voice_manual);
+        } else {
+            voiceSelector.setText(ELEVENLABS_VOICES[presetIndex][0] + "  ▾");
+        }
+        updateVoiceFieldVisibility(manualVoice[0], voiceField);
 
         TextView status = new TextView(context);
         status.setTextSize(12);
@@ -465,18 +521,22 @@ public class SettingsTabBuilder {
         saveLp.setMargins(16, 0, 16, 10);
         save.setOnClickListener(v -> {
             String key = keyField.getText().toString().trim();
-            String voice = voiceField.getText().toString().trim();
+            String voice = manualVoice[0]
+                    ? voiceField.getText().toString().trim()
+                    : selectedVoice[0];
             if (!key.isEmpty() && !MapControlSpeech.isValidApiKey(key)) {
                 Toast.makeText(context, R.string.settings_tts_api_invalid, Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (voice.isEmpty()) {
+                Toast.makeText(context, R.string.settings_tts_voice_required, Toast.LENGTH_SHORT).show();
                 return;
             }
             SharedPreferences.Editor editor = prefs.edit();
             if (!key.isEmpty()) {
                 editor.putString(MapControlSpeech.KEY_API_KEY, key);
             }
-            if (!voice.isEmpty()) {
-                editor.putString(MapControlSpeech.KEY_VOICE_ID, voice);
-            }
+            editor.putString(MapControlSpeech.KEY_VOICE_ID, voice);
             editor.apply();
             keyField.setText("");
             status.setText(MapControlSpeech.hasApiKey(context)
@@ -486,6 +546,42 @@ public class SettingsTabBuilder {
             callback.log("TTS ayarları kaydedildi");
         });
         parentContainer.addView(save, saveLp);
+    }
+
+    private int voicePresetIndex(String voiceId) {
+        if (voiceId == null) {
+            return -1;
+        }
+        for (int i = 0; i < ELEVENLABS_VOICES.length; i++) {
+            if (ELEVENLABS_VOICES[i][1].equals(voiceId.trim())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void updateVoiceFieldVisibility(boolean manual, EditText voiceField) {
+        voiceField.setVisibility(manual ? View.VISIBLE : View.GONE);
+        if (manual) {
+            voiceField.requestFocus();
+        }
+    }
+
+    private TextView createTtsSelector() {
+        TextView selector = new TextView(context);
+        selector.setTextSize(14);
+        selector.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        selector.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        selector.setPadding(14, 12, 14, 12);
+        selector.setClickable(true);
+        selector.setFocusable(true);
+        selector.setMinHeight(48);
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(UiStyles.color(context, R.color.logFieldBg));
+        bg.setCornerRadius(context.getResources().getDimension(R.dimen.oem_button_radius));
+        bg.setStroke(1, UiStyles.color(context, R.color.outlineStrong));
+        selector.setBackground(bg);
+        return selector;
     }
 
     private EditText createTtsField(int inputType) {

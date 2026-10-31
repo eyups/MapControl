@@ -746,6 +746,10 @@
 <string name="settings_tts_api_key">ElevenLabs API anahtarı</string>
 <string name="settings_tts_api_hint">sk_... (mevcut anahtarı korumak için boş bırak)</string>
 <string name="settings_tts_voice_id">Voice ID</string>
+    <string name="settings_tts_voice_select">Ses</string>
+    <string name="settings_tts_voice_manual">Manuel Ses Kodu</string>
+    <string name="settings_tts_voice_dialog">ElevenLabs sesi</string>
+    <string name="settings_tts_voice_required">Ses kodu girin.</string>
 <string name="settings_tts_voice_hint">ElevenLabs voice ID</string>
 <string name="settings_tts_api_invalid">ElevenLabs API anahtarı tam 51 karakter olmalı.</string>
 <string name="settings_tts_save">Kaydet</string>

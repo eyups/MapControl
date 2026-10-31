@@ -730,6 +730,10 @@
 <string name="settings_tts_api_key">ElevenLabs API key</string>
 <string name="settings_tts_api_hint">sk_... (leave empty to keep current)</string>
 <string name="settings_tts_voice_id">Voice ID</string>
+    <string name="settings_tts_voice_select">Voice</string>
+    <string name="settings_tts_voice_manual">Manual Voice Code</string>
+    <string name="settings_tts_voice_dialog">ElevenLabs voice</string>
+    <string name="settings_tts_voice_required">Enter a voice code.</string>
 <string name="settings_tts_voice_hint">ElevenLabs voice ID</string>
 <string name="settings_tts_api_invalid">ElevenLabs API key must be exactly 51 characters.</string>
 <string name="settings_tts_save">Save</string>
