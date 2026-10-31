@@ -1250,4 +1250,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_clarity">Netlik &amp; Güç</string>
     <string name="voice_talk_sample">Merhaba, RoadDeck sesli asistanı hazır.</string>
     <string name="voice_talk_no_extra_settings">Bu motor için ek ayar gerekmiyor.</string>
+    <string name="voice_talk_sherpa_model">Sherpa modeli</string>
+    <string name="voice_talk_sherpa_model_value">Piper DFKI Medium · Türkçe</string>
+    <string name="voice_talk_sherpa_single_speaker">Paketlenen model tek konuşmacılı; ses profili seçimi yok.</string>
 </resources>

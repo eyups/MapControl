@@ -1234,4 +1234,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_clarity">Clarity &amp; power</string>
     <string name="voice_talk_sample">Hello, RoadDeck voice assistant is ready.</string>
     <string name="voice_talk_no_extra_settings">No extra settings for this engine.</string>
+    <string name="voice_talk_sherpa_model">Sherpa model</string>
+    <string name="voice_talk_sherpa_model_value">Piper DFKI Medium · Türkçe</string>
+    <string name="voice_talk_sherpa_single_speaker">The bundled model has a single speaker; there is no voice profile selection.</string>
 </resources>

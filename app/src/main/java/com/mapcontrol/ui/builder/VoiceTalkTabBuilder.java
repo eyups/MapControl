@@ -195,12 +195,33 @@ public class VoiceTalkTabBuilder {
                 : R.string.settings_tts_iflytek);
         addBody(card, engineIndex == 0 ? R.string.settings_tts_sherpa_help
                 : R.string.settings_tts_iflytek_help, true);
-        TextView note = new TextView(context);
-        note.setText(R.string.voice_talk_no_extra_settings);
-        CockpitTokens.bodySm(note);
-        note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        note.setPadding(dp(4), dp(12), dp(4), dp(12));
-        card.addView(note, matchWrap());
+        if (engineIndex == 0) {
+            addLabel(card, R.string.voice_talk_sherpa_model);
+            TextView model = new TextView(context);
+            model.setText(R.string.voice_talk_sherpa_model_value);
+            CockpitTokens.bodyMd(model);
+            model.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+            model.setPadding(dp(4), dp(4), dp(4), dp(4));
+            card.addView(model, matchWrap());
+            TextView note = new TextView(context);
+            note.setText(R.string.voice_talk_sherpa_single_speaker);
+            CockpitTokens.bodySm(note);
+            note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            note.setPadding(dp(4), 0, dp(4), dp(12));
+            card.addView(note, matchWrap());
+            TextView speedValue = new TextView(context);
+            addSlider(card, R.string.voice_talk_speed, speedValue, 70, 130,
+                    MapControlSpeech.KEY_SHERPA_SPEED, 100);
+            speedValue.setText(formatSliderValue(R.string.voice_talk_speed,
+                    prefs.getInt(MapControlSpeech.KEY_SHERPA_SPEED, 100)));
+        } else {
+            TextView note = new TextView(context);
+            note.setText(R.string.voice_talk_no_extra_settings);
+            CockpitTokens.bodySm(note);
+            note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            note.setPadding(dp(4), dp(12), dp(4), dp(12));
+            card.addView(note, matchWrap());
+        }
         CockpitButton listen = CockpitButton.primary(context,
                 context.getString(R.string.voice_talk_listen));
         listen.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
@@ -209,7 +230,9 @@ public class VoiceTalkTabBuilder {
             String sample = context.getString(R.string.voice_talk_sample);
             MapControlSpeech.speak(context, sample, sample);
         });
-        card.addView(listen, matchWrap());
+        LinearLayout.LayoutParams listenLp = matchWrap();
+        listenLp.topMargin = dp(12);
+        card.addView(listen, listenLp);
     }
 
     private void buildElevenLabsPanel(LinearLayout card) {

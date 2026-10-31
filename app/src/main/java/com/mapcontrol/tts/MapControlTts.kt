@@ -57,7 +57,7 @@ object MapControlTts {
             try {
                 val tts = ensureEngine(app)
                 if (gen != generation.get()) return@execute
-                val audio = tts.generate(value, speed = 1.0f)
+                val audio = tts.generate(value, speed = speed(app))
                 if (gen != generation.get()) return@execute
                 normalize(audio.samples, TARGET_PEAK)
                 focus = TtsAudioFocus.acquire(app) { stop() }
@@ -88,7 +88,7 @@ object MapControlTts {
         executor.execute {
             try {
                 val tts = ensureEngine(app)
-                val audio = tts.generate(value, speed = 1.0f)
+                val audio = tts.generate(value, speed = speed(app))
                 normalize(audio.samples, TARGET_PEAK)
                 writeWav(audio, out)
                 onSuccess.accept(out)
@@ -137,6 +137,12 @@ object MapControlTts {
             track?.flush()
         } catch (_: Throwable) {
         }
+    }
+
+    private fun speed(context: Context): Float {
+        val percent = context.getSharedPreferences(MapControlSpeech.PREFS, Context.MODE_PRIVATE)
+            .getInt(MapControlSpeech.KEY_SHERPA_SPEED, 100)
+        return (percent / 100f).coerceIn(0.7f, 1.3f)
     }
 
     @Synchronized
