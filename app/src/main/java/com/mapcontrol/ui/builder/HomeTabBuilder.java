@@ -108,23 +108,32 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         content = new LinearLayout(context);
         content.setOrientation(LinearLayout.VERTICAL);
         int m = CockpitTokens.dim(context, R.dimen.ck_margin);
-        content.setPadding(m, CockpitTokens.dim(context, R.dimen.ck_space_md), 0, m);
+        boolean fillHeight = context.getResources().getConfiguration().screenWidthDp >= 1000;
+        content.setPadding(m, CockpitTokens.dim(context, R.dimen.ck_space_md), 0,
+                fillHeight ? 0 : m);
         scrollView.addView(content, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+                fillHeight ? LinearLayout.LayoutParams.MATCH_PARENT
+                        : LinearLayout.LayoutParams.WRAP_CONTENT));
 
         content.addView(buildHero());
 
         grid = new CockpitGrid(context);
+        grid.setFillHeight(fillHeight);
         content.addView(grid, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                fillHeight ? 0 : LinearLayout.LayoutParams.WRAP_CONTENT,
+                fillHeight ? 1f : 0f));
 
         grid.add(buildVehicleVisual(), 4);
         grid.add(buildVehicleCard(), 4);
         grid.add(buildQuickActions(), 4);
         grid.add(buildLastDriveCard(), 4);
-        grid.addFullWidth(buildValetCard());
-        grid.addFullWidth(buildOnboardingCard());
+        View valet = buildValetCard();
+        if (valet instanceof CockpitCard) {
+            grid.addFullWidth(valet);
+        }
+        grid.finish();
     }
 
     private View buildHero() {

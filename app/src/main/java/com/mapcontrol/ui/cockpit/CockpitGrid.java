@@ -14,11 +14,16 @@ public class CockpitGrid extends LinearLayout {
     private final int gutter;
     private LinearLayout currentRow;
     private int used;
+    private boolean fillHeight;
 
     public CockpitGrid(Context context) {
         super(context);
         setOrientation(VERTICAL);
         gutter = CockpitTokens.dim(context, R.dimen.ck_gutter);
+    }
+
+    public void setFillHeight(boolean fillHeight) {
+        this.fillHeight = fillHeight;
     }
 
     public void add(View view, int span) {
@@ -30,7 +35,7 @@ public class CockpitGrid extends LinearLayout {
             newRow();
         }
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, span);
+                fillHeight ? LayoutParams.MATCH_PARENT : LayoutParams.WRAP_CONTENT, span);
         lp.rightMargin = gutter;
         currentRow.addView(view, lp);
         used += span;
@@ -40,7 +45,7 @@ public class CockpitGrid extends LinearLayout {
     public void addFullWidth(View view) {
         newRow();
         currentRow.addView(view, new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT));
+                fillHeight ? LayoutParams.MATCH_PARENT : LayoutParams.WRAP_CONTENT));
         used = COLUMNS;
     }
 
@@ -52,6 +57,11 @@ public class CockpitGrid extends LinearLayout {
     }
 
     public void finish() {
+        if (fillHeight && currentRow != null) {
+            LayoutParams lp = (LayoutParams) currentRow.getLayoutParams();
+            lp.bottomMargin = 0;
+            currentRow.setLayoutParams(lp);
+        }
         currentRow = null;
         used = 0;
     }
@@ -61,7 +71,10 @@ public class CockpitGrid extends LinearLayout {
         currentRow.setOrientation(HORIZONTAL);
         currentRow.setBaselineAligned(false);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,
-                LayoutParams.WRAP_CONTENT);
+                fillHeight ? 0 : LayoutParams.WRAP_CONTENT);
+        if (fillHeight) {
+            lp.weight = 1f;
+        }
         lp.bottomMargin = gutter;
         addView(currentRow, lp);
         used = 0;
