@@ -19,7 +19,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mapcontrol.R;
-import com.mapcontrol.ui.cockpit.CockpitGrid;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.welcome.WelcomeDesign;
@@ -120,10 +119,26 @@ public final class WelcomeSoundScreenBuilder {
         mainContainer.addView(subtitle);
 
         boolean wide = context.getResources().getConfiguration().screenWidthDp >= 1000;
-        CockpitGrid grid = null;
+        LinearLayout leftColumn = null;
+        LinearLayout rightColumn = null;
         if (wide) {
-            grid = new CockpitGrid(context);
-            mainContainer.addView(grid, new LinearLayout.LayoutParams(
+            LinearLayout columns = new LinearLayout(context);
+            columns.setOrientation(LinearLayout.HORIZONTAL);
+            columns.setBaselineAligned(false);
+            leftColumn = new LinearLayout(context);
+            leftColumn.setOrientation(LinearLayout.VERTICAL);
+            rightColumn = new LinearLayout(context);
+            rightColumn.setOrientation(LinearLayout.VERTICAL);
+            int gap = Math.round(12 * context.getResources().getDisplayMetrics().density);
+            LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            leftLp.setMarginEnd(gap / 2);
+            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                    0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            rightLp.setMarginStart(gap / 2);
+            columns.addView(leftColumn, leftLp);
+            columns.addView(rightColumn, rightLp);
+            mainContainer.addView(columns, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
         }
@@ -215,7 +230,7 @@ public final class WelcomeSoundScreenBuilder {
         ttsStatus.setTextColor(UiStyles.color(context, R.color.textHint));
         ttsStatus.setPadding(0, 8, 0, 0);
         ttsCard.addView(ttsStatus);
-        addCard(context, mainContainer, grid, ttsCard);
+        addCard(context, wide ? leftColumn : mainContainer, ttsCard);
 
         // 2) Ses kaynağı
         LinearLayout sourceCard = sectionCard(context);
@@ -295,7 +310,7 @@ public final class WelcomeSoundScreenBuilder {
         steps.setLineSpacing(0f, 1.2f);
         steps.setPadding(0, 8, 0, 0);
         sourceCard.addView(steps);
-        addCard(context, mainContainer, grid, sourceCard);
+        addCard(context, wide ? rightColumn : mainContainer, sourceCard);
 
         // 3) Açılış davranışı
         LinearLayout behaviorCard = sectionCard(context);
@@ -312,13 +327,13 @@ public final class WelcomeSoundScreenBuilder {
                 autoPlayInitial,
                 onAutoPlayCommitted);
         behaviorCard.addView(autoPlayBlock);
-        addCard(context, mainContainer, grid, behaviorCard);
+        addCard(context, wide ? leftColumn : mainContainer, behaviorCard);
 
         // 4) Giriş tasarımı
         LinearLayout designCard = sectionCard(context);
         Button btnPreview = addDesignPicker(context, designCard, selectedDesignId,
                 onDesignCommitted, customLine, onLineCommitted);
-        addCard(context, mainContainer, grid, designCard);
+        addCard(context, wide ? rightColumn : mainContainer, designCard);
 
         FrameLayout formHost = new FrameLayout(context);
         formHost.setBackgroundColor(UiStyles.color(context, R.color.backgroundPage));
@@ -346,13 +361,9 @@ public final class WelcomeSoundScreenBuilder {
         input.requestFocus();
     }
 
-    private static void addCard(Context context, LinearLayout main,
-            CockpitGrid grid, View card) {
-        if (grid != null) {
-            grid.add(card, 4);
-        } else {
-            main.addView(card, cardParams(context));
-        }
+    private static void addCard(Context context, LinearLayout parent, View card) {
+        card.setLayoutParams(cardParams(context));
+        parent.addView(card);
     }
 
     private static LinearLayout sectionCard(Context context) {
