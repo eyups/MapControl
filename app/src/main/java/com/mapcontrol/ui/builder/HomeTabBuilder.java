@@ -3,6 +3,7 @@ package com.mapcontrol.ui.builder;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.mapcontrol.R;
+import com.mapcontrol.driving.DrivingScoreRingView;
 import com.mapcontrol.driving.DrivingSessionRecorder;
 import com.mapcontrol.driving.DrivingTrip;
 import com.mapcontrol.driving.DrivingTripStore;
@@ -306,42 +308,172 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             return card;
         }
 
-        card.status(StatusBadge.nominal(context, recorder.isActive()
+        StatusBadge badge = StatusBadge.nominal(context, recorder.isActive()
                 ? context.getString(R.string.ck_home_in_progress)
-                : context.getString(R.string.ck_home_completed)));
-
-        LinearLayout row = new LinearLayout(context);
-        row.setOrientation(LinearLayout.HORIZONTAL);
-        row.setGravity(Gravity.CENTER_VERTICAL);
-
-        TextView score = new TextView(context);
-        CockpitTokens.display(score);
-        score.setText(String.valueOf(trip.score));
-        score.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
-        row.addView(score, new LinearLayout.LayoutParams(
-                CockpitTokens.dp(context, 150), LinearLayout.LayoutParams.WRAP_CONTENT));
-
-        TextView info = new TextView(context);
-        CockpitTokens.bodyMd(info);
-        SimpleDateFormat fmt = new SimpleDateFormat("d MMM · HH:mm", new Locale("tr", "TR"));
-        String meta = (trip.title.isEmpty() ? context.getString(R.string.ck_home_drive) : trip.title)
-                + "\n" + fmt.format(new Date(trip.startTimeMs))
-                + " · " + String.format(Locale.getDefault(), "%.1f km", trip.distanceKm);
-        if (trip.consumptionL100 > 0) {
-            meta += "\n" + String.format(Locale.getDefault(), "%.1f L/100 km", trip.consumptionL100);
-        }
-        info.setText(meta);
-        info.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        row.addView(info, new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        card.addContent(row);
+                : context.getString(R.string.ck_home_completed));
 
         CockpitButton open = CockpitButton.secondary(context,
-                context.getString(R.string.ck_home_view_all));
+                context.getString(R.string.ck_home_view_all) + " →");
+        open.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
+        open.setMinHeight(dp(34));
         open.setOnClickListener(v -> callback.onNavigate(TAB_DRIVING_HISTORY,
                 context.getString(R.string.ck_home_drive_report)));
-        card.addAction(open);
+
+        LinearLayout statusGroup = new LinearLayout(context);
+        statusGroup.setOrientation(LinearLayout.HORIZONTAL);
+        statusGroup.setGravity(Gravity.CENTER_VERTICAL);
+        statusGroup.addView(badge);
+        LinearLayout.LayoutParams openLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        openLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        statusGroup.addView(open, openLp);
+        card.status(statusGroup);
+
+        // Telemetri özeti: solda skor halkası + sürüş profili, sağda metrik kartları.
+        LinearLayout hero = new LinearLayout(context);
+        hero.setOrientation(LinearLayout.HORIZONTAL);
+        hero.setGravity(Gravity.CENTER_VERTICAL);
+        hero.setPadding(dp(10), dp(10), dp(10), dp(10));
+        GradientDrawable heroBg = new GradientDrawable();
+        heroBg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
+        heroBg.setCornerRadius(dp(14));
+        hero.setBackground(heroBg);
+
+        DrivingScoreRingView scoreRing = new DrivingScoreRingView(context);
+        scoreRing.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        scoreRing.setAccentColor(CockpitTokens.color(context, R.color.ck_accent));
+        scoreRing.setTrackColor(CockpitTokens.color(context, R.color.ck_surface_1));
+        scoreRing.setScore(trip.score, false);
+        hero.addView(scoreRing, new LinearLayout.LayoutParams(dp(86), dp(86)));
+
+        LinearLayout copy = new LinearLayout(context);
+        copy.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams copyLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        copyLp.leftMargin = dp(10);
+        hero.addView(copy, copyLp);
+
+        TextView profileLabel = new TextView(context);
+        CockpitTokens.labelCaps(profileLabel);
+        profileLabel.setText("SÜRÜŞ PROFİLİ");
+        profileLabel.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        copy.addView(profileLabel);
+
+        TextView profile = new TextView(context);
+        CockpitTokens.title(profile);
+        profile.setText(trip.title == null || trip.title.isEmpty()
+                ? context.getString(R.string.ck_home_drive) : trip.title);
+        copy.addView(profile);
+
+        TextView profileMeta = new TextView(context);
+        CockpitTokens.bodySm(profileMeta);
+        SimpleDateFormat fmt = new SimpleDateFormat("d MMM · HH:mm", new Locale("tr", "TR"));
+        profileMeta.setText(fmt.format(new Date(trip.startTimeMs))
+                + " · " + String.format(Locale.getDefault(), "%.1f km", trip.distanceKm));
+        profileMeta.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        copy.addView(profileMeta);
+
+        card.addContent(hero);
+
+        LinearLayout metrics = new LinearLayout(context);
+        metrics.setOrientation(LinearLayout.HORIZONTAL);
+        metrics.setBaselineAligned(false);
+        LinearLayout.LayoutParams metricsLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        metricsLp.topMargin = dp(8);
+        card.addContent(metrics, metricsLp);
+
+        metrics.addView(buildTelemetryMetric(
+                        context.getString(R.string.driving_history_metric_distance),
+                        String.format(Locale.getDefault(), "%.1f", trip.distanceKm),
+                        "km", "Süre " + formatDuration(trip.durationSec)),
+                weightedMetric(0));
+        metrics.addView(buildTelemetryMetric(
+                        context.getString(R.string.driving_history_metric_consumption),
+                        trip.consumptionL100 > 0
+                                ? String.format(Locale.getDefault(), "%.1f", trip.consumptionL100) : "—",
+                        "L/100", "Ortalama"),
+                weightedMetric(1));
+        metrics.addView(buildTelemetryMetric(
+                        context.getString(R.string.driving_history_metric_avg),
+                        String.valueOf(trip.avgSpeedKmh),
+                        "km/h", "Maks " + trip.maxSpeedKmh),
+                weightedMetric(2));
+
+        TextView events = new TextView(context);
+        CockpitTokens.bodySm(events);
+        events.setText("SÜRÜŞ OLAYLARI   Sert fren " + trip.harshBrakes
+                + "  ·  Ani hızlanma " + trip.harshAccels);
+        events.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams eventsLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        eventsLp.topMargin = dp(8);
+        card.addContent(events, eventsLp);
         return card;
+    }
+
+    private LinearLayout buildTelemetryMetric(String label, String value,
+            String unit, String caption) {
+        LinearLayout box = new LinearLayout(context);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.setPadding(dp(9), dp(8), dp(9), dp(8));
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
+        bg.setCornerRadius(dp(12));
+        box.setBackground(bg);
+
+        TextView labelView = new TextView(context);
+        CockpitTokens.labelCaps(labelView);
+        labelView.setText(label);
+        labelView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        box.addView(labelView);
+
+        LinearLayout valueRow = new LinearLayout(context);
+        valueRow.setOrientation(LinearLayout.HORIZONTAL);
+        valueRow.setGravity(Gravity.BOTTOM);
+        TextView valueView = new TextView(context);
+        CockpitTokens.headlineMd(valueView);
+        valueView.setText(value);
+        valueView.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        valueRow.addView(valueView);
+        TextView unitView = new TextView(context);
+        CockpitTokens.bodySm(unitView);
+        unitView.setText(unit);
+        unitView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams unitLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        unitLp.leftMargin = dp(4);
+        unitLp.bottomMargin = dp(3);
+        valueRow.addView(unitView, unitLp);
+        box.addView(valueRow);
+
+        TextView captionView = new TextView(context);
+        CockpitTokens.bodySm(captionView);
+        captionView.setText(caption);
+        captionView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        box.addView(captionView);
+        return box;
+    }
+
+    private LinearLayout.LayoutParams weightedMetric(int index) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        if (index > 0) {
+            lp.leftMargin = dp(8);
+        }
+        return lp;
+    }
+
+    private String formatDuration(int seconds) {
+        int minutes = Math.max(0, seconds) / 60;
+        if (minutes < 60) {
+            return minutes + " dk";
+        }
+        return (minutes / 60) + " sa " + (minutes % 60) + " dk";
     }
 
     @Override

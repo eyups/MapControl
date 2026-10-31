@@ -73,6 +73,19 @@ public final class DrivingScoreRingView extends View {
         invalidate();
     }
 
+    /** Rapor dışındaki (ör. Kokpit telemetri) kullanımlar için vurgu rengi. */
+    public void setAccentColor(int color) {
+        arcPaint.setColor(color);
+        arcPaint.setShadowLayer(28f, 0f, 0f, (color & 0x00FFFFFF) | 0xB3000000);
+        markerPaint.setColor(color);
+        invalidate();
+    }
+
+    public void setTrackColor(int color) {
+        trackPaint.setColor(color);
+        invalidate();
+    }
+
     public void setScore(int score, boolean animate) {
         int clamped = Math.max(0, Math.min(100, score));
         if (clamped == this.score && Math.round(animatedScore) == clamped) {
