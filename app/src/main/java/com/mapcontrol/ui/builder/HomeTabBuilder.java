@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -134,6 +135,9 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             grid.addFullWidth(valet);
         }
         grid.finish();
+        if (fillHeight && grid.getChildCount() >= 2) {
+            grid.setRowWeights(0.92f, 1.08f);
+        }
     }
 
     private View buildHero() {
@@ -299,6 +303,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         CockpitCard card = new CockpitCard(context,
                 context.getString(R.string.ck_home_last_drive)).span(4);
         card.setMinimumHeight(dp(300));
+        card.getTitleView().setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 24);
         DrivingSessionRecorder recorder = DrivingSessionRecorder.get(context);
         DrivingTrip trip = recorder.isActive() ? recorder.getDisplayTrip() : recorder.getLastTrip();
         if (trip == null) {
@@ -384,6 +389,18 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         profileMeta.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         copy.addView(profileMeta);
 
+        int ecoLevel = trip.score >= 85 ? StatusBadge.NOMINAL
+                : (trip.score >= 65 ? StatusBadge.ADVISORY : StatusBadge.NEUTRAL);
+        String ecoText = context.getString(trip.score >= 85
+                ? R.string.ck_home_eco_high
+                : (trip.score >= 65 ? R.string.ck_home_eco_medium : R.string.ck_home_eco_low));
+        StatusBadge ecoBadge = StatusBadge.neutral(context, ecoText);
+        ecoBadge.setLevel(ecoLevel);
+        LinearLayout.LayoutParams ecoLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ecoLp.leftMargin = dp(8);
+        hero.addView(ecoBadge, ecoLp);
+
         card.addContent(hero);
 
         if (trip.speedSamples != null && trip.speedSamples.size() >= 2) {
@@ -403,10 +420,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             chartHeader.addView(chartLabel, new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-            TextView chartMax = new TextView(context);
-            CockpitTokens.bodySm(chartMax);
-            chartMax.setText("Maks " + trip.maxSpeedKmh + " km/h");
-            chartMax.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            StatusBadge chartMax = StatusBadge.neutral(context,
+                    context.getString(R.string.ck_home_max_speed, trip.maxSpeedKmh));
             chartHeader.addView(chartMax);
 
             Sparkline sparkline = new Sparkline(context);
@@ -422,7 +437,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             chartBox.setPadding(dp(8), dp(6), dp(8), dp(6));
             CockpitSurfaces.level2(chartBox);
             chartBox.addView(sparkline, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, dp(28)));
+                    LinearLayout.LayoutParams.MATCH_PARENT, dp(34)));
             LinearLayout.LayoutParams chartLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -442,25 +457,25 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         metrics.addView(buildTelemetryMetric(
                         context.getString(R.string.driving_history_metric_distance),
                         String.format(Locale.getDefault(), "%.1f", trip.distanceKm),
-                        "km", "Süre " + formatDuration(trip.durationSec)),
+                        "km", "Süre " + formatDuration(trip.durationSec), R.drawable.ic_mdi_road_variant),
                 weightedMetric(0));
         metrics.addView(buildTelemetryMetric(
                         context.getString(R.string.driving_history_metric_consumption),
                         trip.consumptionL100 > 0
                                 ? String.format(Locale.getDefault(), "%.1f", trip.consumptionL100) : "—",
-                        "L/100", "Ortalama"),
+                        "L/100", "Ortalama", R.drawable.ic_mdi_lightning_bolt),
                 weightedMetric(1));
         metrics.addView(buildTelemetryMetric(
                         context.getString(R.string.driving_history_metric_avg),
                         String.valueOf(trip.avgSpeedKmh),
-                        "km/h", "Maks " + trip.maxSpeedKmh),
+                        "km/h", "Maks " + trip.maxSpeedKmh, R.drawable.ic_mdi_speedometer),
                 weightedMetric(2));
 
         return card;
     }
 
     private LinearLayout buildTelemetryMetric(String label, String value,
-            String unit, String caption) {
+            String unit, String caption, int iconRes) {
         LinearLayout box = new LinearLayout(context);
         box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(dp(8), dp(6), dp(8), dp(6));
@@ -469,11 +484,20 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         bg.setCornerRadius(dp(12));
         box.setBackground(bg);
 
+        LinearLayout labelRow = new LinearLayout(context);
+        labelRow.setOrientation(LinearLayout.HORIZONTAL);
+        labelRow.setGravity(Gravity.CENTER_VERTICAL);
         TextView labelView = new TextView(context);
         CockpitTokens.labelCaps(labelView);
         labelView.setText(label);
         labelView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        box.addView(labelView);
+        labelRow.addView(labelView, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        ImageView icon = new ImageView(context);
+        icon.setImageResource(iconRes);
+        icon.setColorFilter(CockpitTokens.color(context, R.color.ck_text_medium));
+        labelRow.addView(icon, new LinearLayout.LayoutParams(dp(16), dp(16)));
+        box.addView(labelRow);
 
         LinearLayout valueRow = new LinearLayout(context);
         valueRow.setOrientation(LinearLayout.HORIZONTAL);

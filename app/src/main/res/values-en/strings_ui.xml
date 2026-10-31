@@ -1239,4 +1239,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_sherpa_model_value">Piper DFKI Medium · Turkish</string>
     <string name="voice_talk_sherpa_single_speaker">The bundled model has a single speaker; there is no voice profile selection.</string>
     <string name="voice_talk_fine_desc">These settings apply to ElevenLabs speech synthesis.</string>
+    <string name="ck_home_eco_high">Eco level: High</string>
+    <string name="ck_home_eco_medium">Eco level: Medium</string>
+    <string name="ck_home_eco_low">Eco level: Low</string>
+    <string name="ck_home_max_speed">Max %1$d km/h</string>
 </resources>

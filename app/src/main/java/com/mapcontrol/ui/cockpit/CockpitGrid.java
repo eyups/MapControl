@@ -56,6 +56,16 @@ public class CockpitGrid extends LinearLayout {
         used = COLUMNS;
     }
 
+    public void setRowWeights(float... weights) {
+        if (weights == null) return;
+        for (int i = 0; i < getChildCount() && i < weights.length; i++) {
+            View row = getChildAt(i);
+            LayoutParams lp = (LayoutParams) row.getLayoutParams();
+            lp.weight = weights[i];
+            row.setLayoutParams(lp);
+        }
+    }
+
     public void finish() {
         if (fillHeight && currentRow != null) {
             LayoutParams lp = (LayoutParams) currentRow.getLayoutParams();
