@@ -1205,4 +1205,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_sunroof_page_title">Smart Sunroof Automation</string>
     <string name="ck_sunroof_page_sub">Closes the roof in strong sun; opens it in cloudy weather or at sunset.</string>
     <string name="split_unavailable">Unavailable on this device</string>
+    <string name="equalizer_settings_title">Audio settings</string>
 </resources>

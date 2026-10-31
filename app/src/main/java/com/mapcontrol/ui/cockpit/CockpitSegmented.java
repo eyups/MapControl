@@ -63,6 +63,12 @@ public class CockpitSegmented extends LinearLayout {
         }
     }
 
+    /** Clears selection for a custom/unspecified state. */
+    public void clearSelection() {
+        selectedIndex = -1;
+        refresh();
+    }
+
     /** Visual sync without callback. */
     public void syncSelection(int index) {
         if (index < 0 || index >= getChildCount()) {
