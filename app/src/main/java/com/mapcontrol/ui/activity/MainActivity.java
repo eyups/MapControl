@@ -1408,6 +1408,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_EQUALIZER) {
             addTabChildWithHeader(parent, equalizerTabBuilder.getScrollView(), matchParent, tabIndex);
         } else if (tabIndex == TAB_DRIVER_PROFILES) {
+            driverProfilesTabBuilder.onTabVisible();
             addTabChildWithHeader(parent, driverProfilesTabBuilder.getScrollView(), matchParent, tabIndex);
         } else if (tabIndex == TAB_VALET) {
             addTabChildWithHeader(parent, valetTabBuilder.getScrollView(), matchParent, tabIndex);

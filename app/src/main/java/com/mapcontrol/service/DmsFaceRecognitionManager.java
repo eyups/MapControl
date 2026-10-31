@@ -33,11 +33,14 @@ import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 import com.mapcontrol.R;
+import com.mapcontrol.profile.DriverProfileManager;
+import com.mapcontrol.tts.ElevenLabsTts;
 import com.mapcontrol.tts.MapControlSpeech;
 import com.mapcontrol.vehicle.CarSeatMemoryManager;
 import com.mapcontrol.vehicle.DmsFaceMatcher;
 import com.mapcontrol.vehicle.FaceProfileStore;
 
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
@@ -476,7 +479,45 @@ public final class DmsFaceRecognitionManager {
         if (profileName == null || profileName.trim().isEmpty()) {
             return;
         }
-        String text = context.getString(R.string.dms_face_welcome_tts, profileName.trim());
+        String name = profileName.trim();
+        DriverProfileManager.Profile profile = findDriverProfile(name);
+        if (profile != null && isCachedWelcome(profile)) {
+            // Önceden ElevenLabs ile üretilen sesi kullan; yeni API çağrısı yapma.
+            ElevenLabsTts.playCached(context, new File(profile.welcomeAudioPath),
+                    reason -> speakLiveWelcome(name));
+            return;
+        }
+        speakLiveWelcome(name);
+    }
+
+    private DriverProfileManager.Profile findDriverProfile(String name) {
+        try {
+            for (DriverProfileManager.Profile profile
+                    : DriverProfileManager.get(context).getProfiles()) {
+                if (profile.name != null && profile.name.equalsIgnoreCase(name)) {
+                    return profile;
+                }
+            }
+        } catch (Throwable ignored) {
+        }
+        return null;
+    }
+
+    private boolean isCachedWelcome(DriverProfileManager.Profile profile) {
+        if (profile == null || profile.welcomeAudioPath == null
+                || profile.welcomeAudioPath.trim().isEmpty()) {
+            return false;
+        }
+        String expected = context.getString(R.string.dms_face_welcome_tts, profile.name);
+        if (!expected.equals(profile.welcomeMessage)) {
+            return false;
+        }
+        File file = new File(profile.welcomeAudioPath);
+        return file.isFile() && file.length() > 0;
+    }
+
+    private void speakLiveWelcome(String profileName) {
+        String text = context.getString(R.string.dms_face_welcome_tts, profileName);
         mainHandler.post(() -> {
             try {
                 MapControlSpeech.speak(context, text);

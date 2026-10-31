@@ -25,6 +25,8 @@ import com.mapcontrol.R;
 import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.profile.ProfileAvatars;
+import com.mapcontrol.tts.ElevenLabsTts;
+import com.mapcontrol.tts.MapControlSpeech;
 import com.mapcontrol.vehicle.FaceProfileStore;
 import android.content.Intent;
 import com.mapcontrol.ui.activity.DmsFaceProfileActivity;
@@ -39,6 +41,10 @@ import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.vehicle.ComfortCommands;
 import com.mapcontrol.vehicle.IdScanner;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -53,6 +59,9 @@ public class DriverProfilesTabBuilder {
     private final ScrollView scrollView;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final java.util.Set<String> welcomePending = ConcurrentHashMap.newKeySet();
+    private final java.util.Map<String, String> welcomeErrors = new ConcurrentHashMap<>();
+    private boolean tabVisible;
 
     public DriverProfilesTabBuilder(Context context, Consumer<String> log, Runnable onProfileChanged) {
         this.context = context;
@@ -67,6 +76,11 @@ public class DriverProfilesTabBuilder {
 
     public ScrollView getScrollView() {
         return scrollView;
+    }
+
+    public void onTabVisible() {
+        tabVisible = true;
+        rebuild();
     }
 
     public void release() {
@@ -126,6 +140,9 @@ public class DriverProfilesTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        if (tabVisible) {
+            ensureWelcomeMessages(profiles);
+        }
     }
 
     private CockpitCard buildProfileCard(DriverProfileManager.Profile profile,
@@ -157,9 +174,7 @@ public class DriverProfilesTabBuilder {
                 context.getString(profile.applyOnStart
                         ? R.string.profiles_apply_on_start_short_on
                         : R.string.profiles_apply_on_start_short_off));
-        addInfoRow(card, R.drawable.ic_mdi_package_variant,
-                context.getString(R.string.profiles_advanced_items_short),
-                String.valueOf(profile.items.size()));
+        addWelcomeMessageRow(card, profile);
 
         LinearLayout actions = new LinearLayout(context);
         actions.setOrientation(LinearLayout.HORIZONTAL);
@@ -207,7 +222,7 @@ public class DriverProfilesTabBuilder {
         card.addContent(face, faceLp);
 
         TextView advanced = new TextView(context);
-        advanced.setText(R.string.profiles_advanced_settings_link);
+        advanced.setText(R.string.profiles_memory_settings_link);
         CockpitTokens.bodySm(advanced);
         advanced.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
         advanced.setGravity(Gravity.CENTER);
@@ -276,6 +291,184 @@ public class DriverProfilesTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         rowLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         card.addContent(row, rowLp);
+    }
+
+    private void addWelcomeMessageRow(CockpitCard card, DriverProfileManager.Profile profile) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        CockpitSurfaces.level1(row);
+
+        ImageView icon = new ImageView(context);
+        icon.setImageResource(R.drawable.ic_mdi_account);
+        icon.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
+        row.addView(icon, new LinearLayout.LayoutParams(dp(22), dp(22)));
+
+        TextView label = new TextView(context);
+        label.setText(R.string.profiles_welcome_tts_label);
+        CockpitTokens.bodySm(label);
+        LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        labelLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        row.addView(label, labelLp);
+
+        TextView status = new TextView(context);
+        status.setText(welcomeStatus(profile));
+        CockpitTokens.bodySm(status);
+        status.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        row.addView(status);
+
+        ImageView refresh = new ImageView(context);
+        refresh.setImageResource(R.drawable.ic_mdi_refresh);
+        refresh.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
+        refresh.setContentDescription(context.getString(R.string.profiles_welcome_tts_refresh));
+        refresh.setPadding(dp(4), dp(4), dp(4), dp(4));
+        refresh.setClickable(true);
+        refresh.setFocusable(true);
+        refresh.setOnClickListener(v -> generateWelcome(profile, true));
+        LinearLayout.LayoutParams refreshLp = new LinearLayout.LayoutParams(dp(28), dp(28));
+        refreshLp.leftMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        row.addView(refresh, refreshLp);
+
+        LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        rowLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        card.addContent(row, rowLp);
+    }
+
+    private void ensureWelcomeMessages(java.util.List<DriverProfileManager.Profile> profiles) {
+        for (DriverProfileManager.Profile profile : profiles) {
+            if (welcomePending.contains(profile.id)
+                    || welcomeErrors.containsKey(profile.id)
+                    || isWelcomeCached(profile)) {
+                continue;
+            }
+            if (MapControlSpeech.apiKey(context).trim().isEmpty()
+                    || !MapControlSpeech.isOnline(context)) {
+                continue;
+            }
+            generateWelcome(profile, false);
+        }
+    }
+
+    private boolean isWelcomeCached(DriverProfileManager.Profile profile) {
+        if (profile.welcomeAudioPath == null || profile.welcomeAudioPath.trim().isEmpty()) {
+            return false;
+        }
+        if (!expectedWelcome(profile).equals(profile.welcomeMessage)) {
+            return false;
+        }
+        File file = new File(profile.welcomeAudioPath);
+        return file.isFile() && file.length() > 0;
+    }
+
+    private String expectedWelcome(DriverProfileManager.Profile profile) {
+        return context.getString(R.string.dms_face_welcome_tts, profile.name);
+    }
+
+    private String welcomeStatus(DriverProfileManager.Profile profile) {
+        if (welcomePending.contains(profile.id)) {
+            return context.getString(R.string.profiles_welcome_tts_generating);
+        }
+        if (welcomeErrors.containsKey(profile.id)) {
+            return context.getString(R.string.profiles_welcome_tts_error);
+        }
+        if (isWelcomeCached(profile)) {
+            return context.getString(R.string.profiles_welcome_tts_ready);
+        }
+        if (MapControlSpeech.apiKey(context).trim().isEmpty()) {
+            return context.getString(R.string.profiles_welcome_tts_no_key);
+        }
+        if (!MapControlSpeech.isOnline(context)) {
+            return context.getString(R.string.profiles_welcome_tts_no_network);
+        }
+        return context.getString(R.string.profiles_welcome_tts_missing);
+    }
+
+    private void generateWelcome(DriverProfileManager.Profile profile, boolean force) {
+        if (profile == null || welcomePending.contains(profile.id)) {
+            return;
+        }
+        if (!force && isWelcomeCached(profile)) {
+            return;
+        }
+        String key = MapControlSpeech.apiKey(context).trim();
+        if (key.isEmpty()) {
+            return;
+        }
+        if (!MapControlSpeech.isOnline(context)) {
+            return;
+        }
+        welcomeErrors.remove(profile.id);
+        welcomePending.add(profile.id);
+        handler.post(this::rebuild);
+
+        String text = expectedWelcome(profile);
+        String voice = MapControlSpeech.voiceId(context);
+        File dir = new File(context.getFilesDir(), "profile_welcome");
+        if (!dir.isDirectory() && !dir.mkdirs()) {
+            welcomePending.remove(profile.id);
+            welcomeErrors.put(profile.id, "mkdir");
+            handler.post(this::rebuild);
+            return;
+        }
+        File temp = new File(dir, "profile-" + profile.id + ".part.mp3");
+        File finalFile = new File(dir, "profile-" + profile.id + ".mp3");
+        temp.delete();
+        ElevenLabsTts.synthesizeToFile(context, text, key, voice, temp,
+                new ElevenLabsTts.FileCallback() {
+                    @Override
+                    public void onSuccess(File file) {
+                        boolean saved = replaceFile(file, finalFile);
+                        welcomePending.remove(profile.id);
+                        if (saved) {
+                            manager.setWelcomeAudio(profile.id, text, finalFile.getAbsolutePath());
+                            welcomeErrors.remove(profile.id);
+                        } else {
+                            file.delete();
+                            welcomeErrors.put(profile.id, "write");
+                        }
+                        handler.post(DriverProfilesTabBuilder.this::rebuild);
+                    }
+
+                    @Override
+                    public void onFailure(String reason) {
+                        temp.delete();
+                        welcomePending.remove(profile.id);
+                        welcomeErrors.put(profile.id, reason == null ? "error" : reason);
+                        handler.post(DriverProfilesTabBuilder.this::rebuild);
+                    }
+                });
+    }
+
+    private boolean replaceFile(File source, File target) {
+        if (source == null || !source.isFile() || source.length() <= 0) {
+            return false;
+        }
+        if (target.exists() && !target.delete()) {
+            return false;
+        }
+        if (source.renameTo(target)) {
+            return true;
+        }
+        try (FileInputStream in = new FileInputStream(source);
+             FileOutputStream out = new FileOutputStream(target)) {
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = in.read(buffer)) > 0) {
+                out.write(buffer, 0, read);
+            }
+            out.flush();
+            source.delete();
+            return target.isFile() && target.length() > 0;
+        } catch (Exception ignored) {
+            target.delete();
+            return false;
+        }
     }
 
     private CockpitCard buildNewProfileCard() {

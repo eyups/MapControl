@@ -171,6 +171,20 @@ public final class ElevenLabsTts {
         });
     }
 
+    /** Profilde önceden üretilmiş MP3'ü API çağrısı yapmadan oynatır. */
+    public static void playCached(Context context, File file, FailureCallback onFailure) {
+        if (context == null || file == null || !file.isFile() || file.length() <= 0) {
+            if (onFailure != null) {
+                onFailure.onFailure("cache-missing");
+            }
+            return;
+        }
+        final Context app = context.getApplicationContext();
+        final int gen = GENERATION.incrementAndGet();
+        stopPlayer();
+        MAIN.post(() -> play(app, file, gen, onFailure, true));
+    }
+
     /** Hoş geldin sesi gibi kalıcı dosya üretimi; oynatma yapmaz. */
     public static void synthesizeToFile(Context context, String text, String apiKey,
                                         String voiceId, File out, FileCallback callback) {

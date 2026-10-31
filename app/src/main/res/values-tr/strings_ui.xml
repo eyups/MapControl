@@ -1181,6 +1181,15 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_seat_label">Koltuk Hafıza</string>
     <string name="profiles_apply_on_start_short_on">Açık</string>
     <string name="profiles_apply_on_start_short_off">Kapalı</string>
+    <string name="profiles_welcome_tts_label">Yüz Tanıma Karşılama Mesajı</string>
+    <string name="profiles_welcome_tts_ready">Hazır</string>
+    <string name="profiles_welcome_tts_generating">Oluşturuluyor…</string>
+    <string name="profiles_welcome_tts_missing">Henüz oluşturulmadı</string>
+    <string name="profiles_welcome_tts_no_network">İnternet yok</string>
+    <string name="profiles_welcome_tts_no_key">API anahtarı yok</string>
+    <string name="profiles_welcome_tts_error">Oluşturulamadı</string>
+    <string name="profiles_welcome_tts_refresh">Karşılama mesajını yenile</string>
+    <string name="profiles_memory_settings_link">Koltuk ve hafıza ayarları</string>
     <string name="profiles_advanced_items_short">Ek ayarlar</string>
     <string name="profiles_role_primary">Birincil Sürücü</string>
     <string name="profiles_role_secondary">İkinci Sürücü</string>

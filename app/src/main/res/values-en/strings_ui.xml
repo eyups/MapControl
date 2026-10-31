@@ -1165,6 +1165,15 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_seat_label">Seat memory</string>
     <string name="profiles_apply_on_start_short_on">On</string>
     <string name="profiles_apply_on_start_short_off">Off</string>
+    <string name="profiles_welcome_tts_label">Face Recognition Welcome Message</string>
+    <string name="profiles_welcome_tts_ready">Ready</string>
+    <string name="profiles_welcome_tts_generating">Generating…</string>
+    <string name="profiles_welcome_tts_missing">Not created yet</string>
+    <string name="profiles_welcome_tts_no_network">No internet</string>
+    <string name="profiles_welcome_tts_no_key">No API key</string>
+    <string name="profiles_welcome_tts_error">Could not create</string>
+    <string name="profiles_welcome_tts_refresh">Refresh welcome message</string>
+    <string name="profiles_memory_settings_link">Seat and memory settings</string>
     <string name="profiles_advanced_items_short">Extra settings</string>
     <string name="profiles_role_primary">Primary Driver</string>
     <string name="profiles_role_secondary">Second Driver</string>

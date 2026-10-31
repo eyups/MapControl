@@ -65,6 +65,9 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
         /** OEM koltuk/ayna hafıza slotu: 0 yok, 1-3. */
         public int seatSlot;
         public boolean applyOnStart;
+        /** Yüz tanıma karşılaması için üretilmiş metin ve ElevenLabs MP3 yolu. */
+        public String welcomeMessage = "";
+        public String welcomeAudioPath = "";
         /** {@link ProfileAvatars} indeksi: 0-9. */
         public int avatar;
         public final List<MemoryItem> items = new ArrayList<>();
@@ -241,6 +244,16 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
             }
         }
         return result;
+    }
+
+    public synchronized void setWelcomeAudio(String id, String message, String audioPath) {
+        Profile p = find(id);
+        if (p == null) {
+            return;
+        }
+        p.welcomeMessage = message == null ? "" : message;
+        p.welcomeAudioPath = audioPath == null ? "" : audioPath;
+        save();
     }
 
     public synchronized void setApplyOnStart(String id, boolean enabled) {
@@ -420,6 +433,8 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
                 o.put("avatar", p.avatar);
                 o.put("seatSlot", p.seatSlot);
                 o.put("applyOnStart", p.applyOnStart);
+                o.put("welcomeMessage", p.welcomeMessage);
+                o.put("welcomeAudioPath", p.welcomeAudioPath);
                 o.put("settings", p.settings);
                 JSONArray items = new JSONArray();
                 for (MemoryItem item : p.items) {
@@ -550,6 +565,8 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
                         o.optInt("avatar", i % ProfileAvatars.COUNT));
                 p.seatSlot = o.optInt("seatSlot", 0);
                 p.applyOnStart = o.optBoolean("applyOnStart", false);
+                p.welcomeMessage = o.optString("welcomeMessage", "");
+                p.welcomeAudioPath = o.optString("welcomeAudioPath", "");
                 JSONObject settings = o.optJSONObject("settings");
                 if (settings != null) {
                     Iterator<String> keys = settings.keys();
