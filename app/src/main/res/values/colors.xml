@@ -131,4 +131,5 @@
     <color name="ck_text_muted">#475569</color>
     <color name="ck_on_accent">#0F1216</color>
     <color name="ck_scrim">#B3000000</color>
-    </resources>
+    <color name="assistStrokeActive">#5A7FC0</color>
+</resources>

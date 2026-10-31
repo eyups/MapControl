@@ -922,6 +922,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="camera360_auto_st_low_space">Not enough space (2 GB reserve)</string>
     <string name="camera360_auto_legend_reserve">2 GB reserve</string>
     <string name="camera360_auto_reserve_note">2 GB is always left free. Recording space = free + clips − 2 GB.</string>
+    <string name="camera360_fast_read_on">Camera fast read: ON (cameras restarting)</string>
+    <string name="camera360_fast_read_off">Camera fast read: OFF (cameras restarting)</string>
     <string name="camera360_auto_retention_note">Clips are not deleted by date. Each clip is saved with a sequence number (_id_1, _id_2, …); a new clip always continues from the last clip\'s number, or starts at _id_1 if there are none. When free space nears the 2 GB reserve, the size of the next clip is taken into account and clips are deleted starting from the lowest number (oldest) until enough space is freed; deletion stops once there is room. ≈ %1$s of recording fits.</string>
     <string name="camera360_auto_consent_msg">When the ignition is on (power mode 2), the cameras are recorded to %1$s in the selected mode as 3-minute clips.\n\n• Clips are saved with date/time and a sequence number (_id_N); there is no deletion by date.\n• When free space nears the 2 GB reserve, the lowest-numbered (oldest) clip is deleted; deletion stops once there is room.\n• At least 2 GB is always left free on the device.\n• USB recording can\'t be used while this mode is on.\n\nDo you confirm?</string>
     <string name="side_rail_split_screen">Split Screen</string>

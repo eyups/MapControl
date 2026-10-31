@@ -30,9 +30,6 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
-import com.mapcontrol.ui.cockpit.CockpitGrid;
-import com.mapcontrol.ui.cockpit.CockpitSurfaces;
-import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.dvr.CameraGlEngine;
 import com.mapcontrol.dvr.CameraHub;
 import com.mapcontrol.dvr.CameraRecorder;
@@ -98,7 +95,6 @@ public class Camera360TabBuilder {
     private View rootView;
     private LinearLayout menuView;
     private LinearLayout previewView;
-    private FrameLayout previewArea;
     private View recordView;
 
     private SurfaceView previewSurfaceView;
@@ -147,6 +143,8 @@ public class Camera360TabBuilder {
     private UiStyles.BinarySegmentHandle separateSegment;
     private TextView estimateView;
     private final Handler ticker = new Handler(Looper.getMainLooper());
+    /** recTick kuyrukta veya calisiyor (startRecTicker tekrar kurmaz). */
+    private boolean recTickerRunning;
 
     private boolean previewRunning;
     /** Kayit gorunumu acikken sinyal noktalari icin akislar tutulur. */
@@ -155,18 +153,9 @@ public class Camera360TabBuilder {
     private final CameraHub.StateListener camStateListener = (cam, state) -> updateCamIndicators();
     private final CameraGlEngine.FpsListener fpsListener = (cam, fps) -> {
         if (!previewRunning) return;
-        applyFps(cam, fps);
-    };
-    /** FPS callback'i gecikirse arayuzu motorun son degerinden yeniler. */
-    private final Runnable fpsTicker = new Runnable() {
-        @Override
-        public void run() {
-            if (!previewRunning) return;
-            for (int i = 0; i < CAM_COUNT; i++) {
-                applyFps(i, engine.getLastFps(i));
-            }
-            mainHandler.postDelayed(this, 1000);
-        }
+        String text = fps + " fps";
+        setFpsText(fpsViews[cam], text);
+        if (engine.getBigCam() == cam) setFpsText(bigFps, text);
     };
 
     private final java.util.function.Supplier<Integer> speedSupplier;
@@ -245,68 +234,17 @@ public class Camera360TabBuilder {
         root.addView(autoRoot, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
-        rootView = root;
-        return root;
-    }
-
-    /** Izleme ekrani yalnizca acildiginda kurulur; uygulama acilisinda 5 SurfaceView olusturulmaz. */
-    private void ensureClipViewer() {
-        if (clipViewer != null) {
-            return;
-        }
         clipViewer = new Camera360ClipViewer(ui, dvr, this::enterMenu, wide -> {
             java.util.function.Consumer<Boolean> l = wideListener;
             if (l != null) l.accept(wide);
         });
         viewerRoot = clipViewer.build();
         viewerRoot.setVisibility(View.GONE);
-        ((android.view.ViewGroup) rootView).addView(viewerRoot, new FrameLayout.LayoutParams(
+        root.addView(viewerRoot, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-    }
 
-    private void attachViewerRoot() {
-        if (viewerRoot == null || rootView == null) {
-            return;
-        }
-        if (viewerRoot.getParent() == null) {
-            ((android.view.ViewGroup) rootView).addView(viewerRoot, new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        }
-    }
-
-    private void detachViewerRoot() {
-        if (viewerRoot == null) {
-            return;
-        }
-        if (viewerRoot.getParent() instanceof android.view.ViewGroup) {
-            ((android.view.ViewGroup) viewerRoot.getParent()).removeView(viewerRoot);
-        }
-    }
-
-    /** Kayit devam ediyorsa sekme disinda kucuk bir gosterge icin. */
-    public boolean isRecordingActive() {
-        return recorder != null && recorder.isRecording();
-    }
-
-    private void attachPreviewSurface() {
-        if (previewArea == null || previewSurfaceView == null) {
-            return;
-        }
-        if (previewSurfaceView.getParent() == null) {
-            previewArea.addView(previewSurfaceView, new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        }
-    }
-
-    private void detachPreviewSurface() {
-        // Önce EGL/GL tarafını bırak; SurfaceView'ı önce kaldırmak producer'ı
-        // yok edip SurfaceFlinger'da "unrecognized IGraphicBufferProducer"
-        // / "updateAcquireFence: Did not find frame" üretebiliyor.
-        engine.clearPreviewSurface();
-        if (previewSurfaceView != null
-                && previewSurfaceView.getParent() instanceof android.view.ViewGroup) {
-            ((android.view.ViewGroup) previewSurfaceView.getParent()).removeView(previewSurfaceView);
-        }
+        rootView = root;
+        return root;
     }
 
     /**
@@ -388,88 +326,49 @@ public class Camera360TabBuilder {
     // ---------- Gorsel yardimcilar ----------
 
     private int dp(float v) {
-        return Math.round(v * context.getResources().getDisplayMetrics().density);
+        return ui.dp(v);
     }
 
     private int themeColor(int colorRes) {
-        return UiStyles.color(context, colorRes);
+        return ui.themeColor(colorRes);
     }
 
     private static int withAlpha(int color, int alpha) {
-        return (color & 0x00FFFFFF) | (alpha << 24);
+        return Camera360Ui.withAlpha(color, alpha);
     }
 
     private GradientDrawable roundRect(int fill, float radiusDp) {
-        GradientDrawable d = new GradientDrawable();
-        d.setColor(fill);
-        d.setCornerRadius(dp(radiusDp));
-        return d;
+        return ui.roundRect(fill, radiusDp);
     }
 
     private static GradientDrawable oval(int fill) {
-        GradientDrawable d = new GradientDrawable();
-        d.setShape(GradientDrawable.OVAL);
-        d.setColor(fill);
-        return d;
+        return Camera360Ui.oval(fill);
     }
 
     /** Icerik arka planinin uzerine dokunma dalgasi (ripple) ekler ve gorunumu tiklanabilir yapar. */
     private void setPressableBackground(View view, Drawable content, float radiusDp) {
-        int ripple = withAlpha(themeColor(R.color.textPrimary), 0x2E);
-        view.setBackground(new RippleDrawable(ColorStateList.valueOf(ripple), content,
-                roundRect(Color.WHITE, radiusDp)));
-        view.setClickable(true);
+        ui.setPressableBackground(view, content, radiusDp);
     }
 
     private LinearLayout card() {
-        LinearLayout card = new LinearLayout(context);
-        card.setOrientation(LinearLayout.VERTICAL);
-        int p = CockpitTokens.dim(context, R.dimen.ck_card_padding);
-        card.setPadding(p, p, p, p);
-        CockpitSurfaces.level1(card);
-        return card;
+        return ui.card();
     }
 
     private TextView sectionLabel(int textRes) {
-        TextView tv = new TextView(context);
-        tv.setText(textRes);
-        CockpitTokens.labelCaps(tv);
-        return tv;
+        return ui.sectionLabel(textRes);
     }
 
     private FrameLayout iconBadge(int iconRes, int tint, int fill, int sizeDp, int iconDp, boolean circle) {
-        FrameLayout badge = new FrameLayout(context);
-        badge.setBackground(circle ? oval(fill) : roundRect(fill, sizeDp * 0.3f));
-        ImageView icon = new ImageView(context);
-        icon.setImageResource(iconRes);
-        icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        icon.setColorFilter(tint);
-        badge.addView(icon, new FrameLayout.LayoutParams(dp(iconDp), dp(iconDp), Gravity.CENTER));
-        badge.setLayoutParams(new LinearLayout.LayoutParams(dp(sizeDp), dp(sizeDp)));
-        return badge;
+        return ui.iconBadge(iconRes, tint, fill, sizeDp, iconDp, circle);
     }
 
     /** Metnin basina renklendirilebilir durum noktasi koyar. */
     private GradientDrawable attachDot(TextView tv, int color, int sizeDp) {
-        GradientDrawable dot = oval(color);
-        int s = dp(sizeDp);
-        dot.setBounds(0, 0, s, s);
-        tv.setCompoundDrawablesRelative(dot, null, null, null);
-        tv.setCompoundDrawablePadding(dp(7));
-        return dot;
+        return ui.attachDot(tv, color, sizeDp);
     }
 
     private void attachIcon(TextView tv, int iconRes, int tint, int sizeDp) {
-        Drawable icon = ContextCompat.getDrawable(context, iconRes);
-        if (icon == null) {
-            return;
-        }
-        icon = icon.mutate();
-        icon.setTint(tint);
-        int s = dp(sizeDp);
-        icon.setBounds(0, 0, s, s);
-        tv.setCompoundDrawablesRelative(icon, null, null, null);
-        tv.setCompoundDrawablePadding(dp(8));
+        ui.attachIcon(tv, iconRes, tint, sizeDp);
     }
 
     private static int stateColor(int hubState) {
@@ -499,8 +398,9 @@ public class Camera360TabBuilder {
         back.addView(arrow, new LinearLayout.LayoutParams(dp(22), dp(22)));
         TextView backText = new TextView(context);
         backText.setText(R.string.camera360_title);
-        CockpitTokens.bodySm(backText);
-        backText.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        backText.setTextSize(15);
+        backText.setTypeface(null, Typeface.BOLD);
+        backText.setTextColor(themeColor(R.color.textPrimary));
         LinearLayout.LayoutParams btp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         btp.setMarginStart(dp(8));
@@ -510,7 +410,9 @@ public class Camera360TabBuilder {
 
         TextView title = new TextView(context);
         title.setText(titleRes);
-        CockpitTokens.headlineSm(title);
+        title.setTextSize(20);
+        title.setTypeface(null, Typeface.BOLD);
+        title.setTextColor(themeColor(R.color.textPrimary));
         title.setSingleLine(true);
         title.setEllipsize(TextUtils.TruncateAt.END);
         LinearLayout.LayoutParams tp = new LinearLayout.LayoutParams(
@@ -526,73 +428,78 @@ public class Camera360TabBuilder {
     private LinearLayout buildMenuView() {
         LinearLayout menu = new LinearLayout(context);
         menu.setOrientation(LinearLayout.VERTICAL);
-        int side = CockpitTokens.dim(context, R.dimen.ck_margin);
-        menu.setPadding(side, CockpitTokens.dim(context, R.dimen.ck_space_sm), side,
-                CockpitTokens.dim(context, R.dimen.ck_space_md));
+        menu.setGravity(Gravity.CENTER);
+        int side = dp(16);
+        menu.setPadding(side, 0, side, 0);
 
         LinearLayout heading = new LinearLayout(context);
-        heading.setOrientation(LinearLayout.VERTICAL);
-        int accent = CockpitTokens.color(context, R.color.ck_accent);
+        heading.setOrientation(LinearLayout.HORIZONTAL);
+        heading.setGravity(Gravity.CENTER_VERTICAL);
+        int accent = themeColor(R.color.oemAccent);
+        heading.addView(iconBadge(R.drawable.ic_mdi_camera, accent,
+                themeColor(R.color.surfaceCardInner), 52, 28, false));
         LinearLayout headingText = new LinearLayout(context);
         headingText.setOrientation(LinearLayout.VERTICAL);
+        headingText.setPadding(dp(14), 0, 0, 0);
         TextView title = new TextView(context);
         title.setText(R.string.camera360_title);
-        CockpitTokens.headlineMd(title);
+        title.setTextSize(24);
+        title.setTypeface(null, Typeface.BOLD);
+        title.setTextColor(themeColor(R.color.textPrimary));
         headingText.addView(title);
         TextView subtitle = new TextView(context);
         subtitle.setText(R.string.camera360_menu_title);
-        CockpitTokens.bodySm(subtitle);
-        subtitle.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        subtitle.setTextSize(14);
+        subtitle.setTextColor(themeColor(R.color.textSecondaryCool));
         headingText.addView(subtitle);
         heading.addView(headingText);
-        menu.addView(heading);
+        menu.addView(heading, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        CockpitGrid grid = new CockpitGrid(context);
-        LinearLayout.LayoutParams gridLp = new LinearLayout.LayoutParams(
+        LinearLayout cards = new LinearLayout(context);
+        cards.setOrientation(LinearLayout.HORIZONTAL);
+        cards.setGravity(Gravity.CENTER);
+        LinearLayout.LayoutParams cardsP = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        gridLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
-        menu.addView(grid, gridLp);
+        cardsP.setMargins(0, dp(18), 0, 0);
+        menu.addView(cards, cardsP);
 
-        View live = makeMenuCard(
-                iconBadge(R.drawable.ic_mdi_play, accent,
-                        CockpitTokens.color(context, R.color.ck_accent_stroke_30), 56, 30, true),
+        cards.addView(makeMenuCard(
+                iconBadge(R.drawable.ic_mdi_play, accent, withAlpha(accent, 0x2A), 68, 36, true),
                 R.string.camera360_menu_live, R.string.camera360_menu_live_sub,
-                v -> enterPreview());
-        grid.add(live, 4);
-
-        menuUsbCard = makeMenuCard(recordGlyph(56),
+                v -> enterPreview()));
+        menuUsbCard = makeMenuCard(recordGlyph(68),
                 R.string.camera360_menu_record, R.string.camera360_menu_record_sub,
                 v -> enterRecord());
         menuUsbSub = lastMenuCardSub;
-        grid.add(menuUsbCard, 4);
+        cards.addView(menuUsbCard);
 
+        LinearLayout cards2 = new LinearLayout(context);
+        cards2.setOrientation(LinearLayout.HORIZONTAL);
+        cards2.setGravity(Gravity.CENTER);
+        menu.addView(cards2, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         menuAutoCard = makeMenuCard(
-                iconBadge(R.drawable.ic_mdi_car, COLOR_REC,
-                        CockpitTokens.color(context, R.color.ck_critical_bg), 56, 30, true),
+                iconBadge(R.drawable.ic_mdi_car, COLOR_REC, withAlpha(COLOR_REC, 0x2A), 68, 36, true),
                 R.string.camera360_menu_auto, R.string.camera360_menu_auto_sub_off,
                 v -> enterAuto());
         menuAutoSub = lastMenuCardSub;
-        grid.add(menuAutoCard, 4);
-
-        grid.add(makeMenuCard(
-                iconBadge(R.drawable.ic_mdi_view_grid, accent,
-                        CockpitTokens.color(context, R.color.ck_accent_stroke_30), 56, 30, true),
+        cards2.addView(menuAutoCard);
+        cards2.addView(makeMenuCard(
+                iconBadge(R.drawable.ic_mdi_view_grid, accent, withAlpha(accent, 0x2A), 68, 36, true),
                 R.string.camera360_menu_viewer, R.string.camera360_menu_viewer_sub,
-                v -> enterViewer()), 4);
+                v -> enterViewer()));
 
         menuRecBanner = new TextView(context);
         menuRecBanner.setText(R.string.camera360_rec_banner);
-        CockpitTokens.bodySm(menuRecBanner);
-        menuRecBanner.setTextColor(CockpitTokens.color(context, R.color.ck_critical));
+        menuRecBanner.setTextSize(15);
+        menuRecBanner.setTypeface(null, Typeface.BOLD);
+        menuRecBanner.setTextColor(COLOR_REC);
         menuRecBanner.setGravity(Gravity.CENTER);
-        menuRecBanner.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
-                CockpitTokens.dim(context, R.dimen.ck_space_sm),
-                CockpitTokens.dim(context, R.dimen.ck_space_md),
-                CockpitTokens.dim(context, R.dimen.ck_space_sm));
-        GradientDrawable bannerBg = roundRect(
-                CockpitTokens.color(context, R.color.ck_critical_bg), 16);
-        bannerBg.setStroke(dp(1), CockpitTokens.color(context, R.color.ck_critical));
-        setPressableBackground(menuRecBanner, bannerBg, 16);
+        menuRecBanner.setPadding(dp(20), dp(10), dp(20), dp(10));
+        GradientDrawable bannerBg = roundRect(withAlpha(COLOR_REC, 0x24), 22);
+        bannerBg.setStroke(dp(1), withAlpha(COLOR_REC, 0x66));
+        setPressableBackground(menuRecBanner, bannerBg, 22);
         menuRecBanner.setVisibility(View.GONE);
         menuRecBanner.setOnClickListener(v -> {
             if (dvr.isRecordingInternal()) enterAuto();
@@ -600,7 +507,7 @@ public class Camera360TabBuilder {
         });
         LinearLayout.LayoutParams bp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        bp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        bp.setMargins(0, dp(18), 0, 0);
         menu.addView(menuRecBanner, bp);
         return menu;
     }
@@ -625,11 +532,15 @@ public class Camera360TabBuilder {
         LinearLayout card = new LinearLayout(context);
         card.setOrientation(LinearLayout.HORIZONTAL);
         card.setGravity(Gravity.CENTER_VERTICAL);
-        int pad = CockpitTokens.dim(context, R.dimen.ck_space_md);
-        card.setPadding(pad, pad, pad, pad);
-        CockpitSurfaces.level2(card);
-        card.setMinimumHeight(CockpitTokens.dp(context, 112));
+        card.setPadding(dp(22), dp(20), dp(16), dp(20));
+        GradientDrawable bg = roundRect(themeColor(R.color.surfaceCard), 22);
+        bg.setStroke(dp(1), themeColor(R.color.outline));
+        setPressableBackground(card, bg, 22);
         card.setOnClickListener(click);
+        LinearLayout.LayoutParams cp = new LinearLayout.LayoutParams(0, dp(124), 1f);
+        int m = dp(8);
+        cp.setMargins(m, m, m, m);
+        card.setLayoutParams(cp);
 
         card.addView(icon);
 
@@ -643,15 +554,17 @@ public class Camera360TabBuilder {
 
         TextView title = new TextView(context);
         title.setText(titleRes);
-        CockpitTokens.title(title);
+        title.setTextSize(21);
+        title.setTypeface(null, Typeface.BOLD);
+        title.setTextColor(themeColor(R.color.textPrimary));
         texts.addView(title);
 
         TextView sub = new TextView(context);
         sub.setText(subRes);
-        CockpitTokens.bodySm(sub);
+        sub.setTextSize(14);
         sub.setMaxLines(2);
         sub.setEllipsize(TextUtils.TruncateAt.END);
-        sub.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        sub.setTextColor(themeColor(R.color.textSecondaryCool));
         LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         sp.topMargin = dp(4);
@@ -661,8 +574,8 @@ public class Camera360TabBuilder {
         ImageView chevron = new ImageView(context);
         chevron.setImageResource(R.drawable.ic_mdi_chevron_up);
         chevron.setRotation(90f);
-        chevron.setColorFilter(CockpitTokens.color(context, R.color.ck_text_medium));
-        card.addView(chevron, new LinearLayout.LayoutParams(dp(24), dp(24)));
+        chevron.setColorFilter(themeColor(R.color.textMuted));
+        card.addView(chevron, new LinearLayout.LayoutParams(dp(28), dp(28)));
         return card;
     }
 
@@ -690,7 +603,6 @@ public class Camera360TabBuilder {
         root.addView(header, headerP);
 
         FrameLayout area = new FrameLayout(context);
-        this.previewArea = area;
         area.setBackgroundColor(Color.BLACK);
         root.addView(area, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f));
@@ -812,7 +724,7 @@ public class Camera360TabBuilder {
 
         statusView = new TextView(context);
         statusView.setText(R.string.camera360_hint);
-        CockpitTokens.bodySm(statusView);
+        statusView.setTextSize(13);
         statusView.setMaxLines(2);
         statusView.setEllipsize(TextUtils.TruncateAt.END);
         statusView.setTextColor(themeColor(R.color.textSecondaryCool));
@@ -936,12 +848,14 @@ public class Camera360TabBuilder {
 
         TextView heroTitle = new TextView(context);
         heroTitle.setText(R.string.camera360_usb_title2);
-        CockpitTokens.title(heroTitle);
+        heroTitle.setTextSize(17);
+        heroTitle.setTypeface(null, Typeface.BOLD);
+        heroTitle.setTextColor(themeColor(R.color.textPrimary));
         titles.addView(heroTitle);
 
         usbPathView = new TextView(context);
-        CockpitTokens.mono(usbPathView);
-        usbPathView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        usbPathView.setTextSize(12);
+        usbPathView.setTextColor(themeColor(R.color.textSecondary));
         usbPathView.setSingleLine(true);
         usbPathView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
         LinearLayout.LayoutParams pathP = new LinearLayout.LayoutParams(
@@ -963,7 +877,8 @@ public class Camera360TabBuilder {
         statePill.addView(usbDot, dotP);
 
         usbStateView = new TextView(context);
-        CockpitTokens.labelCaps(usbStateView);
+        usbStateView.setTextSize(13);
+        usbStateView.setTypeface(null, Typeface.BOLD);
         statePill.addView(usbStateView);
         setDot(COLOR_IDLE);
 
@@ -1016,7 +931,16 @@ public class Camera360TabBuilder {
         setPressableBackground(signalsRefresh, oval(themeColor(R.color.surfaceCardInner)), 19);
         signalsRefresh.setContentDescription(context.getString(R.string.camera360_refresh));
         signalsRefresh.setOnClickListener(v -> recheckCameras());
-        head.addView(signalsRefresh, new LinearLayout.LayoutParams(dp(44), dp(44)));
+        // Gizli ayar: uzun basinca kamera "hizli okuma" (onbellekli tampon) acilir/kapanir.
+        // Sorun cikan bir aracta yeniden derlemeden eski davranisa donmek icin.
+        signalsRefresh.setOnLongClickListener(v -> {
+            boolean enable = !dvr.isCameraFastReadEnabled();
+            dvr.setCameraFastReadEnabled(enable);
+            android.widget.Toast.makeText(context, enable ? R.string.camera360_fast_read_on
+                    : R.string.camera360_fast_read_off, android.widget.Toast.LENGTH_LONG).show();
+            return true;
+        });
+        head.addView(signalsRefresh, new LinearLayout.LayoutParams(dp(38), dp(38)));
 
         LinearLayout camRow = new LinearLayout(context);
         camRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -1051,13 +975,16 @@ public class Camera360TabBuilder {
 
             TextView label = new TextView(context);
             label.setText(camShortName(cam));
-            CockpitTokens.title(label);
+            label.setTextSize(15);
+            label.setTypeface(null, Typeface.BOLD);
+            label.setTextColor(themeColor(R.color.textPrimary));
             label.setSingleLine(true);
             top.addView(label);
 
             TextView state = new TextView(context);
             state.setText(R.string.camera360_sig_wait);
-            CockpitTokens.bodySm(state);
+            state.setTextSize(12);
+            state.setTextColor(themeColor(R.color.textSecondary));
             state.setSingleLine(true);
             state.setEllipsize(TextUtils.TruncateAt.END);
             LinearLayout.LayoutParams stateP = new LinearLayout.LayoutParams(
@@ -1071,6 +998,7 @@ public class Camera360TabBuilder {
 
     private LinearLayout buildSettingsCard(boolean wide) {
         LinearLayout card = card();
+        card.setPadding(dp(2), dp(16), dp(2), dp(14));
         TextView label = sectionLabel(R.string.camera360_settings_title);
         int labelInset = UiStyles.dimenPx(context, R.dimen.spacing_medium);
         label.setPadding(labelInset, 0, labelInset, 0);
@@ -1143,7 +1071,8 @@ public class Camera360TabBuilder {
         hideSegmentHelp(sepColumn);
 
         estimateView = new TextView(context);
-        CockpitTokens.bodySm(estimateView);
+        estimateView.setTextSize(13);
+        estimateView.setTextColor(themeColor(R.color.textSecondaryCool));
         estimateView.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams estP = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -1168,14 +1097,13 @@ public class Camera360TabBuilder {
         hideSegmentHelp(usbAutoColumn);
         TextView autoNote = new TextView(context);
         autoNote.setText(R.string.camera360_usb_auto_note);
-        CockpitTokens.bodySm(autoNote);
-        autoNote.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        autoNote.setTextSize(12);
+        autoNote.setTextColor(themeColor(R.color.textSecondaryCool));
         autoNote.setPadding(labelInset, dp(6), labelInset, 0);
         usbAutoColumn.addView(autoNote);
         usbAutoStatus = new TextView(context);
-        CockpitTokens.bodySm(usbAutoStatus);
-        usbAutoStatus.setTypeface(CockpitTokens.inter(context,
-                CockpitTokens.WEIGHT_SEMIBOLD));
+        usbAutoStatus.setTextSize(13);
+        usbAutoStatus.setTypeface(null, Typeface.BOLD);
         usbAutoStatus.setPadding(labelInset, dp(6), labelInset, 0);
         usbAutoStatus.setVisibility(View.GONE);
         usbAutoColumn.addView(usbAutoStatus);
@@ -1212,8 +1140,8 @@ public class Camera360TabBuilder {
 
         recButton = new Button(context);
         recButton.setAllCaps(false);
-        recButton.setTextSize(18);
-        recButton.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        recButton.setTextSize(17);
+        recButton.setTypeface(null, Typeface.BOLD);
         recButton.setTextColor(new ColorStateList(
                 new int[][]{{-android.R.attr.state_enabled}, {}},
                 new int[]{0x99FFFFFF, Color.WHITE}));
@@ -1230,12 +1158,12 @@ public class Camera360TabBuilder {
         setRecButtonRecording(false);
         recButton.setOnClickListener(v -> toggleRecording());
         card.addView(recButton, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                CockpitTokens.dim(context, R.dimen.ck_touch_primary)));
+                LinearLayout.LayoutParams.WRAP_CONTENT, dp(60)));
 
         usbBlockedNote = new TextView(context);
         usbBlockedNote.setText(R.string.camera360_usb_blocked_internal);
-        CockpitTokens.bodySm(usbBlockedNote);
+        usbBlockedNote.setTextSize(13);
+        usbBlockedNote.setTypeface(null, Typeface.BOLD);
         usbBlockedNote.setGravity(Gravity.CENTER);
         usbBlockedNote.setTextColor(COLOR_WAIT);
         usbBlockedNote.setPadding(dp(12), dp(8), dp(12), dp(8));
@@ -1248,7 +1176,7 @@ public class Camera360TabBuilder {
 
         recStatusView = new TextView(context);
         recStatusView.setText(R.string.camera360_rec_hint);
-        CockpitTokens.bodySm(recStatusView);
+        recStatusView.setTextSize(14);
         recStatusView.setGravity(Gravity.CENTER);
         recStatusView.setTextColor(themeColor(R.color.textPrimary));
         LinearLayout.LayoutParams rsp = new LinearLayout.LayoutParams(
@@ -1259,16 +1187,15 @@ public class Camera360TabBuilder {
         Button refresh = new Button(context);
         refresh.setText(R.string.camera360_refresh);
         refresh.setAllCaps(false);
-        refresh.setTextSize(15);
-        refresh.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
-        UiStyles.styleOemButton(refresh, CockpitTokens.color(context, R.color.ck_surface_2));
+        refresh.setTextSize(14);
+        refresh.setTextColor(themeColor(R.color.textPrimary));
+        UiStyles.styleOemButton(refresh, themeColor(R.color.buttonSecondaryMuted));
         UiStyles.setButtonStartIconTinted(refresh, R.drawable.ic_mdi_refresh,
                 themeColor(R.color.textPrimary), dp(8));
         refresh.setStateListAnimator(null);
         refresh.setPadding(dp(16), 0, dp(20), 0);
         LinearLayout.LayoutParams rp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                CockpitTokens.dim(context, R.dimen.ck_touch_min));
+                LinearLayout.LayoutParams.WRAP_CONTENT, dp(44));
         rp.setMargins(0, dp(12), 0, 0);
         refresh.setOnClickListener(v -> refreshUsbInfo());
         card.addView(refresh, rp);
@@ -1303,14 +1230,19 @@ public class Camera360TabBuilder {
         parent.addView(box, boxP);
         TextView value = new TextView(context);
         value.setText("-");
-        CockpitTokens.headlineSm(value);
+        value.setTextSize(19);
+        value.setTypeface(null, Typeface.BOLD);
         value.setGravity(Gravity.CENTER);
         value.setSingleLine(true);
+        value.setTextColor(themeColor(R.color.textPrimary));
         box.addView(value);
         TextView label = new TextView(context);
         label.setText(labelRes);
-        CockpitTokens.labelCaps(label);
+        label.setTextSize(11);
+        label.setAllCaps(true);
+        label.setLetterSpacing(0.06f);
         label.setGravity(Gravity.CENTER);
+        label.setTextColor(themeColor(R.color.textSecondaryCool));
         box.addView(label);
         return value;
     }
@@ -1479,7 +1411,6 @@ public class Camera360TabBuilder {
         leaveCurrentMode();
         mode = Mode.PREVIEW;
         showOnly(previewView);
-        attachPreviewSurface();
         updateRecBadge();
         if (tabActive) {
             startPreview();
@@ -1498,8 +1429,6 @@ public class Camera360TabBuilder {
 
     private void enterViewer() {
         leaveCurrentMode();
-        ensureClipViewer();
-        attachViewerRoot();
         mode = Mode.VIEWER;
         showOnly(viewerRoot);
         if (tabActive) {
@@ -1543,12 +1472,6 @@ public class Camera360TabBuilder {
         mainHandler.removeCallbacks(autoTicker);
         if (autoView != null) autoView.onHide();
         if (clipViewer != null) clipViewer.onHide();
-        if (mode == Mode.VIEWER) {
-            detachViewerRoot();
-        }
-        if (mode == Mode.PREVIEW) {
-            detachPreviewSurface();
-        }
         // NOT: kayit ticker'i burada durdurulmaz; kayit suresince (hangi ekranda
         // olursa olsun) sure/boyut guncel kalir, onStopped/onError'da durur.
         // Kayit kendi hub referansini tutar; akislar kayit bitene kadar acik kalir.
@@ -1603,13 +1526,6 @@ public class Camera360TabBuilder {
 
     // ---------- Onizleme ----------
 
-    private void applyFps(int cam, int fps) {
-        if (cam < 0 || cam >= CAM_COUNT) return;
-        String text = Math.max(0, fps) + " fps";
-        setFpsText(fpsViews[cam], text);
-        if (engine.getBigCam() == cam) setFpsText(bigFps, text);
-    }
-
     private void startPreview() {
         if (previewRunning) {
             return;
@@ -1622,8 +1538,6 @@ public class Camera360TabBuilder {
         statusView.setText(R.string.camera360_working);
         engine.setFpsListener(fpsListener);
         engine.setPreviewEnabled(true);
-        mainHandler.removeCallbacks(fpsTicker);
-        mainHandler.post(fpsTicker);
         updateCamIndicators();
     }
 
@@ -1632,7 +1546,6 @@ public class Camera360TabBuilder {
             return;
         }
         previewRunning = false;
-        mainHandler.removeCallbacks(fpsTicker);
         engine.setPreviewEnabled(false);
         engine.setFpsListener(null);
         for (int i = 0; i < CAM_COUNT; i++) {
@@ -1753,13 +1666,7 @@ public class Camera360TabBuilder {
     }
 
     private String formatDuration(long minutes) {
-        long h = minutes / 60;
-        long m = minutes % 60;
-        if (h > 0) {
-            return h + " " + context.getString(R.string.camera360_hour) + " " +
-                    m + " " + context.getString(R.string.camera360_minute);
-        }
-        return m + " " + context.getString(R.string.camera360_minute);
+        return ui.formatDuration(minutes);
     }
 
     private static boolean isUsbSource(DvrController.Source src) {
@@ -1784,7 +1691,7 @@ public class Camera360TabBuilder {
                 recStatusView.setText(context.getString(R.string.camera360_rec_done,
                         file.getName() + " \u00b7 " + formatGb(file.length())));
             }
-            ticker.removeCallbacksAndMessages(null);
+            stopRecTicker();
             syncRecordingUi();
             refreshUsbInfo();
             if (mode == Mode.RECORD && tabActive) {
@@ -1798,7 +1705,7 @@ public class Camera360TabBuilder {
             if (isUsbSource(src) && recStatusView != null) {
                 recStatusView.setText(message);
             }
-            ticker.removeCallbacksAndMessages(null);
+            stopRecTicker();
             syncRecordingUi();
             refreshUsbInfo();
         }
@@ -1810,28 +1717,42 @@ public class Camera360TabBuilder {
         }
     };
 
+    /**
+     * Saniyelik kayit sayaci. Zaten calisiyorsa yeniden kurulmaz: syncRecordingUi her durum
+     * degisiminde cagrilir ve eskiden sayacin fazini sifirlayip bir saniyeyi atlatiyordu.
+     */
     private void startRecTicker() {
-        ticker.removeCallbacksAndMessages(null);
-        Runnable tick = new Runnable() {
-            @Override
-            public void run() {
-                if (!usbRecording()) {
-                    return;
-                }
-                File f = recorder.getOutFile();
-                int fileCount = recorder.getOutFiles().size();
-                String displayName = f == null ? "" : f.getName()
-                        + (fileCount > 1 ? " +" + (fileCount - 1) : "");
-                recStatusView.setText(context.getString(R.string.camera360_rec_active,
-                        formatElapsed(recorder.getElapsedMs()) + " \u00b7 "
-                                + formatSize(recorder.getTotalBytes()),
-                        displayName));
-                updateRecBadge();
-                ticker.postDelayed(this, 1000);
-            }
-        };
-        ticker.postDelayed(tick, 1000);
+        if (recTickerRunning) {
+            return;
+        }
+        recTickerRunning = true;
+        ticker.postDelayed(recTick, 1000);
     }
+
+    private void stopRecTicker() {
+        ticker.removeCallbacks(recTick);
+        recTickerRunning = false;
+    }
+
+    private final Runnable recTick = new Runnable() {
+        @Override
+        public void run() {
+            if (!usbRecording()) {
+                recTickerRunning = false;
+                return;
+            }
+            File f = recorder.getOutFile();
+            int fileCount = recorder.getOutFiles().size();
+            String displayName = f == null ? "" : f.getName()
+                    + (fileCount > 1 ? " +" + (fileCount - 1) : "");
+            recStatusView.setText(context.getString(R.string.camera360_rec_active,
+                    formatElapsed(recorder.getElapsedMs()) + " \u00b7 "
+                            + formatSize(recorder.getTotalBytes()),
+                    displayName));
+            updateRecBadge();
+            ticker.postDelayed(this, 1000);
+        }
+    };
 
     // ---------- Kamera sinyal gostergeleri ----------
 
@@ -2011,36 +1932,11 @@ public class Camera360TabBuilder {
 
     // ---------- Sekme yasam dongusu ----------
 
-    public void onTabVisible() {
-        tabActive = true;
-        hub.addStateListener(camStateListener);
-        dvr.addListener(dvrListener);
-        if (usbRecording()) {
-            startRecTicker();
-        }
-        syncRecordingUi();
-        if (mode == Mode.PREVIEW) {
-            showOnly(previewView);
-            attachPreviewSurface();
-            startPreview();
-        } else if (mode == Mode.RECORD) {
-            ensureStreams(this::refreshCamStatusDots);
-            refreshUsbInfo();
-        } else if (mode == Mode.AUTO) {
-            autoView.onShow();
-            startAutoTicker();
-        } else if (mode == Mode.VIEWER) {
-            ensureClipViewer();
-            attachViewerRoot();
-            clipViewer.onShow();
-        }
+    public boolean isRecordingActive() {
+        return recorder != null && recorder.isRecording();
     }
 
-    /**
-     * Activity arka plana giderken: SurfaceView'ı sökme, yalnızca önizleme
-     * çizimini durdur. Surface sahipliği sistemin görünürlük yaşam döngüsünde
-     * kalsın; producer'ı erken yok etmek SurfaceFlinger/GSL fence hatası üretiyor.
-     */
+    /** MainActivity onPause: kayıt sürerken önizleme/abonelikleri kapat, kaydı durdurma. */
     public void onHostPause() {
         if (!tabActive) {
             return;
@@ -2050,30 +1946,42 @@ public class Camera360TabBuilder {
         dvr.removeListener(dvrListener);
     }
 
+    public void onTabVisible() {
+        tabActive = true;
+        hub.addStateListener(camStateListener);
+        dvr.addListener(dvrListener);
+        if (usbRecording()) {
+            startRecTicker();
+        }
+        syncRecordingUi();
+        if (mode == Mode.PREVIEW) {
+            startPreview();
+        } else if (mode == Mode.RECORD) {
+            ensureStreams(this::refreshCamStatusDots);
+            refreshUsbInfo();
+        } else if (mode == Mode.AUTO) {
+            autoView.onShow();
+            startAutoTicker();
+        } else if (mode == Mode.VIEWER) {
+            clipViewer.onShow();
+        }
+    }
+
     public void onTabHidden() {
         tabActive = false;
         leaveCurrentMode();
         hub.removeStateListener(camStateListener);
         dvr.removeListener(dvrListener);
         syncRecordingUi();
-        detachPreviewSurface();
-        previewView.setVisibility(View.GONE);
-        if (mode == Mode.VIEWER) {
-            detachViewerRoot();
-        }
         // Mod secimi korunur; gorunume donunce kaldigi yerden devam eder.
+        if (mode == Mode.PREVIEW) {
+            previewView.setVisibility(View.VISIBLE);
+        }
     }
 
     /** Video uzerindeki yari saydam yuvarlak etiket. */
     private TextView overlayPill(String text) {
-        TextView tv = new TextView(context);
-        tv.setText(text);
-        tv.setTextColor(Color.WHITE);
-        tv.setTextSize(13);
-        tv.setBackground(roundRect(OVERLAY_BG, 14));
-        tv.setPadding(dp(10), dp(5), dp(12), dp(5));
-        tv.setClickable(false);
-        return tv;
+        return ui.overlayPill(text);
     }
 
     private TextView fpsPill() {

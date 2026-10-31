@@ -273,32 +273,23 @@ public class CameraRecorder {
         boolean glPath = false;
         try {
             List<File> files = getOutFiles();
-            // Mozaik kayitta tek YUV encoder/CPU yolu kullan: 4 ayri surface
-            // encoder + QC2C2D RGBA8888_UBWC donusumu GPU/C2D yukunu artiriyor.
-            // Ayri (4 dosya) modunda GL surface yolu korunur.
             try {
-                if (separateMode) {
-                    for (File f : files) {
-                        sinks.add(createSink(f, true));
-                    }
-                    Surface[] surfaces = new Surface[sinks.size()];
-                    for (int i = 0; i < surfaces.length; i++) {
-                        surfaces[i] = sinks.get(i).inputSurface;
-                    }
-                    glPath = engine.startRecording(new CameraGlEngine.RecordConfig(surfaces,
-                            recWidth, recHeight, true, CAM_SUFFIX, overlayProvider));
-                } else {
-                    Log.i(TAG, "mozaik kayit CPU/YUV yolu (tek encoder)");
+                for (File f : files) {
+                    sinks.add(createSink(f, true));
                 }
+                Surface[] surfaces = new Surface[sinks.size()];
+                for (int i = 0; i < surfaces.length; i++) {
+                    surfaces[i] = sinks.get(i).inputSurface;
+                }
+                glPath = engine.startRecording(new CameraGlEngine.RecordConfig(surfaces,
+                        recWidth, recHeight, separateMode, CAM_SUFFIX, overlayProvider));
             } catch (Exception e) {
                 Log.w(TAG, "yuzey encoder kurulamadi", e);
             }
             if (!glPath) {
-                if (!sinks.isEmpty()) {
-                    Log.w(TAG, "GL kayit yolu yok, CPU yoluna geciliyor");
-                    releaseSinks(sinks);
-                    sinks.clear();
-                }
+                Log.w(TAG, "GL kayit yolu yok, CPU yoluna geciliyor");
+                releaseSinks(sinks);
+                sinks.clear();
                 for (File f : files) {
                     sinks.add(createSink(f, false));
                 }
