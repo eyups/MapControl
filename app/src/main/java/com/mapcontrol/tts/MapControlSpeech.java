@@ -34,7 +34,8 @@ public final class MapControlSpeech {
     public static final int ENGINE_MODE_IFLYTEK = 2;
     public static final String KEY_API_KEY = "elevenLabsApiKey";
     public static final String KEY_VOICE_ID = "elevenLabsVoiceId";
-    public static final String DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // Rachel
+    public static final String DEFAULT_VOICE_ID = "mF7tIc9VLrznhGooGjaT";
+    private static final String LEGACY_DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     private static Runnable finishRunnable;
     private static boolean speaking;
@@ -99,8 +100,7 @@ public final class MapControlSpeech {
         }
         if (ENGINE_ELEVENLABS.equals(engine)) {
             String key = resolveApiKey(app);
-            String voice = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                    .getString(KEY_VOICE_ID, DEFAULT_VOICE_ID);
+            String voice = voiceId(app);
             if (key == null || key.trim().isEmpty()) {
                 Log.i(TAG, "ElevenLabs seçili ama API key yok; Sherpa'ya düşülüyor");
                 MapControlTts.speak(app, localText);
@@ -196,13 +196,21 @@ public final class MapControlSpeech {
     }
 
     public static String voiceId(Context context) {
-        String pref = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                .getString(KEY_VOICE_ID, "");
-        if (pref != null && !pref.trim().isEmpty()) {
-            return pref.trim();
-        }
+        SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        String pref = prefs.getString(KEY_VOICE_ID, "");
         String build = BuildConfig.ELEVENLABS_VOICE_ID;
-        return build == null || build.trim().isEmpty() ? DEFAULT_VOICE_ID : build.trim();
+        String fallback = build == null || build.trim().isEmpty()
+                ? DEFAULT_VOICE_ID : build.trim();
+        if (pref == null || pref.trim().isEmpty()) {
+            return fallback;
+        }
+        pref = pref.trim();
+        // Eski varsayılan (Rachel) kayıtlıysa yeni varsayılana geçir.
+        if (LEGACY_DEFAULT_VOICE_ID.equals(pref)) {
+            prefs.edit().putString(KEY_VOICE_ID, fallback).apply();
+            return fallback;
+        }
+        return pref;
     }
 
     public static boolean hasApiKey(Context context) {

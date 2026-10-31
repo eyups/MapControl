@@ -437,8 +437,7 @@ public class SettingsTabBuilder {
 
         EditText voiceField = createTtsField(InputType.TYPE_CLASS_TEXT);
         voiceField.setHint(R.string.settings_tts_voice_hint);
-        voiceField.setText(prefs.getString(MapControlSpeech.KEY_VOICE_ID,
-                MapControlSpeech.DEFAULT_VOICE_ID));
+        voiceField.setText(MapControlSpeech.voiceId(context));
         LinearLayout.LayoutParams voiceLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
