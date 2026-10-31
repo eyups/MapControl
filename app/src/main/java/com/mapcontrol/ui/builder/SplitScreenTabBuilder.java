@@ -186,8 +186,20 @@ public class SplitScreenTabBuilder {
         }
         SplitScreenLauncher.Capability cap = SplitScreenLauncher.probe(context);
         boolean supported = cap.usable() || cap.canEnableFreeform;
+        startButton.setAlpha(1f);
         startButton.setEnabled(supported);
-        startButton.setAlpha(supported ? 1f : 0.5f);
+        startButton.setGravity(Gravity.CENTER);
+        if (supported) {
+            startButton.setText(R.string.split_start);
+            startButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
+            UiStyles.styleOemButton(startButton, UiStyles.color(context, R.color.buttonPrimary));
+        } else {
+            startButton.setText(R.string.split_unavailable);
+            startButton.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            startButton.setBackground(CockpitSurfaces.outlined(context,
+                    CockpitTokens.color(context, R.color.ck_surface_2),
+                    CockpitTokens.color(context, R.color.ck_stroke), 16f));
+        }
     }
 
     // ------------------------------------------------------------- uygulamalar
@@ -365,10 +377,6 @@ public class SplitScreenTabBuilder {
         startButton.setTextSize(17);
         startButton.setTypeface(null, Typeface.BOLD);
         startButton.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        UiStyles.styleOemButton(startButton, UiStyles.color(context, R.color.buttonPrimary));
-        UiStyles.setButtonStartIconTinted(startButton, R.drawable.ic_mdi_view_split,
-                UiStyles.color(context, R.color.textPrimary),
-                UiStyles.dimenPx(context, R.dimen.spacing_small));
         startButton.setOnClickListener(v -> onStartClicked());
         updateStartEnabled();
         startButton.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_action_min_w));
