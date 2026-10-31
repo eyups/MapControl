@@ -1,20 +1,45 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-APK="$SCRIPT_DIR/app/build/outputs/apk/release/app-release.apk"
-APP_ID="com.eyups.roaddeck"
+APK="${1:-$SCRIPT_DIR/app/build/outputs/apk/release/app-release.apk}"
+if [[ "$APK" != /* ]]; then
+    APK="$SCRIPT_DIR/$APK"
+fi
+APP_ID="${2:-}"
+ADB="adb"
+if [[ -n "${ANDROID_SERIAL:-}" ]]; then
+    ADB="adb -s ${ANDROID_SERIAL}"
+fi
+
+if [[ -z "$APP_ID" ]]; then
+    AAPT2=$(find "${ANDROID_HOME:-$HOME/Library/Android/sdk}/build-tools" -name aapt2 2>/dev/null | sort -V | tail -1)
+    if [[ -z "$AAPT2" ]]; then
+        echo "❌ aapt2 bulunamadı; APP_ID parametresi verin: ./install.sh apk com.package"
+        exit 1
+    fi
+    APP_ID=$("$AAPT2" dump badging "$APK" 2>/dev/null | awk -F"'" '/^package:/{print $2; exit}')
+fi
+if [[ -z "$APP_ID" ]]; then
+    echo "❌ APK paket adı okunamadı: $APK"
+    exit 1
+fi
 
 # Birden fazla cihaz bağlıysa:
 #   ANDROID_SERIAL=12efc750 ./install.sh
 
 # Sistem property ayarı
 echo "⚙️ Sistem property ayarlanıyor..."
-echo "setprop persist.sys.sv.isl true" | adb shell || true
+echo "setprop persist.sys.sv.isl true" | $ADB shell || true
 
 if [[ ! -f "$APK" ]]; then
-    echo "⚠️  Release APK bulunamıyor: $APK"
-    echo "🔨 MapControl için ./gradlew assembleRelease çalıştırılıyor..."
-    (cd "$SCRIPT_DIR" && ./gradlew assembleRelease) || exit 1
+    if [[ $# -eq 0 ]]; then
+        echo "⚠️  Release APK bulunamıyor: $APK"
+        echo "🔨 MapControl için ./gradlew assembleRelease çalıştırılıyor..."
+        (cd "$SCRIPT_DIR" && ./gradlew assembleRelease) || exit 1
+    else
+        echo "❌ APK bulunamadı: $APK"
+        exit 1
+    fi
 fi
 
 if [[ ! -f "$APK" ]]; then
@@ -24,8 +49,8 @@ fi
 
 # APK'yı cihaza push et
 echo "📦 APK'yı cihaza yüklüyorum..."
-adb push "$APK" /data/local/tmp/mapcontrol.apk || {
-    echo "❌ adb push başarısız (cihaz bağlı mı, adb yetkisi var mı kontrol edin)."
+$ADB push "$APK" /data/local/tmp/mapcontrol.apk || {
+    echo "❌ $ADB push başarısız (cihaz bağlı mı, adb yetkisi var mı kontrol edin)."
     exit 1
 }
 
@@ -51,11 +76,11 @@ if [[ ! -s "$SILENT_DIR/mapcontrol-silent-installer.dex" ]]; then
         exit 1
     }
 fi
-adb push "$SILENT_DIR/mc-run.sh" /data/local/tmp/mc-run.sh >/dev/null
-adb push "$SILENT_DIR/mapcontrol-silent-installer.dex" \
+$ADB push "$SILENT_DIR/mc-run.sh" /data/local/tmp/mc-run.sh >/dev/null
+$ADB push "$SILENT_DIR/mapcontrol-silent-installer.dex" \
     /data/local/tmp/mapcontrol-silent-installer.dex >/dev/null
-adb shell chmod 755 /data/local/tmp/mc-run.sh
-INSTALL_OUTPUT=$(adb shell \
+$ADB shell chmod 755 /data/local/tmp/mc-run.sh
+INSTALL_OUTPUT=$($ADB shell \
     "sh /data/local/tmp/mc-run.sh /data/local/tmp/mapcontrol.apk --grant-runtime --expected-package=${APP_ID}" \
     2>&1 | tr -d '\r')
 echo "$INSTALL_OUTPUT"
@@ -70,7 +95,7 @@ echo "🔑 İzinler veriliyor..."
 grant_permission() {
     local cmd="$1"
     local name="$2"
-    local result=$(echo "$cmd" | adb shell 2>/dev/null)
+    local result=$(echo "$cmd" | $ADB shell 2>/dev/null)
     if [ $? -eq 0 ]; then
         echo "  ✓ $name"
     else
@@ -132,7 +157,7 @@ echo "🔧 NotificationListener (medya) etkinleştiriliyor..."
 NLS_COMPONENT="${APP_ID}/com.mapcontrol.media.LauncherMediaNotificationListener"
 grant_permission "cmd notification allow_listener ${NLS_COMPONENT}" "NotificationListener (cmd)"
 # Mevcut dinleyicileri silmeden ekle
-NLS_CURRENT=$(adb shell settings get secure enabled_notification_listeners 2>/dev/null | tr -d '\r')
+NLS_CURRENT=$($ADB shell settings get secure enabled_notification_listeners 2>/dev/null | tr -d '\r')
 if echo "$NLS_CURRENT" | grep -qF "$NLS_COMPONENT"; then
     echo "  ✓ NotificationListener (zaten kayıtlı)"
 else
@@ -147,7 +172,7 @@ fi
 grant_permission "pm grant ${APP_ID} android.permission.MEDIA_CONTENT_CONTROL" "MEDIA_CONTENT_CONTROL"
 
 echo "🔧 Cihaz sahibi atanıyor..."
-DPM_OUT=$(adb shell dpm set-device-owner ${APP_ID}/com.mapcontrol.admin.MapControlDeviceAdminReceiver 2>&1 | tr -d '\r')
+DPM_OUT=$($ADB shell dpm set-device-owner ${APP_ID}/com.mapcontrol.admin.MapControlDeviceAdminReceiver 2>&1 | tr -d '\r')
 if echo "$DPM_OUT" | grep -qiE "Success|already set"; then
     echo "  ✓ Device owner"
 else
