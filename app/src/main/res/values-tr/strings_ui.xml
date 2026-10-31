@@ -666,7 +666,7 @@
     <string name="dms_recognition_started">Arka plan yüz tanıma açıldı.</string>
     <string name="dms_recognition_stopped">Arka plan yüz tanıma durduruldu.</string>
     <string name="dms_recognition_running">DMS kamerası aktif; sürücü yüzü taranıyor…</string>
-    <string name="dms_face_welcome_tts">[happy] Hoşgeldiniz %1$s %2$s, [thoughtful] size özel ayarlarınızı yapıyorum... [short pause] Şimdi sadece arkanıza yaslanın veeeee [excited] KEYİFLİ SÜRÜŞLER!</string>
+    <string name="dms_face_welcome_tts">[happy] Hoşgeldiniz %1$s %2$s, [thoughtful] size özel ayarlarınızı yapıyorum... [short pause] Şimdi sadece arkanıza yaslanın veeeee [excited] yolculuğun tadını çıkarın!</string>
     <string name="dms_recognition_match">Kullanıcı tespit edildi: %1$s (Koltuk Hafızası %2$d)</string>
     <string name="dms_recognition_match_name">Kullanıcı tespit edildi: %1$s</string>
     <string name="dms_recognition_memory_requested">Koltuk hafızası %1$d otomatik olarak uygulandı.</string>
