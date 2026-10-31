@@ -1529,10 +1529,7 @@ public class MainActivity extends AppCompatActivity {
                 topBarTitle.setText(title);
             }
         });
-        if (tabId == CockpitNavModel.TAB_CLIMATE_AUTOMATION
-                && !prefs.getBoolean("climateAutoBetaWarningSeen", false)) {
-            showExperimentalWarning(prefs, "climateAutoBetaWarningSeen", open);
-        } else if (tabId == CockpitNavModel.TAB_FACE_RECOGNITION
+        if (tabId == CockpitNavModel.TAB_FACE_RECOGNITION
                 && !prefs.getBoolean("dmsFaceBetaWarningSeen", false)) {
             showExperimentalWarning(prefs, "dmsFaceBetaWarningSeen", open);
         } else if (tabId == CockpitNavModel.TAB_APPS
