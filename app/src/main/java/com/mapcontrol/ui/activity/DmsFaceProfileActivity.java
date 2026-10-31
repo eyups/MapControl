@@ -49,6 +49,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.service.DmsFaceRecognitionManager;
 import com.mapcontrol.ui.theme.UiStyles;
@@ -1085,6 +1086,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
             profiles.addAll(updated);
             if (seatMemoryAvailable) {
                 CarSeatMemoryManager.getInstance(this).syncCurrentFromCar();
+                syncDriverProfileSeat(savedName, savedMemory);
             }
 
             SharedPreferences prefs = getSharedPreferences("MapControlPrefs", MODE_PRIVATE);
@@ -1117,6 +1119,22 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
             status.setText(getString(R.string.dms_face_save_error, e.getMessage()));
         }
         updateEnrollButtonState();
+    }
+
+    /** Yüz kaydında seçilen OEM koltuk/ayna slotunu aynı adlı sürücü profiline işle. */
+    private void syncDriverProfileSeat(String name, int memorySlot) {
+        if (name == null || name.trim().isEmpty() || memorySlot < 1) {
+            return;
+        }
+        DriverProfileManager manager = DriverProfileManager.get(this);
+        for (DriverProfileManager.Profile profile : manager.getProfiles()) {
+            if (profile.name != null && profile.name.equalsIgnoreCase(name.trim())) {
+                if (profile.seatSlot != memorySlot) {
+                    manager.setSeatSlot(profile.id, memorySlot);
+                }
+                return;
+            }
+        }
     }
 
     private void recognizeFace(Bitmap frame, FaceDetector.Face face) {
