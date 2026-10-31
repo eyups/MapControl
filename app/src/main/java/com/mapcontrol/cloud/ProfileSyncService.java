@@ -25,7 +25,10 @@ final class ProfileSyncService {
         if (!put("profiles", profiles)) {
             return false;
         }
-        return put("prefs", manager.exportPreferences());
+        if (!put("prefs", manager.exportPreferences())) {
+            return false;
+        }
+        return ProfileAudioBackup.upload(context, config, http);
     }
 
     boolean restore() throws Exception {
@@ -41,14 +44,14 @@ final class ProfileSyncService {
         if (preferences != null) {
             manager.importPreferences(preferences);
         }
-        return true;
+        return ProfileAudioBackup.restore(context, config, http);
     }
 
     private boolean put(String key, JSONObject data) throws Exception {
         JSONObject body = new JSONObject();
         body.put("payload", data);
         CloudHttp.Response response = http.putJson(
-                "/api/v1/car/sync/" + key, config.token(), body, 80 * 1024);
+                "/api/v1/car/sync/" + key, config.token(), body, 512 * 1024);
         return response.code == 200;
     }
 
