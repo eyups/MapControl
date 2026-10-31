@@ -401,7 +401,11 @@ public class DriverProfilesTabBuilder {
     }
 
     private String expectedWelcome(DriverProfileManager.Profile profile) {
-        return context.getString(R.string.dms_face_welcome_tts, profile.name);
+        String honorific = context.getString(
+                profile.gender == DriverProfileManager.GENDER_FEMALE
+                        ? R.string.profiles_gender_female
+                        : R.string.profiles_gender_male);
+        return context.getString(R.string.dms_face_welcome_tts, profile.name, honorific);
     }
 
     private String welcomeStatus(DriverProfileManager.Profile profile) {
@@ -1097,19 +1101,20 @@ public class DriverProfilesTabBuilder {
     private void showNewProfileDialog() {
         EditText input = nameInput("");
         int[] selectedAvatar = {0};
-        LinearLayout content = buildProfileDialogContent(input, selectedAvatar);
+        int[] selectedGender = {DriverProfileManager.GENDER_MALE};
+        LinearLayout content = buildProfileDialogContent(input, selectedAvatar, selectedGender);
         new AlertDialog.Builder(context)
                 .setTitle(R.string.profiles_new)
                 .setView(content)
                 .setPositiveButton(R.string.profiles_copy_current,
-                        (d, w) -> createProfile(input, true, selectedAvatar[0]))
+                        (d, w) -> createProfile(input, true, selectedAvatar[0], selectedGender[0]))
                 .setNeutralButton(R.string.profiles_start_empty,
-                        (d, w) -> createProfile(input, false, selectedAvatar[0]))
+                        (d, w) -> createProfile(input, false, selectedAvatar[0], selectedGender[0]))
                 .setNegativeButton(R.string.profiles_cancel, null)
                 .show();
     }
 
-    private void createProfile(EditText input, boolean copy, int avatar) {
+    private void createProfile(EditText input, boolean copy, int avatar, int gender) {
         if (manager.getProfiles().size() >= 3) {
             toast(R.string.profiles_max_reached);
             return;
@@ -1119,7 +1124,7 @@ public class DriverProfilesTabBuilder {
             toast(R.string.profiles_name_required);
             return;
         }
-        manager.create(name, copy, avatar);
+        manager.create(name, copy, avatar, gender);
         log.accept("[Profil] Oluşturuldu: " + name);
         rebuild();
     }
@@ -1127,7 +1132,8 @@ public class DriverProfilesTabBuilder {
     private void showEditProfileDialog(DriverProfileManager.Profile profile) {
         EditText input = nameInput(profile.name);
         int[] selectedAvatar = {profile.avatar};
-        LinearLayout content = buildProfileDialogContent(input, selectedAvatar);
+        int[] selectedGender = {profile.gender};
+        LinearLayout content = buildProfileDialogContent(input, selectedAvatar, selectedGender);
         new AlertDialog.Builder(context)
                 .setTitle(R.string.profiles_edit)
                 .setView(content)
@@ -1137,19 +1143,58 @@ public class DriverProfilesTabBuilder {
                         toast(R.string.profiles_name_required);
                         return;
                     }
-                    manager.update(profile.id, name, selectedAvatar[0]);
+                    manager.update(profile.id, name, selectedAvatar[0], selectedGender[0]);
                     rebuild();
                 })
                 .setNegativeButton(R.string.profiles_cancel, null)
                 .show();
     }
 
-    private LinearLayout buildProfileDialogContent(EditText input, int[] selectedAvatar) {
+    private LinearLayout buildProfileDialogContent(EditText input, int[] selectedAvatar,
+            int[] selectedGender) {
         LinearLayout content = new LinearLayout(context);
         content.setOrientation(LinearLayout.VERTICAL);
         int pad = UiStyles.dimenPx(context, R.dimen.spacing_medium);
         content.setPadding(pad, pad / 2, pad, 0);
         content.addView(input, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView genderLabel = new TextView(context);
+        genderLabel.setText(R.string.profiles_gender_title);
+        genderLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+        genderLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        genderLabel.setPadding(0, pad, 0, UiStyles.dimenPx(context, R.dimen.spacing_small));
+        content.addView(genderLabel);
+
+        LinearLayout genderRow = new LinearLayout(context);
+        genderRow.setOrientation(LinearLayout.HORIZONTAL);
+        CockpitChip male = new CockpitChip(context,
+                context.getString(R.string.profiles_gender_male));
+        CockpitChip female = new CockpitChip(context,
+                context.getString(R.string.profiles_gender_female));
+        Runnable refreshGender = () -> {
+            male.setSelectedState(selectedGender[0] == DriverProfileManager.GENDER_MALE);
+            female.setSelectedState(selectedGender[0] == DriverProfileManager.GENDER_FEMALE);
+        };
+        male.setOnClickListener(v -> {
+            selectedGender[0] = DriverProfileManager.GENDER_MALE;
+            refreshGender.run();
+        });
+        female.setOnClickListener(v -> {
+            selectedGender[0] = DriverProfileManager.GENDER_FEMALE;
+            refreshGender.run();
+        });
+        LinearLayout.LayoutParams maleLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                CockpitTokens.dim(context, R.dimen.ck_chip_h));
+        maleLp.setMarginEnd(CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        genderRow.addView(male, maleLp);
+        genderRow.addView(female, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                CockpitTokens.dim(context, R.dimen.ck_chip_h)));
+        refreshGender.run();
+        content.addView(genderRow, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 

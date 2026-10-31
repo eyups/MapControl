@@ -42,6 +42,9 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
     private static final Set<String> BACKUP_PREF_KEYS = new HashSet<>(Arrays.asList(
             "welcomeDesignId", "welcomeCustomText", "welcomeAudioFilePath", "welcomeAudioAutoPlay"));
 
+    public static final int GENDER_MALE = 1;
+    public static final int GENDER_FEMALE = 2;
+
     /** Profile bağlı keyfi araç değeri (ID keşfinden eklenir); uygulanırken olduğu gibi yazılır. */
     public static final class MemoryItem {
         public final int module;
@@ -70,6 +73,8 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
         public String welcomeAudioPath = "";
         /** {@link ProfileAvatars} indeksi: 0-9. */
         public int avatar;
+        /** 1 = Bey, 2 = Hanım; eski kayıtlarda varsayılan Bey. */
+        public int gender = GENDER_MALE;
         public final List<MemoryItem> items = new ArrayList<>();
         final JSONObject settings = new JSONObject();
 
@@ -129,8 +134,14 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
     }
 
     public synchronized Profile create(String name, boolean copyCurrentSettings, int avatar) {
+        return create(name, copyCurrentSettings, avatar, GENDER_MALE);
+    }
+
+    public synchronized Profile create(String name, boolean copyCurrentSettings, int avatar,
+            int gender) {
         syncActiveFromPrefs();
         Profile p = new Profile(newId(), name, avatar);
+        p.gender = normalizeGender(gender);
         if (copyCurrentSettings) {
             captureScopedInto(p);
         }
@@ -149,6 +160,11 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
 
     public synchronized void update(String id, String name, int avatar) {
         Profile p = find(id);
+        update(id, name, avatar, p == null ? GENDER_MALE : p.gender);
+    }
+
+    public synchronized void update(String id, String name, int avatar, int gender) {
+        Profile p = find(id);
         if (p == null) {
             return;
         }
@@ -156,6 +172,7 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
             p.name = name.trim();
         }
         p.avatar = ProfileAvatars.normalize(avatar);
+        p.gender = normalizeGender(gender);
         save();
     }
 
@@ -303,6 +320,10 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
         return null;
     }
 
+    private static int normalizeGender(int gender) {
+        return gender == GENDER_FEMALE ? GENDER_FEMALE : GENDER_MALE;
+    }
+
     private static String newId() {
         return "p" + System.currentTimeMillis();
     }
@@ -431,6 +452,7 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
                 o.put("id", p.id);
                 o.put("name", p.name);
                 o.put("avatar", p.avatar);
+                o.put("gender", p.gender);
                 o.put("seatSlot", p.seatSlot);
                 o.put("applyOnStart", p.applyOnStart);
                 o.put("welcomeMessage", p.welcomeMessage);
@@ -563,6 +585,7 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
                 JSONObject o = arr.getJSONObject(i);
                 Profile p = new Profile(o.getString("id"), o.getString("name"),
                         o.optInt("avatar", i % ProfileAvatars.COUNT));
+                p.gender = normalizeGender(o.optInt("gender", GENDER_MALE));
                 p.seatSlot = o.optInt("seatSlot", 0);
                 p.applyOnStart = o.optBoolean("applyOnStart", false);
                 p.welcomeMessage = o.optString("welcomeMessage", "");

@@ -484,10 +484,10 @@ public final class DmsFaceRecognitionManager {
         if (profile != null && isCachedWelcome(profile)) {
             // Önceden ElevenLabs ile üretilen sesi kullan; yeni API çağrısı yapma.
             ElevenLabsTts.playCached(context, new File(profile.welcomeAudioPath),
-                    reason -> speakLiveWelcome(name));
+                    reason -> speakLiveWelcome(profile, name));
             return;
         }
-        speakLiveWelcome(name);
+        speakLiveWelcome(profile, name);
     }
 
     private DriverProfileManager.Profile findDriverProfile(String name) {
@@ -508,7 +508,7 @@ public final class DmsFaceRecognitionManager {
                 || profile.welcomeAudioPath.trim().isEmpty()) {
             return false;
         }
-        String expected = context.getString(R.string.dms_face_welcome_tts, profile.name);
+        String expected = welcomeText(profile);
         if (!expected.equals(profile.welcomeMessage)) {
             return false;
         }
@@ -516,8 +516,19 @@ public final class DmsFaceRecognitionManager {
         return file.isFile() && file.length() > 0;
     }
 
-    private void speakLiveWelcome(String profileName) {
-        String text = context.getString(R.string.dms_face_welcome_tts, profileName);
+    private String welcomeText(DriverProfileManager.Profile profile) {
+        String honorific = context.getString(
+                profile.gender == DriverProfileManager.GENDER_FEMALE
+                        ? R.string.profiles_gender_female
+                        : R.string.profiles_gender_male);
+        return context.getString(R.string.dms_face_welcome_tts, profile.name, honorific);
+    }
+
+    private void speakLiveWelcome(DriverProfileManager.Profile profile, String fallbackName) {
+        String text = profile != null
+                ? welcomeText(profile)
+                : context.getString(R.string.dms_face_welcome_tts, fallbackName,
+                        context.getString(R.string.profiles_gender_male));
         mainHandler.post(() -> {
             try {
                 MapControlSpeech.speak(context, text);

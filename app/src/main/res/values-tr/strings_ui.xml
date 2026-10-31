@@ -666,7 +666,7 @@
     <string name="dms_recognition_started">Arka plan yüz tanıma açıldı.</string>
     <string name="dms_recognition_stopped">Arka plan yüz tanıma durduruldu.</string>
     <string name="dms_recognition_running">DMS kamerası aktif; sürücü yüzü taranıyor…</string>
-    <string name="dms_face_welcome_tts">Hoşgeldiniz %1$s, size özel ayarlarınızı yapıyorum. Şimdi sadece arkanıza yaslanın, keyifli sürüşler!</string>
+    <string name="dms_face_welcome_tts">[happy] Hoşgeldiniz %1$s %2$s, [thoughtful] size özel ayarlarınızı yapıyorum... [short pause] Şimdi sadece arkanıza yaslanın veeeee [excited] KEYİFLİ SÜRÜŞLER!</string>
     <string name="dms_recognition_match">Kullanıcı tespit edildi: %1$s (Koltuk Hafızası %2$d)</string>
     <string name="dms_recognition_match_name">Kullanıcı tespit edildi: %1$s</string>
     <string name="dms_recognition_memory_requested">Koltuk hafızası %1$d otomatik olarak uygulandı.</string>
@@ -1191,6 +1191,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_welcome_tts_play_failed">Karşılama sesi oynatılamadı.</string>
     <string name="profiles_welcome_tts_refresh">Karşılama mesajını yenile</string>
     <string name="profiles_memory_settings_link">Koltuk ve hafıza ayarları</string>
+    <string name="profiles_gender_title">Hitap</string>
+    <string name="profiles_gender_male">Bey</string>
+    <string name="profiles_gender_female">Hanım</string>
     <string name="profiles_advanced_items_short">Ek ayarlar</string>
     <string name="profiles_role_primary">Birincil Sürücü</string>
     <string name="profiles_role_secondary">İkinci Sürücü</string>
