@@ -33,6 +33,7 @@ import com.mapcontrol.ui.activity.DmsFaceProfileActivity;
 import com.mapcontrol.ui.cockpit.CockpitCard;
 import com.mapcontrol.ui.cockpit.CockpitButton;
 import com.mapcontrol.ui.cockpit.CockpitChip;
+import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitToggleRow;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
@@ -140,6 +141,8 @@ public class DriverProfilesTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         scrollView.addView(outer, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        // Yeniden oluşturulan TextView'lar ilk açılıştaki Cockpit tipografisini korusun.
+        CockpitLegacyStyler.apply(scrollView);
         if (tabVisible) {
             ensureWelcomeMessages(profiles);
         }
