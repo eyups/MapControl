@@ -1529,27 +1529,12 @@ public class MainActivity extends AppCompatActivity {
                 topBarTitle.setText(title);
             }
         });
-        if (tabId == CockpitNavModel.TAB_FACE_RECOGNITION
-                && !prefs.getBoolean("dmsFaceBetaWarningSeen", false)) {
-            showExperimentalWarning(prefs, "dmsFaceBetaWarningSeen", open);
-        } else if (tabId == CockpitNavModel.TAB_APPS
+        if (tabId == CockpitNavModel.TAB_APPS
                 && !prefs.getBoolean("appManagementDisclaimerAccepted", false)) {
             showAppManagementDisclaimer();
         } else {
             open.run();
         }
-    }
-
-    private void showExperimentalWarning(SharedPreferences prefs, String key, Runnable open) {
-        CockpitModal.builder(this)
-                .title(getString(R.string.experimental_feature_warning_title))
-                .message(getString(R.string.experimental_feature_warning))
-                .positive(getString(R.string.experimental_feature_warning_ok), d -> {
-                    prefs.edit().putBoolean(key, true).apply();
-                    open.run();
-                })
-                .build()
-                .show();
     }
 
     private void applyTabChrome(int tabIndex) {
