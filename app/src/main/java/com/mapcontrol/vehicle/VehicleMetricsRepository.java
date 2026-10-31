@@ -84,6 +84,11 @@ public final class VehicleMetricsRepository {
             ReadOnlyID.ID_TRUNK_STATE,
             // Araç Far & Işık Sensörü (RLS)
             ReadOnlyID.ID_LIGHT_DETECTED_IHU,
+            ReadOnlyID.ID_LH_TURN_LIGHT_STS,
+            ReadOnlyID.ID_RH_TURN_LIGHT_STS,
+            ReadOnlyID.ID_DIRECTION_IND_LEFT,
+            ReadOnlyID.ID_DIRECTION_IND_RIGHT,
+            ReadOnlyID.ID_HAZARD_LIGHT,
             ReadOnlyID.ID_PARKING_LAMP_STATE,
             ReadOnlyID.ID_HIGH_BEAM_STS,
             ReadOnlyID.ID_RAINFALL,

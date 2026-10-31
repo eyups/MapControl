@@ -1115,6 +1115,16 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_vi_drive">Sürüş</string>
     <string name="ck_vi_fuel">Yakıt</string>
     <string name="ck_vi_motor">Motor</string>
+    <string name="ck_vi_signals">Sinyaller</string>
+    <string name="ck_vi_left_signal">Sol</string>
+    <string name="ck_vi_right_signal">Sağ</string>
+    <string name="ck_vi_hazard">Dörtlü</string>
+    <string name="vehicle_info_section_signals">Sinyaller</string>
+    <string name="vehicle_info_signal_left_sts">Sol sinyal lambası (ID 33)</string>
+    <string name="vehicle_info_signal_right_sts">Sağ sinyal lambası (ID 32)</string>
+    <string name="vehicle_info_signal_left_ind">Sol yön göstergesi (ID 35)</string>
+    <string name="vehicle_info_signal_right_ind">Sağ yön göstergesi (ID 34)</string>
+    <string name="vehicle_info_signal_hazard">Dörtlü (ID 79)</string>
     <string name="ck_vi_distance">Mesafe</string>
     <string name="ck_vi_speed">Hız</string>
     <string name="ck_vi_gear">Vites</string>

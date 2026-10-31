@@ -57,6 +57,9 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
     private MetricView odoMetric;
     private MetricView tripMetric;
     private MetricView sinceStartMetric;
+    private MetricView leftSignalMetric;
+    private MetricView rightSignalMetric;
+    private MetricView hazardMetric;
     private volatile boolean tabVisible;
 
     public VehicleInfoTabBuilder(
@@ -244,6 +247,22 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         distance.addContent(distRow);
         grid.add(distance, 4);
 
+        CockpitCard signals = new CockpitCard(uiContext,
+                uiContext.getString(R.string.ck_vi_signals)).span(4);
+        LinearLayout signalRow = new LinearLayout(uiContext);
+        signalRow.setOrientation(LinearLayout.HORIZONTAL);
+        leftSignalMetric = metric(uiContext.getString(R.string.ck_vi_left_signal));
+        rightSignalMetric = metric(uiContext.getString(R.string.ck_vi_right_signal));
+        hazardMetric = metric(uiContext.getString(R.string.ck_vi_hazard));
+        signalRow.addView(leftSignalMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        signalRow.addView(rightSignalMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        signalRow.addView(hazardMetric, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        signals.addContent(signalRow);
+        grid.add(signals, 4);
+
         advancedCard = new CockpitCard(uiContext, uiContext.getString(R.string.ck_vi_advanced)).span(8);
         advancedCard.status(StatusBadge.neutral(uiContext, uiContext.getString(R.string.ck_vi_raw_vdbus)));
         final CockpitButton toggle = CockpitButton.secondary(uiContext, uiContext.getString(R.string.ck_vi_show));
@@ -281,7 +300,8 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         if (!snapshot.connected) {
             for (MetricView v : new MetricView[]{speedMetric, gearMetric, rpmMetric, fuelMetric,
                     rangeMetric, consMetric, coolantMetric, batteryMetric, avgSpeedMetric,
-                    odoMetric, tripMetric, sinceStartMetric}) {
+                    odoMetric, tripMetric, sinceStartMetric, leftSignalMetric, rightSignalMetric,
+                    hazardMetric}) {
                 v.value("—");
             }
             return;
@@ -298,6 +318,19 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         odoMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM)));
         tripMetric.value(formatter.formatDeciKm(repository.getCombined(ReadOnlyID.ID_TRIP)));
         sinceStartMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM_AFTER_RUNNING)));
+        int leftSignal = repository.getCombined(ReadOnlyID.ID_LH_TURN_LIGHT_STS);
+        int rightSignal = repository.getCombined(ReadOnlyID.ID_RH_TURN_LIGHT_STS);
+        int hazard = repository.getCombined(ReadOnlyID.ID_HAZARD_LIGHT);
+        leftSignalMetric.value(signalLabel(leftSignal)).caption("ID 33: " + formatter.formatRawSignal(leftSignal));
+        rightSignalMetric.value(signalLabel(rightSignal)).caption("ID 32: " + formatter.formatRawSignal(rightSignal));
+        hazardMetric.value(signalLabel(hazard)).caption("ID 79: " + formatter.formatRawSignal(hazard));
+    }
+
+    private String signalLabel(int raw) {
+        if (!VehicleMetricsSnapshot.isValid(raw)) {
+            return "—";
+        }
+        return uiContext.getString(raw == 0 ? R.string.common_off : R.string.common_on);
     }
 
     private void launchEngModeMenu() {
@@ -379,6 +412,18 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         addRow(uiContext.getString(R.string.vehicle_info_avg_speed),
                 formatter.formatSpeed(repository.getCombined(ReadOnlyID.ID_AVG_SPEED)));
 
+        addSection(uiContext.getString(R.string.vehicle_info_section_signals));
+        addRawSignalRow(uiContext.getString(R.string.vehicle_info_signal_left_sts),
+                ReadOnlyID.ID_LH_TURN_LIGHT_STS);
+        addRawSignalRow(uiContext.getString(R.string.vehicle_info_signal_right_sts),
+                ReadOnlyID.ID_RH_TURN_LIGHT_STS);
+        addRawSignalRow(uiContext.getString(R.string.vehicle_info_signal_left_ind),
+                ReadOnlyID.ID_DIRECTION_IND_LEFT);
+        addRawSignalRow(uiContext.getString(R.string.vehicle_info_signal_right_ind),
+                ReadOnlyID.ID_DIRECTION_IND_RIGHT);
+        addRawSignalRow(uiContext.getString(R.string.vehicle_info_signal_hazard),
+                ReadOnlyID.ID_HAZARD_LIGHT);
+
         addSection(uiContext.getString(R.string.vehicle_info_section_light));
         int lightRaw = repository.getCombined(ReadOnlyID.ID_LIGHT_DETECTED_IHU);
         addRow(uiContext.getString(R.string.vehicle_info_light_status),
@@ -389,6 +434,15 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
         addSection(uiContext.getString(R.string.vehicle_info_section_etm_note));
         addRow(uiContext.getString(R.string.vehicle_info_etm_only_title),
                 uiContext.getString(R.string.vehicle_info_etm_only_body));
+    }
+
+    private void addRawSignalRow(String label, int readOnlyId) {
+        int raw = repository.getCombined(readOnlyId);
+        String value = formatter.formatRawSignal(raw);
+        if (VehicleMetricsSnapshot.isValid(raw)) {
+            value += " · " + uiContext.getString(raw == 0 ? R.string.common_off : R.string.common_on);
+        }
+        addRow(label, value);
     }
 
     private void addSection(String title) {

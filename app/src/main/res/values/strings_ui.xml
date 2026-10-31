@@ -1099,6 +1099,16 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_vi_drive">Drive</string>
     <string name="ck_vi_fuel">Fuel</string>
     <string name="ck_vi_motor">Motor</string>
+    <string name="ck_vi_signals">Signals</string>
+    <string name="ck_vi_left_signal">Left</string>
+    <string name="ck_vi_right_signal">Right</string>
+    <string name="ck_vi_hazard">Hazard</string>
+    <string name="vehicle_info_section_signals">Signals</string>
+    <string name="vehicle_info_signal_left_sts">Left turn lamp (ID 33)</string>
+    <string name="vehicle_info_signal_right_sts">Right turn lamp (ID 32)</string>
+    <string name="vehicle_info_signal_left_ind">Left direction indicator (ID 35)</string>
+    <string name="vehicle_info_signal_right_ind">Right direction indicator (ID 34)</string>
+    <string name="vehicle_info_signal_hazard">Hazard (ID 79)</string>
     <string name="ck_vi_distance">Distance</string>
     <string name="ck_vi_speed">Speed</string>
     <string name="ck_vi_gear">Gear</string>
