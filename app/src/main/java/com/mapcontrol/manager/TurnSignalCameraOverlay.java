@@ -146,21 +146,25 @@ final class TurnSignalCameraOverlay {
     }
 
     void hide() {
-        if (engine != null) {
-            engine.setPreviewEnabled(false);
-            engine.clearPreviewSurface();
-        }
-        if (root != null && windowManager != null) {
-            try {
-                windowManager.removeView(root);
-            } catch (Throwable ignored) {
-            }
-        }
+        WindowManager wm = windowManager;
+        FrameLayout overlay = root;
         root = null;
         surfaceView = null;
         labelView = null;
         windowManager = null;
         currentCam = -1;
+        // Önce pencereyi görünümden kaldır; EGL yüzeyini temizlemek için beklemek
+        // overlay'in ekranda kalma süresini uzatmasın.
+        if (wm != null && overlay != null) {
+            try {
+                wm.removeViewImmediate(overlay);
+            } catch (Throwable ignored) {
+            }
+        }
+        if (engine != null) {
+            engine.setPreviewEnabled(false);
+            engine.clearPreviewSurface();
+        }
     }
 
     private Display findClusterDisplay() {

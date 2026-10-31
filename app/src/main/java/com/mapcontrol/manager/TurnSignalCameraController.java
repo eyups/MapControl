@@ -30,6 +30,7 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
 
     private boolean started;
     private boolean enabled;
+    private boolean hideScheduled;
     private int shownCam = -1;
 
     public TurnSignalCameraController(Context context) {
@@ -37,7 +38,11 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
         prefs = appContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         repository = VehicleMetricsRepository.getBackground(appContext);
         overlay = new TurnSignalCameraOverlay(appContext);
-        hideTask = overlay::hide;
+        hideTask = () -> {
+            hideScheduled = false;
+            overlay.hide();
+            shownCam = -1;
+        };
     }
 
     public void start() {
@@ -53,6 +58,7 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
         prefs.unregisterOnSharedPreferenceChangeListener(this);
         repository.removeListener(this);
         main.removeCallbacks(hideTask);
+        hideScheduled = false;
         overlay.hide();
         shownCam = -1;
         enabled = false;
@@ -68,6 +74,7 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
         } else {
             repository.removeListener(this);
             main.removeCallbacks(hideTask);
+            hideScheduled = false;
             overlay.hide();
             shownCam = -1;
         }
@@ -90,6 +97,7 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
             scheduleHide();
             return;
         }
+        hideScheduled = false;
         main.removeCallbacks(hideTask);
         int cam = left ? CAM_LEFT : CAM_RIGHT;
         shownCam = cam;
@@ -103,8 +111,8 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
     }
 
     private void scheduleHide() {
-        if (shownCam < 0 || !enabled) return;
-        main.removeCallbacks(hideTask);
+        if (shownCam < 0 || !enabled || hideScheduled) return;
+        hideScheduled = true;
         main.postDelayed(hideTask, OFF_HOLD_MS);
     }
 
