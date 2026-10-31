@@ -106,6 +106,7 @@ public class DriverProfilesTabBuilder {
         cards.setBaselineAligned(false);
 
         java.util.List<DriverProfileManager.Profile> profiles = manager.getProfiles();
+        migrateMissingSeatSlots(profiles);
         int shown = Math.min(profiles.size(), 3);
         for (int i = 0; i < shown; i++) {
             DriverProfileManager.Profile profile = profiles.get(i);
@@ -145,6 +146,32 @@ public class DriverProfilesTabBuilder {
         CockpitLegacyStyler.apply(scrollView);
         if (tabVisible) {
             ensureWelcomeMessages(profiles);
+        }
+    }
+
+    /**
+     * Eski sürümlerde yüz kaydındaki koltuk slotu sürücü profiline yazılmıyordu.
+     * Slotu boş profillere yüz kaydındaki hafıza slotunu tamamla.
+     */
+    private void migrateMissingSeatSlots(java.util.List<DriverProfileManager.Profile> profiles) {
+        try {
+            java.util.List<FaceProfileStore.Profile> faces = FaceProfileStore.load(context);
+            if (faces.isEmpty()) {
+                return;
+            }
+            for (DriverProfileManager.Profile driver : profiles) {
+                if (driver.seatSlot > 0 || driver.name == null) {
+                    continue;
+                }
+                for (FaceProfileStore.Profile face : faces) {
+                    if (face.name != null && face.name.equalsIgnoreCase(driver.name)
+                            && face.seatMemory >= 1) {
+                        manager.setSeatSlot(driver.id, face.seatMemory);
+                        break;
+                    }
+                }
+            }
+        } catch (Exception ignored) {
         }
     }
 
