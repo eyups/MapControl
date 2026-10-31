@@ -355,7 +355,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         scoreRing.setAccentColor(CockpitTokens.color(context, R.color.ck_accent));
         scoreRing.setTrackColor(CockpitTokens.color(context, R.color.ck_surface_1));
         scoreRing.setScore(trip.score, false);
-        hero.addView(scoreRing, new LinearLayout.LayoutParams(dp(86), dp(86)));
+        hero.addView(scoreRing, new LinearLayout.LayoutParams(dp(64), dp(64)));
 
         LinearLayout copy = new LinearLayout(context);
         copy.setOrientation(LinearLayout.VERTICAL);
@@ -393,7 +393,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             LinearLayout.LayoutParams chartHeaderLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
-            chartHeaderLp.topMargin = dp(10);
+            chartHeaderLp.topMargin = dp(6);
             card.addContent(chartHeader, chartHeaderLp);
 
             TextView chartLabel = new TextView(context);
@@ -422,11 +422,11 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             chartBox.setPadding(dp(8), dp(6), dp(8), dp(6));
             CockpitSurfaces.level2(chartBox);
             chartBox.addView(sparkline, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, dp(42)));
+                    LinearLayout.LayoutParams.MATCH_PARENT, dp(28)));
             LinearLayout.LayoutParams chartLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
-            chartLp.topMargin = dp(4);
+            chartLp.topMargin = dp(3);
             card.addContent(chartBox, chartLp);
         }
 
@@ -436,7 +436,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         LinearLayout.LayoutParams metricsLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        metricsLp.topMargin = dp(8);
+        metricsLp.topMargin = dp(5);
         card.addContent(metrics, metricsLp);
 
         metrics.addView(buildTelemetryMetric(
@@ -456,17 +456,6 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                         "km/h", "Maks " + trip.maxSpeedKmh),
                 weightedMetric(2));
 
-        TextView events = new TextView(context);
-        CockpitTokens.bodySm(events);
-        events.setText("SÜRÜŞ OLAYLARI   Sert fren " + trip.harshBrakes
-                + "  ·  Ani hızlanma " + trip.harshAccels);
-        events.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        events.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
-        LinearLayout.LayoutParams eventsLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        eventsLp.topMargin = dp(8);
-        card.addContent(events, eventsLp);
         return card;
     }
 
@@ -474,7 +463,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             String unit, String caption) {
         LinearLayout box = new LinearLayout(context);
         box.setOrientation(LinearLayout.VERTICAL);
-        box.setPadding(dp(9), dp(8), dp(9), dp(8));
+        box.setPadding(dp(8), dp(6), dp(8), dp(6));
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
         bg.setCornerRadius(dp(12));
@@ -490,7 +479,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         valueRow.setOrientation(LinearLayout.HORIZONTAL);
         valueRow.setGravity(Gravity.BOTTOM);
         TextView valueView = new TextView(context);
-        CockpitTokens.headlineMd(valueView);
+        CockpitTokens.title(valueView);
         valueView.setText(value);
         valueView.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         valueRow.addView(valueView);
