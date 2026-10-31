@@ -20,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 import java.net.URL;
 
 import androidx.core.content.ContextCompat;
@@ -150,6 +152,7 @@ public class SettingsTabBuilder {
             CockpitLegacyStyler.applySectionHeadings(app);
             final LinearLayout[] groups = {general, system, vehicle, app};
             final CockpitListRow[] selectedRow = {null};
+            final List<CockpitListRow> categoryRows = new ArrayList<>();
             int[] icons = {R.drawable.ic_mdi_cog, R.drawable.ic_mdi_cellphone,
                     R.drawable.ic_mdi_car, R.drawable.ic_mdi_package_variant};
             int[] labels = {R.string.ck_settings_cat_general, R.string.ck_settings_cat_system,
@@ -163,9 +166,11 @@ public class SettingsTabBuilder {
                 chevron.setText("›");
                 chevron.setTextColor(CockpitTokens.color(context, R.color.ck_text_muted));
                 row.trailing(chevron);
+                categoryRows.add(row);
+                row.setFocusableInTouchMode(false);
                 row.clickRow(v -> {
-                    if (selectedRow[0] != null) {
-                        selectedRow[0].setBackground(CockpitSurfaces.outlined(context,
+                    for (CockpitListRow other : categoryRows) {
+                        other.setBackground(CockpitSurfaces.outlined(context,
                                 CockpitTokens.color(context, R.color.ck_surface_1),
                                 CockpitTokens.color(context, R.color.ck_stroke), 16f));
                     }
@@ -173,6 +178,9 @@ public class SettingsTabBuilder {
                     row.setBackground(CockpitSurfaces.outlined(context,
                             CockpitTokens.color(context, R.color.ck_surface_2),
                             CockpitTokens.color(context, R.color.ck_accent), 16f));
+                    if (left.isInTouchMode()) {
+                        left.clearFocus();
+                    }
                     right.removeAllViews();
                     right.addView(groups[index], new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
