@@ -14,10 +14,11 @@ import android.widget.TextView;
 import com.mapcontrol.R;
 import com.mapcontrol.audio.AudioEqualizerController;
 import com.mapcontrol.ui.cockpit.CockpitSegmented;
-import com.mapcontrol.ui.cockpit.CockpitToggle;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.theme.UiStyles;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Ekolayzer sekmesi. Cam kart, parçalı anahtar ve kaydırıcılar diğer sekmelerle aynı dili kullanır.
@@ -147,27 +148,26 @@ public class EqualizerTabBuilder {
         addCardTitle(card, R.string.equalizer_settings_title);
         addSectionDesc(card, R.string.equalizer_desc);
 
-        LinearLayout enableRow = new LinearLayout(context);
-        enableRow.setOrientation(LinearLayout.HORIZONTAL);
-        enableRow.setGravity(Gravity.CENTER_VERTICAL);
-        enableRow.setPadding(16, 8, 16, 8);
-        TextView enableLabel = new TextView(context);
-        enableLabel.setText(R.string.equalizer_title);
-        CockpitTokens.bodyMd(enableLabel);
-        enableLabel.setTextColor(UiStyles.color(context, R.color.textPrimary));
-        enableRow.addView(enableLabel, new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        CockpitToggle toggle = new CockpitToggle(context);
-        toggle.setChecked(enabled, false);
-        toggle.setOnCheckedChangeListener((button, checked) -> onEnabledChanged(checked));
-        enableRow.addView(toggle);
-        card.addView(enableRow, matchWrap());
-
         TextView help = new TextView(context);
         CockpitTokens.bodySm(help);
-        help.setText(context.getString(enabled ? R.string.equalizer_help_on : R.string.equalizer_help_off));
         help.setTextColor(UiStyles.color(context, R.color.textSecondary));
-        help.setPadding(16, 0, 16, 8);
+        help.setPadding(16, 8, 16, 8);
+
+        List<String> enableLabels = new ArrayList<>();
+        enableLabels.add(context.getString(R.string.common_on));
+        enableLabels.add(context.getString(R.string.common_off));
+        CockpitSegmented enableSegment = new CockpitSegmented(context, enableLabels,
+                enabled ? 0 : 1, index -> {
+                    onEnabledChanged(index == 0);
+                    help.setText(context.getString(index == 0
+                            ? R.string.equalizer_help_on : R.string.equalizer_help_off));
+                });
+        LinearLayout.LayoutParams enableLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        enableLp.setMargins(16, 0, 16, 0);
+        card.addView(enableSegment, enableLp);
+        help.setText(context.getString(enabled ? R.string.equalizer_help_on : R.string.equalizer_help_off));
         card.addView(help, matchWrap());
 
         addSectionTitle(card, R.string.equalizer_gain_title);
