@@ -33,6 +33,7 @@ import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 import com.mapcontrol.R;
+import com.mapcontrol.tts.MapControlSpeech;
 import com.mapcontrol.vehicle.CarSeatMemoryManager;
 import com.mapcontrol.vehicle.DmsFaceMatcher;
 import com.mapcontrol.vehicle.FaceProfileStore;
@@ -458,6 +459,7 @@ public final class DmsFaceRecognitionManager {
                     publishStatus(matchedMsg);
                     if (seatMemory) {
                         requestSeatMemoryWithRetry(match.profile.seatMemory, 5);
+                        speakProfileWelcome(match.profile.name);
                     }
                     // Sürücü tespit edilip hafıza tetiklendiğinde kamerayı hemen serbest bırak
                     closeDmsCamera();
@@ -468,6 +470,20 @@ public final class DmsFaceRecognitionManager {
         } finally {
             frame.recycle();
         }
+    }
+
+    private void speakProfileWelcome(String profileName) {
+        if (profileName == null || profileName.trim().isEmpty()) {
+            return;
+        }
+        String text = context.getString(R.string.dms_face_welcome_tts, profileName.trim());
+        mainHandler.post(() -> {
+            try {
+                MapControlSpeech.speak(context, text);
+            } catch (Throwable t) {
+                Log.w(TAG, "Profil karşılama TTS hatası", t);
+            }
+        });
     }
 
     private void requestSeatMemoryWithRetry(int seatMemory, int retriesLeft) {

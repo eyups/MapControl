@@ -650,6 +650,7 @@
     <string name="dms_recognition_started">Background face recognition enabled.</string>
     <string name="dms_recognition_stopped">Background face recognition stopped.</string>
     <string name="dms_recognition_running">DMS camera is running; scanning driver face…</string>
+    <string name="dms_face_welcome_tts">Welcome %1$s, I am applying your personal settings. Now just lean back and enjoy the drive!</string>
     <string name="dms_recognition_match">User detected: %1$s (Seat Memory %2$d)</string>
     <string name="dms_recognition_match_name">User detected: %1$s</string>
     <string name="dms_recognition_memory_requested">Seat memory %1$d applied automatically.</string>
