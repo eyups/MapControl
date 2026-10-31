@@ -1188,6 +1188,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_welcome_tts_no_network">İnternet yok</string>
     <string name="profiles_welcome_tts_no_key">API anahtarı yok</string>
     <string name="profiles_welcome_tts_error">Oluşturulamadı</string>
+    <string name="profiles_welcome_tts_play_failed">Karşılama sesi oynatılamadı.</string>
     <string name="profiles_welcome_tts_refresh">Karşılama mesajını yenile</string>
     <string name="profiles_memory_settings_link">Koltuk ve hafıza ayarları</string>
     <string name="profiles_advanced_items_short">Ek ayarlar</string>

@@ -1172,6 +1172,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_welcome_tts_no_network">No internet</string>
     <string name="profiles_welcome_tts_no_key">No API key</string>
     <string name="profiles_welcome_tts_error">Could not create</string>
+    <string name="profiles_welcome_tts_play_failed">Could not play the welcome audio.</string>
     <string name="profiles_welcome_tts_refresh">Refresh welcome message</string>
     <string name="profiles_memory_settings_link">Seat and memory settings</string>
     <string name="profiles_advanced_items_short">Extra settings</string>

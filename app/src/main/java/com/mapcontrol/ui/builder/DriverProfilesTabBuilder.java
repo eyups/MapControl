@@ -338,6 +338,10 @@ public class DriverProfilesTabBuilder {
         icon.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
         row.addView(icon, new LinearLayout.LayoutParams(dp(22), dp(22)));
 
+        row.setClickable(true);
+        row.setFocusable(true);
+        row.setOnClickListener(v -> playProfileWelcome(profile));
+
         TextView label = new TextView(context);
         label.setText(R.string.profiles_welcome_tts_label);
         CockpitTokens.bodySm(label);
@@ -419,7 +423,40 @@ public class DriverProfilesTabBuilder {
         return context.getString(R.string.profiles_welcome_tts_missing);
     }
 
+    private void playProfileWelcome(DriverProfileManager.Profile profile) {
+        if (profile == null) {
+            return;
+        }
+        if (welcomePending.contains(profile.id)) {
+            Toast.makeText(context, R.string.profiles_welcome_tts_generating,
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!isWelcomeCached(profile)) {
+            if (MapControlSpeech.apiKey(context).trim().isEmpty()) {
+                Toast.makeText(context, R.string.profiles_welcome_tts_no_key,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!MapControlSpeech.isOnline(context)) {
+                Toast.makeText(context, R.string.profiles_welcome_tts_no_network,
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            generateWelcome(profile, true, true);
+            return;
+        }
+        ElevenLabsTts.playCached(context, new File(profile.welcomeAudioPath), reason ->
+                handler.post(() -> Toast.makeText(context,
+                        R.string.profiles_welcome_tts_play_failed, Toast.LENGTH_SHORT).show()));
+    }
+
     private void generateWelcome(DriverProfileManager.Profile profile, boolean force) {
+        generateWelcome(profile, force, false);
+    }
+
+    private void generateWelcome(DriverProfileManager.Profile profile, boolean force,
+            boolean playOnSuccess) {
         if (profile == null || welcomePending.contains(profile.id)) {
             return;
         }
@@ -458,6 +495,9 @@ public class DriverProfilesTabBuilder {
                         if (saved) {
                             manager.setWelcomeAudio(profile.id, text, finalFile.getAbsolutePath());
                             welcomeErrors.remove(profile.id);
+                            if (playOnSuccess) {
+                                playProfileWelcome(profile);
+                            }
                         } else {
                             file.delete();
                             welcomeErrors.put(profile.id, "write");
