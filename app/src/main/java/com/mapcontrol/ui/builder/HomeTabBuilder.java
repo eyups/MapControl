@@ -23,6 +23,7 @@ import com.mapcontrol.ui.cockpit.CockpitSectionHeader;
 import com.mapcontrol.ui.cockpit.CockpitSurfaces;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
 import com.mapcontrol.ui.cockpit.MetricView;
+import com.mapcontrol.ui.cockpit.Sparkline;
 import com.mapcontrol.ui.cockpit.StatusBadge;
 import com.mapcontrol.valet.ValetModeManager;
 import com.mapcontrol.vehicle.VehicleMetricsFormatter;
@@ -315,7 +316,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         CockpitButton open = CockpitButton.secondary(context,
                 context.getString(R.string.ck_home_view_all) + " →");
         open.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
-        open.setMinHeight(dp(34));
+        open.setMinHeight(dp(48));
         open.setOnClickListener(v -> callback.onNavigate(TAB_DRIVING_HISTORY,
                 context.getString(R.string.ck_home_drive_report)));
 
@@ -376,6 +377,50 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
         card.addContent(hero);
 
+        if (trip.speedSamples != null && trip.speedSamples.size() >= 2) {
+            LinearLayout chartHeader = new LinearLayout(context);
+            chartHeader.setOrientation(LinearLayout.HORIZONTAL);
+            chartHeader.setGravity(Gravity.CENTER_VERTICAL);
+            LinearLayout.LayoutParams chartHeaderLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            chartHeaderLp.topMargin = dp(10);
+            card.addContent(chartHeader, chartHeaderLp);
+
+            TextView chartLabel = new TextView(context);
+            CockpitTokens.labelCaps(chartLabel);
+            chartLabel.setText("HIZ EĞRİSİ");
+            chartLabel.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            chartHeader.addView(chartLabel, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+            TextView chartMax = new TextView(context);
+            CockpitTokens.bodySm(chartMax);
+            chartMax.setText("Maks " + trip.maxSpeedKmh + " km/h");
+            chartMax.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            chartHeader.addView(chartMax);
+
+            Sparkline sparkline = new Sparkline(context);
+            int sampleCount = Math.min(60, trip.speedSamples.size());
+            float[] data = new float[sampleCount];
+            int stride = Math.max(1, trip.speedSamples.size() / sampleCount);
+            for (int i = 0; i < sampleCount; i++) {
+                data[i] = trip.speedSamples.get(Math.min(trip.speedSamples.size() - 1, i * stride));
+            }
+            sparkline.setData(data);
+            LinearLayout chartBox = new LinearLayout(context);
+            chartBox.setOrientation(LinearLayout.VERTICAL);
+            chartBox.setPadding(dp(8), dp(6), dp(8), dp(6));
+            CockpitSurfaces.level2(chartBox);
+            chartBox.addView(sparkline, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, dp(42)));
+            LinearLayout.LayoutParams chartLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            chartLp.topMargin = dp(4);
+            card.addContent(chartBox, chartLp);
+        }
+
         LinearLayout metrics = new LinearLayout(context);
         metrics.setOrientation(LinearLayout.HORIZONTAL);
         metrics.setBaselineAligned(false);
@@ -407,6 +452,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         events.setText("SÜRÜŞ OLAYLARI   Sert fren " + trip.harshBrakes
                 + "  ·  Ani hızlanma " + trip.harshAccels);
         events.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        events.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
         LinearLayout.LayoutParams eventsLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
