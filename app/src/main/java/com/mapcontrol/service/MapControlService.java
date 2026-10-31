@@ -92,6 +92,7 @@ public class MapControlService extends Service {
     private CarSystemGestureController carSystemGestureController;
     private RecirculationAutomation recirculationAutomation;
     private DrivingSessionRecorder drivingSessionRecorder;
+    private com.mapcontrol.manager.TurnSignalCameraController turnSignalCameraController;
     private SharedPreferences.OnSharedPreferenceChangeListener gesturePrefListener;
     
     /**
@@ -159,6 +160,8 @@ public class MapControlService extends Service {
 
         drivingSessionRecorder = DrivingSessionRecorder.get(this);
         drivingSessionRecorder.start();
+        turnSignalCameraController = new com.mapcontrol.manager.TurnSignalCameraController(this);
+        turnSignalCameraController.start();
         ValetMonitor.get(this).startIfActive();
     }
 
@@ -308,6 +311,10 @@ public class MapControlService extends Service {
         SunroofAutomationEngine.getInstance(this).stop();
         SunroofGestureOverlayManager.getInstance(this).stop();
         DmsFaceRecognitionManager.stop(this);
+        if (turnSignalCameraController != null) {
+            turnSignalCameraController.stop();
+            turnSignalCameraController = null;
+        }
         super.onDestroy();
         if (scheduler != null) {
             scheduler.shutdown();

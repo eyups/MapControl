@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
  */
 public final class CameraGlEngine implements CameraHub.FrameListener {
     private static final String TAG = "CameraGlEngine";
-    private static final String HUB_TAG = "gl-engine";
+    private static final String DEFAULT_HUB_TAG = "gl-engine";
     private static final int CAM_COUNT = CameraHub.CAM_COUNT;
     /** Izgara sirasi (satir satir): On(0), Arka(3), Sol(2), Sag(1). CAMERA_IDS={5,4,8,9}. */
     public static final int[] GRID_ORDER = {0, 3, 2, 1};
@@ -152,12 +152,18 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
         }
     }
 
-    private static final CameraGlEngine INSTANCE = new CameraGlEngine();
+    private static final CameraGlEngine INSTANCE = new CameraGlEngine(DEFAULT_HUB_TAG);
 
     public static CameraGlEngine get() {
         return INSTANCE;
     }
 
+    /** Ayrı önizleme yüzeyi/consumer gerektiren cluster overlay'i için ikinci motor. */
+    public static CameraGlEngine createSecondary(String tag) {
+        return new CameraGlEngine(tag);
+    }
+
+    private final String hubTag;
     private final CameraHub hub = CameraHub.get();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final Object lock = new Object();
@@ -226,7 +232,8 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
     private final TextSprite noSignalSprite = new TextSprite();
     private final CameraHub.FrameReader[] readers = new CameraHub.FrameReader[CAM_COUNT];
 
-    private CameraGlEngine() {
+    private CameraGlEngine(String hubTag) {
+        this.hubTag = hubTag;
         for (int i = 0; i < CAM_COUNT; i++) {
             final int cam = i;
             readers[i] = (buf, width, height, seq) -> uploadCopy(cam, buf, width, height, seq);
@@ -370,7 +377,7 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             zeroCopy = HabNative.zcInit();
             initGl();
             hub.addFrameListener(this);
-            hub.acquire(HUB_TAG, null);
+            hub.acquire(hubTag, null);
             loop();
         } catch (Throwable t) {
             failed = true;
@@ -509,8 +516,8 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             drawTex[i] = 0;
         }
         demandSent = false;
-        hub.clearDemand(HUB_TAG);
-        hub.release(HUB_TAG);
+        hub.clearDemand(hubTag);
+        hub.release(hubTag);
     }
 
     private void initGl() {
@@ -631,7 +638,7 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             int copy = zeroCopy ? HabNative.COPY_NONE : mode;
             boolean hold = zeroCopy && mode != HabNative.COPY_NONE;
             if (!demandSent || copy != lastCopy[cam] || hold != lastHold[cam]) {
-                hub.setDemand(HUB_TAG, cam, copy, hold);
+                hub.setDemand(hubTag, cam, copy, hold);
                 lastCopy[cam] = copy;
                 lastHold[cam] = hold;
             }

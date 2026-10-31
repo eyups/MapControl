@@ -2,11 +2,13 @@ package com.mapcontrol.ui.builder;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.content.SharedPreferences;
 import android.text.InputType;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.provider.Settings;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
@@ -40,6 +42,7 @@ import com.mapcontrol.ui.theme.ThemeManager;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.ui.widget.SystemStatsOverlay;
 import com.mapcontrol.manager.FloatingBackButtonManager;
+import com.mapcontrol.manager.TurnSignalCameraController;
 import com.mapcontrol.service.BootReceiver;
 import com.mapcontrol.util.AdbSettings;
 import com.mapcontrol.util.AppLocaleManager;
@@ -136,6 +139,7 @@ public class SettingsTabBuilder {
             LinearLayout general = sectionGroup();
             createThemeSection(general);
             createLanguageSection(general);
+            createTurnSignalCameraSection(general);
             createDrivingTestDataSection(general);
 
             LinearLayout system = sectionGroup();
@@ -221,6 +225,7 @@ public class SettingsTabBuilder {
         LinearLayout card = createSettingsCard();
         createThemeSection(card);
         createLanguageSection(card);
+        createTurnSignalCameraSection(card);
         createDrivingTestDataSection(card);
         createAppInfoSection(card);
         createBootAutostartSection(card);
@@ -314,6 +319,47 @@ public class SettingsTabBuilder {
                     AppLocaleManager.setLocale(context, tag);
                     callback.log("Locale: " + tag);
                     callback.onLocaleChanged();
+                });
+    }
+
+    private void createTurnSignalCameraSection(LinearLayout parentContainer) {
+        TextView title = new TextView(context);
+        title.setText(R.string.settings_turn_signal_camera_title);
+        title.setTextSize(18);
+        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        title.setPadding(16, 24, 16, 8);
+        parentContainer.addView(title, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        TextView desc = new TextView(context);
+        desc.setText(R.string.settings_turn_signal_camera_desc);
+        desc.setTextSize(13);
+        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+        desc.setPadding(16, 0, 16, 12);
+        parentContainer.addView(desc, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        boolean enabled = prefs.getBoolean(TurnSignalCameraController.PREF_ENABLED, false);
+        UiStyles.addBinarySegmentedControl(context, parentContainer,
+                context.getString(R.string.settings_turn_signal_camera_title),
+                context.getString(R.string.common_on), context.getString(R.string.common_off),
+                context.getString(R.string.settings_turn_signal_camera_help_on),
+                context.getString(R.string.settings_turn_signal_camera_help_off),
+                enabled, on -> {
+                    prefs.edit().putBoolean(TurnSignalCameraController.PREF_ENABLED, on).apply();
+                    callback.log("Sinyal kamerası: " + (on ? "Açık" : "Kapalı"));
+                    if (on && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                            && !Settings.canDrawOverlays(context)) {
+                        try {
+                            context.startActivity(new Intent(
+                                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:" + context.getPackageName())));
+                        } catch (Exception ignored) {
+                        }
+                    }
                 });
     }
 

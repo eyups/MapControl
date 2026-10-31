@@ -719,6 +719,12 @@
 <string name="settings_driving_coach_on">On</string>
 <string name="settings_driving_coach_off_help">Live coach stays silent.</string>
 <string name="settings_driving_coach_on_help">Short prompts for harsh brake/accel and verified speed-limit data. Following-distance and lane signals are not validated yet.</string>
+    <string name="settings_turn_signal_camera_title">Turn Signal Camera</string>
+    <string name="settings_turn_signal_camera_desc">Shows the corresponding camera preview on the cluster display when the left or right turn signal is on.</string>
+    <string name="settings_turn_signal_camera_help_on">On: the corresponding camera appears on the cluster display when signaling.</string>
+    <string name="settings_turn_signal_camera_help_off">Off: turn signal camera is not shown.</string>
+    <string name="turn_signal_camera_left">LEFT CAMERA</string>
+    <string name="turn_signal_camera_right">RIGHT CAMERA</string>
 <string name="settings_tts_section_title">TTS engine</string>
 <string name="settings_tts_section_desc">Sherpa, ElevenLabs or the vehicle\'s built-in iFlytek engine. ElevenLabs falls back to Sherpa when offline or on error.</string>
 <string name="settings_tts_engine_title">Engine</string>

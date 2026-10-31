@@ -735,6 +735,12 @@
 <string name="settings_driving_coach_on">Açık</string>
 <string name="settings_driving_coach_off_help">Canlı koç konuşmaz.</string>
 <string name="settings_driving_coach_on_help">Sert fren/gaz ve doğrulanmış hız limiti verisinde kısa uyarı verir. Takip mesafesi/şerit sinyalleri henüz doğrulanmadı.</string>
+    <string name="settings_turn_signal_camera_title">Sinyal Kamerası</string>
+    <string name="settings_turn_signal_camera_desc">Sağ veya sol sinyal açıldığında cluster ekranında ilgili kamera önizlemesini en üstte gösterir.</string>
+    <string name="settings_turn_signal_camera_help_on">Açık: sinyal verildiğinde ilgili kamera cluster ekranında görünür.</string>
+    <string name="settings_turn_signal_camera_help_off">Kapalı: sinyal kamerası gösterilmez.</string>
+    <string name="turn_signal_camera_left">SOL KAMERA</string>
+    <string name="turn_signal_camera_right">SAĞ KAMERA</string>
 <string name="settings_tts_section_title">TTS motoru</string>
 <string name="settings_tts_section_desc">Sherpa, ElevenLabs veya aracın kendi iFlytek motoru. ElevenLabs internet yoksa veya hata olursa Sherpa motoruna düşer.</string>
 <string name="settings_tts_engine_title">Motor</string>
