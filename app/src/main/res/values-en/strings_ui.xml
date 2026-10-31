@@ -1237,4 +1237,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_sherpa_model">Sherpa model</string>
     <string name="voice_talk_sherpa_model_value">Piper DFKI Medium · Turkish</string>
     <string name="voice_talk_sherpa_single_speaker">The bundled model has a single speaker; there is no voice profile selection.</string>
+    <string name="voice_talk_fine_desc">These settings apply to ElevenLabs speech synthesis.</string>
 </resources>

@@ -109,6 +109,7 @@ public class VoiceTalkTabBuilder {
         boolean wide = context.getResources().getConfiguration().screenWidthDp >= 1000;
         LinearLayout engineCard = card();
         LinearLayout voiceCard = card();
+        LinearLayout fineTuneCard = card();
         if (wide) {
             LinearLayout columns = new LinearLayout(context);
             columns.setOrientation(LinearLayout.HORIZONTAL);
@@ -120,21 +121,31 @@ public class VoiceTalkTabBuilder {
             LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
                     0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
             rightLp.setMarginStart(gap / 2);
-            columns.addView(engineCard, leftLp);
+            LinearLayout leftColumn = new LinearLayout(context);
+            leftColumn.setOrientation(LinearLayout.VERTICAL);
+            leftColumn.addView(engineCard, matchWrap());
+            LinearLayout.LayoutParams fineLp = matchWrap();
+            fineLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+            leftColumn.addView(fineTuneCard, fineLp);
+            columns.addView(leftColumn, leftLp);
             columns.addView(voiceCard, rightLp);
             outer.addView(columns, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         } else {
             outer.addView(engineCard, matchWrap());
+            LinearLayout.LayoutParams fineLp = matchWrap();
+            fineLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+            outer.addView(fineTuneCard, fineLp);
             LinearLayout.LayoutParams gap = matchWrap();
             gap.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
             outer.addView(voiceCard, gap);
         }
 
-        buildEngineCard(engineCard, voiceCard);
+        buildEngineCard(engineCard, voiceCard, fineTuneCard);
     }
 
-    private void buildEngineCard(LinearLayout card, LinearLayout rightCard) {
+    private void buildEngineCard(LinearLayout card, LinearLayout rightCard,
+            LinearLayout fineTuneCard) {
         addTitle(card, R.string.settings_tts_section_title);
         addBody(card, R.string.settings_tts_section_desc, true);
 
@@ -153,10 +164,12 @@ public class VoiceTalkTabBuilder {
                     .putBoolean(MapControlSpeech.KEY_ENGINE_CONFIGURED, true).apply();
             addEngineHelp(card, index);
             rebuildRightPanel(rightCard, index);
+            rebuildFineTunePanel(fineTuneCard, index);
         });
         card.addView(engineSegmented, matchWrap());
         addEngineHelp(card, initialEngine);
         rebuildRightPanel(rightCard, initialEngine);
+        rebuildFineTunePanel(fineTuneCard, initialEngine);
     }
 
     private void addEngineHelp(LinearLayout card, int index) {
@@ -188,6 +201,26 @@ public class VoiceTalkTabBuilder {
         } else {
             buildSimpleEnginePanel(card, engineIndex);
         }
+    }
+
+    private void rebuildFineTunePanel(LinearLayout card, int engineIndex) {
+        if (card == null) return;
+        card.removeAllViews();
+        boolean visible = engineIndex == 1;
+        card.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (!visible) return;
+        addTitle(card, R.string.voice_talk_fine_title);
+        addBody(card, R.string.voice_talk_fine_desc, true);
+        speedValue = new TextView(context);
+        speedBar = addSlider(card, R.string.voice_talk_speed, speedValue, 70, 120,
+                MapControlSpeech.KEY_TTS_SPEED, 100);
+        stabilityValue = new TextView(context);
+        stabilityBar = addSlider(card, R.string.voice_talk_stability, stabilityValue, 0, 100,
+                MapControlSpeech.KEY_TTS_STABILITY, 45);
+        clarityValue = new TextView(context);
+        clarityBar = addSlider(card, R.string.voice_talk_clarity, clarityValue, 0, 100,
+                MapControlSpeech.KEY_TTS_CLARITY, 80);
+        updateSliderLabels();
     }
 
     private void buildSimpleEnginePanel(LinearLayout card, int engineIndex) {
@@ -396,21 +429,9 @@ public class VoiceTalkTabBuilder {
         manual.addView(use, useLp);
         card.addView(manual, matchWrap());
 
-        addLabel(card, R.string.voice_talk_fine_title);
-        speedValue = new TextView(context);
-        speedBar = addSlider(card, R.string.voice_talk_speed, speedValue, 70, 120,
-                MapControlSpeech.KEY_TTS_SPEED, 100);
-        stabilityValue = new TextView(context);
-        stabilityBar = addSlider(card, R.string.voice_talk_stability, stabilityValue, 0, 100,
-                MapControlSpeech.KEY_TTS_STABILITY, 45);
-        clarityValue = new TextView(context);
-        clarityBar = addSlider(card, R.string.voice_talk_clarity, clarityValue, 0, 100,
-                MapControlSpeech.KEY_TTS_CLARITY, 80);
-
         selectedVoiceIndex = presetIndex(MapControlSpeech.voiceId(context));
         refreshVoiceCards();
         updateActiveVoice();
-        updateSliderLabels();
     }
 
     private LinearLayout voiceCard(int index) {
