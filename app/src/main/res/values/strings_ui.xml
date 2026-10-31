@@ -1210,4 +1210,27 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_sunroof_page_sub">Closes the roof in strong sun; opens it in cloudy weather or at sunset.</string>
     <string name="split_unavailable">Unavailable on this device</string>
     <string name="equalizer_settings_title">Audio settings</string>
+    <string name="side_rail_voice_talk">Voice Talk</string>
+    <string name="ck_sub_voice_talk">Voice Talk</string>
+    <string name="ck_page_voice_talk_sub">TTS engine, voice profile and speech settings.</string>
+    <string name="voice_talk_profile_title">Voice profile &amp; voice code</string>
+    <string name="voice_talk_profile_desc">Choose the ElevenLabs profile used for speech.</string>
+    <string name="voice_talk_active_voice">Active voice: %1$s</string>
+    <string name="voice_talk_listen">Listen</string>
+    <string name="voice_talk_test">Test Connection</string>
+    <string name="voice_talk_show_key">Show</string>
+    <string name="voice_talk_hide_key">Hide</string>
+    <string name="voice_talk_balance_unknown">Balance: —</string>
+    <string name="voice_talk_balance">Balance: %1$s</string>
+    <string name="voice_talk_testing">Testing connection…</string>
+    <string name="voice_talk_test_failed">Connection failed</string>
+    <string name="voice_talk_test_ok">Connection successful</string>
+    <string name="voice_talk_manual_label">Manual voice code</string>
+    <string name="voice_talk_manual_voice">Manual voice</string>
+    <string name="voice_talk_use">Use</string>
+    <string name="voice_talk_fine_title">Voice fine tuning</string>
+    <string name="voice_talk_speed">Speed</string>
+    <string name="voice_talk_stability">Stability</string>
+    <string name="voice_talk_clarity">Clarity &amp; power</string>
+    <string name="voice_talk_sample">Hello, RoadDeck voice assistant is ready.</string>
 </resources>

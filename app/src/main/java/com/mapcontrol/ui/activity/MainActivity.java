@@ -97,6 +97,7 @@ import com.mapcontrol.ui.builder.ValetTabBuilder;
 import com.mapcontrol.ui.builder.TopBarBuilder;
 import com.mapcontrol.ui.builder.VehicleInfoTabBuilder;
 import com.mapcontrol.ui.builder.WelcomeSoundTabBuilder;
+import com.mapcontrol.ui.builder.VoiceTalkTabBuilder;
 import com.mapcontrol.ui.builder.WifiTabBuilder;
 import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitModal;
@@ -140,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int TAB_FACE_RECOGNITION = 19;
     public static final int TAB_CAMERA_360 = 20;
     public static final int TAB_SPLIT_SCREEN = 21;
+    private static final int TAB_VOICE_TALK = 25;
     public static final int TAB_SUNROOF_AUTOMATION = 22;
     private ScrollView climateAutomationScrollView;
     private ScrollView faceRecognitionScrollView;
@@ -191,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
     private EqualizerTabBuilder equalizerTabBuilder;
+    private VoiceTalkTabBuilder voiceTalkTabBuilder;
     private DriverProfilesTabBuilder driverProfilesTabBuilder;
     private VehicleInfoTabBuilder vehicleInfoTabBuilder;
     private DrivingHistoryTabBuilder drivingHistoryTabBuilder;
@@ -805,6 +808,7 @@ public class MainActivity extends AppCompatActivity {
 
         welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
         equalizerTabBuilder = new EqualizerTabBuilder(this);
+        voiceTalkTabBuilder = new VoiceTalkTabBuilder(this);
         valetTabBuilder = new ValetTabBuilder(this, msg -> MainActivity.this.log(msg),
                 this::onValetStateChanged);
         driverProfilesTabBuilder = new DriverProfilesTabBuilder(this, msg -> MainActivity.this.log(msg),
@@ -1436,6 +1440,10 @@ public class MainActivity extends AppCompatActivity {
             if (roadmateTabBuilder != null) {
                 addTabChildWithHeader(parent, roadmateTabBuilder.getView(), matchParent, tabIndex);
             }
+        } else if (tabIndex == TAB_VOICE_TALK) {
+            if (voiceTalkTabBuilder != null) {
+                addTabChildWithHeader(parent, voiceTalkTabBuilder.getScrollView(), matchParent, tabIndex);
+            }
         } else if (tabIndex == TAB_LAUNCHER) {
             if (launcherScrollView != null) {
                 addTabChild(parent, launcherScrollView, matchParent);
@@ -1478,6 +1486,7 @@ public class MainActivity extends AppCompatActivity {
             case CockpitNavModel.TAB_FILE: return getString(R.string.ck_page_web_sub);
             case CockpitNavModel.TAB_PROJECTION: return getString(R.string.ck_page_projection_sub);
             case CockpitNavModel.TAB_SPLIT_SCREEN: return getString(R.string.ck_page_split_sub);
+            case CockpitNavModel.TAB_VOICE_TALK: return getString(R.string.ck_page_voice_talk_sub);
             case CockpitNavModel.TAB_EQUALIZER: return getString(R.string.ck_page_equalizer_sub);
             case CockpitNavModel.TAB_DRIVER_PROFILES: return getString(R.string.ck_page_driver_profiles_sub);
             case CockpitNavModel.TAB_FACE_RECOGNITION: return getString(R.string.ck_page_face_sub);
@@ -1610,6 +1619,10 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_DRIVING_HISTORY) {
             if (topBarTitle != null) {
                 topBarTitle.setText(getString(R.string.side_rail_driving_report));
+            }
+        } else if (tabIndex == TAB_VOICE_TALK) {
+            if (topBarTitle != null) {
+                topBarTitle.setText(R.string.ck_sub_voice_talk);
             }
         } else if (tabIndex == TAB_LAUNCHER) {
             if (topBarTitle != null) {

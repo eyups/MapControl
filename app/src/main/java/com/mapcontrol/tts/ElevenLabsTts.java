@@ -1,6 +1,7 @@
 package com.mapcontrol.tts;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.audiofx.LoudnessEnhancer;
@@ -112,21 +113,21 @@ public final class ElevenLabsTts {
             int code = -1;
             try {
                 Log.i(TAG, "v3 isteği: " + text.length() + " karakter; " + preview(text));
-                code = request(text, MODEL_EXPRESSIVE, apiKey, voice, out);
+                code = request(text, MODEL_EXPRESSIVE, apiKey, voice, out, app);
                 if (code != HttpURLConnection.HTTP_OK
                         && code != HttpURLConnection.HTTP_UNAUTHORIZED) {
                     Log.w(TAG, "v3 başarısız (HTTP " + code + "), v2 düz metinle deneniyor");
                     out.delete();
                     String plain = SpeechText.plain(text);
                     Log.i(TAG, "v2 isteği: " + plain.length() + " karakter; " + preview(plain));
-                    code = request(plain, MODEL_FALLBACK, apiKey, voice, out);
+                    code = request(plain, MODEL_FALLBACK, apiKey, voice, out, app);
                 }
             } catch (Throwable t) {
                 Log.w(TAG, "v3 istek hatası (" + t.getClass().getSimpleName() + "), v2 deneniyor");
                 out.delete();
                 try {
                     String plain = SpeechText.plain(text);
-                    code = request(plain, MODEL_FALLBACK, apiKey, voice, out);
+                    code = request(plain, MODEL_FALLBACK, apiKey, voice, out, app);
                 } catch (Throwable t2) {
                     Log.w(TAG, "v2 istek hatası", t2);
                     code = -1;
@@ -181,18 +182,18 @@ public final class ElevenLabsTts {
             int code = -1;
             try {
                 Log.i(TAG, "Dosya v3 isteği: " + text.length() + " karakter; " + preview(text));
-                code = request(text, MODEL_EXPRESSIVE, apiKey, voice, out);
+                code = request(text, MODEL_EXPRESSIVE, apiKey, voice, out, app);
                 if (code != HttpURLConnection.HTTP_OK
                         && code != HttpURLConnection.HTTP_UNAUTHORIZED) {
                     out.delete();
                     String plain = SpeechText.plain(text);
-                    code = request(plain, MODEL_FALLBACK, apiKey, voice, out);
+                    code = request(plain, MODEL_FALLBACK, apiKey, voice, out, app);
                 }
             } catch (Throwable t) {
                 Log.w(TAG, "Dosya istek hatası (" + t.getClass().getSimpleName() + "), v2 deneniyor");
                 out.delete();
                 try {
-                    code = request(SpeechText.plain(text), MODEL_FALLBACK, apiKey, voice, out);
+                    code = request(SpeechText.plain(text), MODEL_FALLBACK, apiKey, voice, out, app);
                 } catch (Throwable t2) {
                     Log.w(TAG, "Dosya v2 hatası", t2);
                     code = -1;
@@ -209,7 +210,7 @@ public final class ElevenLabsTts {
     }
 
     private static int request(String text, String model, String apiKey,
-                               String voice, File out) throws Exception {
+                               String voice, File out, Context context) throws Exception {
         HttpURLConnection connection = null;
         try {
             URL url = new URL(ENDPOINT + URLEncoder.encode(voice, "UTF-8")
@@ -223,9 +224,15 @@ public final class ElevenLabsTts {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("Accept", "audio/mpeg");
 
+            SharedPreferences prefs = context.getSharedPreferences(
+                    MapControlSpeech.PREFS, Context.MODE_PRIVATE);
+            float speed = prefs.getInt(MapControlSpeech.KEY_TTS_SPEED, 100) / 100f;
+            float stability = prefs.getInt(MapControlSpeech.KEY_TTS_STABILITY, 45) / 100f;
+            float clarity = prefs.getInt(MapControlSpeech.KEY_TTS_CLARITY, 80) / 100f;
             JSONObject voiceSettings = new JSONObject();
-            voiceSettings.put("stability", 0.45);
-            voiceSettings.put("similarity_boost", 0.80);
+            voiceSettings.put("stability", stability);
+            voiceSettings.put("similarity_boost", clarity);
+            voiceSettings.put("speed", speed);
             voiceSettings.put("style", 0.45);
             voiceSettings.put("use_speaker_boost", true);
 

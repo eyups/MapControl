@@ -1226,4 +1226,27 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_sunroof_page_sub">Güneş yakıyorsa tavanı kapatır; bulutlu havada veya gün batımında açar.</string>
     <string name="split_unavailable">Bu araçta kullanılamıyor</string>
     <string name="equalizer_settings_title">Ses ayarları</string>
+    <string name="side_rail_voice_talk">Sesli Konuşma</string>
+    <string name="ck_sub_voice_talk">Sesli Konuşma</string>
+    <string name="ck_page_voice_talk_sub">TTS motoru, ses profili ve konuşma ayarları.</string>
+    <string name="voice_talk_profile_title">Ses profili &amp; ses kodu</string>
+    <string name="voice_talk_profile_desc">Seslendirme için kullanılacak ElevenLabs profilini seçin.</string>
+    <string name="voice_talk_active_voice">Aktif ses: %1$s</string>
+    <string name="voice_talk_listen">Dinle</string>
+    <string name="voice_talk_test">Bağlantıyı Test Et</string>
+    <string name="voice_talk_show_key">Göster</string>
+    <string name="voice_talk_hide_key">Gizle</string>
+    <string name="voice_talk_balance_unknown">Bakiye: —</string>
+    <string name="voice_talk_balance">Bakiye: %1$s</string>
+    <string name="voice_talk_testing">Bağlantı test ediliyor…</string>
+    <string name="voice_talk_test_failed">Bağlantı başarısız</string>
+    <string name="voice_talk_test_ok">Bağlantı başarılı</string>
+    <string name="voice_talk_manual_label">Manuel ses kodu</string>
+    <string name="voice_talk_manual_voice">Manuel ses</string>
+    <string name="voice_talk_use">Kullan</string>
+    <string name="voice_talk_fine_title">Ses ince ayarları</string>
+    <string name="voice_talk_speed">Hız</string>
+    <string name="voice_talk_stability">Kararlılık</string>
+    <string name="voice_talk_clarity">Netlik &amp; Güç</string>
+    <string name="voice_talk_sample">Merhaba, RoadDeck sesli asistanı hazır.</string>
 </resources>

@@ -136,7 +136,6 @@ public class SettingsTabBuilder {
             LinearLayout general = sectionGroup();
             createThemeSection(general);
             createLanguageSection(general);
-            createTtsSection(general);
             createDrivingTestDataSection(general);
 
             LinearLayout system = sectionGroup();
@@ -222,7 +221,6 @@ public class SettingsTabBuilder {
         LinearLayout card = createSettingsCard();
         createThemeSection(card);
         createLanguageSection(card);
-        createTtsSection(card);
         createDrivingTestDataSection(card);
         createAppInfoSection(card);
         createBootAutostartSection(card);

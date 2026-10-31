@@ -34,6 +34,9 @@ public final class MapControlSpeech {
     public static final int ENGINE_MODE_IFLYTEK = 2;
     public static final String KEY_API_KEY = "elevenLabsApiKey";
     public static final String KEY_VOICE_ID = "elevenLabsVoiceId";
+    public static final String KEY_TTS_SPEED = "ttsSpeedPercent";
+    public static final String KEY_TTS_STABILITY = "ttsStabilityPercent";
+    public static final String KEY_TTS_CLARITY = "ttsClarityPercent";
     public static final String DEFAULT_VOICE_ID = "mF7tIc9VLrznhGooGjaT";
     private static final String LEGACY_DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
