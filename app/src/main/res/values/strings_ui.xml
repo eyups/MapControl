@@ -1292,7 +1292,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="projection_cluster_style_single_row">Single row</string>
     <string name="projection_cluster_style_glass">Glass card</string>
     <string name="projection_cluster_style_hint">Card layout</string>
-    <string name="projection_cluster_opacity_title">Opacity</string>
+    <string name="projection_cluster_opacity_title">Card background opacity</string>
     <string name="projection_cluster_variant_label">VARIANT %1$d</string>
     <string name="projection_cluster_variant1_title">Minimalist HUD Capsule</string>
     <string name="projection_cluster_variant2_title">Separate Cockpit Dual Module</string>

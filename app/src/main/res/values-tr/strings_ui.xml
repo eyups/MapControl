@@ -1308,7 +1308,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="projection_cluster_style_single_row">Tek satır</string>
     <string name="projection_cluster_style_glass">Cam kart</string>
     <string name="projection_cluster_style_hint">Kart düzeni</string>
-    <string name="projection_cluster_opacity_title">Opaklık</string>
+    <string name="projection_cluster_opacity_title">Kart arka planı opaklığı</string>
     <string name="projection_cluster_variant_label">VARYANT %1$d</string>
     <string name="projection_cluster_variant1_title">Minimalist HUD Kapsülü</string>
     <string name="projection_cluster_variant2_title">Ayrık Kokpit Çift Modülü</string>

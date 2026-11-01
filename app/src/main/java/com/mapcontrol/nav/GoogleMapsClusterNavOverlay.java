@@ -147,11 +147,30 @@ public final class GoogleMapsClusterNavOverlay {
     }
 
     private void applyStoredOpacity() {
-        mainHandler.post(() -> {
-            if (overlayRoot != null) {
-                overlayRoot.setAlpha(getOpacity(appContext) / 100f);
-            }
-        });
+        mainHandler.post(this::applyCardOpacityOnMain);
+    }
+
+    /** Opaklık yalnızca kart zeminine uygulanır; yazılar tam opak kalır. */
+    private void applyCardOpacityOnMain() {
+        if (overlayRoot == null) {
+            return;
+        }
+        overlayRoot.setAlpha(1f);
+        int alpha = Math.round(255f * getOpacity(appContext) / 100f);
+        applyBackgroundAlpha(maneuverCard, alpha);
+        applyBackgroundAlpha(etaCard, alpha);
+    }
+
+    private static void applyBackgroundAlpha(@Nullable View card, int alpha) {
+        if (card == null) {
+            return;
+        }
+        android.graphics.drawable.Drawable bg = card.getBackground();
+        if (bg == null) {
+            return;
+        }
+        bg.mutate().setAlpha(alpha);
+        card.invalidate();
     }
 
     public static void setEnabled(Context context, boolean enabled) {
@@ -216,6 +235,7 @@ public final class GoogleMapsClusterNavOverlay {
             return;
         }
         lastApplied = snapshot;
+        applyCardOpacityOnMain();
         raiseToTopOnMain(true);
     }
 
@@ -559,7 +579,7 @@ public final class GoogleMapsClusterNavOverlay {
                             | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                     PixelFormat.TRANSLUCENT);
             windowManager.addView(overlayRoot, overlayLayoutParams);
-            overlayRoot.setAlpha(getOpacity(appContext) / 100f);
+            applyCardOpacityOnMain();
             lastZOrderRaiseUptimeMs = SystemClock.uptimeMillis();
         } catch (Exception e) {
             hideInternal();
