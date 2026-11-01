@@ -639,7 +639,7 @@ public final class GoogleMapsClusterNavOverlay {
         if (singleCard) {
             int width = Math.min(screenWidth - dp(ctx, 32),
                     dp(ctx, STYLE_RADIAL.equals(style) ? 560
-                            : (STYLE_TRAFFIC.equals(style) ? 500 : 390)));
+                            : (STYLE_TRAFFIC.equals(style) ? 420 : 390)));
             maneuverLeft = (screenWidth - width) / 2;
             etaLeft = maneuverLeft;
             maneuverCard = createSingleCard(ctx, style);
@@ -850,8 +850,10 @@ public final class GoogleMapsClusterNavOverlay {
             maneuverCard.setBackground(null);
             maneuverCard.setPadding(0, 0, 0, 0);
             maneuverCard.setOrientation(LinearLayout.VERTICAL);
+            maneuverCard.setGravity(Gravity.CENTER_HORIZONTAL);
 
             LinearLayout top = createTrafficPill(ctx, true);
+            top.setMinimumWidth(dp(ctx, 380));
             maneuverIconView = new ImageView(ctx);
             maneuverIconView.setImageResource(R.drawable.ic_ck_arrow_left);
             maneuverIconView.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
@@ -871,18 +873,22 @@ public final class GoogleMapsClusterNavOverlay {
             nextStreetView = createManeuverText(ctx, 19, true);
             nextStreetView.setMaxLines(1);
             nextStreetView.setEllipsize(android.text.TextUtils.TruncateAt.END);
-            top.addView(nextStreetView, new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+            top.addView(nextStreetView, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            View spacer = new View(ctx);
+            top.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
             TextView statusDot = createEtaText(ctx, 12, true);
             statusDot.setText("●");
             statusDot.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
             top.addView(statusDot, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
-            maneuverCard.addView(top, matchWrapLp());
+            maneuverCard.addView(top, wrapLp());
 
             LinearLayout bottom = createTrafficPill(ctx, false);
-            LinearLayout.LayoutParams bottomLp = matchWrapLp();
+            bottom.setMinimumWidth(dp(ctx, 330));
+            LinearLayout.LayoutParams bottomLp = wrapLp();
             bottomLp.topMargin = dp(ctx, 8);
             etaTimeValue = createEtaText(ctx, 18, true);
             bottom.addView(etaTimeValue);
