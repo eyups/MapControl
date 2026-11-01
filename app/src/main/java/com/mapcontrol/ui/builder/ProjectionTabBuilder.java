@@ -367,7 +367,6 @@ public class ProjectionTabBuilder {
 
         addCompactStyleHeader(card);
         addCompactStyleCards(card);
-        addCompactLivePreview(card);
         addClusterOverlayLayoutSection(card,
                 R.string.projection_google_cluster_position_title,
                 ClusterNavOverlayOffsets.Provider.GOOGLE,
