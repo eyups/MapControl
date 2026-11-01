@@ -85,6 +85,8 @@ public final class GoogleMapsClusterNavOverlay {
     private TextView radialDurationUnitView;
     private TextView radialProgressValue;
     private View trafficProgress;
+    private View trafficTopPill;
+    private View trafficBottomPill;
     private TextView hudEtaDetail;
     private boolean hudDistanceStyle;
     private LinearLayout etaDistanceRow;
@@ -180,8 +182,19 @@ public final class GoogleMapsClusterNavOverlay {
         String style = getStyle(appContext);
         int maneuverAlpha = Math.round(255f * getCardOpacity(appContext, false) / 100f);
         int etaAlpha = Math.round(255f * getCardOpacity(appContext, true) / 100f);
+        if (STYLE_TRAFFIC.equals(style)) {
+            applyViewBackgroundAlpha(trafficTopPill, maneuverAlpha);
+            applyViewBackgroundAlpha(trafficBottomPill, etaAlpha);
+            return;
+        }
         applyCardBackground(maneuverCard, style, maneuverAlpha, R.color.ck_accent);
         applyCardBackground(etaCard, style, etaAlpha, R.color.ck_nominal);
+    }
+
+    private static void applyViewBackgroundAlpha(@Nullable View view, int alpha) {
+        if (view == null || view.getBackground() == null) return;
+        view.getBackground().mutate().setAlpha(alpha);
+        view.invalidate();
     }
 
     private void applyCardBackground(
@@ -523,6 +536,8 @@ public final class GoogleMapsClusterNavOverlay {
         radialDurationUnitView = null;
         radialProgressValue = null;
         trafficProgress = null;
+        trafficTopPill = null;
+        trafficBottomPill = null;
         hudEtaDetail = null;
         hudDistanceStyle = false;
         etaDistanceRow = null;
@@ -556,6 +571,20 @@ public final class GoogleMapsClusterNavOverlay {
         maneuverCardLp.leftMargin = layoutManeuverLeft;
         maneuverCardLp.topMargin = layoutTopMargin;
         maneuverCard.setLayoutParams(maneuverCardLp);
+        if (STYLE_TRAFFIC.equals(getStyle(appContext))
+                && trafficTopPill != null && trafficBottomPill != null) {
+            maneuverCard.setTranslationX(0f);
+            maneuverCard.setTranslationY(0f);
+            maneuverCard.setScaleX(1f);
+            maneuverCard.setScaleY(1f);
+            ClusterNavOverlayOffsets.applyTranslationAndScale(
+                    trafficTopPill, ctx,
+                    maneuver.offsetXDp, maneuver.offsetYDp, maneuver.scalePercent);
+            ClusterNavOverlayOffsets.applyTranslationAndScale(
+                    trafficBottomPill, ctx,
+                    eta.offsetXDp, eta.offsetYDp, eta.scalePercent);
+            return;
+        }
         ClusterNavOverlayOffsets.applyTranslationAndScale(
                 maneuverCard, ctx,
                 maneuver.offsetXDp, maneuver.offsetYDp, maneuver.scalePercent);
@@ -879,6 +908,7 @@ public final class GoogleMapsClusterNavOverlay {
             maneuverCard.setGravity(Gravity.CENTER_HORIZONTAL);
 
             LinearLayout top = createTrafficPill(ctx, true);
+            trafficTopPill = top;
             maneuverIconView = new ImageView(ctx);
             maneuverIconView.setImageResource(R.drawable.ic_ck_arrow_left);
             maneuverIconView.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
@@ -912,6 +942,7 @@ public final class GoogleMapsClusterNavOverlay {
             maneuverCard.addView(top, wrapLp());
 
             LinearLayout bottom = createTrafficPill(ctx, false);
+            trafficBottomPill = bottom;
             LinearLayout.LayoutParams bottomLp = wrapLp();
             bottomLp.topMargin = dp(ctx, 8);
             etaTimeValue = createEtaText(ctx, 18, true);

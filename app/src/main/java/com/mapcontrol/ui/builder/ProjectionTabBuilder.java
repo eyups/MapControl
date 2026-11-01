@@ -1959,8 +1959,9 @@ public class ProjectionTabBuilder {
     }
 
     private void updateCardTabsVisibility() {
-        boolean googleVisible = GoogleMapsClusterNavOverlay.STYLE_DUAL.equals(
-                GoogleMapsClusterNavOverlay.getStyle(context));
+        String style = GoogleMapsClusterNavOverlay.getStyle(context);
+        boolean googleVisible = GoogleMapsClusterNavOverlay.STYLE_DUAL.equals(style)
+                || GoogleMapsClusterNavOverlay.STYLE_TRAFFIC.equals(style);
         if (googleCardTabsRow != null) {
             googleCardTabsRow.setVisibility(googleVisible ? View.VISIBLE : View.GONE);
         }
