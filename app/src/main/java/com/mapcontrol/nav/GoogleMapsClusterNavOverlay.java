@@ -31,6 +31,8 @@ import androidx.core.content.ContextCompat;
 import com.mapcontrol.R;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.AppLaunchHelper;
+import com.mapcontrol.vehicle.VehicleMetricsRepository;
+import com.mapcontrol.vehicle.VehicleMetricsSnapshot;
 
 /**
  * Cluster ekranında Google Maps navigasyon özet kartları (bildirim verisi).
@@ -77,6 +79,9 @@ public final class GoogleMapsClusterNavOverlay {
     private TextView radialDurationView;
     private View trafficProgress;
     private TextView hudEtaDetail;
+    private TextView dualEtaSummary;
+    private TextView dualBatteryValue;
+    private TextView dualDelayChip;
     private boolean hudDistanceStyle;
     private LinearLayout etaDistanceRow;
     private LinearLayout etaArrivalRow;
@@ -128,6 +133,9 @@ public final class GoogleMapsClusterNavOverlay {
     public static void setStyle(Context context, String style) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 .edit().putString(PREF_STYLE, style).apply();
+        // Yeni tasarım seçilince eski kart ofsetleri yeni düzeni bozmasın.
+        ClusterNavOverlayOffsets.resetProvider(
+                context, ClusterNavOverlayOffsets.Provider.GOOGLE);
         getInstance(context).forceRebuild();
         getInstance(context).invalidateCache();
     }
@@ -313,6 +321,26 @@ public final class GoogleMapsClusterNavOverlay {
 
     private boolean bindEtaCard(GoogleMapsNavSnapshot snapshot) {
         boolean any = false;
+        if (dualEtaSummary != null) {
+            String duration = snapshot.etaDurationLabel();
+            String distance = snapshot.etaDistanceLabel();
+            StringBuilder summary = new StringBuilder();
+            if (duration != null) summary.append(duration);
+            if (distance != null) {
+                if (summary.length() > 0) summary.append("  ·  ");
+                summary.append(distance);
+            }
+            dualEtaSummary.setText(summary);
+            any = summary.length() > 0;
+        }
+        if (dualBatteryValue != null) {
+            VehicleMetricsSnapshot vehicle =
+                    VehicleMetricsRepository.getInstance(appContext).getSnapshot();
+            int fuel = vehicle == null ? 0 : vehicle.fuelPercent;
+            dualBatteryValue.setText(vehicle != null && VehicleMetricsSnapshot.isValid(fuel)
+                    && fuel > 0 ? "%" + fuel : "—");
+            any = true;
+        }
         if (radialDurationView != null) {
             String duration = snapshot.etaDurationLabel();
             radialDurationView.setText(duration == null || duration.isEmpty() ? "—" : duration);
@@ -455,6 +483,9 @@ public final class GoogleMapsClusterNavOverlay {
         radialDurationView = null;
         trafficProgress = null;
         hudEtaDetail = null;
+        dualEtaSummary = null;
+        dualBatteryValue = null;
+        dualDelayChip = null;
         hudDistanceStyle = false;
         etaDistanceRow = null;
         etaArrivalRow = null;
@@ -571,9 +602,10 @@ public final class GoogleMapsClusterNavOverlay {
         boolean singleCard = !STYLE_DUAL.equals(style);
         int screenWidth = ctx.getResources().getDisplayMetrics().widthPixels;
         int topMarginPx = dp(ctx, TOP_MARGIN_DP);
-        int cardWidthPx = dp(ctx, CARD_WIDTH_DP);
-        int gapPx = dp(ctx, CENTER_GAP_DP);
-        int outwardPx = (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO);
+        boolean dualStyle = STYLE_DUAL.equals(style);
+        int cardWidthPx = dp(ctx, dualStyle ? 300 : CARD_WIDTH_DP);
+        int gapPx = dp(ctx, dualStyle ? 20 : CENTER_GAP_DP);
+        int outwardPx = dualStyle ? 0 : (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO);
         int pairWidth = cardWidthPx * 2 + gapPx;
         int pairLeft = (screenWidth - pairWidth) / 2;
         int maneuverLeft;
@@ -595,24 +627,11 @@ public final class GoogleMapsClusterNavOverlay {
             etaCard = new LinearLayout(ctx);
             etaCardLp = null;
         } else {
+            // Referans: solda manevra, sağda varış.
             maneuverLeft = pairLeft - outwardPx;
             etaLeft = pairLeft + cardWidthPx + gapPx + outwardPx;
-            maneuverCard = createManeuverCard(ctx);
-            maneuverDistanceView = createManeuverText(ctx, 30, true);
-            maneuverCard.addView(maneuverDistanceView, wrapLp());
-            nextStreetView = createManeuverText(ctx, 14, false);
-            nextStreetView.setMaxLines(2);
-            LinearLayout.LayoutParams streetLp = wrapLp();
-            streetLp.topMargin = dp(ctx, 4);
-            maneuverCard.addView(nextStreetView, streetLp);
-            maneuverStatusView = createManeuverText(ctx, 12, false);
-            maneuverStatusView.setMaxLines(2);
-            LinearLayout.LayoutParams statusLp = wrapLp();
-            statusLp.topMargin = dp(ctx, 2);
-            maneuverCard.addView(maneuverStatusView, statusLp);
-
-            etaCard = createEtaCard(ctx);
-            addEtaRows(ctx, etaCard);
+            maneuverCard = createDualManeuverCard(ctx);
+            etaCard = createDualEtaCard(ctx);
 
             maneuverCardLp = new FrameLayout.LayoutParams(cardWidthPx,
                     FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -876,8 +895,7 @@ public final class GoogleMapsClusterNavOverlay {
         } else if (STYLE_TRAFFIC.equals(style)) {
             maneuverCard.setBackground(glassBackground(ctx));
         } else if (STYLE_DUAL.equals(style)) {
-            maneuverCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
-            etaCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
+            // Kartlar kendi referans dolgularını kullanır.
         } else if (STYLE_SINGLE_ROW.equals(style)) {
             maneuverCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
             etaCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
@@ -889,6 +907,154 @@ public final class GoogleMapsClusterNavOverlay {
         bg.setColor(0x99161B22);
         bg.setCornerRadius(dp(ctx, 16));
         bg.setStroke(Math.max(1, dp(ctx, 1)), 0x66FFFFFF);
+        return bg;
+    }
+
+
+    private LinearLayout createDualManeuverCard(Context ctx) {
+        LinearLayout card = new LinearLayout(ctx);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(dp(ctx, 16), dp(ctx, 14), dp(ctx, 16), dp(ctx, 14));
+        card.setMinimumHeight(dp(ctx, 148));
+        card.setBackground(dualCardBackground(ctx, R.color.ck_accent));
+        hudDistanceStyle = true;
+
+        LinearLayout top = new LinearLayout(ctx);
+        top.setOrientation(LinearLayout.HORIZONTAL);
+        top.setGravity(Gravity.CENTER_VERTICAL);
+        maneuverIconView = new ImageView(ctx);
+        maneuverIconView.setImageResource(R.drawable.ic_ck_arrow_left);
+        maneuverIconView.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
+        GradientDrawable iconBg = new GradientDrawable();
+        iconBg.setColor(UiStyles.color(ctx, R.color.ck_surface_2));
+        iconBg.setCornerRadius(dp(ctx, 10));
+        iconBg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+        maneuverIconView.setBackground(iconBg);
+        maneuverIconView.setPadding(dp(ctx, 8), dp(ctx, 8), dp(ctx, 8), dp(ctx, 8));
+        top.addView(maneuverIconView, new LinearLayout.LayoutParams(dp(ctx, 48), dp(ctx, 48)));
+
+        TextView label = createEtaText(ctx, 12, false);
+        label.setText("MANEVRA");
+        label.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+        label.setLetterSpacing(0.08f);
+        LinearLayout.LayoutParams labelLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        labelLp.leftMargin = dp(ctx, 10);
+        top.addView(label, labelLp);
+
+        LinearLayout lanes = new LinearLayout(ctx);
+        lanes.setOrientation(LinearLayout.HORIZONTAL);
+        lanes.setGravity(Gravity.CENTER_VERTICAL);
+        for (int i = 0; i < 3; i++) {
+            View dot = new View(ctx);
+            GradientDrawable dotBg = new GradientDrawable();
+            dotBg.setShape(GradientDrawable.OVAL);
+            dotBg.setColor(UiStyles.color(ctx,
+                    i == 0 ? R.color.ck_accent : R.color.ck_surface_2));
+            dot.setBackground(dotBg);
+            LinearLayout.LayoutParams dotLp = new LinearLayout.LayoutParams(dp(ctx, 7), dp(ctx, 13));
+            dotLp.leftMargin = dp(ctx, 3);
+            lanes.addView(dot, dotLp);
+        }
+        GradientDrawable laneBg = new GradientDrawable();
+        laneBg.setColor(0xFF10151A);
+        laneBg.setCornerRadius(dp(ctx, 7));
+        lanes.setBackground(laneBg);
+        lanes.setPadding(dp(ctx, 4), dp(ctx, 4), dp(ctx, 4), dp(ctx, 4));
+        top.addView(lanes, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        card.addView(top, matchWrapLp());
+
+        maneuverDistanceView = createManeuverText(ctx, 34, true);
+        maneuverDistanceView.setMinHeight(dp(ctx, 40));
+        LinearLayout.LayoutParams distanceLp = wrapLp();
+        distanceLp.topMargin = dp(ctx, 8);
+        card.addView(maneuverDistanceView, distanceLp);
+
+        nextStreetView = createManeuverText(ctx, 16, false);
+        nextStreetView.setMaxLines(2);
+        LinearLayout.LayoutParams streetLp = wrapLp();
+        streetLp.topMargin = dp(ctx, 4);
+        card.addView(nextStreetView, streetLp);
+        return card;
+    }
+
+    private LinearLayout createDualEtaCard(Context ctx) {
+        LinearLayout card = new LinearLayout(ctx);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(dp(ctx, 16), dp(ctx, 14), dp(ctx, 16), dp(ctx, 14));
+        card.setMinimumHeight(dp(ctx, 148));
+        card.setBackground(dualCardBackground(ctx, R.color.ck_nominal));
+
+        LinearLayout top = new LinearLayout(ctx);
+        top.setOrientation(LinearLayout.HORIZONTAL);
+        top.setGravity(Gravity.CENTER_VERTICAL);
+        TextView label = createEtaText(ctx, 12, false);
+        label.setText("VARIŞ SAATİ");
+        label.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+        label.setLetterSpacing(0.08f);
+        top.addView(label, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+        dualDelayChip = createEtaText(ctx, 11, true);
+        dualDelayChip.setText("Gecikme —");
+        dualDelayChip.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
+        dualDelayChip.setPadding(dp(ctx, 8), dp(ctx, 4), dp(ctx, 8), dp(ctx, 4));
+        GradientDrawable chipBg = new GradientDrawable();
+        chipBg.setColor(UiStyles.color(ctx, R.color.ck_nominal_bg));
+        chipBg.setCornerRadius(dp(ctx, 6));
+        dualDelayChip.setBackground(chipBg);
+        top.addView(dualDelayChip, wrapLp());
+        card.addView(top, matchWrapLp());
+
+        LinearLayout etaRow = new LinearLayout(ctx);
+        etaRow.setOrientation(LinearLayout.HORIZONTAL);
+        etaRow.setGravity(Gravity.CENTER_VERTICAL);
+        etaArrivalValue = createEtaText(ctx, 34, true);
+        etaRow.addView(etaArrivalValue, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        dualEtaSummary = createEtaText(ctx, 14, false);
+        dualEtaSummary.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+        dualEtaSummary.setGravity(Gravity.END);
+        etaRow.addView(dualEtaSummary, wrapLp());
+        LinearLayout.LayoutParams etaLp = matchWrapLp();
+        etaLp.topMargin = dp(ctx, 6);
+        card.addView(etaRow, etaLp);
+
+        View divider = new View(ctx);
+        divider.setBackgroundColor(UiStyles.color(ctx, R.color.ck_stroke));
+        LinearLayout.LayoutParams dividerLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(ctx, 1));
+        dividerLp.topMargin = dp(ctx, 10);
+        dividerLp.bottomMargin = dp(ctx, 8);
+        card.addView(divider, dividerLp);
+
+        LinearLayout batteryRow = new LinearLayout(ctx);
+        batteryRow.setOrientation(LinearLayout.HORIZONTAL);
+        batteryRow.setGravity(Gravity.CENTER_VERTICAL);
+        TextView bolt = createEtaText(ctx, 16, true);
+        bolt.setText("⚡");
+        bolt.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
+        batteryRow.addView(bolt);
+        TextView batteryLabel = createEtaText(ctx, 14, false);
+        batteryLabel.setText("Batarya");
+        batteryLabel.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+        LinearLayout.LayoutParams batteryLabelLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        batteryLabelLp.leftMargin = dp(ctx, 6);
+        batteryRow.addView(batteryLabel, batteryLabelLp);
+        dualBatteryValue = createEtaText(ctx, 16, true);
+        dualBatteryValue.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
+        batteryRow.addView(dualBatteryValue);
+        card.addView(batteryRow, matchWrapLp());
+        return card;
+    }
+
+    private static GradientDrawable dualCardBackground(Context ctx, int accentColor) {
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(0xFF0B0F14);
+        bg.setCornerRadius(dp(ctx, 18));
+        bg.setStroke(dp(ctx, 2), UiStyles.color(ctx, accentColor));
         return bg;
     }
 
