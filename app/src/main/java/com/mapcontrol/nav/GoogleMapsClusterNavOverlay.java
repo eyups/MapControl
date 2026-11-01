@@ -164,20 +164,33 @@ public final class GoogleMapsClusterNavOverlay {
         }
         overlayRoot.setAlpha(1f);
         int alpha = Math.round(255f * getOpacity(appContext) / 100f);
-        applyBackgroundAlpha(maneuverCard, alpha);
-        applyBackgroundAlpha(etaCard, alpha);
+        String style = getStyle(appContext);
+        applyCardBackground(maneuverCard, style, alpha, R.color.ck_accent);
+        applyCardBackground(etaCard, style, alpha, R.color.ck_nominal);
     }
 
-    private static void applyBackgroundAlpha(@Nullable View card, int alpha) {
+    private void applyCardBackground(
+            @Nullable View card, String style, int alpha, int accentColor) {
         if (card == null) {
             return;
         }
-        android.graphics.drawable.Drawable bg = card.getBackground();
-        if (bg == null) {
-            return;
+        Context ctx = displayContext != null ? displayContext : appContext;
+        int fillColor = (alpha << 24) | 0x000B0F14;
+        if (STYLE_DUAL.equals(style) || STYLE_HUD.equals(style)
+                || STYLE_RADIAL.equals(style)) {
+            GradientDrawable bg = new GradientDrawable();
+            bg.setColor(fillColor);
+            bg.setCornerRadius(dp(ctx, STYLE_HUD.equals(style) ? 26 : 18));
+            bg.setStroke(dp(ctx, STYLE_HUD.equals(style) ? 1 : 2),
+                    UiStyles.color(ctx, accentColor));
+            card.setBackground(bg);
+        } else {
+            android.graphics.drawable.Drawable bg = card.getBackground();
+            if (bg != null) {
+                bg.mutate().setAlpha(alpha);
+                card.invalidate();
+            }
         }
-        bg.mutate().setAlpha(alpha);
-        card.invalidate();
     }
 
     public static void setEnabled(Context context, boolean enabled) {
