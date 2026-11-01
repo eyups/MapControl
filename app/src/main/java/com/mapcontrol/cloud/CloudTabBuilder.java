@@ -474,10 +474,18 @@ public final class CloudTabBuilder {
                 backupButton.setEnabled(true);
                 restoreButton.setEnabled(true);
                 Toast.makeText(context,
-                        result ? R.string.settings_cloud_restore_done
+                        result
+                                ? (service.isRestoreAudioOk()
+                                        ? R.string.settings_cloud_restore_done
+                                        : R.string.settings_cloud_restore_audio_failed)
                                 : R.string.settings_cloud_restore_failed,
                         Toast.LENGTH_LONG).show();
-                logger.accept("Profil geri yükleme: " + (result ? "ok" : "failed"));
+                android.util.Log.i("CloudBackup", "restore=" + result
+                        + " audio=" + service.isRestoreAudioOk()
+                        + " error=" + service.lastRestoreError());
+                logger.accept("Profil geri yükleme: "
+                        + (result ? (service.isRestoreAudioOk() ? "ok" : "audio_failed")
+                                : "failed/" + service.lastRestoreError()));
             });
         }, "MapControlProfileRestore").start();
     }
