@@ -67,11 +67,12 @@ final class ProfileAudioBackup {
     static boolean restore(Context context, CloudConfig config, CloudHttp http) throws Exception {
         File zip = new File(context.getCacheDir(), "welcome-audio-restore.zip");
         CloudHttp.Response response = http.downloadToFile(
-                "/api/v1/car/sync/audio", config.token(), zip, MAX_BYTES);
+                "/api/v1/car/sync/audio", config.token(), zip, MAX_BYTES, "*/*");
         if (response.code == 204) {
             return true;
         }
         if (response.code != 200) {
+            android.util.Log.w("CloudBackup", "audio get code=" + response.code);
             zip.delete();
             return false;
         }
@@ -160,6 +161,8 @@ final class ProfileAudioBackup {
             }
             return true;
         } catch (Exception error) {
+            android.util.Log.w("CloudBackup", "audio extract failed: "
+                    + error.getClass().getSimpleName() + " " + error.getMessage());
             return false;
         }
     }

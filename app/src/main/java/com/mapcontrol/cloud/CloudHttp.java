@@ -235,6 +235,12 @@ final class CloudHttp {
     /** F4: APK'yı akış hâlinde dosyaya indirir; boyut sınırını aşarsa siler. */
     Response downloadToFile(String path, String deviceToken, File target, long maxBytes)
             throws IOException {
+        return downloadToFile(path, deviceToken, target, maxBytes,
+                "application/vnd.android.package-archive");
+    }
+
+    Response downloadToFile(String path, String deviceToken, File target, long maxBytes,
+            String accept) throws IOException {
         if (path == null || !path.startsWith("/api/v1/") || path.contains("..")) {
             throw new IOException("invalid_path");
         }
@@ -258,7 +264,7 @@ final class CloudHttp {
             connection.setReadTimeout(120_000);
             connection.setUseCaches(false);
             connection.setInstanceFollowRedirects(false);
-            connection.setRequestProperty("Accept", "application/vnd.android.package-archive");
+            connection.setRequestProperty("Accept", accept);
             connection.setRequestProperty("Accept-Encoding", "identity");
             connection.setRequestProperty("User-Agent", "RoadDeck-Cloud/1");
             if (deviceToken != null && !deviceToken.isEmpty()) {

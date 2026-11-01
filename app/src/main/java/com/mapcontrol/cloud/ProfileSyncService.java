@@ -89,14 +89,12 @@ final class ProfileSyncService {
         if (preferences != null) {
             manager.importPreferences(preferences);
         }
-        if (config.backupFaceData()) {
-            JSONObject faces = get("faces");
-            if (faces != null && faces.optJSONArray("profiles") != null
-                    && faces.optJSONArray("profiles").length() > 0
-                    && !FaceProfileStore.importBackup(context, faces)) {
-                restoreError = "faces_invalid";
-                return false;
-            }
+        JSONObject faces = get("faces");
+        if (faces != null && faces.optJSONArray("profiles") != null
+                && faces.optJSONArray("profiles").length() > 0
+                && !FaceProfileStore.importBackup(context, faces)) {
+            restoreError = "faces_invalid";
+            return false;
         }
         try {
             restoreAudioOk = ProfileAudioBackup.restore(context, config, http);
