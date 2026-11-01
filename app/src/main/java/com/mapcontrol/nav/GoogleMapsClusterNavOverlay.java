@@ -2,6 +2,7 @@ package com.mapcontrol.nav;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.Typeface;
@@ -66,6 +67,7 @@ public final class GoogleMapsClusterNavOverlay {
     private Context displayContext;
     private View overlayRoot;
     private TextView maneuverDistanceView;
+    private ImageView maneuverIconView;
     private TextView nextStreetView;
     private TextView maneuverStatusView;
     private TextView etaDistanceValue;
@@ -240,6 +242,7 @@ public final class GoogleMapsClusterNavOverlay {
 
     private boolean bindManeuverCard(GoogleMapsNavSnapshot snapshot) {
         boolean any = false;
+        bindManeuverIcon(snapshot);
 
         String distance = snapshot.formatManeuverDistanceLine();
         if (distance != null) {
@@ -275,6 +278,34 @@ public final class GoogleMapsClusterNavOverlay {
         return any;
     }
 
+    private void bindManeuverIcon(GoogleMapsNavSnapshot snapshot) {
+        if (maneuverIconView == null) return;
+        Bitmap bitmap = snapshot.maneuverIcon;
+        if (bitmap != null && !bitmap.isRecycled()) {
+            maneuverIconView.setImageBitmap(bitmap);
+            maneuverIconView.setColorFilter(UiStyles.color(
+                    maneuverIconView.getContext(), R.color.ck_accent));
+            maneuverIconView.setRotation(0f);
+            return;
+        }
+        String direction = snapshot.formatManeuverDirectionLine();
+        String lower = direction == null ? "" : direction.toLowerCase(java.util.Locale.ROOT);
+        int rotation = 0;
+        if (lower.contains("sağ") || lower.contains("right")) {
+            rotation = 180;
+        } else if (lower.contains("düz") || lower.contains("straight")
+                || lower.contains("devam")) {
+            rotation = 90;
+        } else if (lower.contains("u dön") || lower.contains("u-turn")
+                || lower.contains("uturn")) {
+            rotation = 135;
+        }
+        maneuverIconView.setImageResource(R.drawable.ic_ck_arrow_left);
+        maneuverIconView.setColorFilter(UiStyles.color(
+                maneuverIconView.getContext(), R.color.ck_accent));
+        maneuverIconView.setRotation(rotation);
+    }
+
     private boolean bindEtaCard(GoogleMapsNavSnapshot snapshot) {
         boolean any = false;
         if (radialDurationView != null) {
@@ -290,9 +321,10 @@ public final class GoogleMapsClusterNavOverlay {
         }
         if (hudEtaDetail != null) {
             String distance = snapshot.etaDistanceLabel();
+            String maneuverDistance = snapshot.formatManeuverDistanceLine();
             String arrival = snapshot.etaArrivalLabel();
             StringBuilder detail = new StringBuilder();
-            if (distance != null) detail.append(distance);
+            if (distance != null && !distance.equals(maneuverDistance)) detail.append(distance);
             if (arrival != null) {
                 if (detail.length() > 0) detail.append("  ·  ");
                 detail.append(arrival);
@@ -408,6 +440,7 @@ public final class GoogleMapsClusterNavOverlay {
 
     private void clearViewRefs() {
         maneuverDistanceView = null;
+        maneuverIconView = null;
         nextStreetView = null;
         maneuverStatusView = null;
         etaDistanceValue = null;
@@ -626,6 +659,7 @@ public final class GoogleMapsClusterNavOverlay {
         if (STYLE_HUD.equals(style)) {
             hudDistanceStyle = true;
             ImageView arrow = new ImageView(ctx);
+            maneuverIconView = arrow;
             arrow.setImageResource(R.drawable.ic_ck_arrow_left);
             arrow.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
             GradientDrawable arrowBg = new GradientDrawable();

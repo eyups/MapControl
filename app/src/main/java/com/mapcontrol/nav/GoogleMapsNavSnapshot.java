@@ -1,5 +1,7 @@
 package com.mapcontrol.nav;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.Nullable;
 
 import java.util.Locale;
@@ -19,6 +21,7 @@ public final class GoogleMapsNavSnapshot {
     @Nullable public final String distanceTitle;
     @Nullable public final String routeSummary;
     public final boolean hadIcon;
+    @Nullable public final Bitmap maneuverIcon;
 
     public GoogleMapsNavSnapshot(
             boolean active,
@@ -26,11 +29,22 @@ public final class GoogleMapsNavSnapshot {
             @Nullable String distanceTitle,
             @Nullable String routeSummary,
             boolean hadIcon) {
+        this(active, maneuverHint, distanceTitle, routeSummary, hadIcon, null);
+    }
+
+    public GoogleMapsNavSnapshot(
+            boolean active,
+            @Nullable String maneuverHint,
+            @Nullable String distanceTitle,
+            @Nullable String routeSummary,
+            boolean hadIcon,
+            @Nullable Bitmap maneuverIcon) {
         this.active = active;
         this.maneuverHint = emptyToNull(maneuverHint);
         this.distanceTitle = emptyToNull(distanceTitle);
         this.routeSummary = emptyToNull(routeSummary);
         this.hadIcon = hadIcon;
+        this.maneuverIcon = maneuverIcon;
     }
 
     public static GoogleMapsNavSnapshot inactive() {
@@ -90,7 +104,8 @@ public final class GoogleMapsNavSnapshot {
     /** Manevra kartı üst satırı: bildirim başlığındaki mesafe bölümü. */
     @Nullable
     public String formatManeuverDistanceLine() {
-        return splitTitleDistancePart(distanceTitle);
+        String fromTitle = splitTitleDistancePart(distanceTitle);
+        return fromTitle != null ? fromTitle : etaDistanceLabel();
     }
 
     /** Manevra yönü: başlıktaki talimat veya hedef satırı. */
@@ -186,7 +201,10 @@ public final class GoogleMapsNavSnapshot {
                 continue;
             }
             String lower = trimmed.toLowerCase(Locale.US);
-            boolean isDistance = lower.contains(" km") || lower.contains(" mi") || lower.contains(" m ");
+            boolean isDistance = java.util.regex.Pattern
+                    .compile("\\d+(?:[.,]\\d+)?\\s*(?:km|mi|m|ft)\\b",
+                            java.util.regex.Pattern.CASE_INSENSITIVE)
+                    .matcher(trimmed).find();
             boolean isDuration = lower.contains("min") || lower.contains("dk")
                     || lower.contains("hr") || lower.contains("sa");
             boolean isArrival = ARRIVAL_TIME.matcher(trimmed).find();
