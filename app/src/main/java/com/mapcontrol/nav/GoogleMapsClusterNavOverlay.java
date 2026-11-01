@@ -254,6 +254,10 @@ public final class GoogleMapsClusterNavOverlay {
             }
             setVisible(maneuverDistanceView, true);
             any = true;
+        } else if (hudDistanceStyle) {
+            // Manevra mesafesi yoksa 0/850 uydurma; ama satır yüksekliğini koru.
+            maneuverDistanceView.setText("");
+            maneuverDistanceView.setVisibility(View.INVISIBLE);
         } else {
             setVisible(maneuverDistanceView, false);
         }
@@ -675,6 +679,7 @@ public final class GoogleMapsClusterNavOverlay {
             left.setOrientation(LinearLayout.VERTICAL);
             left.setPadding(dp(ctx, 10), 0, dp(ctx, 8), 0);
             maneuverDistanceView = createManeuverText(ctx, 28, true);
+            maneuverDistanceView.setMinHeight(dp(ctx, 34));
             left.addView(maneuverDistanceView);
             nextStreetView = createManeuverText(ctx, 14, false);
             left.addView(nextStreetView);
@@ -688,7 +693,7 @@ public final class GoogleMapsClusterNavOverlay {
             LinearLayout right = new LinearLayout(ctx);
             right.setOrientation(LinearLayout.VERTICAL);
             right.setGravity(Gravity.END);
-            right.setPadding(dp(ctx, 10), 0, 0, 0);
+            right.setPadding(dp(ctx, 8), 0, 0, 0);
             LinearLayout durationRow = new LinearLayout(ctx);
             durationRow.setOrientation(LinearLayout.HORIZONTAL);
             durationRow.setGravity(Gravity.CENTER_VERTICAL);
@@ -704,8 +709,11 @@ public final class GoogleMapsClusterNavOverlay {
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             hudEtaDetail = createEtaText(ctx, 13, false);
             hudEtaDetail.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+            hudEtaDetail.setGravity(Gravity.END);
             hudEtaDetail.setPadding(0, dp(ctx, 3), 0, 0);
-            right.addView(hudEtaDetail);
+            right.addView(hudEtaDetail, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
             maneuverCard.addView(right, new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
