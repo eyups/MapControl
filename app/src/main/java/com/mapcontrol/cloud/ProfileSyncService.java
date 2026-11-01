@@ -1,6 +1,7 @@
 package com.mapcontrol.cloud;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.vehicle.FaceProfileStore;
@@ -13,6 +14,8 @@ final class ProfileSyncService {
     private final Context context;
     private final CloudConfig config;
     private final CloudHttp http;
+    private volatile boolean audioOk = true;
+    private volatile String lastError = "";
 
     ProfileSyncService(Context context, CloudConfig config, CloudHttp http) {
         this.context = context.getApplicationContext();
@@ -21,6 +24,8 @@ final class ProfileSyncService {
     }
 
     boolean backup() throws Exception {
+        audioOk = true;
+        lastError = "";
         DriverProfileManager manager = DriverProfileManager.get(context);
         JSONObject profiles = new JSONObject(manager.exportBackup());
         if (!put("profiles", profiles)) {
@@ -33,7 +38,24 @@ final class ProfileSyncService {
                 && !put("faces", FaceProfileStore.exportBackup(context))) {
             return false;
         }
-        return ProfileAudioBackup.upload(context, config, http);
+        try {
+            audioOk = ProfileAudioBackup.upload(context, config, http);
+        } catch (Exception error) {
+            audioOk = false;
+            lastError = "audio";
+        }
+        if (!audioOk) {
+            lastError = "audio";
+        }
+        return true;
+    }
+
+    boolean isAudioOk() {
+        return audioOk;
+    }
+
+    String lastError() {
+        return lastError;
     }
 
     boolean clearFaces() throws Exception {
@@ -69,6 +91,10 @@ final class ProfileSyncService {
         body.put("payload", data);
         CloudHttp.Response response = http.putJson(
                 "/api/v1/car/sync/" + key, config.token(), body, 512 * 1024);
+        if (response.code != 200) {
+            lastError = key + "_" + response.code;
+            Log.w("CloudBackup", key + " code=" + response.code);
+        }
         return response.code == 200;
     }
 

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -123,6 +124,13 @@ public final class CloudTabBuilder {
         codeInput.setFilters(new InputFilter[]{new InputFilter.LengthFilter(8)});
         codeInput.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         codeInput.setHintTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        codeInput.setOnFocusChangeListener((view, hasFocus) -> {
+            if (hasFocus) {
+                codeInput.postDelayed(() -> codeInput.requestRectangleOnScreen(
+                        new android.graphics.Rect(0, 0, codeInput.getWidth(),
+                                codeInput.getHeight() + dp(96)), true), 250);
+            }
+        });
         LinearLayout.LayoutParams codeLp = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         unpairedRow.addView(codeInput, codeLp);
@@ -350,7 +358,16 @@ public final class CloudTabBuilder {
     }
 
     public View getView() {
-        return root;
+        ScrollView scroll = new ScrollView(context);
+        scroll.setFillViewport(true);
+        scroll.setClipToPadding(false);
+        if (root.getParent() instanceof android.view.ViewGroup) {
+            ((android.view.ViewGroup) root.getParent()).removeView(root);
+        }
+        scroll.addView(root, new ScrollView.LayoutParams(
+                ScrollView.LayoutParams.MATCH_PARENT,
+                ScrollView.LayoutParams.WRAP_CONTENT));
+        return scroll;
     }
 
     public void release() {
@@ -416,10 +433,18 @@ public final class CloudTabBuilder {
                 backupButton.setEnabled(true);
                 restoreButton.setEnabled(true);
                 Toast.makeText(context,
-                        result ? R.string.settings_cloud_backup_done
+                        result
+                                ? (service.isAudioOk()
+                                        ? R.string.settings_cloud_backup_done
+                                        : R.string.settings_cloud_backup_audio_failed)
                                 : R.string.settings_cloud_backup_failed,
                         Toast.LENGTH_SHORT).show();
-                logger.accept("Profil yedeği: " + (result ? "ok" : "failed"));
+                android.util.Log.i("CloudBackup", "result=" + result
+                        + " audio=" + service.isAudioOk()
+                        + " error=" + service.lastError());
+                logger.accept("Profil yedeği: "
+                        + (result ? (service.isAudioOk() ? "ok" : "audio_failed")
+                                : "failed/" + service.lastError()));
             });
         }, "MapControlProfileBackup").start();
     }

@@ -119,7 +119,8 @@
             android:launchMode="singleTop"
             android:label="RoadDeck"
             android:theme="@style/Theme.MapControl.Splash"
-            android:configChanges="orientation|screenSize|keyboardHidden|uiMode">
+            android:configChanges="orientation|screenSize|keyboardHidden|uiMode"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

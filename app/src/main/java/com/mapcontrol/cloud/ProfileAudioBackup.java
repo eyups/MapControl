@@ -53,6 +53,14 @@ final class ProfileAudioBackup {
                 "application/zip",
                 data,
                 (int) MAX_BYTES + 64 * 1024);
+        if (response.code != 204) {
+            String body = response.body == null ? "" : response.body;
+            if (body.length() > 240) {
+                body = body.substring(0, 240);
+            }
+            android.util.Log.w("CloudBackup", "audio code=" + response.code
+                    + " bytes=" + data.length + " body=" + body);
+        }
         return response.code == 204;
     }
 
