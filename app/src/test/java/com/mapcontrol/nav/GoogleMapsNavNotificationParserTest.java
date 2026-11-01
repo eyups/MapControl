@@ -60,6 +60,18 @@ public class GoogleMapsNavNotificationParserTest {
     }
 
     @Test
+    public void emptyTitleUsesRemainingDistanceAndKeepsManeuverDistanceUnknown() {
+        GoogleMapsNavSnapshot snap = GoogleMapsNavNotificationParser.parseFields(
+                "", "Isırgan Sk. yönüne doğru", "3 dk. · 850 m · TVS: 22:43", true);
+        assertTrue(snap.active);
+        assertNull(snap.maneuverDistanceFromTitle());
+        assertEquals("850 m", snap.formatManeuverDistanceLine());
+        assertEquals("850 m", snap.etaDistanceLabel());
+        assertEquals("Isırgan Sk.", snap.formatManeuverDirectionLine());
+        assertEquals("22:43", snap.etaArrivalLabel());
+    }
+
+    @Test
     public void snapshotExposesClusterCardFields() {
         GoogleMapsNavSnapshot snap = GoogleMapsNavNotificationParser.parseFields(
                 "500 ft - Head south-west",

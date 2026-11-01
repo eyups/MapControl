@@ -104,8 +104,14 @@ public final class GoogleMapsNavSnapshot {
     /** Manevra kartı üst satırı: bildirim başlığındaki mesafe bölümü. */
     @Nullable
     public String formatManeuverDistanceLine() {
-        String fromTitle = splitTitleDistancePart(distanceTitle);
+        String fromTitle = maneuverDistanceFromTitle();
         return fromTitle != null ? fromTitle : etaDistanceLabel();
+    }
+
+    /** Başlıkta gerçek manevra mesafesi var mı; yoksa kalan rota mesafesine düşülür. */
+    @Nullable
+    public String maneuverDistanceFromTitle() {
+        return splitTitleDistancePart(distanceTitle);
     }
 
     /** Manevra yönü: başlıktaki talimat veya hedef satırı. */

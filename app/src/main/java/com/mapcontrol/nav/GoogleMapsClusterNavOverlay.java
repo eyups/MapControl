@@ -67,6 +67,7 @@ public final class GoogleMapsClusterNavOverlay {
     private Context displayContext;
     private View overlayRoot;
     private TextView maneuverDistanceView;
+    private TextView maneuverDistanceCaption;
     private ImageView maneuverIconView;
     private TextView nextStreetView;
     private TextView maneuverStatusView;
@@ -244,7 +245,14 @@ public final class GoogleMapsClusterNavOverlay {
         boolean any = false;
         bindManeuverIcon(snapshot);
 
-        String distance = snapshot.formatManeuverDistanceLine();
+        String maneuverDistance = snapshot.maneuverDistanceFromTitle();
+        String distance = maneuverDistance;
+        if (distance == null) {
+            distance = snapshot.etaDistanceLabel();
+        }
+        if (maneuverDistanceCaption != null) {
+            setVisible(maneuverDistanceCaption, maneuverDistance == null && distance != null);
+        }
         if (distance != null) {
             if (hudDistanceStyle) {
                 setHudDistanceText(distance);
@@ -440,6 +448,7 @@ public final class GoogleMapsClusterNavOverlay {
 
     private void clearViewRefs() {
         maneuverDistanceView = null;
+        maneuverDistanceCaption = null;
         maneuverIconView = null;
         nextStreetView = null;
         maneuverStatusView = null;
@@ -673,6 +682,10 @@ public final class GoogleMapsClusterNavOverlay {
             LinearLayout left = new LinearLayout(ctx);
             left.setOrientation(LinearLayout.VERTICAL);
             left.setPadding(dp(ctx, 10), 0, dp(ctx, 8), 0);
+            maneuverDistanceCaption = createManeuverText(ctx, 9, true);
+            maneuverDistanceCaption.setText("KALAN");
+            maneuverDistanceCaption.setTextColor(UiStyles.color(ctx, R.color.ck_text_muted));
+            left.addView(maneuverDistanceCaption);
             maneuverDistanceView = createManeuverText(ctx, 28, true);
             left.addView(maneuverDistanceView);
             nextStreetView = createManeuverText(ctx, 14, false);
