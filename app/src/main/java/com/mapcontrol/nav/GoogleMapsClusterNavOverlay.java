@@ -77,7 +77,6 @@ public final class GoogleMapsClusterNavOverlay {
     private TextView radialDurationView;
     private View trafficProgress;
     private TextView hudEtaDetail;
-    private TextView dualEtaSummary;
     private boolean hudDistanceStyle;
     private LinearLayout etaDistanceRow;
     private LinearLayout etaArrivalRow;
@@ -318,18 +317,6 @@ public final class GoogleMapsClusterNavOverlay {
 
     private boolean bindEtaCard(GoogleMapsNavSnapshot snapshot) {
         boolean any = false;
-        if (dualEtaSummary != null) {
-            String duration = snapshot.etaDurationLabel();
-            String distance = snapshot.etaDistanceLabel();
-            StringBuilder summary = new StringBuilder();
-            if (duration != null) summary.append(duration);
-            if (distance != null) {
-                if (summary.length() > 0) summary.append("  ·  ");
-                summary.append(distance);
-            }
-            dualEtaSummary.setText(summary);
-            any = summary.length() > 0;
-        }
         if (radialDurationView != null) {
             String duration = snapshot.etaDurationLabel();
             radialDurationView.setText(duration == null || duration.isEmpty() ? "—" : duration);
@@ -472,7 +459,6 @@ public final class GoogleMapsClusterNavOverlay {
         radialDurationView = null;
         trafficProgress = null;
         hudEtaDetail = null;
-        dualEtaSummary = null;
         hudDistanceStyle = false;
         etaDistanceRow = null;
         etaArrivalRow = null;
@@ -992,14 +978,50 @@ public final class GoogleMapsClusterNavOverlay {
         etaArrivalValue = createEtaText(ctx, 34, true);
         etaRow.addView(etaArrivalValue, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        dualEtaSummary = createEtaText(ctx, 14, false);
-        dualEtaSummary.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
-        dualEtaSummary.setGravity(Gravity.END);
-        etaRow.addView(dualEtaSummary, wrapLp());
         LinearLayout.LayoutParams etaLp = matchWrapLp();
-        etaLp.topMargin = dp(ctx, 6);
+        etaLp.topMargin = dp(ctx, 4);
         card.addView(etaRow, etaLp);
 
+        View divider = new View(ctx);
+        divider.setBackgroundColor(UiStyles.color(ctx, R.color.ck_stroke));
+        LinearLayout.LayoutParams dividerLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(ctx, 1));
+        dividerLp.topMargin = dp(ctx, 10);
+        card.addView(divider, dividerLp);
+
+        LinearLayout metrics = new LinearLayout(ctx);
+        metrics.setOrientation(LinearLayout.HORIZONTAL);
+        metrics.setGravity(Gravity.CENTER_VERTICAL);
+        metrics.setPadding(0, dp(ctx, 9), 0, 0);
+
+        LinearLayout distanceCol = new LinearLayout(ctx);
+        distanceCol.setOrientation(LinearLayout.VERTICAL);
+        TextView distanceLabel = createEtaText(ctx, 10, false);
+        distanceLabel.setText("KALAN YOL");
+        distanceLabel.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+        distanceLabel.setLetterSpacing(0.06f);
+        distanceCol.addView(distanceLabel);
+        etaDistanceValue = createEtaText(ctx, 20, true);
+        distanceCol.addView(etaDistanceValue);
+        metrics.addView(distanceCol, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+        LinearLayout durationCol = new LinearLayout(ctx);
+        durationCol.setOrientation(LinearLayout.VERTICAL);
+        durationCol.setGravity(Gravity.END);
+        TextView durationLabel = createEtaText(ctx, 10, false);
+        durationLabel.setText("SÜRE");
+        durationLabel.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+        durationLabel.setLetterSpacing(0.06f);
+        durationLabel.setGravity(Gravity.END);
+        durationCol.addView(durationLabel);
+        etaTimeValue = createEtaText(ctx, 20, true);
+        etaTimeValue.setGravity(Gravity.END);
+        durationCol.addView(etaTimeValue);
+        metrics.addView(durationCol, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+        card.addView(metrics, matchWrapLp());
         return card;
     }
 
