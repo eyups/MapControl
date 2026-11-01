@@ -75,6 +75,8 @@ public class ProjectionTabBuilder {
     private LinearLayout googleProviderCard;
     private LinearLayout yandexProviderCard;
     private LinearLayout googleSettingsCard;
+    private LinearLayout googleCardTabsRow;
+    private LinearLayout yandexCardTabsRow;
     private LinearLayout yandexSettingsCard;
 
     public ProjectionTabBuilder(Context context, SharedPreferences prefs, ProjectionCallback callback) {
@@ -614,10 +616,10 @@ public class ProjectionTabBuilder {
                 R.string.projection_cluster_variant4_title
         };
         String[] descs = {
-                "Hafif cam efektli tek parça",
-                "Manevra ve ETA ayrı pencereler",
-                "İlerleme çemberi + ETA sayacı",
-                "Yol şeridi ve varış grafiği"
+                "Mesafe, cadde, süre ve varış tek parçada",
+                "Manevra ve ETA ayrı; bağımsız konum/opaklık",
+                "İkon, mesafe, cadde, süre ve varış tek satırda",
+                "Üst pill manevra, alt pill süre/mesafe/varış"
         };
         LinearLayout selectedLine = null;
         java.util.List<LinearLayout> cards = new java.util.ArrayList<>();
@@ -656,6 +658,7 @@ public class ProjectionTabBuilder {
                     GoogleMapsClusterNavOverlay.getInstance(context).apply(
                             GoogleMapsNavNotificationCoordinator.getLastSnapshot());
                     applyClusterStyleSelection(cards, styles, st);
+                    updateCardTabsVisibility();
                 });
                 cards.add(option);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -1831,6 +1834,31 @@ public class ProjectionTabBuilder {
         header.addView(reset);
         parent.addView(header);
 
+        final ClusterNavOverlayOffsets.Card[] selected = {
+                ClusterNavOverlayOffsets.Card.MANEUVER
+        };
+        LinearLayout tabs = new LinearLayout(context);
+        tabs.setOrientation(LinearLayout.HORIZONTAL);
+        TextView maneuverTab = compactCardTab("Manevra");
+        TextView etaTab = compactCardTab("ETA");
+        LinearLayout.LayoutParams tabLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        tabs.addView(maneuverTab, tabLp);
+        LinearLayout.LayoutParams etaLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        tabs.addView(etaTab, etaLp);
+        if (provider == ClusterNavOverlayOffsets.Provider.GOOGLE) {
+            googleCardTabsRow = tabs;
+        } else {
+            yandexCardTabsRow = tabs;
+        }
+        LinearLayout.LayoutParams tabsLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        tabsLp.bottomMargin = 8;
+        parent.addView(tabs, tabsLp);
+        updateCardTabsVisibility();
+
         LinearLayout grid = new LinearLayout(context);
         grid.setOrientation(LinearLayout.VERTICAL);
         int pad = CockpitTokens.dim(context, R.dimen.ck_space_md);
@@ -1840,31 +1868,25 @@ public class ProjectionTabBuilder {
 
         final int rangeX = ClusterNavOverlayOffsets.getOffsetRangeXDp(context);
         final int rangeY = ClusterNavOverlayOffsets.getOffsetRangeYDp(context);
-        ClusterNavOverlayOffsets.CardLayout initial =
-                ClusterNavOverlayOffsets.getCardLayout(context, provider,
-                        ClusterNavOverlayOffsets.Card.MANEUVER);
         final SeekBar[] bars = new SeekBar[4];
         final TextView[] values = new TextView[4];
+        final Runnable[] sync = new Runnable[1];
 
         LinearLayout row1 = new LinearLayout(context);
         row1.setOrientation(LinearLayout.HORIZONTAL);
         row1.setBaselineAligned(false);
         addCompactOffsetCell(row1,
-                R.string.projection_cluster_x_offset,
-                ClusterNavOverlayOffsets.toOffsetSeekProgress(initial.offsetXDp, rangeX),
-                rangeX * 2,
+                R.string.projection_cluster_x_offset, 0, rangeX * 2,
                 progress -> {
                     int x = ClusterNavOverlayOffsets.fromOffsetSeekProgress(progress, rangeX);
-                    updateBothLayouts(provider, x, null, null);
+                    updateCardLayout(provider, selected[0], x, null, null);
                     applyOverlay.run();
                 }, bars, values, 0, " dp");
         addCompactOffsetCell(row1,
-                R.string.projection_cluster_y_offset,
-                ClusterNavOverlayOffsets.toOffsetSeekProgress(initial.offsetYDp, rangeY),
-                rangeY * 2,
+                R.string.projection_cluster_y_offset, 0, rangeY * 2,
                 progress -> {
                     int y = ClusterNavOverlayOffsets.fromOffsetSeekProgress(progress, rangeY);
-                    updateBothLayouts(provider, null, y, null);
+                    updateCardLayout(provider, selected[0], null, y, null);
                     applyOverlay.run();
                 }, bars, values, 1, " dp");
         grid.addView(row1);
@@ -1873,41 +1895,60 @@ public class ProjectionTabBuilder {
         row2.setOrientation(LinearLayout.HORIZONTAL);
         row2.setBaselineAligned(false);
         addCompactOffsetCell(row2,
-                R.string.projection_cluster_scale,
-                ClusterNavOverlayOffsets.toScaleSeekProgress(initial.scalePercent),
-                100,
+                R.string.projection_cluster_scale, 50, 100,
                 progress -> {
                     int scale = ClusterNavOverlayOffsets.fromScaleSeekProgress(progress);
-                    updateBothLayouts(provider, null, null, scale);
+                    updateCardLayout(provider, selected[0], null, null, scale);
                     applyOverlay.run();
                 }, bars, values, 2, "%");
         addCompactOffsetCell(row2,
-                R.string.projection_cluster_bg_opacity,
-                Math.max(0, GoogleMapsClusterNavOverlay.getOpacity(context) - 20),
-                80,
-                progress -> GoogleMapsClusterNavOverlay.setOpacity(context, progress + 20),
+                R.string.projection_cluster_bg_opacity, 80, 80,
+                progress -> GoogleMapsClusterNavOverlay.setCardOpacity(
+                        context, selected[0] == ClusterNavOverlayOffsets.Card.ETA,
+                        progress + 20),
                 bars, values, 3, "%");
         grid.addView(row2);
 
-        // İlk değer metinlerini doldur.
-        values[0].setText(initial.offsetXDp + " dp");
-        values[1].setText(initial.offsetYDp + " dp");
-        values[2].setText("%" + initial.scalePercent);
-        values[3].setText("%" + GoogleMapsClusterNavOverlay.getOpacity(context));
+        sync[0] = () -> {
+            ClusterNavOverlayOffsets.CardLayout layout = ClusterNavOverlayOffsets.getCardLayout(
+                    context, provider, selected[0]);
+            bars[0].setProgress(ClusterNavOverlayOffsets.toOffsetSeekProgress(
+                    layout.offsetXDp, rangeX));
+            bars[1].setProgress(ClusterNavOverlayOffsets.toOffsetSeekProgress(
+                    layout.offsetYDp, rangeY));
+            bars[2].setProgress(ClusterNavOverlayOffsets.toScaleSeekProgress(layout.scalePercent));
+            int opacity = GoogleMapsClusterNavOverlay.getCardOpacity(
+                    context, selected[0] == ClusterNavOverlayOffsets.Card.ETA);
+            bars[3].setProgress(Math.max(0, opacity - 20));
+            values[0].setText(layout.offsetXDp + " dp");
+            values[1].setText(layout.offsetYDp + " dp");
+            values[2].setText("%" + layout.scalePercent);
+            values[3].setText("%" + opacity);
+        };
+
+        Runnable renderTabs = () -> {
+            styleCardTab(maneuverTab, selected[0] == ClusterNavOverlayOffsets.Card.MANEUVER);
+            styleCardTab(etaTab, selected[0] == ClusterNavOverlayOffsets.Card.ETA);
+        };
+        maneuverTab.setOnClickListener(v -> {
+            selected[0] = ClusterNavOverlayOffsets.Card.MANEUVER;
+            renderTabs.run();
+            sync[0].run();
+        });
+        etaTab.setOnClickListener(v -> {
+            selected[0] = ClusterNavOverlayOffsets.Card.ETA;
+            renderTabs.run();
+            sync[0].run();
+        });
+        styleCardTab(maneuverTab, true);
+        styleCardTab(etaTab, false);
+        sync[0].run();
 
         reset.setOnClickListener(v -> {
             ClusterNavOverlayOffsets.resetProvider(context, provider);
-            GoogleMapsClusterNavOverlay.setOpacity(context, 100);
-            ClusterNavOverlayOffsets.CardLayout defaults = ClusterNavOverlayOffsets.defaultCardLayout();
-            bars[0].setProgress(ClusterNavOverlayOffsets.toOffsetSeekProgress(0, rangeX));
-            bars[1].setProgress(ClusterNavOverlayOffsets.toOffsetSeekProgress(0, rangeY));
-            bars[2].setProgress(ClusterNavOverlayOffsets.toScaleSeekProgress(100));
-            bars[3].setProgress(80);
-            values[0].setText("0 dp");
-            values[1].setText("0 dp");
-            values[2].setText("%100");
-            values[3].setText("%100");
-            updateBothLayouts(provider, defaults.offsetXDp, defaults.offsetYDp, defaults.scalePercent);
+            GoogleMapsClusterNavOverlay.setCardOpacity(context, false, 100);
+            GoogleMapsClusterNavOverlay.setCardOpacity(context, true, 100);
+            sync[0].run();
             applyOverlay.run();
             callback.log(provider == ClusterNavOverlayOffsets.Provider.GOOGLE
                     ? "Google Maps kart düzeni sıfırlandı"
@@ -1917,21 +1958,45 @@ public class ProjectionTabBuilder {
         });
     }
 
-    private void updateBothLayouts(ClusterNavOverlayOffsets.Provider provider,
-            Integer x, Integer y, Integer scale) {
-        ClusterNavOverlayOffsets.CardLayout m = ClusterNavOverlayOffsets.getCardLayout(
-                context, provider, ClusterNavOverlayOffsets.Card.MANEUVER);
-        ClusterNavOverlayOffsets.CardLayout e = ClusterNavOverlayOffsets.getCardLayout(
-                context, provider, ClusterNavOverlayOffsets.Card.ETA);
-        int nx = x != null ? x : m.offsetXDp;
-        int ny = y != null ? y : m.offsetYDp;
-        int ns = scale != null ? scale : m.scalePercent;
-        ClusterNavOverlayOffsets.setCardLayout(context, provider,
-                ClusterNavOverlayOffsets.Card.MANEUVER,
-                new ClusterNavOverlayOffsets.CardLayout(nx, ny, ns));
-        ClusterNavOverlayOffsets.setCardLayout(context, provider,
-                ClusterNavOverlayOffsets.Card.ETA,
-                new ClusterNavOverlayOffsets.CardLayout(nx, ny, ns));
+    private void updateCardTabsVisibility() {
+        boolean googleVisible = GoogleMapsClusterNavOverlay.STYLE_DUAL.equals(
+                GoogleMapsClusterNavOverlay.getStyle(context));
+        if (googleCardTabsRow != null) {
+            googleCardTabsRow.setVisibility(googleVisible ? View.VISIBLE : View.GONE);
+        }
+        if (yandexCardTabsRow != null) {
+            yandexCardTabsRow.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateCardLayout(ClusterNavOverlayOffsets.Provider provider,
+            ClusterNavOverlayOffsets.Card card, Integer x, Integer y, Integer scale) {
+        ClusterNavOverlayOffsets.CardLayout current = ClusterNavOverlayOffsets.getCardLayout(
+                context, provider, card);
+        ClusterNavOverlayOffsets.setCardLayout(context, provider, card,
+                new ClusterNavOverlayOffsets.CardLayout(
+                        x != null ? x : current.offsetXDp,
+                        y != null ? y : current.offsetYDp,
+                        scale != null ? scale : current.scalePercent));
+    }
+
+    private TextView compactCardTab(String text) {
+        TextView tab = new TextView(context);
+        tab.setText(text);
+        tab.setTextSize(12);
+        tab.setGravity(Gravity.CENTER);
+        tab.setPadding(10, 6, 10, 6);
+        return tab;
+    }
+
+    private void styleCardTab(TextView tab, boolean selected) {
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(CockpitTokens.color(context,
+                selected ? R.color.ck_accent : R.color.ck_surface_1));
+        bg.setCornerRadius(6);
+        tab.setBackground(bg);
+        tab.setTextColor(CockpitTokens.color(context,
+                selected ? R.color.ck_on_accent : R.color.ck_text_medium));
     }
 
     private interface CompactSliderChange {

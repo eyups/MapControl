@@ -46,6 +46,8 @@ public final class GoogleMapsClusterNavOverlay {
     public static final String PREF_ENABLED = "google_maps_cluster_nav_overlay";
     public static final String PREF_STYLE = "google_cluster_nav_style";
     public static final String PREF_OPACITY = "google_cluster_nav_opacity";
+    public static final String PREF_OPACITY_MANEUVER = "google_cluster_nav_opacity_maneuver";
+    public static final String PREF_OPACITY_ETA = "google_cluster_nav_opacity_eta";
     public static final String STYLE_DUAL = "dual";
     public static final String STYLE_HUD = "hud";
     public static final String STYLE_RADIAL = "radial";
@@ -153,6 +155,18 @@ public final class GoogleMapsClusterNavOverlay {
         getInstance(context).applyStoredOpacity();
     }
 
+    public static int getCardOpacity(Context context, boolean eta) {
+        return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getInt(eta ? PREF_OPACITY_ETA : PREF_OPACITY_MANEUVER, 100);
+    }
+
+    public static void setCardOpacity(Context context, boolean eta, int opacity) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .edit().putInt(eta ? PREF_OPACITY_ETA : PREF_OPACITY_MANEUVER,
+                        Math.max(10, Math.min(100, opacity))).apply();
+        getInstance(context).applyStoredOpacity();
+    }
+
     private void applyStoredOpacity() {
         mainHandler.post(this::applyCardOpacityOnMain);
     }
@@ -163,10 +177,11 @@ public final class GoogleMapsClusterNavOverlay {
             return;
         }
         overlayRoot.setAlpha(1f);
-        int alpha = Math.round(255f * getOpacity(appContext) / 100f);
         String style = getStyle(appContext);
-        applyCardBackground(maneuverCard, style, alpha, R.color.ck_accent);
-        applyCardBackground(etaCard, style, alpha, R.color.ck_nominal);
+        int maneuverAlpha = Math.round(255f * getCardOpacity(appContext, false) / 100f);
+        int etaAlpha = Math.round(255f * getCardOpacity(appContext, true) / 100f);
+        applyCardBackground(maneuverCard, style, maneuverAlpha, R.color.ck_accent);
+        applyCardBackground(etaCard, style, etaAlpha, R.color.ck_nominal);
     }
 
     private void applyCardBackground(
