@@ -112,10 +112,9 @@ public final class GoogleMapsNavNotificationParser {
         }
         String cleaned = stripClockLabels(text);
         int split = cleaned.indexOf(" - ");
-        if (split < 0) {
-            return "";
-        }
-        return cleaned.substring(0, split).trim();
+        String direction = split < 0 ? cleaned : cleaned.substring(0, split);
+        direction = direction.replaceAll("(?i)\\s+yönüne\\s+doğru\\s*$", "").trim();
+        return direction;
     }
 
     static String stripClockLabels(@Nullable String value) {

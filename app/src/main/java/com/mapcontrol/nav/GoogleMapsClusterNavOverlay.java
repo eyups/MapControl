@@ -607,7 +607,15 @@ public final class GoogleMapsClusterNavOverlay {
         card.setOrientation(STYLE_TRAFFIC.equals(style)
                 ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
         card.setGravity(Gravity.CENTER_VERTICAL);
-        card.setBackground(ContextCompat.getDrawable(ctx, R.drawable.bg_cluster_nav_maneuver));
+        if (STYLE_HUD.equals(style)) {
+            GradientDrawable bg = new GradientDrawable();
+            bg.setColor(0xFF0B0F14);
+            bg.setCornerRadius(dp(ctx, 26));
+            bg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+            card.setBackground(bg);
+        } else {
+            card.setBackground(ContextCompat.getDrawable(ctx, R.drawable.bg_cluster_nav_maneuver));
+        }
         int padH = dp(ctx, 14);
         int padV = dp(ctx, 10);
         card.setPadding(padH, padV, padH, padV);
@@ -621,9 +629,9 @@ public final class GoogleMapsClusterNavOverlay {
             arrow.setImageResource(R.drawable.ic_ck_arrow_left);
             arrow.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
             GradientDrawable arrowBg = new GradientDrawable();
-            arrowBg.setColor(UiStyles.color(ctx, R.color.ck_surface_1));
+            arrowBg.setColor(UiStyles.color(ctx, R.color.ck_surface_2));
             arrowBg.setCornerRadius(dp(ctx, 10));
-            arrowBg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+            arrowBg.setStroke(dp(ctx, 2), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
             arrow.setBackground(arrowBg);
             arrow.setPadding(dp(ctx, 8), dp(ctx, 8), dp(ctx, 8), dp(ctx, 8));
             maneuverCard.addView(arrow, new LinearLayout.LayoutParams(dp(ctx, 48), dp(ctx, 48)));
@@ -660,7 +668,7 @@ public final class GoogleMapsClusterNavOverlay {
             right.addView(durationRow, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
             hudEtaDetail = createEtaText(ctx, 13, false);
-            hudEtaDetail.setTextColor(UiStyles.color(ctx, R.color.textMuted));
+            hudEtaDetail.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
             hudEtaDetail.setPadding(0, dp(ctx, 3), 0, 0);
             right.addView(hudEtaDetail);
             maneuverCard.addView(right, new LinearLayout.LayoutParams(0,
@@ -815,7 +823,11 @@ public final class GoogleMapsClusterNavOverlay {
 
     private void applyCardStyle(Context ctx, String style) {
         if (STYLE_HUD.equals(style)) {
-            maneuverCard.setBackground(glassBackground(ctx));
+            GradientDrawable bg = new GradientDrawable();
+            bg.setColor(0xFF0B0F14);
+            bg.setCornerRadius(dp(ctx, 26));
+            bg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+            maneuverCard.setBackground(bg);
         } else if (STYLE_RADIAL.equals(style)) {
             maneuverCard.setBackground(glassBackground(ctx));
         } else if (STYLE_TRAFFIC.equals(style)) {

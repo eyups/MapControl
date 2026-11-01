@@ -197,7 +197,8 @@ public final class GoogleMapsNavSnapshot {
                 return trimmed;
             }
             if (wantArrival && isArrival) {
-                return trimmed;
+                Matcher matcher = ARRIVAL_TIME.matcher(trimmed);
+                return matcher.find() ? matcher.group() : trimmed;
             }
         }
         if (wantArrival) {
