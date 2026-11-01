@@ -637,20 +637,19 @@ public final class GoogleMapsClusterNavOverlay {
         int etaTopMarginPx = topMarginPx;
 
         if (singleCard) {
-            boolean trafficCard = STYLE_TRAFFIC.equals(style);
-            int width = Math.min(screenWidth - dp(ctx, 32),
-                    dp(ctx, STYLE_RADIAL.equals(style) ? 560 : 390));
-            maneuverLeft = trafficCard ? 0 : (screenWidth - width) / 2;
+            boolean wrapCard = STYLE_TRAFFIC.equals(style) || STYLE_RADIAL.equals(style);
+            int width = Math.min(screenWidth - dp(ctx, 32), dp(ctx, 390));
+            maneuverLeft = wrapCard ? 0 : (screenWidth - width) / 2;
             etaLeft = maneuverLeft;
             maneuverCard = createSingleCard(ctx, style);
             buildSingleCardContents(ctx, style);
-            maneuverCardLp = trafficCard
+            maneuverCardLp = wrapCard
                     ? new FrameLayout.LayoutParams(
                             FrameLayout.LayoutParams.WRAP_CONTENT,
                             FrameLayout.LayoutParams.WRAP_CONTENT)
                     : new FrameLayout.LayoutParams(width,
                             FrameLayout.LayoutParams.WRAP_CONTENT);
-            maneuverCardLp.gravity = trafficCard
+            maneuverCardLp.gravity = wrapCard
                     ? (Gravity.TOP | Gravity.CENTER_HORIZONTAL)
                     : (Gravity.TOP | Gravity.START);
             maneuverCardLp.leftMargin = maneuverLeft;
@@ -776,82 +775,88 @@ public final class GoogleMapsClusterNavOverlay {
             etaTimeRow = new LinearLayout(ctx);
             etaStatusView = new TextView(ctx);
         } else if (STYLE_RADIAL.equals(style)) {
-            maneuverCard.setMinimumHeight(dp(ctx, 212));
-            FrameLayout gauge = new FrameLayout(ctx);
-            RadialGaugeView ring = new RadialGaugeView(ctx);
-            ring.setProgress(0.68f);
-            gauge.addView(ring, new FrameLayout.LayoutParams(
-                    dp(ctx, 148), dp(ctx, 148)));
-            LinearLayout center = new LinearLayout(ctx);
-            center.setOrientation(LinearLayout.VERTICAL);
-            center.setGravity(Gravity.CENTER);
-            radialDurationView = new TextView(ctx);
-            radialDurationView.setGravity(Gravity.CENTER);
-            radialDurationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 52);
-            radialDurationView.setTypeface(null, Typeface.BOLD);
-            radialDurationView.setTextColor(UiStyles.color(ctx, R.color.ck_text_high));
-            addTextShadow(radialDurationView);
-            center.addView(radialDurationView);
-            radialDurationUnitView = createEtaText(ctx, 15, false);
-            radialDurationUnitView.setText("DAKİKA");
-            radialDurationUnitView.setTextColor(UiStyles.color(ctx, R.color.ck_accent));
-            radialDurationUnitView.setGravity(Gravity.CENTER);
-            addTextShadow(radialDurationUnitView);
-            center.addView(radialDurationUnitView);
-            gauge.addView(center, new FrameLayout.LayoutParams(
-                    dp(ctx, 148), dp(ctx, 148)));
-            maneuverCard.addView(gauge, new LinearLayout.LayoutParams(
-                    dp(ctx, 148), dp(ctx, 148)));
+            maneuverCard.setPadding(dp(ctx, 16), dp(ctx, 12), dp(ctx, 16), dp(ctx, 12));
+            maneuverCard.setGravity(Gravity.CENTER_VERTICAL);
+            maneuverCard.setBackground(radialPillBackground(ctx));
 
-            LinearLayout right = new LinearLayout(ctx);
-            right.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            rightLp.leftMargin = dp(ctx, 14);
-            maneuverCard.addView(right, rightLp);
+            maneuverIconView = new ImageView(ctx);
+            maneuverIconView.setImageResource(R.drawable.ic_ck_arrow_left);
+            maneuverIconView.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
+            GradientDrawable iconBg = new GradientDrawable();
+            iconBg.setShape(GradientDrawable.OVAL);
+            iconBg.setColor(UiStyles.color(ctx, R.color.ck_surface_2));
+            iconBg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+            maneuverIconView.setBackground(iconBg);
+            maneuverIconView.setPadding(dp(ctx, 9), dp(ctx, 9), dp(ctx, 9), dp(ctx, 9));
+            maneuverCard.addView(maneuverIconView, new LinearLayout.LayoutParams(
+                    dp(ctx, 46), dp(ctx, 46)));
 
-            LinearLayout header = new LinearLayout(ctx);
-            header.setOrientation(LinearLayout.HORIZONTAL);
-            header.setGravity(Gravity.CENTER_VERTICAL);
-            TextView title = createEtaText(ctx, 22, true);
-            title.setText("Rota İlerlemesi");
-            title.setTextColor(UiStyles.color(ctx, R.color.ck_text_high));
-            addTextShadow(title);
-            header.addView(title, new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-            radialProgressValue = createEtaText(ctx, 20, true);
-            radialProgressValue.setText("%—");
-            radialProgressValue.setTextColor(UiStyles.color(ctx, R.color.ck_accent));
-            addTextShadow(radialProgressValue);
-            header.addView(radialProgressValue);
-            right.addView(header, matchWrapLp());
+            hudDistanceStyle = true;
+            maneuverDistanceView = createManeuverText(ctx, 30, true);
+            LinearLayout.LayoutParams distanceLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            distanceLp.leftMargin = dp(ctx, 12);
+            maneuverCard.addView(maneuverDistanceView, distanceLp);
 
-            View progressTrack = new View(ctx);
-            GradientDrawable trackBg = new GradientDrawable();
-            trackBg.setColor(UiStyles.color(ctx, R.color.ck_surface_2));
-            trackBg.setCornerRadius(dp(ctx, 3));
-            progressTrack.setBackground(trackBg);
-            LinearLayout.LayoutParams trackLp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, dp(ctx, 5));
-            trackLp.topMargin = dp(ctx, 8);
-            right.addView(progressTrack, trackLp);
+            TextView dot1 = createEtaText(ctx, 18, true);
+            dot1.setText("·");
+            dot1.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+            dot1.setPadding(dp(ctx, 10), 0, dp(ctx, 10), 0);
+            maneuverCard.addView(dot1);
 
-            LinearLayout boxes = new LinearLayout(ctx);
-            boxes.setOrientation(LinearLayout.HORIZONTAL);
-            boxes.setPadding(0, dp(ctx, 8), 0, 0);
-            LinearLayout distanceBox = createRadialMetricBox(ctx, "KALAN YOL");
-            etaDistanceValue = createEtaText(ctx, 34, true);
-            distanceBox.addView(etaDistanceValue);
-            boxes.addView(distanceBox, new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-            LinearLayout arrivalBox = createRadialMetricBox(ctx, "VARIŞ");
-            etaArrivalValue = createEtaText(ctx, 34, true);
-            arrivalBox.addView(etaArrivalValue);
-            LinearLayout.LayoutParams arrivalLp = new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            arrivalLp.leftMargin = dp(ctx, 10);
-            boxes.addView(arrivalBox, arrivalLp);
-            right.addView(boxes, matchWrapLp());
+            nextStreetView = createManeuverText(ctx, 22, true);
+            nextStreetView.setSingleLine(true);
+            nextStreetView.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            maneuverCard.addView(nextStreetView, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            View divider = new View(ctx);
+            divider.setBackgroundColor(UiStyles.color(ctx, R.color.ck_stroke));
+            LinearLayout.LayoutParams dividerLp = new LinearLayout.LayoutParams(
+                    dp(ctx, 1), dp(ctx, 34));
+            dividerLp.leftMargin = dp(ctx, 14);
+            dividerLp.rightMargin = dp(ctx, 14);
+            maneuverCard.addView(divider, dividerLp);
+
+            TextView statusDot = createEtaText(ctx, 12, true);
+            statusDot.setText("●");
+            statusDot.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
+            maneuverCard.addView(statusDot);
+
+            etaTimeValue = createEtaText(ctx, 21, true);
+            etaTimeValue.setTextColor(UiStyles.color(ctx, R.color.ck_accent));
+            LinearLayout.LayoutParams durationLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            durationLp.leftMargin = dp(ctx, 6);
+            maneuverCard.addView(etaTimeValue, durationLp);
+
+            TextView dot2 = createEtaText(ctx, 16, true);
+            dot2.setText("·");
+            dot2.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+            dot2.setPadding(dp(ctx, 9), 0, dp(ctx, 9), 0);
+            maneuverCard.addView(dot2);
+
+            etaDistanceValue = createEtaText(ctx, 20, false);
+            maneuverCard.addView(etaDistanceValue);
+
+            TextView dot3 = createEtaText(ctx, 16, true);
+            dot3.setText("·");
+            dot3.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+            dot3.setPadding(dp(ctx, 9), 0, dp(ctx, 9), 0);
+            maneuverCard.addView(dot3);
+
+            etaArrivalValue = createEtaText(ctx, 21, true);
+            etaArrivalValue.setTextColor(UiStyles.color(ctx, R.color.ck_text_high));
+            etaArrivalValue.setPadding(dp(ctx, 10), dp(ctx, 6), dp(ctx, 10), dp(ctx, 6));
+            GradientDrawable arrivalBg = new GradientDrawable();
+            arrivalBg.setColor(0xFF0F1A20);
+            arrivalBg.setCornerRadius(dp(ctx, 9));
+            arrivalBg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+            etaArrivalValue.setBackground(arrivalBg);
+            maneuverCard.addView(etaArrivalValue);
         } else {
             maneuverCard.setBackground(null);
             maneuverCard.setPadding(0, 0, 0, 0);
@@ -1014,11 +1019,7 @@ public final class GoogleMapsClusterNavOverlay {
             bg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
             maneuverCard.setBackground(bg);
         } else if (STYLE_RADIAL.equals(style)) {
-            GradientDrawable bg = new GradientDrawable();
-            bg.setColor(0xFF0B0F14);
-            bg.setCornerRadius(dp(ctx, 18));
-            bg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
-            maneuverCard.setBackground(bg);
+            maneuverCard.setBackground(radialPillBackground(ctx));
         } else if (STYLE_TRAFFIC.equals(style)) {
             maneuverCard.setBackground(null);
             maneuverCard.setPadding(0, 0, 0, 0);
@@ -1040,6 +1041,14 @@ public final class GoogleMapsClusterNavOverlay {
 
 
 
+
+    private static GradientDrawable radialPillBackground(Context ctx) {
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(0xFF0B0F14);
+        bg.setCornerRadius(dp(ctx, 24));
+        bg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+        return bg;
+    }
 
     private static LinearLayout createTrafficPill(Context ctx, boolean accent) {
         LinearLayout pill = new LinearLayout(ctx);
