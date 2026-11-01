@@ -304,6 +304,9 @@ public final class GoogleMapsClusterNavOverlay {
     }
 
     private static void setVisible(View view, boolean visible) {
+        if (view == null) {
+            return;
+        }
         int target = visible ? View.VISIBLE : View.GONE;
         if (view.getVisibility() != target) {
             view.setVisibility(target);
