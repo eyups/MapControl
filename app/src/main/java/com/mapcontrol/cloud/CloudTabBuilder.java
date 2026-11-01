@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.EditText;
@@ -387,6 +388,7 @@ public final class CloudTabBuilder {
             public void onSuccess() {
                 mainHandler.post(() -> {
                     codeInput.setText("");
+                    hideKeyboard();
                     pairButton.setEnabled(true);
                     logger.accept("Bulut cihazı eşleştirildi");
                     refresh();
@@ -622,6 +624,15 @@ public final class CloudTabBuilder {
         faceBackupRow.getToggle().setEnabled(paired);
         if (faceBackupRow.getToggle().isChecked() != config.backupFaceData()) {
             faceBackupRow.setCheckedSilently(config.backupFaceData());
+        }
+    }
+
+    private void hideKeyboard() {
+        codeInput.clearFocus();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(codeInput.getWindowToken(), 0);
         }
     }
 
