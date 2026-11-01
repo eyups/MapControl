@@ -850,7 +850,8 @@ public class MainActivity extends AppCompatActivity {
 
         splitScreenTabBuilder = new SplitScreenTabBuilder(this,
                 msg -> MainActivity.this.log(msg));
-        roadmateTabBuilder = new CloudTabBuilder(this, msg -> MainActivity.this.log("[Roadmate] " + msg));
+        roadmateTabBuilder = new CloudTabBuilder(this, msg -> MainActivity.this.log("[Roadmate] " + msg),
+                this::onProfileDataRestored);
 
         climateAutomationTabBuilder = new ClimateAutomationTabBuilder(this, prefs,
                 msg -> MainActivity.this.log(msg));
@@ -2024,6 +2025,19 @@ public class MainActivity extends AppCompatActivity {
         tabContentArea.removeAllViews();
         attachTabContent(tab);
         applyTabChrome(tab);
+    }
+
+    private void onProfileDataRestored() {
+        if (topBarBuilder != null) {
+            topBarBuilder.refreshProfile();
+        }
+        if (driverProfilesTabBuilder != null) {
+            driverProfilesTabBuilder.rebuild();
+        }
+        if (currentTab == TAB_DRIVER_PROFILES && tabContentArea != null) {
+            tabContentArea.removeAllViews();
+            attachTabContent(TAB_DRIVER_PROFILES);
+        }
     }
 
     private void rebuildSideRailForUiMode() {

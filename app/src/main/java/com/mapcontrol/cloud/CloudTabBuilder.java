@@ -35,6 +35,7 @@ public final class CloudTabBuilder {
     private final CloudConfig config;
     private final CloudManager manager;
     private final Consumer<String> logger;
+    private final Runnable onDataRestored;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final LinearLayout root;
     private final TextView status;
@@ -57,9 +58,10 @@ public final class CloudTabBuilder {
 
     private final CloudManager.Listener managerListener = this::refresh;
 
-    public CloudTabBuilder(Context context, Consumer<String> logger) {
+    public CloudTabBuilder(Context context, Consumer<String> logger, Runnable onDataRestored) {
         this.context = context;
         this.logger = logger;
+        this.onDataRestored = onDataRestored;
         this.config = new CloudConfig(context);
         this.manager = CloudManager.get(context);
         this.root = new LinearLayout(context);
@@ -488,6 +490,10 @@ public final class CloudTabBuilder {
                 logger.accept("Profil geri yükleme: "
                         + (result ? (service.isRestoreAudioOk() ? "ok" : "audio_failed")
                                 : "failed/" + service.lastRestoreError()));
+                if (result && onDataRestored != null) {
+                    onDataRestored.run();
+                    refresh();
+                }
             });
         }, "MapControlProfileRestore").start();
     }
