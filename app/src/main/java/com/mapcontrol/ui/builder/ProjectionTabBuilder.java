@@ -844,10 +844,16 @@ public class ProjectionTabBuilder {
                 GoogleMapsClusterNavOverlay.STYLE_GLASS
         };
         int[] labels = {
-                R.string.projection_cluster_style_classic,
-                R.string.projection_cluster_style_two_lane,
-                R.string.projection_cluster_style_single_row,
-                R.string.projection_cluster_style_glass
+                R.string.projection_cluster_variant1_title,
+                R.string.projection_cluster_variant2_title,
+                R.string.projection_cluster_variant3_title,
+                R.string.projection_cluster_variant4_title
+        };
+        int[] descriptions = {
+                R.string.projection_cluster_variant1_desc,
+                R.string.projection_cluster_variant2_desc,
+                R.string.projection_cluster_variant3_desc,
+                R.string.projection_cluster_variant4_desc
         };
         String selected = GoogleMapsClusterNavOverlay.getStyle(context);
         java.util.List<LinearLayout> cards = new java.util.ArrayList<>();
@@ -857,25 +863,50 @@ public class ProjectionTabBuilder {
             line.setBaselineAligned(false);
             for (int col = 0; col < 2; col++) {
                 int index = row * 2 + col;
+                final String style = styles[index];
                 LinearLayout card = new LinearLayout(context);
                 card.setOrientation(LinearLayout.VERTICAL);
-                card.setPadding(12, 10, 12, 10);
-                card.setMinimumHeight(Math.round(82 * context.getResources().getDisplayMetrics().density));
+                card.setPadding(14, 12, 14, 12);
+                card.setMinimumHeight(Math.round(240 * context.getResources().getDisplayMetrics().density));
                 card.setClickable(true);
                 card.setFocusable(true);
+                TextView variant = new TextView(context);
+                variant.setText(context.getString(R.string.projection_cluster_variant_label, index + 1));
+                variant.setTextSize(11);
+                variant.setTypeface(null, Typeface.BOLD);
+                variant.setTextColor(UiStyles.color(context, R.color.ck_accent));
+                variant.setPadding(8, 3, 8, 3);
+                GradientDrawable variantBg = new GradientDrawable();
+                variantBg.setColor(0x3325D9E8);
+                variantBg.setStroke(1, UiStyles.color(context, R.color.ck_accent));
+                variantBg.setCornerRadius(8);
+                variant.setBackground(variantBg);
+                card.addView(variant, new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextView label = new TextView(context);
                 label.setText(labels[index]);
                 label.setTextSize(15);
                 label.setTextColor(UiStyles.color(context, R.color.textPrimary));
                 label.setTypeface(null, Typeface.BOLD);
-                card.addView(label);
+                label.setPadding(0, 6, 0, 0);
+                card.addView(label, new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 TextView hint = new TextView(context);
-                hint.setText(R.string.projection_cluster_style_hint);
+                hint.setText(descriptions[index]);
                 hint.setTextSize(13);
                 hint.setTextColor(UiStyles.color(context, R.color.textHint));
-                hint.setPadding(0, 3, 0, 0);
+                hint.setLineSpacing(2, 1.05f);
+                hint.setPadding(0, 8, 0, 8);
                 card.addView(hint);
-                final String style = styles[index];
+                View preview = buildClusterStylePreview(style);
+                card.addView(preview, new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, Math.round(78 * context.getResources().getDisplayMetrics().density)));
+                TextView footer = new TextView(context);
+                footer.setText(R.string.projection_cluster_style_hint);
+                footer.setTextSize(12);
+                footer.setTextColor(UiStyles.color(context, R.color.textHint));
+                footer.setPadding(0, 8, 0, 0);
+                card.addView(footer);
                 card.setOnClickListener(v -> {
                     GoogleMapsClusterNavOverlay.setStyle(context, style);
                     GoogleMapsClusterNavOverlay.getInstance(context).apply(
@@ -937,6 +968,125 @@ public class ProjectionTabBuilder {
         parent.addView(opacity, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 CockpitTokens.dim(context, R.dimen.ck_touch_min)));
+    }
+
+    private View buildClusterStylePreview(String style) {
+        LinearLayout preview = new LinearLayout(context);
+        preview.setOrientation(LinearLayout.HORIZONTAL);
+        preview.setGravity(Gravity.CENTER_VERTICAL);
+        preview.setPadding(12, 8, 12, 8);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(UiStyles.color(context, R.color.ck_bg_recessed));
+        bg.setCornerRadius(12);
+        bg.setStroke(1, UiStyles.color(context, R.color.ck_stroke));
+        preview.setBackground(bg);
+        if (GoogleMapsClusterNavOverlay.STYLE_CLASSIC.equals(style)) {
+            preview.addView(miniCard("350 m", "Amphitheatre Pkwy"));
+            preview.addView(miniCard("11:15", "13 dk · 8.5 km"));
+        } else if (GoogleMapsClusterNavOverlay.STYLE_TWO_LANE.equals(style)) {
+            LinearLayout col = new LinearLayout(context);
+            col.setOrientation(LinearLayout.VERTICAL);
+            col.addView(miniPill("350 m  ·  Amphitheatre Pkwy"));
+            TextView eta = new TextView(context);
+            eta.setText("11:15  ·  13 dk  ·  8.5 km");
+            eta.setTextSize(12);
+            eta.setTextColor(UiStyles.color(context, R.color.ck_accent));
+            eta.setPadding(10, 7, 10, 0);
+            col.addView(eta);
+            preview.addView(col, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        } else if (GoogleMapsClusterNavOverlay.STYLE_SINGLE_ROW.equals(style)) {
+            TextView arrow = new TextView(context);
+            arrow.setText("↰");
+            arrow.setTextSize(24);
+            arrow.setTextColor(UiStyles.color(context, R.color.ck_accent));
+            arrow.setPadding(10, 0, 8, 0);
+            preview.addView(arrow);
+            preview.addView(miniPill("150 m  ·  Amphitheatre Pkwy"));
+            TextView eta = new TextView(context);
+            eta.setText("13 dk");
+            eta.setTextSize(18);
+            eta.setTypeface(null, Typeface.BOLD);
+            eta.setTextColor(UiStyles.color(context, R.color.ck_text_high));
+            eta.setPadding(10, 0, 8, 0);
+            preview.addView(eta);
+        } else {
+            TextView ring = new TextView(context);
+            ring.setText("13\ndk");
+            ring.setTextSize(15);
+            ring.setGravity(Gravity.CENTER);
+            ring.setTextColor(UiStyles.color(context, R.color.ck_accent));
+            GradientDrawable ringBg = new GradientDrawable();
+            ringBg.setShape(GradientDrawable.OVAL);
+            ringBg.setColor(UiStyles.color(context, R.color.ck_surface_1));
+            ringBg.setStroke(3, UiStyles.color(context, R.color.ck_accent));
+            ring.setBackground(ringBg);
+            preview.addView(ring, new LinearLayout.LayoutParams(56, 56));
+            LinearLayout col = new LinearLayout(context);
+            col.setOrientation(LinearLayout.VERTICAL);
+            TextView route = new TextView(context);
+            route.setText("Rota ilerlemesi                    %68");
+            route.setTextSize(12);
+            route.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
+            col.addView(route);
+            android.widget.ProgressBar bar = new android.widget.ProgressBar(context,
+                    null, android.R.attr.progressBarStyleHorizontal);
+            bar.setMax(100);
+            bar.setProgress(68);
+            bar.setPadding(8, 4, 8, 0);
+            col.addView(bar, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 12));
+            TextView info = new TextView(context);
+            info.setText("8.5 km  ·  11:15");
+            info.setTextSize(12);
+            info.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
+            info.setPadding(8, 4, 0, 0);
+            col.addView(info);
+            preview.addView(col, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        }
+        return preview;
+    }
+
+    private View miniPill(String text) {
+        TextView v = new TextView(context);
+        v.setText(text);
+        v.setTextSize(12);
+        v.setTextColor(UiStyles.color(context, R.color.ck_text_high));
+        v.setPadding(10, 7, 10, 7);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(0xAA1D242C);
+        bg.setCornerRadius(14);
+        bg.setStroke(1, UiStyles.color(context, R.color.ck_accent_stroke_30));
+        v.setBackground(bg);
+        return v;
+    }
+
+    private View miniCard(String value, String text) {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(10, 7, 10, 7);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(UiStyles.color(context, R.color.ck_surface_1));
+        bg.setCornerRadius(10);
+        bg.setStroke(1, UiStyles.color(context, R.color.ck_stroke));
+        card.setBackground(bg);
+        TextView v = new TextView(context);
+        v.setText(value);
+        v.setTextSize(18);
+        v.setTypeface(null, Typeface.BOLD);
+        v.setTextColor(UiStyles.color(context, R.color.ck_accent));
+        card.addView(v);
+        TextView t = new TextView(context);
+        t.setText(text);
+        t.setTextSize(11);
+        t.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
+        card.addView(t);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        lp.setMarginEnd(6);
+        card.setLayoutParams(lp);
+        return card;
     }
 
     private void applyClusterStyleSelection(java.util.List<LinearLayout> cards,
