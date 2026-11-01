@@ -1051,6 +1051,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
 
     <string name="settings_cloud_backup">Back up profiles</string>
     <string name="settings_cloud_restore">Restore profiles</string>
+    <string name="settings_cloud_backup_audio_failed">Profile backup uploaded; welcome audio could not be uploaded.</string>
     <string name="settings_cloud_backup_done">Profile backup uploaded.</string>
     <string name="settings_cloud_backup_failed">Profile backup failed.</string>
     <string name="settings_cloud_restore_confirm">Profile and scene preferences will be replaced with the last cloud backup. Continue?</string>

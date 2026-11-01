@@ -1067,6 +1067,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
 
     <string name="settings_cloud_backup">Profilleri yedekle</string>
     <string name="settings_cloud_restore">Profilleri geri yükle</string>
+    <string name="settings_cloud_backup_audio_failed">Profil yedeği gönderildi; karşılama sesi yüklenemedi.</string>
     <string name="settings_cloud_backup_done">Profil yedeği gönderildi.</string>
     <string name="settings_cloud_backup_failed">Profil yedeği gönderilemedi.</string>
     <string name="settings_cloud_restore_confirm">Profil ve sahne tercihleri son bulut yedeğiyle değiştirilecek. Devam edilsin mi?</string>
