@@ -10,12 +10,17 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -69,6 +74,8 @@ public final class GoogleMapsClusterNavOverlay {
     private TextView etaStatusView;
     private TextView radialDurationView;
     private View trafficProgress;
+    private TextView hudEtaDetail;
+    private boolean hudDistanceStyle;
     private LinearLayout etaDistanceRow;
     private LinearLayout etaArrivalRow;
     private LinearLayout etaTimeRow;
@@ -236,7 +243,11 @@ public final class GoogleMapsClusterNavOverlay {
 
         String distance = snapshot.formatManeuverDistanceLine();
         if (distance != null) {
-            setTextIfChanged(maneuverDistanceView, distance);
+            if (hudDistanceStyle) {
+                setHudDistanceText(distance);
+            } else {
+                setTextIfChanged(maneuverDistanceView, distance);
+            }
             setVisible(maneuverDistanceView, true);
             any = true;
         } else {
@@ -274,6 +285,20 @@ public final class GoogleMapsClusterNavOverlay {
         any |= bindMetricRow(etaDistanceRow, etaDistanceValue, snapshot.etaDistanceLabel());
         any |= bindMetricRow(etaArrivalRow, etaArrivalValue, snapshot.etaArrivalLabel());
         any |= bindMetricRow(etaTimeRow, etaTimeValue, snapshot.etaDurationLabel());
+        if (hudEtaDetail != null && etaTimeValue != null) {
+            setHudDurationText(snapshot.etaDurationLabel());
+        }
+        if (hudEtaDetail != null) {
+            String distance = snapshot.etaDistanceLabel();
+            String arrival = snapshot.etaArrivalLabel();
+            StringBuilder detail = new StringBuilder();
+            if (distance != null) detail.append(distance);
+            if (arrival != null) {
+                if (detail.length() > 0) detail.append("  ·  ");
+                detail.append(arrival);
+            }
+            hudEtaDetail.setText(detail);
+        }
 
         if (!any && snapshot.routeSummary != null && !snapshot.routeSummary.isEmpty()) {
             setTextIfChanged(etaStatusView, snapshot.routeSummary);
@@ -291,12 +316,59 @@ public final class GoogleMapsClusterNavOverlay {
             setVisible(row, false);
             return false;
         }
-        setTextIfChanged(valueView, value);
+        if (valueView != null) {
+            setTextIfChanged(valueView, value);
+        }
         setVisible(row, true);
         return true;
     }
 
+    private void setHudDistanceText(String line) {
+        if (maneuverDistanceView == null || line == null) return;
+        int split = line.length();
+        while (split > 0 && !Character.isLetter(line.charAt(split - 1))) split--;
+        String value = line.substring(0, split).trim();
+        String unit = line.substring(split).trim().toUpperCase();
+        if (value.isEmpty()) {
+            setTextIfChanged(maneuverDistanceView, line);
+            return;
+        }
+        SpannableStringBuilder sb = new SpannableStringBuilder(value);
+        if (!unit.isEmpty()) {
+            sb.append("  ");
+            int start = sb.length();
+            sb.append(unit);
+            sb.setSpan(new ForegroundColorSpan(UiStyles.color(maneuverDistanceView.getContext(), R.color.ck_accent)),
+                    start, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sb.setSpan(new RelativeSizeSpan(0.55f), start, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        maneuverDistanceView.setText(sb);
+    }
+
+    private void setHudDurationText(@Nullable String line) {
+        if (etaTimeValue == null || line == null || line.isEmpty()) return;
+        int split = 0;
+        while (split < line.length() && Character.isDigit(line.charAt(split))) split++;
+        String value = line.substring(0, split).trim();
+        String unit = line.substring(split).trim();
+        if (value.isEmpty()) {
+            etaTimeValue.setText(line);
+            return;
+        }
+        SpannableStringBuilder sb = new SpannableStringBuilder(value);
+        if (!unit.isEmpty()) {
+            sb.append(" ");
+            int start = sb.length();
+            sb.append(unit);
+            sb.setSpan(new ForegroundColorSpan(UiStyles.color(etaTimeValue.getContext(), R.color.textMuted)),
+                    start, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            sb.setSpan(new RelativeSizeSpan(0.6f), start, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        etaTimeValue.setText(sb);
+    }
+
     private static void setTextIfChanged(TextView view, String text) {
+        if (view == null) return;
         CharSequence current = view.getText();
         if (current == null || !current.toString().contentEquals(text)) {
             view.setText(text);
@@ -344,6 +416,8 @@ public final class GoogleMapsClusterNavOverlay {
         etaStatusView = null;
         radialDurationView = null;
         trafficProgress = null;
+        hudEtaDetail = null;
+        hudDistanceStyle = false;
         etaDistanceRow = null;
         etaArrivalRow = null;
         etaTimeRow = null;
@@ -542,23 +616,63 @@ public final class GoogleMapsClusterNavOverlay {
 
     private void buildSingleCardContents(Context ctx, String style) {
         if (STYLE_HUD.equals(style)) {
+            hudDistanceStyle = true;
+            ImageView arrow = new ImageView(ctx);
+            arrow.setImageResource(R.drawable.ic_ck_arrow_left);
+            arrow.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
+            GradientDrawable arrowBg = new GradientDrawable();
+            arrowBg.setColor(UiStyles.color(ctx, R.color.ck_surface_1));
+            arrowBg.setCornerRadius(dp(ctx, 10));
+            arrowBg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
+            arrow.setBackground(arrowBg);
+            arrow.setPadding(dp(ctx, 8), dp(ctx, 8), dp(ctx, 8), dp(ctx, 8));
+            maneuverCard.addView(arrow, new LinearLayout.LayoutParams(dp(ctx, 48), dp(ctx, 48)));
+
             LinearLayout left = new LinearLayout(ctx);
             left.setOrientation(LinearLayout.VERTICAL);
+            left.setPadding(dp(ctx, 10), 0, dp(ctx, 8), 0);
             maneuverDistanceView = createManeuverText(ctx, 28, true);
             left.addView(maneuverDistanceView);
             nextStreetView = createManeuverText(ctx, 14, false);
             left.addView(nextStreetView);
-            LinearLayout right = new LinearLayout(ctx);
-            right.setOrientation(LinearLayout.VERTICAL);
-            right.setPadding(dp(ctx, 12), 0, 0, 0);
-            addEtaRows(ctx, right);
             maneuverCard.addView(left, new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1.35f));
+
             TextView divider = new TextView(ctx);
             divider.setBackgroundColor(UiStyles.color(ctx, R.color.ck_stroke));
-            maneuverCard.addView(divider, new LinearLayout.LayoutParams(1, dp(ctx, 50)));
+            maneuverCard.addView(divider, new LinearLayout.LayoutParams(1, dp(ctx, 48)));
+
+            LinearLayout right = new LinearLayout(ctx);
+            right.setOrientation(LinearLayout.VERTICAL);
+            right.setGravity(Gravity.END);
+            right.setPadding(dp(ctx, 10), 0, 0, 0);
+            LinearLayout durationRow = new LinearLayout(ctx);
+            durationRow.setOrientation(LinearLayout.HORIZONTAL);
+            durationRow.setGravity(Gravity.CENTER_VERTICAL);
+            etaTimeValue = createEtaText(ctx, 22, true);
+            durationRow.addView(etaTimeValue);
+            TextView dot = new TextView(ctx);
+            dot.setText("●");
+            dot.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            dot.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
+            dot.setPadding(dp(ctx, 6), 0, 0, 0);
+            durationRow.addView(dot);
+            right.addView(durationRow, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            hudEtaDetail = createEtaText(ctx, 13, false);
+            hudEtaDetail.setTextColor(UiStyles.color(ctx, R.color.textMuted));
+            hudEtaDetail.setPadding(0, dp(ctx, 3), 0, 0);
+            right.addView(hudEtaDetail);
             maneuverCard.addView(right, new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+            // bindEtaCard için boş alanlar; HUD'da görünür karşılıkları yukarıda.
+            etaDistanceRow = new LinearLayout(ctx);
+            etaDistanceValue = new TextView(ctx);
+            etaArrivalRow = new LinearLayout(ctx);
+            etaArrivalValue = new TextView(ctx);
+            etaTimeRow = new LinearLayout(ctx);
+            etaStatusView = new TextView(ctx);
         } else if (STYLE_RADIAL.equals(style)) {
             radialDurationView = new TextView(ctx);
             radialDurationView.setGravity(Gravity.CENTER);

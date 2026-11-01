@@ -985,19 +985,64 @@ public class ProjectionTabBuilder {
             preview.addView(miniCard("11:15", "13 dk · 8.5 km"));
         } else if (GoogleMapsClusterNavOverlay.STYLE_HUD.equals(style)) {
             TextView arrow = new TextView(context);
-            arrow.setText("↰");
+            arrow.setText("←");
             arrow.setTextSize(24);
+            arrow.setGravity(Gravity.CENTER);
             arrow.setTextColor(UiStyles.color(context, R.color.ck_accent));
-            arrow.setPadding(10, 0, 8, 0);
-            preview.addView(arrow);
-            preview.addView(miniPill("150 m  ·  Amphitheatre Pkwy"));
+            GradientDrawable arrowBg = new GradientDrawable();
+            arrowBg.setColor(UiStyles.color(context, R.color.ck_surface_1));
+            arrowBg.setCornerRadius(10);
+            arrowBg.setStroke(1, UiStyles.color(context, R.color.ck_accent_stroke_30));
+            arrow.setBackground(arrowBg);
+            preview.addView(arrow, new LinearLayout.LayoutParams(36, 36));
+            LinearLayout left = new LinearLayout(context);
+            left.setOrientation(LinearLayout.VERTICAL);
+            left.setPadding(10, 0, 8, 0);
+            TextView distance = new TextView(context);
+            android.text.SpannableStringBuilder distanceText =
+                    new android.text.SpannableStringBuilder("150");
+            distanceText.append("  M");
+            distanceText.setSpan(new android.text.style.ForegroundColorSpan(
+                            UiStyles.color(context, R.color.ck_accent)),
+                    5, distanceText.length(), android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            distanceText.setSpan(new android.text.style.RelativeSizeSpan(0.62f),
+                    5, distanceText.length(), android.text.Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            distance.setText(distanceText);
+            distance.setTextSize(21);
+            distance.setTypeface(null, Typeface.BOLD);
+            distance.setTextColor(UiStyles.color(context, R.color.ck_text_high));
+            left.addView(distance);
+            TextView street = new TextView(context);
+            street.setText("Amphitheatre Pkwy");
+            street.setTextSize(9);
+            street.setSingleLine(true);
+            street.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            street.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
+            left.addView(street);
+            preview.addView(left, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1.35f));
+            View hudDivider = new View(context);
+            hudDivider.setBackgroundColor(UiStyles.color(context, R.color.ck_stroke));
+            preview.addView(hudDivider, new LinearLayout.LayoutParams(1, 48));
+            LinearLayout right = new LinearLayout(context);
+            right.setOrientation(LinearLayout.VERTICAL);
+            right.setGravity(Gravity.END);
+            right.setPadding(10, 0, 0, 0);
             TextView eta = new TextView(context);
-            eta.setText("13 dk");
-            eta.setTextSize(18);
+            eta.setText("13 dk  ●");
+            eta.setTextSize(16);
+            eta.setSingleLine(true);
             eta.setTypeface(null, Typeface.BOLD);
             eta.setTextColor(UiStyles.color(context, R.color.ck_text_high));
-            eta.setPadding(10, 0, 8, 0);
-            preview.addView(eta);
+            right.addView(eta);
+            TextView detail = new TextView(context);
+            detail.setText("8.5 km · 11:15");
+            detail.setTextSize(9);
+            detail.setSingleLine(true);
+            detail.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
+            right.addView(detail);
+            preview.addView(right, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         } else if (GoogleMapsClusterNavOverlay.STYLE_RADIAL.equals(style)) {
             TextView ring = new TextView(context);
             ring.setText("13\ndk");
