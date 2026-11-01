@@ -1318,4 +1318,16 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="projection_cluster_variant2_desc">Manevra ve ETA ayrı panellerde; kokpit çift ekran düzenine uygun.</string>
     <string name="projection_cluster_variant3_desc">Kalan süreyi dairesel ilerleme ve yol bilgisiyle öne çıkarır.</string>
     <string name="projection_cluster_variant4_desc">Yolculuk ilerlemesini trafik şeridi ve varış bilgisiyle gösterir.</string>
+    <string name="projection_target_section">Hedef navigasyon uygulaması</string>
+    <string name="projection_target_single_tap">Tek tıkla değiştir</string>
+    <string name="projection_google_settings_title">Google Haritalar Gösterge Ayarları</string>
+    <string name="projection_yandex_settings_title">Yandex Haritalar Gösterge Ayarları</string>
+    <string name="projection_settings_badge">ISO-HUD v2</string>
+    <string name="projection_google_settings_desc">Google Maps bildirimi gelince gösterge yansıtmasını otomatik açar ve küme manevra kartlarını entegre eder.</string>
+    <string name="projection_yandex_settings_desc">Yandex Maps rehberlik bilgilerini erişilebilirlik ile okuyup gösterge kartlarına aktarır.</string>
+    <string name="projection_hud_link_connected">HUD Link: BAĞLI</string>
+    <string name="projection_target_google">Google Haritalar</string>
+    <string name="projection_target_google_desc">Yansıtılan küme</string>
+    <string name="projection_target_yandex">Yandex Haritalar</string>
+    <string name="projection_target_yandex_desc">Erişilebilirlik ile</string>
 </resources>

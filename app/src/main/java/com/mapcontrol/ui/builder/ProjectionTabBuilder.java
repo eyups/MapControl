@@ -33,6 +33,7 @@ import com.mapcontrol.nav.GoogleMapsNavNotificationCoordinator;
 import com.mapcontrol.nav.GoogleMapsNavSnapshot;
 import com.mapcontrol.nav.YandexClusterNavCoordinator;
 import com.mapcontrol.nav.YandexClusterNavOverlay;
+import com.mapcontrol.nav.YandexNavScraper;
 import com.mapcontrol.service.GlobalBackService;
 import com.mapcontrol.ui.cockpit.CockpitGrid;
 import com.mapcontrol.ui.cockpit.CockpitTokens;
@@ -71,6 +72,10 @@ public class ProjectionTabBuilder {
     private TextView targetAppLabel;
     private TextView projectionStatusText;
     private TextView googleMapsNavSummaryText;
+    private LinearLayout googleProviderCard;
+    private LinearLayout yandexProviderCard;
+    private LinearLayout googleSettingsCard;
+    private LinearLayout yandexSettingsCard;
 
     public ProjectionTabBuilder(Context context, SharedPreferences prefs, ProjectionCallback callback) {
         this.context = context;
@@ -132,15 +137,38 @@ public class ProjectionTabBuilder {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
+        LinearLayout statusRow = new LinearLayout(context);
+        statusRow.setOrientation(LinearLayout.HORIZONTAL);
+        statusRow.setGravity(Gravity.CENTER_VERTICAL);
+        TextView statusDot = new TextView(context);
+        statusDot.setText("●");
+        statusDot.setTextSize(11);
+        statusDot.setTextColor(CockpitTokens.color(context, R.color.ck_nominal));
+        statusRow.addView(statusDot);
         TextView projectionStatus = new TextView(context);
         projectionStatus.setText(R.string.projection_status_off);
         CockpitTokens.bodySm(projectionStatus);
         projectionStatus.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-        projectionStatus.setPadding(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_md));
-        projectionStatus.setId(View.generateViewId());
-        leftCard.addView(projectionStatus, new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams statusLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        statusLp.leftMargin = 6;
+        statusRow.addView(projectionStatus, statusLp);
+        TextView hudLink = new TextView(context);
+        hudLink.setText(R.string.projection_hud_link_connected);
+        hudLink.setTextSize(10);
+        hudLink.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        hudLink.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        hudLink.setPadding(8, 4, 8, 4);
+        GradientDrawable hudBg = new GradientDrawable();
+        hudBg.setColor(0xFF252E38);
+        hudBg.setCornerRadius(4);
+        hudLink.setBackground(hudBg);
+        statusRow.addView(hudLink);
+        LinearLayout.LayoutParams statusRowLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        statusRowLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        leftCard.addView(statusRow, statusRowLp);
         projectionStatusText = projectionStatus;
 
         LinearLayout controlButtonContainer = new LinearLayout(context);
@@ -201,13 +229,50 @@ public class ProjectionTabBuilder {
         handler.post(this::refreshProjectionStatusUi);
 
         TextView appTitle = new TextView(context);
-        appTitle.setText(R.string.projection_app_title);
+        appTitle.setText(R.string.projection_target_section);
         CockpitTokens.title(appTitle);
         appTitle.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_md), 0,
                 CockpitTokens.dim(context, R.dimen.ck_space_sm));
-        leftCard.addView(appTitle, new LinearLayout.LayoutParams(
+        LinearLayout targetHeader = new LinearLayout(context);
+        targetHeader.setOrientation(LinearLayout.HORIZONTAL);
+        targetHeader.setGravity(Gravity.CENTER_VERTICAL);
+        targetHeader.addView(appTitle, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView targetHint = new TextView(context);
+        targetHint.setText(R.string.projection_target_single_tap);
+        targetHint.setTextSize(11);
+        targetHint.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        targetHeader.addView(targetHint);
+        leftCard.addView(targetHeader, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout providerRow = new LinearLayout(context);
+        providerRow.setOrientation(LinearLayout.HORIZONTAL);
+        providerRow.setBaselineAligned(false);
+        googleProviderCard = createProviderCard(
+                AppLaunchHelper.GOOGLE_MAPS_PACKAGE,
+                context.getString(R.string.projection_target_google),
+                context.getString(R.string.projection_target_google_desc),
+                R.drawable.ic_mdi_map);
+        yandexProviderCard = createProviderCard(
+                YandexNavScraper.PACKAGE_YANDEX_MAPS,
+                context.getString(R.string.projection_target_yandex),
+                context.getString(R.string.projection_target_yandex_desc),
+                R.drawable.ic_mdi_map);
+        LinearLayout.LayoutParams gpLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        gpLp.setMarginEnd(6);
+        providerRow.addView(googleProviderCard, gpLp);
+        LinearLayout.LayoutParams ypLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        ypLp.setMarginStart(6);
+        providerRow.addView(yandexProviderCard, ypLp);
+        LinearLayout.LayoutParams providerLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        providerLp.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_md));
+        leftCard.addView(providerRow, providerLp);
 
         LinearLayout appCard = new LinearLayout(context);
         appCard.setOrientation(LinearLayout.VERTICAL);
@@ -761,17 +826,31 @@ public class ProjectionTabBuilder {
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         cardLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         leftStack.addView(leftCard, cardLp);
-        leftStack.addView(yandexCard, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        rightStack.addView(googleCard, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
         LinearLayout.LayoutParams advLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         advLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
-        rightStack.addView(advancedCard, advLp);
+        leftStack.addView(advancedCard, advLp);
+
+        googleSettingsCard = googleCard;
+        yandexSettingsCard = yandexCard;
+        addProviderHeader(googleCard,
+                R.string.projection_google_settings_title,
+                R.string.projection_google_settings_desc);
+        addProviderHeader(yandexCard,
+                R.string.projection_yandex_settings_title,
+                R.string.projection_yandex_settings_desc);
+        LinearLayout rightHost = new LinearLayout(context);
+        rightHost.setOrientation(LinearLayout.VERTICAL);
+        rightHost.addView(googleCard, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        rightHost.addView(yandexCard, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        rightStack.addView(rightHost, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
         LinearLayout.LayoutParams leftColLp = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -784,6 +863,7 @@ public class ProjectionTabBuilder {
         projectionTabContent.addView(columns, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+        refreshProviderSelection();
         return scrollView;
     }
 
@@ -1492,7 +1572,107 @@ public class ProjectionTabBuilder {
         }, 2500);
     }
 
+    private LinearLayout createProviderCard(String packageName, String title, String desc,
+            int iconRes) {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        int pad = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        card.setPadding(pad, pad, pad, pad);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(card);
+        card.setClickable(true);
+        card.setFocusable(true);
+        AppCompatImageView icon = new AppCompatImageView(context);
+        icon.setImageResource(iconRes);
+        icon.setImageTintList(ColorStateList.valueOf(
+                CockpitTokens.color(context, R.color.ck_accent)));
+        int providerIcon = Math.round(30 * context.getResources().getDisplayMetrics().density);
+        LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(
+                providerIcon, providerIcon);
+        iconLp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_xs);
+        card.addView(icon, iconLp);
+        TextView titleView = new TextView(context);
+        titleView.setText(title);
+        titleView.setTextSize(16);
+        titleView.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        titleView.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        card.addView(titleView);
+        TextView descView = new TextView(context);
+        descView.setText(desc);
+        descView.setTextSize(12);
+        descView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        card.addView(descView);
+        card.setOnClickListener(v -> {
+            callback.onTargetPackageSelected(packageName);
+            refreshTargetLabel();
+            refreshProviderSelection();
+            callback.log("Yansıtma hedefi: " + packageName);
+        });
+        return card;
+    }
+
+    private void refreshProviderSelection() {
+        if (googleProviderCard == null || yandexProviderCard == null) {
+            return;
+        }
+        String target = callback.getTargetPackage();
+        boolean yandex = YandexNavScraper.PACKAGE_YANDEX_MAPS.equals(target);
+        styleProviderCard(googleProviderCard, !yandex);
+        styleProviderCard(yandexProviderCard, yandex);
+        if (googleSettingsCard != null) {
+            googleSettingsCard.setVisibility(yandex ? View.GONE : View.VISIBLE);
+        }
+        if (yandexSettingsCard != null) {
+            yandexSettingsCard.setVisibility(yandex ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void styleProviderCard(LinearLayout card, boolean selected) {
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(CockpitTokens.color(context,
+                selected ? R.color.ck_surface_2 : R.color.ck_surface_1));
+        bg.setCornerRadius(CockpitTokens.dim(context, R.dimen.ck_radius_lg));
+        bg.setStroke(selected ? 2 : 1, CockpitTokens.color(context,
+                selected ? R.color.ck_accent : R.color.ck_stroke));
+        card.setBackground(bg);
+    }
+
+    private void addProviderHeader(LinearLayout card, int titleRes, int descRes) {
+        if (card == null) return;
+        LinearLayout header = new LinearLayout(context);
+        header.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout titleRow = new LinearLayout(context);
+        titleRow.setOrientation(LinearLayout.HORIZONTAL);
+        titleRow.setGravity(Gravity.CENTER_VERTICAL);
+        TextView title = new TextView(context);
+        title.setText(titleRes);
+        title.setTextSize(21);
+        title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        title.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        titleRow.addView(title, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView badge = new TextView(context);
+        badge.setText(R.string.projection_settings_badge);
+        badge.setTextSize(11);
+        badge.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        badge.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        badge.setPadding(8, 4, 8, 4);
+        GradientDrawable badgeBg = new GradientDrawable();
+        badgeBg.setColor(0x3310B981);
+        badgeBg.setCornerRadius(6);
+        badge.setBackground(badgeBg);
+        titleRow.addView(badge);
+        header.addView(titleRow);
+        TextView desc = new TextView(context);
+        desc.setText(descRes);
+        desc.setTextSize(13);
+        desc.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        desc.setPadding(0, 6, 0, 12);
+        header.addView(desc);
+        card.addView(header, 0);
+    }
+
     private void refreshTargetLabel() {
+        refreshProviderSelection();
         if (targetAppLabel == null) return;
         String pkg = callback.getTargetPackage();
         if (pkg == null || pkg.trim().isEmpty()) {
