@@ -2,6 +2,8 @@ package com.mapcontrol.profile;
 
 import android.content.Context;
 
+import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
+import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 import com.mapcontrol.vehicle.ComfortCommands;
 
 import java.util.function.Consumer;
@@ -28,6 +30,45 @@ public final class DriverProfileApplier {
         DriverProfileManager.Profile profile = DriverProfileManager.get(context).getActive();
         if (profile != null) {
             apply(profile, log);
+        }
+    }
+
+    /** Profil geri yüklemesinden sonra seçili sürüş modunu araçta uygular. */
+    public static void applyDriveModeNow(Context context, Consumer<String> log) {
+        DriverProfileManager.Profile profile = DriverProfileManager.get(context).getActive();
+        if (profile == null) {
+            return;
+        }
+        Object raw = DriverProfileManager.get(context).scopedSettings(profile.id)
+                .get("driveModeSetting");
+        if (!(raw instanceof Number)) {
+            return;
+        }
+        int mode = ((Number) raw).intValue();
+        if (mode < 0) {
+            return;
+        }
+        if (!ComfortCommands.isConnected()) {
+            log.accept("[Profil] " + profile.name + ": sürüş modu için araç bağlantısı yok");
+            return;
+        }
+        int speed = ComfortCommands.readSpeedKmh();
+        if (speed != 0) {
+            log.accept("[Profil] " + profile.name + ": araç hareketli, sürüş modu uygulanmadı");
+            return;
+        }
+        try {
+            CarInfoProxy carInfo = CarInfoProxy.getInstance();
+            if (!carInfo.isServiceConnnected()) {
+                carInfo.init(context);
+                log.accept("[Profil] " + profile.name + ": sürüş modu bağlantısı kuruluyor");
+                return;
+            }
+            int value = (mode == 6 || mode == 7) ? 7 : mode;
+            carInfo.sendItemValue(VDEventCarInfo.MODULE_NEW_ENERGY, 4, value);
+            log.accept("[Profil] " + profile.name + ": sürüş modu uygulandı (" + mode + ")");
+        } catch (Exception error) {
+            log.accept("[Profil] " + profile.name + ": sürüş modu hatası " + error.getMessage());
         }
     }
 

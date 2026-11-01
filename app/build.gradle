@@ -36,8 +36,8 @@ android {
         applicationId "com.eyups.roaddeck"
         minSdk 29
         targetSdk 28
-        versionCode 29
-        versionName "1.3.17-local"
+        versionCode 31
+        versionName "1.3.19-local"
         buildConfigField "String", "GLITCHTIP_DSN", "\"${glitchTipDsn}\""
         buildConfigField "String", "GLITCHTIP_SECRET", "\"${glitchTipSecret}\""
         buildConfigField "String", "ELEVENLABS_API_KEY", "\"${elevenLabsApiKeyEscaped}\""

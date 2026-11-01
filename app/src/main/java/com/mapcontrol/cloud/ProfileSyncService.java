@@ -3,6 +3,7 @@ package com.mapcontrol.cloud;
 import android.content.Context;
 import android.util.Log;
 
+import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.profile.DriverProfileManager;
 import com.mapcontrol.vehicle.FaceProfileStore;
 
@@ -89,6 +90,8 @@ final class ProfileSyncService {
         if (preferences != null) {
             manager.importPreferences(preferences);
         }
+        DriverProfileApplier.applyDriveModeNow(context, message ->
+                Log.i("CloudBackup", message));
         JSONObject faces = get("faces");
         if (faces != null && faces.optJSONArray("profiles") != null
                 && faces.optJSONArray("profiles").length() > 0

@@ -482,6 +482,8 @@ public final class DriverProfileManager implements SharedPreferences.OnSharedPre
 
     /** F5: profilleri yedeklemek için JSON snapshot. */
     public synchronized String exportBackup() {
+        // Aktif profildeki son scoped ayarlar listener'a kalmadan yedeğe girsin.
+        syncActiveFromPrefs();
         return serialize();
     }
 
