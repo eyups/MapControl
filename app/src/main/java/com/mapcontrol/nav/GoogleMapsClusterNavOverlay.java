@@ -637,16 +637,22 @@ public final class GoogleMapsClusterNavOverlay {
         int etaTopMarginPx = topMarginPx;
 
         if (singleCard) {
+            boolean trafficCard = STYLE_TRAFFIC.equals(style);
             int width = Math.min(screenWidth - dp(ctx, 32),
-                    dp(ctx, STYLE_RADIAL.equals(style) ? 560
-                            : (STYLE_TRAFFIC.equals(style) ? 420 : 390)));
-            maneuverLeft = (screenWidth - width) / 2;
+                    dp(ctx, STYLE_RADIAL.equals(style) ? 560 : 390));
+            maneuverLeft = trafficCard ? 0 : (screenWidth - width) / 2;
             etaLeft = maneuverLeft;
             maneuverCard = createSingleCard(ctx, style);
             buildSingleCardContents(ctx, style);
-            maneuverCardLp = new FrameLayout.LayoutParams(width,
-                    FrameLayout.LayoutParams.WRAP_CONTENT);
-            maneuverCardLp.gravity = Gravity.TOP | Gravity.START;
+            maneuverCardLp = trafficCard
+                    ? new FrameLayout.LayoutParams(
+                            FrameLayout.LayoutParams.WRAP_CONTENT,
+                            FrameLayout.LayoutParams.WRAP_CONTENT)
+                    : new FrameLayout.LayoutParams(width,
+                            FrameLayout.LayoutParams.WRAP_CONTENT);
+            maneuverCardLp.gravity = trafficCard
+                    ? (Gravity.TOP | Gravity.CENTER_HORIZONTAL)
+                    : (Gravity.TOP | Gravity.START);
             maneuverCardLp.leftMargin = maneuverLeft;
             maneuverCardLp.topMargin = topMarginPx;
             root.addView(maneuverCard, maneuverCardLp);
@@ -853,7 +859,6 @@ public final class GoogleMapsClusterNavOverlay {
             maneuverCard.setGravity(Gravity.CENTER_HORIZONTAL);
 
             LinearLayout top = createTrafficPill(ctx, true);
-            top.setMinimumWidth(dp(ctx, 380));
             maneuverIconView = new ImageView(ctx);
             maneuverIconView.setImageResource(R.drawable.ic_ck_arrow_left);
             maneuverIconView.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
@@ -877,7 +882,7 @@ public final class GoogleMapsClusterNavOverlay {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             View spacer = new View(ctx);
-            top.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+            top.addView(spacer, new LinearLayout.LayoutParams(dp(ctx, 14), 1));
             TextView statusDot = createEtaText(ctx, 12, true);
             statusDot.setText("●");
             statusDot.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
@@ -887,7 +892,6 @@ public final class GoogleMapsClusterNavOverlay {
             maneuverCard.addView(top, wrapLp());
 
             LinearLayout bottom = createTrafficPill(ctx, false);
-            bottom.setMinimumWidth(dp(ctx, 330));
             LinearLayout.LayoutParams bottomLp = wrapLp();
             bottomLp.topMargin = dp(ctx, 8);
             etaTimeValue = createEtaText(ctx, 18, true);
