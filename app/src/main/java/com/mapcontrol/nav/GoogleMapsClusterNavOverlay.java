@@ -35,6 +35,11 @@ public final class GoogleMapsClusterNavOverlay {
     public static final String PREF_ENABLED = "google_maps_cluster_nav_overlay";
     public static final String PREF_STYLE = "google_cluster_nav_style";
     public static final String PREF_OPACITY = "google_cluster_nav_opacity";
+    public static final String STYLE_DUAL = "dual";
+    public static final String STYLE_HUD = "hud";
+    public static final String STYLE_RADIAL = "radial";
+    public static final String STYLE_TRAFFIC = "traffic";
+    // Eski kayıtlı değerler için uyumluluk.
     public static final String STYLE_CLASSIC = "classic";
     public static final String STYLE_TWO_LANE = "two_lane";
     public static final String STYLE_SINGLE_ROW = "single_row";
@@ -62,6 +67,8 @@ public final class GoogleMapsClusterNavOverlay {
     private TextView etaArrivalValue;
     private TextView etaTimeValue;
     private TextView etaStatusView;
+    private TextView radialDurationView;
+    private View trafficProgress;
     private LinearLayout etaDistanceRow;
     private LinearLayout etaArrivalRow;
     private LinearLayout etaTimeRow;
@@ -100,8 +107,13 @@ public final class GoogleMapsClusterNavOverlay {
     }
 
     public static String getStyle(Context context) {
-        return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                .getString(PREF_STYLE, STYLE_CLASSIC);
+        String raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getString(PREF_STYLE, STYLE_DUAL);
+        if (STYLE_CLASSIC.equals(raw)) return STYLE_DUAL;
+        if (STYLE_GLASS.equals(raw)) return STYLE_HUD;
+        if (STYLE_TWO_LANE.equals(raw)) return STYLE_RADIAL;
+        if (STYLE_SINGLE_ROW.equals(raw)) return STYLE_TRAFFIC;
+        return raw == null ? STYLE_DUAL : raw;
     }
 
     public static void setStyle(Context context, String style) {
@@ -254,6 +266,10 @@ public final class GoogleMapsClusterNavOverlay {
 
     private boolean bindEtaCard(GoogleMapsNavSnapshot snapshot) {
         boolean any = false;
+        if (radialDurationView != null) {
+            String duration = snapshot.etaDurationLabel();
+            radialDurationView.setText(duration == null || duration.isEmpty() ? "—" : duration);
+        }
 
         any |= bindMetricRow(etaDistanceRow, etaDistanceValue, snapshot.etaDistanceLabel());
         any |= bindMetricRow(etaArrivalRow, etaArrivalValue, snapshot.etaArrivalLabel());
@@ -323,6 +339,8 @@ public final class GoogleMapsClusterNavOverlay {
         etaArrivalValue = null;
         etaTimeValue = null;
         etaStatusView = null;
+        radialDurationView = null;
+        trafficProgress = null;
         etaDistanceRow = null;
         etaArrivalRow = null;
         etaTimeRow = null;
@@ -338,8 +356,7 @@ public final class GoogleMapsClusterNavOverlay {
     }
 
     private void applyStoredOffsetsOnMain() {
-        if (maneuverCard == null || etaCard == null
-                || maneuverCardLp == null || etaCardLp == null) {
+        if (maneuverCard == null || maneuverCardLp == null) {
             return;
         }
         Context ctx = displayContext != null ? displayContext : appContext;
@@ -359,12 +376,14 @@ public final class GoogleMapsClusterNavOverlay {
                 maneuverCard, ctx,
                 maneuver.offsetXDp, maneuver.offsetYDp, maneuver.scalePercent);
 
-        etaCardLp.leftMargin = layoutEtaLeft;
-        etaCardLp.topMargin = layoutEtaTopMargin;
-        etaCard.setLayoutParams(etaCardLp);
-        ClusterNavOverlayOffsets.applyTranslationAndScale(
-                etaCard, ctx,
-                eta.offsetXDp, eta.offsetYDp, eta.scalePercent);
+        if (etaCard != null && etaCardLp != null) {
+            etaCardLp.leftMargin = layoutEtaLeft;
+            etaCardLp.topMargin = layoutEtaTopMargin;
+            etaCard.setLayoutParams(etaCardLp);
+            ClusterNavOverlayOffsets.applyTranslationAndScale(
+                    etaCard, ctx,
+                    eta.offsetXDp, eta.offsetYDp, eta.scalePercent);
+        }
     }
 
     private void ensureOverlay() {
@@ -433,94 +452,180 @@ public final class GoogleMapsClusterNavOverlay {
         root.setClipChildren(false);
         root.setClipToPadding(false);
 
-        int screenWidth = ctx.getResources().getDisplayMetrics().widthPixels;
-        int cardWidthPx = dp(ctx, CARD_WIDTH_DP);
         String style = getStyle(appContext);
-        int gapPx = dp(ctx, STYLE_SINGLE_ROW.equals(style) ? 8
-                : (STYLE_TWO_LANE.equals(style) ? 12 : CENTER_GAP_DP));
+        boolean singleCard = !STYLE_DUAL.equals(style);
+        int screenWidth = ctx.getResources().getDisplayMetrics().widthPixels;
         int topMarginPx = dp(ctx, TOP_MARGIN_DP);
-        int outwardPx = (STYLE_CLASSIC.equals(style) || STYLE_GLASS.equals(style))
-                ? (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO) : 0;
+        int cardWidthPx = dp(ctx, CARD_WIDTH_DP);
+        int gapPx = dp(ctx, CENTER_GAP_DP);
+        int outwardPx = (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO);
         int pairWidth = cardWidthPx * 2 + gapPx;
         int pairLeft = (screenWidth - pairWidth) / 2;
         int maneuverLeft;
         int etaLeft;
         int etaTopMarginPx = topMarginPx;
-        if (STYLE_TWO_LANE.equals(style)) {
-            maneuverLeft = (screenWidth - cardWidthPx) / 2;
+
+        if (singleCard) {
+            int width = Math.min(screenWidth - dp(ctx, 32), dp(ctx, 390));
+            maneuverLeft = (screenWidth - width) / 2;
             etaLeft = maneuverLeft;
-            etaTopMarginPx = topMarginPx + dp(ctx, 118);
-        } else if (STYLE_SINGLE_ROW.equals(style)) {
-            maneuverLeft = pairLeft;
-            etaLeft = pairLeft + cardWidthPx + gapPx;
+            maneuverCard = createSingleCard(ctx, style);
+            buildSingleCardContents(ctx, style);
+            maneuverCardLp = new FrameLayout.LayoutParams(width,
+                    FrameLayout.LayoutParams.WRAP_CONTENT);
+            maneuverCardLp.gravity = Gravity.TOP | Gravity.START;
+            maneuverCardLp.leftMargin = maneuverLeft;
+            maneuverCardLp.topMargin = topMarginPx;
+            root.addView(maneuverCard, maneuverCardLp);
+            etaCard = new LinearLayout(ctx);
+            etaCardLp = null;
         } else {
             maneuverLeft = pairLeft - outwardPx;
             etaLeft = pairLeft + cardWidthPx + gapPx + outwardPx;
+            maneuverCard = createManeuverCard(ctx);
+            maneuverDistanceView = createManeuverText(ctx, 30, true);
+            maneuverCard.addView(maneuverDistanceView, wrapLp());
+            nextStreetView = createManeuverText(ctx, 14, false);
+            nextStreetView.setMaxLines(2);
+            LinearLayout.LayoutParams streetLp = wrapLp();
+            streetLp.topMargin = dp(ctx, 4);
+            maneuverCard.addView(nextStreetView, streetLp);
+            maneuverStatusView = createManeuverText(ctx, 12, false);
+            maneuverStatusView.setMaxLines(2);
+            LinearLayout.LayoutParams statusLp = wrapLp();
+            statusLp.topMargin = dp(ctx, 2);
+            maneuverCard.addView(maneuverStatusView, statusLp);
+
+            etaCard = createEtaCard(ctx);
+            addEtaRows(ctx, etaCard);
+
+            maneuverCardLp = new FrameLayout.LayoutParams(cardWidthPx,
+                    FrameLayout.LayoutParams.WRAP_CONTENT);
+            maneuverCardLp.gravity = Gravity.TOP | Gravity.START;
+            maneuverCardLp.leftMargin = Math.max(0, maneuverLeft);
+            maneuverCardLp.topMargin = topMarginPx;
+            root.addView(maneuverCard, maneuverCardLp);
+
+            etaCardLp = new FrameLayout.LayoutParams(cardWidthPx,
+                    FrameLayout.LayoutParams.WRAP_CONTENT);
+            etaCardLp.gravity = Gravity.TOP | Gravity.START;
+            etaCardLp.leftMargin = Math.min(screenWidth - cardWidthPx, etaLeft);
+            etaCardLp.topMargin = etaTopMarginPx;
+            root.addView(etaCard, etaCardLp);
         }
 
-        maneuverCard = createManeuverCard(ctx);
-        maneuverDistanceView = createManeuverText(ctx, 30, true);
-        maneuverCard.addView(maneuverDistanceView, wrapLp());
-
-        nextStreetView = createManeuverText(ctx, 14, false);
-        nextStreetView.setMaxLines(2);
-        LinearLayout.LayoutParams streetLp = wrapLp();
-        streetLp.topMargin = dp(ctx, 4);
-        maneuverCard.addView(nextStreetView, streetLp);
-
-        maneuverStatusView = createManeuverText(ctx, 12, false);
-        maneuverStatusView.setMaxLines(2);
-        LinearLayout.LayoutParams statusLp = wrapLp();
-        statusLp.topMargin = dp(ctx, 2);
-        maneuverCard.addView(maneuverStatusView, statusLp);
-
-        etaCard = createEtaCard(ctx);
-        MetricRow distanceRow = addMetricRow(etaCard, ctx, "Kalan", 0);
-        etaDistanceRow = distanceRow.row;
-        etaDistanceValue = distanceRow.value;
-
-        MetricRow arrivalRow = addMetricRow(etaCard, ctx, "Varış", dp(ctx, 6));
-        etaArrivalRow = arrivalRow.row;
-        etaArrivalValue = arrivalRow.value;
-
-        MetricRow timeRow = addMetricRow(etaCard, ctx, "Süre", dp(ctx, 6));
-        etaTimeRow = timeRow.row;
-        etaTimeValue = timeRow.value;
-
-        etaStatusView = createEtaText(ctx, 12, false);
-        etaStatusView.setTextColor(UiStyles.color(ctx, R.color.textMuted));
-        etaStatusView.setMaxLines(2);
-        LinearLayout.LayoutParams etaStatusLp = wrapLp();
-        etaStatusLp.topMargin = dp(ctx, 6);
-        etaCard.addView(etaStatusView, etaStatusLp);
-
         applyCardStyle(ctx, style);
-
         layoutScreenWidthPx = screenWidth;
         layoutCardWidthPx = cardWidthPx;
         layoutManeuverLeft = Math.max(0, maneuverLeft);
-        layoutEtaLeft = Math.min(screenWidth - cardWidthPx, etaLeft);
+        layoutEtaLeft = Math.max(0, etaLeft);
         layoutTopMargin = topMarginPx;
         layoutEtaTopMargin = etaTopMarginPx;
-
-        maneuverCardLp = new FrameLayout.LayoutParams(
-                cardWidthPx,
-                FrameLayout.LayoutParams.WRAP_CONTENT);
-        maneuverCardLp.gravity = Gravity.TOP | Gravity.START;
-        maneuverCardLp.leftMargin = layoutManeuverLeft;
-        maneuverCardLp.topMargin = layoutTopMargin;
-        root.addView(maneuverCard, maneuverCardLp);
-
-        etaCardLp = new FrameLayout.LayoutParams(
-                cardWidthPx,
-                FrameLayout.LayoutParams.WRAP_CONTENT);
-        etaCardLp.gravity = Gravity.TOP | Gravity.START;
-        etaCardLp.leftMargin = layoutEtaLeft;
-        etaCardLp.topMargin = layoutEtaTopMargin;
-        root.addView(etaCard, etaCardLp);
-
         applyStoredOffsetsOnMain();
         return root;
+    }
+
+    private LinearLayout createSingleCard(Context ctx, String style) {
+        LinearLayout card = new LinearLayout(ctx);
+        card.setOrientation(STYLE_TRAFFIC.equals(style)
+                ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
+        card.setGravity(Gravity.CENTER_VERTICAL);
+        card.setBackground(ContextCompat.getDrawable(ctx, R.drawable.bg_cluster_nav_maneuver));
+        int padH = dp(ctx, 14);
+        int padV = dp(ctx, 10);
+        card.setPadding(padH, padV, padH, padV);
+        return card;
+    }
+
+    private void buildSingleCardContents(Context ctx, String style) {
+        if (STYLE_HUD.equals(style)) {
+            LinearLayout left = new LinearLayout(ctx);
+            left.setOrientation(LinearLayout.VERTICAL);
+            maneuverDistanceView = createManeuverText(ctx, 28, true);
+            left.addView(maneuverDistanceView);
+            nextStreetView = createManeuverText(ctx, 14, false);
+            left.addView(nextStreetView);
+            LinearLayout right = new LinearLayout(ctx);
+            right.setOrientation(LinearLayout.VERTICAL);
+            right.setPadding(dp(ctx, 12), 0, 0, 0);
+            addEtaRows(ctx, right);
+            maneuverCard.addView(left, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1.35f));
+            TextView divider = new TextView(ctx);
+            divider.setBackgroundColor(UiStyles.color(ctx, R.color.ck_stroke));
+            maneuverCard.addView(divider, new LinearLayout.LayoutParams(1, dp(ctx, 50)));
+            maneuverCard.addView(right, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        } else if (STYLE_RADIAL.equals(style)) {
+            radialDurationView = new TextView(ctx);
+            radialDurationView.setGravity(Gravity.CENTER);
+            radialDurationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            radialDurationView.setTypeface(null, Typeface.BOLD);
+            radialDurationView.setTextColor(UiStyles.color(ctx, R.color.ck_accent));
+            GradientDrawable ring = new GradientDrawable();
+            ring.setShape(GradientDrawable.OVAL);
+            ring.setColor(UiStyles.color(ctx, R.color.ck_surface_1));
+            ring.setStroke(dp(ctx, 4), UiStyles.color(ctx, R.color.ck_accent));
+            radialDurationView.setBackground(ring);
+            maneuverCard.addView(radialDurationView, new LinearLayout.LayoutParams(
+                    dp(ctx, 66), dp(ctx, 66)));
+            LinearLayout right = new LinearLayout(ctx);
+            right.setOrientation(LinearLayout.VERTICAL);
+            right.setPadding(dp(ctx, 12), 0, 0, 0);
+            maneuverDistanceView = createManeuverText(ctx, 24, true);
+            right.addView(maneuverDistanceView);
+            nextStreetView = createManeuverText(ctx, 14, false);
+            right.addView(nextStreetView);
+            addEtaRows(ctx, right);
+            maneuverCard.addView(right, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        } else {
+            LinearLayout top = new LinearLayout(ctx);
+            top.setOrientation(LinearLayout.HORIZONTAL);
+            top.setGravity(Gravity.CENTER_VERTICAL);
+            maneuverDistanceView = createManeuverText(ctx, 24, true);
+            top.addView(maneuverDistanceView);
+            nextStreetView = createManeuverText(ctx, 14, false);
+            LinearLayout.LayoutParams streetLp = new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+            streetLp.leftMargin = dp(ctx, 8);
+            top.addView(nextStreetView, streetLp);
+            maneuverCard.addView(top, matchWrapLp());
+            trafficProgress = new View(ctx);
+            trafficProgress.setBackgroundColor(UiStyles.color(ctx, R.color.ck_accent));
+            LinearLayout.LayoutParams lineLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, dp(ctx, 4));
+            lineLp.topMargin = dp(ctx, 8);
+            lineLp.bottomMargin = dp(ctx, 8);
+            maneuverCard.addView(trafficProgress, lineLp);
+            LinearLayout etaRow = new LinearLayout(ctx);
+            etaRow.setOrientation(LinearLayout.HORIZONTAL);
+            addEtaRows(ctx, etaRow);
+            maneuverCard.addView(etaRow, matchWrapLp());
+        }
+    }
+
+    private void addEtaRows(Context ctx, LinearLayout parent) {
+        MetricRow distanceRow = addMetricRow(parent, ctx, "Kalan", 0);
+        etaDistanceRow = distanceRow.row;
+        etaDistanceValue = distanceRow.value;
+        MetricRow arrivalRow = addMetricRow(parent, ctx, "Varış", dp(ctx, 6));
+        etaArrivalRow = arrivalRow.row;
+        etaArrivalValue = arrivalRow.value;
+        MetricRow timeRow = addMetricRow(parent, ctx, "Süre", dp(ctx, 6));
+        etaTimeRow = timeRow.row;
+        etaTimeValue = timeRow.value;
+        etaStatusView = createEtaText(ctx, 12, false);
+        etaStatusView.setTextColor(UiStyles.color(ctx, R.color.textMuted));
+        etaStatusView.setMaxLines(2);
+        LinearLayout.LayoutParams statusLp = wrapLp();
+        statusLp.topMargin = dp(ctx, 4);
+        parent.addView(etaStatusView, statusLp);
+    }
+
+    private static LinearLayout.LayoutParams matchWrapLp() {
+        return new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
     }
 
     private static final class MetricRow {
@@ -592,10 +697,13 @@ public final class GoogleMapsClusterNavOverlay {
     }
 
     private void applyCardStyle(Context ctx, String style) {
-        if (STYLE_GLASS.equals(style)) {
+        if (STYLE_HUD.equals(style)) {
             maneuverCard.setBackground(glassBackground(ctx));
-            etaCard.setBackground(glassBackground(ctx));
-        } else if (STYLE_TWO_LANE.equals(style)) {
+        } else if (STYLE_RADIAL.equals(style)) {
+            maneuverCard.setBackground(glassBackground(ctx));
+        } else if (STYLE_TRAFFIC.equals(style)) {
+            maneuverCard.setBackground(glassBackground(ctx));
+        } else if (STYLE_DUAL.equals(style)) {
             maneuverCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
             etaCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
         } else if (STYLE_SINGLE_ROW.equals(style)) {

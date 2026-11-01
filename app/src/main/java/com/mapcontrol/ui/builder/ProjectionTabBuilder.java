@@ -838,10 +838,10 @@ public class ProjectionTabBuilder {
         parent.addView(desc);
 
         String[] styles = {
-                GoogleMapsClusterNavOverlay.STYLE_CLASSIC,
-                GoogleMapsClusterNavOverlay.STYLE_TWO_LANE,
-                GoogleMapsClusterNavOverlay.STYLE_SINGLE_ROW,
-                GoogleMapsClusterNavOverlay.STYLE_GLASS
+                GoogleMapsClusterNavOverlay.STYLE_HUD,
+                GoogleMapsClusterNavOverlay.STYLE_DUAL,
+                GoogleMapsClusterNavOverlay.STYLE_RADIAL,
+                GoogleMapsClusterNavOverlay.STYLE_TRAFFIC
         };
         int[] labels = {
                 R.string.projection_cluster_variant1_title,
@@ -980,22 +980,10 @@ public class ProjectionTabBuilder {
         bg.setCornerRadius(12);
         bg.setStroke(1, UiStyles.color(context, R.color.ck_stroke));
         preview.setBackground(bg);
-        if (GoogleMapsClusterNavOverlay.STYLE_CLASSIC.equals(style)) {
+        if (GoogleMapsClusterNavOverlay.STYLE_DUAL.equals(style)) {
             preview.addView(miniCard("350 m", "Amphitheatre Pkwy"));
             preview.addView(miniCard("11:15", "13 dk · 8.5 km"));
-        } else if (GoogleMapsClusterNavOverlay.STYLE_TWO_LANE.equals(style)) {
-            LinearLayout col = new LinearLayout(context);
-            col.setOrientation(LinearLayout.VERTICAL);
-            col.addView(miniPill("350 m  ·  Amphitheatre Pkwy"));
-            TextView eta = new TextView(context);
-            eta.setText("11:15  ·  13 dk  ·  8.5 km");
-            eta.setTextSize(12);
-            eta.setTextColor(UiStyles.color(context, R.color.ck_accent));
-            eta.setPadding(10, 7, 10, 0);
-            col.addView(eta);
-            preview.addView(col, new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        } else if (GoogleMapsClusterNavOverlay.STYLE_SINGLE_ROW.equals(style)) {
+        } else if (GoogleMapsClusterNavOverlay.STYLE_HUD.equals(style)) {
             TextView arrow = new TextView(context);
             arrow.setText("↰");
             arrow.setTextSize(24);
@@ -1010,7 +998,7 @@ public class ProjectionTabBuilder {
             eta.setTextColor(UiStyles.color(context, R.color.ck_text_high));
             eta.setPadding(10, 0, 8, 0);
             preview.addView(eta);
-        } else {
+        } else if (GoogleMapsClusterNavOverlay.STYLE_RADIAL.equals(style)) {
             TextView ring = new TextView(context);
             ring.setText("13\ndk");
             ring.setTextSize(15);
@@ -1042,6 +1030,28 @@ public class ProjectionTabBuilder {
             info.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
             info.setPadding(8, 4, 0, 0);
             col.addView(info);
+            preview.addView(col, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        } else {
+            LinearLayout col = new LinearLayout(context);
+            col.setOrientation(LinearLayout.VERTICAL);
+            TextView route = new TextView(context);
+            route.setText("200 m  ·  Amphitheatre Pkwy");
+            route.setTextSize(12);
+            route.setTextColor(UiStyles.color(context, R.color.ck_text_high));
+            col.addView(route);
+            android.widget.ProgressBar progress = new android.widget.ProgressBar(context,
+                    null, android.R.attr.progressBarStyleHorizontal);
+            progress.setMax(100);
+            progress.setProgress(68);
+            progress.setPadding(0, 5, 0, 3);
+            col.addView(progress, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 12));
+            TextView eta = new TextView(context);
+            eta.setText("11:15  ·  13 dk  ·  8.5 km");
+            eta.setTextSize(12);
+            eta.setTextColor(UiStyles.color(context, R.color.ck_accent));
+            col.addView(eta);
             preview.addView(col, new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         }
