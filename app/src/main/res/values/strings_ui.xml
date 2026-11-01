@@ -1314,4 +1314,10 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="projection_target_google_desc">Projected cluster</string>
     <string name="projection_target_yandex">Yandex Maps</string>
     <string name="projection_target_yandex_desc">Via accessibility</string>
+    <string name="projection_cluster_advanced_title">Precise Positioning &amp; Size</string>
+    <string name="projection_cluster_reset_short">Reset to Default</string>
+    <string name="projection_cluster_x_offset">Horizontal (X) Offset</string>
+    <string name="projection_cluster_y_offset">Vertical (Y) Offset</string>
+    <string name="projection_cluster_scale">Scale (Size)</string>
+    <string name="projection_cluster_bg_opacity">Background Opacity</string>
 </resources>

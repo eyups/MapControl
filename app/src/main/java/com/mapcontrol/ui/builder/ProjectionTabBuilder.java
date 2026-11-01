@@ -1007,47 +1007,6 @@ public class ProjectionTabBuilder {
             parent.addView(line, lineLp);
         }
         applyClusterStyleSelection(cards, styles, selected);
-
-        LinearLayout opacityHeader = new LinearLayout(context);
-        opacityHeader.setOrientation(LinearLayout.HORIZONTAL);
-        opacityHeader.setGravity(Gravity.CENTER_VERTICAL);
-        TextView opacityLabel = new TextView(context);
-        opacityLabel.setText(R.string.projection_cluster_opacity_title);
-        opacityLabel.setTextSize(15);
-        opacityLabel.setTextColor(UiStyles.color(context, R.color.textPrimary87));
-        opacityHeader.addView(opacityLabel, new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        TextView opacityValue = new TextView(context);
-        opacityValue.setText(GoogleMapsClusterNavOverlay.getOpacity(context) + "%");
-        opacityValue.setTextSize(15);
-        opacityValue.setTextColor(UiStyles.color(context, R.color.ck_accent));
-        opacityHeader.addView(opacityValue);
-        LinearLayout.LayoutParams opacityHeaderLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        opacityHeaderLp.topMargin = 16;
-        parent.addView(opacityHeader, opacityHeaderLp);
-
-        SeekBar opacity = new SeekBar(context);
-        opacity.setMax(80);
-        opacity.setProgress(GoogleMapsClusterNavOverlay.getOpacity(context) - 20);
-        opacity.setProgressTintList(ColorStateList.valueOf(
-                UiStyles.color(context, R.color.ck_accent)));
-        opacity.setThumbTintList(ColorStateList.valueOf(
-                UiStyles.color(context, R.color.ck_accent)));
-        opacity.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
-        opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                opacityValue.setText((progress + 20) + "%");
-            }
-            @Override public void onStartTrackingTouch(SeekBar seekBar) { }
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {
-                GoogleMapsClusterNavOverlay.setOpacity(context, seekBar.getProgress() + 20);
-            }
-        });
-        parent.addView(opacity, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                CockpitTokens.dim(context, R.dimen.ck_touch_min)));
     }
 
     private View buildClusterStylePreview(String style) {
@@ -1241,65 +1200,186 @@ public class ProjectionTabBuilder {
 
     private void addClusterOverlayLayoutSection(LinearLayout parent, int titleResId,
             ClusterNavOverlayOffsets.Provider provider, Runnable applyOverlay) {
+        LinearLayout header = new LinearLayout(context);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
+        header.setPadding(0, 18, 0, 8);
         TextView title = new TextView(context);
-        title.setText(titleResId);
-        title.setTextSize(14);
-        title.setTextColor(UiStyles.color(context, R.color.textPrimary87));
-        title.setTypeface(null, Typeface.NORMAL);
-        title.setPadding(20, 16, 20, 4);
-        parent.addView(title, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        title.setText(R.string.projection_cluster_advanced_title);
+        title.setTextSize(17);
+        title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        title.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        header.addView(title, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView reset = new TextView(context);
+        reset.setText(R.string.projection_cluster_reset_short);
+        reset.setTextSize(12);
+        reset.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        reset.setClickable(true);
+        header.addView(reset);
+        parent.addView(header);
 
-        TextView desc = new TextView(context);
-        desc.setText(R.string.projection_cluster_offset_desc);
-        desc.setTextSize(12);
-        desc.setTextColor(UiStyles.color(context, R.color.textHint));
-        desc.setPadding(20, 0, 20, 8);
-        parent.addView(desc, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout grid = new LinearLayout(context);
+        grid.setOrientation(LinearLayout.VERTICAL);
+        int pad = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        grid.setPadding(pad, pad, pad, pad);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(grid);
+        parent.addView(grid);
 
-        LinearLayout block = new LinearLayout(context);
-        block.setOrientation(LinearLayout.VERTICAL);
-        block.setPadding(20, 0, 20, 8);
-        parent.addView(block, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
+        final int rangeX = ClusterNavOverlayOffsets.getOffsetRangeXDp(context);
+        final int rangeY = ClusterNavOverlayOffsets.getOffsetRangeYDp(context);
+        ClusterNavOverlayOffsets.CardLayout initial =
+                ClusterNavOverlayOffsets.getCardLayout(context, provider,
+                        ClusterNavOverlayOffsets.Card.MANEUVER);
+        final SeekBar[] bars = new SeekBar[4];
+        final TextView[] values = new TextView[4];
 
-        final int offsetRangeXDp = ClusterNavOverlayOffsets.getOffsetRangeXDp(context);
-        final int offsetRangeYDp = ClusterNavOverlayOffsets.getOffsetRangeYDp(context);
-        final java.util.List<ClusterCardSliderUi> sliderUis = new java.util.ArrayList<>();
+        LinearLayout row1 = new LinearLayout(context);
+        row1.setOrientation(LinearLayout.HORIZONTAL);
+        row1.setBaselineAligned(false);
+        addCompactOffsetCell(row1,
+                R.string.projection_cluster_x_offset,
+                ClusterNavOverlayOffsets.toOffsetSeekProgress(initial.offsetXDp, rangeX),
+                rangeX * 2,
+                progress -> {
+                    int x = ClusterNavOverlayOffsets.fromOffsetSeekProgress(progress, rangeX);
+                    updateBothLayouts(provider, x, null, null);
+                    applyOverlay.run();
+                }, bars, values, 0, " dp");
+        addCompactOffsetCell(row1,
+                R.string.projection_cluster_y_offset,
+                ClusterNavOverlayOffsets.toOffsetSeekProgress(initial.offsetYDp, rangeY),
+                rangeY * 2,
+                progress -> {
+                    int y = ClusterNavOverlayOffsets.fromOffsetSeekProgress(progress, rangeY);
+                    updateBothLayouts(provider, null, y, null);
+                    applyOverlay.run();
+                }, bars, values, 1, " dp");
+        grid.addView(row1);
 
-        sliderUis.add(addSingleClusterCardLayoutSliders(
-                block, provider, ClusterNavOverlayOffsets.Card.MANEUVER,
-                R.string.projection_cluster_maneuver_card, offsetRangeXDp, offsetRangeYDp, applyOverlay));
-        sliderUis.add(addSingleClusterCardLayoutSliders(
-                block, provider, ClusterNavOverlayOffsets.Card.ETA,
-                R.string.projection_cluster_eta_card, offsetRangeXDp, offsetRangeYDp, applyOverlay));
+        LinearLayout row2 = new LinearLayout(context);
+        row2.setOrientation(LinearLayout.HORIZONTAL);
+        row2.setBaselineAligned(false);
+        addCompactOffsetCell(row2,
+                R.string.projection_cluster_scale,
+                ClusterNavOverlayOffsets.toScaleSeekProgress(initial.scalePercent),
+                100,
+                progress -> {
+                    int scale = ClusterNavOverlayOffsets.fromScaleSeekProgress(progress);
+                    updateBothLayouts(provider, null, null, scale);
+                    applyOverlay.run();
+                }, bars, values, 2, "%");
+        addCompactOffsetCell(row2,
+                R.string.projection_cluster_bg_opacity,
+                Math.max(0, GoogleMapsClusterNavOverlay.getOpacity(context) - 20),
+                80,
+                progress -> GoogleMapsClusterNavOverlay.setOpacity(context, progress + 20),
+                bars, values, 3, "%");
+        grid.addView(row2);
 
-        Button btnResetLayout = new Button(context);
-        btnResetLayout.setText(R.string.projection_cluster_layout_reset);
-        btnResetLayout.setTextColor(UiStyles.color(context, R.color.textPrimary80));
-        btnResetLayout.setTextSize(14);
-        UiStyles.styleOemButton(btnResetLayout, UiStyles.color(context, R.color.surfaceCardInner));
-        btnResetLayout.setPadding(16, 14, 16, 14);
-        LinearLayout.LayoutParams resetLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        resetLp.topMargin = 8;
-        block.addView(btnResetLayout, resetLp);
-        btnResetLayout.setOnClickListener(v -> {
+        // İlk değer metinlerini doldur.
+        values[0].setText(initial.offsetXDp + " dp");
+        values[1].setText(initial.offsetYDp + " dp");
+        values[2].setText("%" + initial.scalePercent);
+        values[3].setText("%" + GoogleMapsClusterNavOverlay.getOpacity(context));
+
+        reset.setOnClickListener(v -> {
             ClusterNavOverlayOffsets.resetProvider(context, provider);
-            for (ClusterCardSliderUi ui : sliderUis) {
-                ui.syncFromPrefs();
-            }
+            GoogleMapsClusterNavOverlay.setOpacity(context, 100);
+            ClusterNavOverlayOffsets.CardLayout defaults = ClusterNavOverlayOffsets.defaultCardLayout();
+            bars[0].setProgress(ClusterNavOverlayOffsets.toOffsetSeekProgress(0, rangeX));
+            bars[1].setProgress(ClusterNavOverlayOffsets.toOffsetSeekProgress(0, rangeY));
+            bars[2].setProgress(ClusterNavOverlayOffsets.toScaleSeekProgress(100));
+            bars[3].setProgress(80);
+            values[0].setText("0 dp");
+            values[1].setText("0 dp");
+            values[2].setText("%100");
+            values[3].setText("%100");
+            updateBothLayouts(provider, defaults.offsetXDp, defaults.offsetYDp, defaults.scalePercent);
             applyOverlay.run();
             callback.log(provider == ClusterNavOverlayOffsets.Provider.GOOGLE
-                    ? "Google Maps cluster kart düzeni sıfırlandı"
+                    ? "Google Maps kart düzeni sıfırlandı"
                     : "Yandex cluster kart düzeni sıfırlandı");
-            Toast.makeText(context, R.string.projection_cluster_layout_reset_done, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.projection_cluster_layout_reset_done,
+                    Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void updateBothLayouts(ClusterNavOverlayOffsets.Provider provider,
+            Integer x, Integer y, Integer scale) {
+        ClusterNavOverlayOffsets.CardLayout m = ClusterNavOverlayOffsets.getCardLayout(
+                context, provider, ClusterNavOverlayOffsets.Card.MANEUVER);
+        ClusterNavOverlayOffsets.CardLayout e = ClusterNavOverlayOffsets.getCardLayout(
+                context, provider, ClusterNavOverlayOffsets.Card.ETA);
+        int nx = x != null ? x : m.offsetXDp;
+        int ny = y != null ? y : m.offsetYDp;
+        int ns = scale != null ? scale : m.scalePercent;
+        ClusterNavOverlayOffsets.setCardLayout(context, provider,
+                ClusterNavOverlayOffsets.Card.MANEUVER,
+                new ClusterNavOverlayOffsets.CardLayout(nx, ny, ns));
+        ClusterNavOverlayOffsets.setCardLayout(context, provider,
+                ClusterNavOverlayOffsets.Card.ETA,
+                new ClusterNavOverlayOffsets.CardLayout(nx, ny, ns));
+    }
+
+    private interface CompactSliderChange {
+        void onChanged(int progress);
+    }
+
+    private void addCompactOffsetCell(LinearLayout row, int labelRes, int progress,
+            int max, CompactSliderChange change, SeekBar[] bars, TextView[] values,
+            int index, String suffix) {
+        LinearLayout cell = new LinearLayout(context);
+        cell.setOrientation(LinearLayout.VERTICAL);
+        cell.setPadding(0, 0, 12, 10);
+        LinearLayout top = new LinearLayout(context);
+        top.setOrientation(LinearLayout.HORIZONTAL);
+        top.setGravity(Gravity.CENTER_VERTICAL);
+        TextView label = new TextView(context);
+        label.setText(labelRes);
+        label.setTextSize(13);
+        label.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        top.addView(label, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView value = new TextView(context);
+        value.setTextSize(12);
+        value.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        top.addView(value);
+        cell.addView(top);
+        SeekBar bar = new SeekBar(context);
+        bar.setMax(max);
+        bar.setProgress(Math.max(0, Math.min(max, progress)));
+        bar.setProgressTintList(ColorStateList.valueOf(
+                CockpitTokens.color(context, R.color.ck_accent)));
+        bar.setThumbTintList(ColorStateList.valueOf(
+                CockpitTokens.color(context, R.color.ck_accent)));
+        bar.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar seekBar, int p, boolean fromUser) {
+                String text;
+                if (suffix.equals(" dp")) {
+                    text = p - max / 2 + " dp";
+                } else if (suffix.equals("%") && index == 2) {
+                    text = "%" + (p + 50);
+                } else {
+                    text = "%" + (p + 20);
+                }
+                value.setText(text);
+                if (fromUser) change.onChanged(p);
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {
+                change.onChanged(seekBar.getProgress());
+            }
+        });
+        cell.addView(bar, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                CockpitTokens.dim(context, R.dimen.ck_touch_min)));
+        bars[index] = bar;
+        values[index] = value;
+        LinearLayout.LayoutParams cellLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        row.addView(cell, cellLp);
     }
 
     private static final class ClusterCardSliderUi {

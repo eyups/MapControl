@@ -1330,4 +1330,10 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="projection_target_google_desc">Yansıtılan küme</string>
     <string name="projection_target_yandex">Yandex Haritalar</string>
     <string name="projection_target_yandex_desc">Erişilebilirlik ile</string>
+    <string name="projection_cluster_advanced_title">Hassas Konumlandırma &amp; Boyut</string>
+    <string name="projection_cluster_reset_short">Varsayılana Sıfırla</string>
+    <string name="projection_cluster_x_offset">Yatay (X) Ofset</string>
+    <string name="projection_cluster_y_offset">Dikey (Y) Ofset</string>
+    <string name="projection_cluster_scale">Ölçek (Boyut)</string>
+    <string name="projection_cluster_bg_opacity">Arka Plan Opaklığı</string>
 </resources>
