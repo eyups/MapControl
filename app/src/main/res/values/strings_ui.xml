@@ -1057,7 +1057,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_restore_confirm">Profile and scene preferences will be replaced with the last cloud backup. Continue?</string>
     <string name="settings_cloud_restore_action">Restore</string>
     <string name="settings_cloud_restore_audio_failed">Profiles restored; welcome audio could not be restored.</string>
-    <string name="settings_cloud_restore_done">Backup restored. Restart RoadDeck to refresh the UI.</string>
+    <string name="settings_cloud_restore_done">Backup restored.</string>
     <string name="settings_cloud_restore_failed">Backup could not be restored.</string>
 
 
