@@ -449,7 +449,7 @@ public final class GoogleMapsClusterNavOverlay {
             sb.append(" ");
             int start = sb.length();
             sb.append(unit);
-            sb.setSpan(new ForegroundColorSpan(UiStyles.color(etaTimeValue.getContext(), R.color.textMuted)),
+            sb.setSpan(new ForegroundColorSpan(UiStyles.color(etaTimeValue.getContext(), R.color.ck_text_high)),
                     start, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             sb.setSpan(new RelativeSizeSpan(0.6f), start, sb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
