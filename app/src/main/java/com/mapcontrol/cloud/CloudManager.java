@@ -135,6 +135,10 @@ public final class CloudManager {
                 body.put("kind", "car");
                 body.put("name", "RoadDeck");
                 body.put("app_version", BuildConfig.VERSION_NAME);
+                String hardwareId = HardwareId.get(appContext);
+                if (!hardwareId.isEmpty()) {
+                    body.put("hardware_id", hardwareId);
+                }
                 CloudHttp.Response response = http.postJson(
                         "/api/v1/devices/pair", null, body, 16 * 1024);
                 if (response.code == 201) {
