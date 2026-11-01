@@ -1004,9 +1004,11 @@ public final class GoogleMapsClusterNavOverlay {
         box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(dp(ctx, 13), dp(ctx, 11), dp(ctx, 13), dp(ctx, 11));
         GradientDrawable bg = new GradientDrawable();
-        bg.setColor(0xFF0B1016);
-        bg.setCornerRadius(dp(ctx, 8));
+        bg.setColor(0xFF18212A);
+        bg.setCornerRadius(dp(ctx, 9));
+        bg.setStroke(dp(ctx, 1), 0xFF2B3742);
         box.setBackground(bg);
+        box.setAlpha(1f);
         TextView label = createEtaText(ctx, 14, true);
         label.setText(labelText);
         label.setTextColor(UiStyles.color(ctx, R.color.ck_text_high));
