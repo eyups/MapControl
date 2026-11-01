@@ -456,6 +456,13 @@ public class VDConnector {
             return true;
         }
         startReconnect();
+        if (this.mServiceInfo.isSystemService() && VDConfigUtil.LOCAL_SYSTEM_SERVICE != null) {
+            this.mIVDBus = VDConfigUtil.LOCAL_SYSTEM_SERVICE;
+            Log.d(TAG, "bindService: local test transport kullanılıyor service=" + this.mServiceInfo.getServiceName());
+            stopReconnect();
+            onVDBusConnected();
+            return true;
+        }
         if (this.mServiceInfo.isSystemService()) {
             IBinder serviceFromServiceManager = VDServiceUtil.getServiceFromServiceManager(this.mServiceInfo.getServiceName());
             if (serviceFromServiceManager != null) {

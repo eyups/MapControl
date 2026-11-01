@@ -16,4 +16,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "MapControl"
 include ':app'
+include ':fake-vdbus'
+include ':emulator-control'
 

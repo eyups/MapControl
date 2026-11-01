@@ -1,0 +1,1170 @@
+[ 1245.453553] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1245.453564] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1245.453570] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1245.453573] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1245.469118] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 118, bssidx: 0
+[ 1245.679405] type=1400 audit(1792224471.881:558): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1246.029625] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1246.265859] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1246.265872] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1246.265881] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1246.265894] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1246.266010] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1246.273042] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1247.008816] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=39906 PROTO=TCP SPT=443 DPT=34004 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1248.680766] type=1400 audit(1792224474.885:559): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1249.039445] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1251.681752] type=1400 audit(1792224477.885:560): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1252.050436] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1252.514921] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=1728 PROTO=TCP SPT=443 DPT=34008 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1254.682171] type=1400 audit(1792224480.885:561): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1255.060448] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1257.444767] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=9489 PROTO=TCP SPT=443 DPT=34012 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1257.683889] type=1400 audit(1792224483.885:562): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1258.070403] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1260.684470] type=1400 audit(1792224486.889:563): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1261.080832] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1262.943923] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=9856 PROTO=TCP SPT=443 DPT=34016 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1263.685983] type=1400 audit(1792224489.889:564): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1264.093452] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1265.524166] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1265.524171] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1265.524174] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1265.524175] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1265.538510] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 119, bssidx: 0
+[ 1266.335421] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1266.335435] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1266.335479] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1266.335491] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1266.335593] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1266.342011] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1266.687705] type=1400 audit(1792224492.889:565): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1267.103051] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1269.688062] type=1400 audit(1792224495.889:566): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1269.711542] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=22645 PROTO=TCP SPT=443 DPT=34020 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1270.113405] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1272.688794] type=1400 audit(1792224498.893:567): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1273.122683] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1275.689975] type=1400 audit(1792224501.893:568): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1276.131984] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1276.286630] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1276.286635] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1276.286638] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1276.286640] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1276.301026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 120, bssidx: 0
+[ 1277.097908] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1277.097930] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1277.097935] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+[ 1277.097944] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1277.098102] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1277.103811] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1277.507123] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=60903 PROTO=TCP SPT=443 DPT=34028 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1278.690507] type=1400 audit(1792224504.893:569): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1279.143485] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1281.691585] type=1400 audit(1792224507.893:570): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1282.109716] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=5702 PROTO=TCP SPT=443 DPT=34032 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1282.158091] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1284.482416] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=6438 PROTO=TCP SPT=443 DPT=34034 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1284.693409] type=1400 audit(1792224510.897:571): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1285.167738] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1285.610891] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1285.610896] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1285.610899] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1285.610900] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1285.625247] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 121, bssidx: 0
+[ 1286.422215] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1286.422226] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1286.422228] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+[ 1286.422235] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1286.422331] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1286.432507] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1286.949896] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=23083 PROTO=TCP SPT=443 DPT=34036 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1287.695209] type=1400 audit(1792224513.897:572): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1288.177630] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1290.695406] type=1400 audit(1792224516.897:573): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1291.188545] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1291.939439] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=63696 PROTO=TCP SPT=443 DPT=34040 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1293.696073] type=1400 audit(1792224519.897:574): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1294.199318] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1296.696841] type=1400 audit(1792224522.901:575): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1296.760933] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170065 
+[ 1297.210341] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1297.430576] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=33890 PROTO=TCP SPT=443 DPT=34044 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1299.697448] type=1400 audit(1792224525.901:576): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1300.221592] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1302.697786] type=1400 audit(1792224528.901:577): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1303.233216] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1304.905347] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=37925 PROTO=TCP SPT=443 DPT=34054 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1305.698163] type=1400 audit(1792224531.901:578): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1305.706362] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1305.706372] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1305.706378] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1305.706382] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1305.721822] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 122, bssidx: 0
+[ 1306.242579] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1306.518982] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1306.518996] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1306.519006] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1306.519021] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1306.519177] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1306.529252] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1307.124998] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1307.125005] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1307.125008] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1307.125010] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1307.140473] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 123, bssidx: 0
+[ 1307.365913] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=18690 PROTO=TCP SPT=443 DPT=34058 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1307.937512] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1307.937523] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1307.937526] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+[ 1307.937531] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1307.937593] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1307.944412] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1308.698614] type=1400 audit(1792224534.901:579): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1309.250520] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1311.699374] type=1400 audit(1792224537.901:580): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1312.258612] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1312.612766] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=21493 PROTO=TCP SPT=443 DPT=34064 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1314.700320] type=1400 audit(1792224540.905:581): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1315.269000] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1316.685954] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=33170 PROTO=TCP SPT=443 DPT=34068 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1317.701330] type=1400 audit(1792224543.905:582): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1318.278857] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1320.702284] type=1400 audit(1792224546.905:583): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1321.288949] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1322.313819] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=28212 PROTO=TCP SPT=443 DPT=34076 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1322.316860] logd: logdr: UID=2000 GID=2000 PID=7931 n tail=5 logMask=80 pid=0 start=0ns timeout=0ns
+[ 1322.369818] type=1400 audit(1792224548.573:584): avc: denied { syslog_read } for comm="dmesg" scontext=u:r:shell:s0 tcontext=u:r:kernel:s0 tclass=system permissive=0
+[ 1323.702735] type=1400 audit(1792224549.905:585): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1324.300676] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1324.751132] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=3064 PROTO=TCP SPT=443 DPT=34078 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1325.789552] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1325.789578] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1325.789584] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1325.789588] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1325.803847] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 124, bssidx: 0
+[ 1326.600793] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1326.600802] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1326.600815] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1326.600830] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1326.600968] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1326.610230] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1326.705174] type=1400 audit(1792224552.909:586): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1327.308757] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1327.570455] init: Untracked pid 7948 exited with status 0
+[ 1327.757767] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=63288 PROTO=TCP SPT=443 DPT=34082 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1329.706613] type=1400 audit(1792224555.909:587): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1330.320832] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1332.707099] type=1400 audit(1792224558.909:588): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1333.331175] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1334.577473] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=53291 PROTO=TCP SPT=443 DPT=34090 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1335.708087] type=1400 audit(1792224561.909:589): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1336.343234] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1337.958636] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1337.958653] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1337.958662] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1337.958666] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1337.974149] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 125, bssidx: 0
+[ 1338.708986] type=1400 audit(1792224564.913:590): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1338.771030] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1338.771037] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1338.771043] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1338.771050] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1338.771098] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1338.781785] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1339.353116] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1341.709330] type=1400 audit(1792224567.913:591): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1342.363072] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1344.159009] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=64009 PROTO=TCP SPT=443 DPT=34096 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1344.710038] type=1400 audit(1792224570.913:592): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1345.373341] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1345.872118] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1345.872129] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1345.872174] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1345.872177] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1345.886709] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 126, bssidx: 0
+[ 1346.683326] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1346.683340] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x3 
+[ 1346.683344] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1346.683352] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1346.683420] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1346.694614] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1346.936248] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=56122 PROTO=TCP SPT=443 DPT=34098 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1347.713919] type=1400 audit(1792224573.913:593): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1348.384338] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1350.177076] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=18542 PROTO=TCP SPT=443 DPT=34102 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1350.712869] type=1400 audit(1792224576.917:594): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1351.394734] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1352.651008] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=45198 PROTO=TCP SPT=443 DPT=34104 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1353.712559] type=1400 audit(1792224579.917:595): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1354.405009] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1355.123043] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=45217 PROTO=TCP SPT=443 DPT=34106 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1356.716029] type=1400 audit(1792224582.917:596): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1357.414098] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1357.564328] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=52735 PROTO=TCP SPT=443 DPT=34108 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1359.714019] type=1400 audit(1792224585.917:597): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1360.030572] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=12577 PROTO=TCP SPT=443 DPT=34110 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1360.424391] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1362.076269] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=58696 PROTO=TCP SPT=443 DPT=34112 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1362.714414] type=1400 audit(1792224588.917:598): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1363.435063] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1365.715022] type=1400 audit(1792224591.917:599): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1365.971790] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1365.971795] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1365.971798] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1365.971800] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1365.986135] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 127, bssidx: 0
+[ 1366.447249] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1366.783314] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1366.783321] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1366.783334] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1366.783348] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1366.783530] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1366.789525] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1366.884933] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=31209 PROTO=TCP SPT=443 DPT=34118 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1368.715379] type=1400 audit(1792224594.917:600): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1368.797537] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1368.797543] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1368.797546] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1368.797547] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1368.813360] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 128, bssidx: 0
+[ 1369.459187] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1369.609958] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1369.609971] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1369.609981] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1369.609994] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1369.610121] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1369.619497] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1369.863100] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=26093 PROTO=TCP SPT=443 DPT=34120 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1371.717078] type=1400 audit(1792224597.921:601): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1372.468417] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1372.964903] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1372.964908] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+[ 1372.964911] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+[ 1372.964912] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1372.965604] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 129, bssidx: 0
+[ 1373.102636] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1373.102643] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1373.102659] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1373.102673] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1373.102726] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1373.106767] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1374.562709] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=765 PROTO=TCP SPT=443 DPT=34124 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1374.717174] type=1400 audit(1792224600.921:602): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1375.480517] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1377.717566] type=1400 audit(1792224603.921:603): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1378.491403] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1379.479277] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=44805 PROTO=TCP SPT=443 DPT=34132 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1380.717851] type=1400 audit(1792224606.921:604): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1381.503524] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1383.718321] type=1400 audit(1792224609.921:605): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1384.514041] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1385.165281] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=8710 PROTO=TCP SPT=443 DPT=34136 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1386.019937] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1386.019966] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1386.019973] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1386.019976] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1386.034566] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 130, bssidx: 0
+[ 1386.718867] type=1400 audit(1792224612.921:606): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1386.831355] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1386.831363] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1386.831367] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+[ 1386.831370] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1386.831422] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1386.843520] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1387.525393] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1389.719947] type=1400 audit(1792224615.921:607): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1390.324455] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=38781 PROTO=TCP SPT=443 DPT=34140 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1390.536866] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1392.720314] type=1400 audit(1792224618.925:608): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1393.546499] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1395.023026] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=50923 PROTO=TCP SPT=443 DPT=34146 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1395.720930] type=1400 audit(1792224621.925:609): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1396.557968] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1398.721872] type=1400 audit(1792224624.925:610): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1399.568320] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1399.631411] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1399.631416] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1399.631419] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1399.631421] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1399.647021] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 131, bssidx: 0
+[ 1400.443910] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1400.443927] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1400.444264] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1400.444273] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1400.444337] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1400.450941] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1400.587040] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=62481 PROTO=TCP SPT=443 DPT=34150 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1401.723791] type=1400 audit(1792224627.925:611): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1402.576120] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1404.723142] type=1400 audit(1792224630.925:612): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1405.587588] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1405.881205] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=15536 PROTO=TCP SPT=443 DPT=34154 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1406.062986] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1406.062995] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1406.063002] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1406.063005] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1406.077460] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 132, bssidx: 0
+[ 1406.874248] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1406.874260] CFG80211-INFO) wl_print_event_data : 
+[ 1406.874261] CFG80211-INFO) wl_cfg80211_event : 
+[ 1406.874263] event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1406.874265] Enqueing escan completion (0). WQ state:0x2 
+[ 1406.874269] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1406.874325] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1406.879130] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1407.723449] type=1400 audit(1792224633.925:613): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1408.599368] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1410.417519] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=32404 PROTO=TCP SPT=443 DPT=34160 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1410.723976] type=1400 audit(1792224636.925:614): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1411.607039] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1413.724377] type=1400 audit(1792224639.929:615): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1414.618480] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1416.140327] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=17711 PROTO=TCP SPT=443 DPT=34164 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1416.724797] type=1400 audit(1792224642.929:616): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1417.628431] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1417.736844] q6asm_session_alloc session 14
+[ 1417.741394] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+[ 1417.742871] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+[ 1417.745253] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+[ 1417.751986] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+[ 1417.756892] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+[ 1419.668466] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=64628 PROTO=TCP SPT=443 DPT=34166 WINDOW=149 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1419.726128] type=1400 audit(1792224645.929:617): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1420.636281] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1420.939426] q6asm_session_free: sessionid[14]
+[ 1422.204534] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170065 
+[ 1422.726692] type=1400 audit(1792224648.929:618): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1423.651665] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1424.777092] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=3185 PROTO=TCP SPT=443 DPT=34172 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1425.726948] type=1400 audit(1792224651.929:619): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1426.116757] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1426.116767] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1426.116774] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1426.116777] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1426.131106] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 133, bssidx: 0
+[ 1426.293801] logd: logdr: UID=2000 GID=2000 PID=8177 n tail=0 logMask=80 pid=0 start=0ns timeout=0ns
+[ 1426.666579] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1426.927995] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1426.928041] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+[ 1426.928088] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1426.928104] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1426.928287] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1426.938716] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1428.727458] type=1400 audit(1792224654.929:620): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1429.680657] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1430.164832] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=57227 PROTO=TCP SPT=443 DPT=34178 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1430.466105] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1430.466109] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1430.466112] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1430.466114] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1430.481882] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 134, bssidx: 0
+[ 1431.278511] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1431.278524] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1431.278530] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1431.278537] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1431.278624] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1431.289412] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1431.728003] type=1400 audit(1792224657.929:621): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1432.692469] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1434.729319] type=1400 audit(1792224660.933:622): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1435.080490] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=12004 PROTO=TCP SPT=443 DPT=34182 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1435.703385] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1437.729413] type=1400 audit(1792224663.933:623): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1438.711350] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1439.710285] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=5134 PROTO=TCP SPT=443 DPT=34188 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1440.729668] type=1400 audit(1792224666.933:624): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1441.720861] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1443.729845] type=1400 audit(1792224669.933:625): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1444.731252] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1445.101738] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=53502 PROTO=TCP SPT=443 DPT=34192 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1446.189877] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1446.189888] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1446.189894] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1446.189898] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1446.206348] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 135, bssidx: 0
+[ 1446.730283] type=1400 audit(1792224672.933:626): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1447.002439] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1447.002447] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1447.002461] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1447.002475] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1447.002650] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1447.010334] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1447.745879] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1449.731412] type=1400 audit(1792224675.933:627): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1450.431874] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=37922 PROTO=TCP SPT=443 DPT=34196 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1450.756152] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1452.731629] type=1400 audit(1792224678.933:628): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1453.767757] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1455.644857] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=8721 PROTO=TCP SPT=443 DPT=34202 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1455.732370] type=1400 audit(1792224681.933:629): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1456.777401] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1458.732974] type=1400 audit(1792224684.937:630): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1459.788226] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1461.305466] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1461.305479] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1461.305577] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1461.305582] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1461.319970] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 136, bssidx: 0
+[ 1461.733471] type=1400 audit(1792224687.937:631): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1461.770508] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=16918 PROTO=TCP SPT=443 DPT=34206 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1462.116797] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1462.116816] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1462.116868] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1462.116883] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1462.117121] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1462.125191] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1462.798087] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1464.265438] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=31486 PROTO=TCP SPT=443 DPT=34208 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1464.733979] type=1400 audit(1792224690.937:632): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1465.810320] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1466.260975] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1466.260984] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1466.260990] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1466.260993] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1466.275345] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 137, bssidx: 0
+[ 1467.072629] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1467.072642] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1467.072708] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1467.072720] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1467.072853] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1467.083656] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1467.734654] type=1400 audit(1792224693.937:633): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1468.819690] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1470.735501] type=1400 audit(1792224696.937:634): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1471.115274] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=19582 PROTO=TCP SPT=443 DPT=34218 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1471.829067] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1473.735899] type=1400 audit(1792224699.937:635): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1474.840776] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1476.460779] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=12069 PROTO=TCP SPT=443 DPT=34222 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1476.736649] type=1400 audit(1792224702.941:636): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1477.848395] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1479.736796] type=1400 audit(1792224705.941:637): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1480.857889] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1481.264535] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=8856 PROTO=TCP SPT=443 DPT=34226 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1482.737757] type=1400 audit(1792224708.941:638): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1483.867790] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1485.737735] type=1400 audit(1792224711.941:639): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1486.351042] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1486.351047] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1486.351050] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1486.351051] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1486.366721] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 138, bssidx: 0
+[ 1486.585831] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=20098 PROTO=TCP SPT=443 DPT=34232 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1486.875648] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1487.164690] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1487.164700] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1487.164718] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1487.164730] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1487.164800] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1487.175718] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1488.738552] type=1400 audit(1792224714.941:640): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1489.885642] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1491.738746] type=1400 audit(1792224717.941:641): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1491.808692] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=49969 PROTO=TCP SPT=443 DPT=34236 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1492.147418] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1492.147423] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1492.147426] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1492.147427] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1492.163368] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 139, bssidx: 0
+[ 1492.896564] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1492.959940] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1492.959949] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1492.959957] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1492.959965] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1492.960117] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1492.971388] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1494.273770] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=55502 PROTO=TCP SPT=443 DPT=34238 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1494.739852] type=1400 audit(1792224720.941:642): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1495.905596] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1497.740397] type=1400 audit(1792224723.941:643): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1498.916887] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1500.740933] type=1400 audit(1792224726.945:644): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1500.985406] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=11865 PROTO=TCP SPT=443 DPT=34244 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1501.928428] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1503.741120] type=1400 audit(1792224729.945:645): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1504.938999] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1505.900232] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=60238 PROTO=TCP SPT=443 DPT=34250 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1506.414990] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1506.414999] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1506.415006] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1506.415009] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1506.430474] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 140, bssidx: 0
+[ 1506.741420] type=1400 audit(1792224732.945:646): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1507.227429] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1507.227442] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1507.227445] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+[ 1507.227452] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1507.227513] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1507.238148] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1507.950764] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1509.741702] type=1400 audit(1792224735.945:647): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1510.347170] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=45419 PROTO=TCP SPT=443 DPT=34254 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1510.959463] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1512.742128] type=1400 audit(1792224738.945:648): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1513.969296] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1515.742710] type=1400 audit(1792224741.945:649): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1516.267410] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=38143 PROTO=TCP SPT=443 DPT=34262 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1516.979966] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1518.142642] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=31164 PROTO=TCP SPT=443 DPT=34264 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1518.743106] type=1400 audit(1792224744.945:650): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1519.989181] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1520.704053] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=55197 PROTO=TCP SPT=443 DPT=34268 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1521.743470] type=1400 audit(1792224747.945:651): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1522.951921] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=16864 PROTO=TCP SPT=443 DPT=34270 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1522.984522] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1522.984532] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1522.984538] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1522.984541] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1522.999207] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 141, bssidx: 0
+[ 1522.999476] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1523.796344] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1523.796351] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1523.796376] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1523.796390] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1523.796531] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1523.811933] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1524.743995] type=1400 audit(1792224750.945:652): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1525.692438] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=1130 PROTO=TCP SPT=443 DPT=34272 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1526.009232] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1526.464179] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1526.464183] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1526.464186] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1526.464188] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1526.479695] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 142, bssidx: 0
+[ 1527.276712] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1527.276732] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1527.276735] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+[ 1527.276746] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1527.276888] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1527.289061] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1527.745345] type=1400 audit(1792224753.949:653): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1528.264916] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=35181 PROTO=TCP SPT=443 DPT=34274 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1529.019340] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1530.470653] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=58924 PROTO=TCP SPT=443 DPT=34276 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1530.745517] type=1400 audit(1792224756.949:654): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1532.030819] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1532.967119] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1532.967124] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+[ 1532.967127] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+[ 1532.967128] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1532.967916] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 143, bssidx: 0
+[ 1533.104805] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1533.104832] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1533.104881] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1533.104888] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1533.104926] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1533.112321] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1533.746506] type=1400 audit(1792224759.949:655): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1535.043495] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1535.789481] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=48013 PROTO=TCP SPT=443 DPT=34280 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1536.747345] type=1400 audit(1792224762.949:656): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1538.051353] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1538.505923] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=44654 PROTO=TCP SPT=443 DPT=34282 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1539.747948] type=1400 audit(1792224765.949:657): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1541.060145] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1542.748752] type=1400 audit(1792224768.953:658): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1543.363043] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=37049 PROTO=TCP SPT=443 DPT=34286 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1544.069562] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1545.748792] type=1400 audit(1792224771.953:659): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1546.568216] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1546.568228] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1546.568236] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1546.568239] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1546.583859] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 144, bssidx: 0
+[ 1547.076296] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1547.381981] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1547.381988] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x3 
+[ 1547.381992] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1547.381999] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1547.382048] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1547.388092] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1547.648403] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170065 
+[ 1548.749303] type=1400 audit(1792224774.953:660): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1549.670114] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=4462 PROTO=TCP SPT=443 DPT=34292 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1550.089139] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1551.749679] type=1400 audit(1792224777.953:661): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1551.945312] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=45472 PROTO=TCP SPT=443 DPT=34294 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1553.100372] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1553.826723] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1553.826733] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1553.826739] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1553.826743] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1553.841109] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 145, bssidx: 0
+[ 1554.638106] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1554.638119] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1554.638170] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1554.638176] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1554.638231] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1554.649749] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1554.749950] type=1400 audit(1792224780.953:662): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1556.110409] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1557.497598] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=18305 PROTO=TCP SPT=443 DPT=34298 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1557.750607] type=1400 audit(1792224783.953:663): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1559.119138] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1560.751731] type=1400 audit(1792224786.953:664): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1562.128401] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1562.360785] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=47138 PROTO=TCP SPT=443 DPT=34302 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1563.752174] type=1400 audit(1792224789.953:665): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1565.136568] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1566.622693] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1566.622702] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1566.622708] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1566.622712] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1566.637203] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 146, bssidx: 0
+[ 1566.752923] type=1400 audit(1792224792.957:666): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1567.433916] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1567.433928] CFG80211-INFO) wl_print_event_data : 
+[ 1567.433929] CFG80211-INFO) wl_cfg80211_event : 
+[ 1567.433931] event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1567.433932] Enqueing escan completion (0). WQ state:0x2 
+[ 1567.433937] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1567.433999] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1567.443334] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1568.145427] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1569.754132] type=1400 audit(1792224795.957:667): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1571.155426] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1571.191422] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=26553 PROTO=TCP SPT=443 DPT=34308 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1572.757258] type=1400 audit(1792224798.957:668): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1572.877131] q6asm_session_alloc session 14
+[ 1572.881852] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+[ 1572.882386] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+[ 1572.883749] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+[ 1572.890304] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+[ 1572.894962] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+[ 1574.168841] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1575.756909] type=1400 audit(1792224801.961:669): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1576.076797] q6asm_session_free: sessionid[14]
+[ 1576.299963] logd: logdr: UID=2000 GID=2000 PID=8456 b tail=0 logMask=ff pid=0 start=0ns timeout=0ns
+[ 1577.179469] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1577.481333] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=62501 PROTO=TCP SPT=443 DPT=34310 WINDOW=149 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1577.609740] q6asm_session_alloc session 14
+[ 1577.613655] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+[ 1577.614297] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+[ 1577.615423] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+[ 1577.622257] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+[ 1577.626187] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+[ 1578.757332] type=1400 audit(1792224804.961:670): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1580.189558] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1581.758007] type=1400 audit(1792224807.961:671): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1582.889963] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=26907 PROTO=TCP SPT=443 DPT=34316 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1583.202276] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1583.434107] q6asm_session_free: sessionid[14]
+[ 1584.660483] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1584.660493] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1584.660498] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1584.660502] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1584.675932] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 147, bssidx: 0
+[ 1584.759415] type=1400 audit(1792224810.961:672): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1585.475460] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1585.475467] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1585.475612] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1585.475619] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1585.475664] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1585.488118] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1585.555984] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=51259 PROTO=TCP SPT=443 DPT=34318 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1586.220379] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1586.677222] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[ 1586.677227] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[ 1586.677230] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[ 1586.677231] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[ 1586.692829] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 148, bssidx: 0
+[ 1587.494769] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1587.494776] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[ 1587.494792] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[ 1587.494806] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[ 1587.494889] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[ 1587.514943] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1587.559213] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=41734 PROTO=TCP SPT=443 DPT=34322 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1587.762247] type=1400 audit(1792224813.961:673): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1589.237167] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1590.764565] type=1400 audit(1792224816.965:674): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1592.256635] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1593.724314] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=20574 PROTO=TCP SPT=443 DPT=34326 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1593.765261] type=1400 audit(1792224819.969:675): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1595.266614] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1596.766620] type=1400 audit(1792224822.969:676): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1597.876757] binder: undelivered transaction 3146709, process died.
+[ 1597.876762] binder: undelivered transaction 3146806, process died.
+[ 1597.876764] binder: undelivered transaction 3146788, process died.
+[ 1597.876765] binder: undelivered transaction 3146789, process died.
+[ 1597.876766] binder: undelivered transaction 3146791, process died.
+[ 1597.876768] binder: undelivered transaction 3146792, process died.
+[ 1597.876858] binder: undelivered transaction 3146787, process died.
+[ 1597.876860] binder: undelivered transaction 3146804, process died.
+[ 1598.093870] potentially unexpected fatal signal 11.
+[ 1598.093876] CPU: 1 PID: 8480 Comm: EvtQ_c2.qti.avc Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1598.093877] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1598.093878] pstate: 80000000 (Nzcv daif -PAN -UAO)
+[ 1598.093879] pc : 00000073eb25d598
+[ 1598.093880] lr : 00000073eb25d498
+[ 1598.093881] sp : 00000070d401f6a0
+[ 1598.093881] x29: 00000070d401f700 x28: b4000071d98771e0 
+[ 1598.093883] x27: b4000071198a5ff8 x26: b4000071198a5fe0 
+[ 1598.093884] x25: 00000070d401f6c9 x24: 00000073eb7e14b8 
+[ 1598.093886] x23: 00000073eb24c623 x22: b4000071d98771e1 
+[ 1598.093887] x21: 00000073eb24db15 x20: 0000000000000000 
+[ 1598.093897] x19: b4000071d9877180 x18: 00000070d313c000 
+[ 1598.093898] x17: 00000073ea83ead4 x16: 00000073e9eb47d0 
+[ 1598.093899] x15: 00000000022a3c0b x14: 00000000d2001800 
+[ 1598.093900] x13: 0000000000000060 x12: 0000000000000000 
+[ 1598.093901] x11: 0000000000000000 x10: 0000000000000000 
+[ 1598.093902] x9 : 0000000000000001 x8 : 00000070d401f6c8 
+[ 1598.093903] x7 : 0000019000000280 x6 : d200180000000010 
+[ 1598.093904] x5 : b400007109883820 x4 : 0000000000000010 
+[ 1598.093905] x3 : 0000000000000020 x2 : 00000070d401f5e8 
+[ 1598.093906] x1 : b400007109883190 x0 : 0000000000000000 
+[ 1598.115311] init: Service 'vendor-qti-media-c2-hal-1-0' (pid 542) received signal 11
+[ 1598.115334] init: Sending signal 9 to service 'vendor-qti-media-c2-hal-1-0' (pid 542) process group...
+[ 1598.115764] libprocessgroup: Successfully killed process cgroup uid 1046 pid 542 in 0ms
+[ 1598.118217] init: starting service 'vendor-qti-media-c2-hal-1-0'...
+[ 1598.122452] init: starting service 'vendor-qti-media-c2-hal-1-0' | pid: 8573 | class: hal
+[ 1598.282496] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1598.691003] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=63515 PROTO=TCP SPT=443 DPT=34332 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1599.004970] type=1400 audit(1792224825.209:677): avc: denied { read } for comm="pool-2-thread-1" name="version" dev="proc" ino=4026532187 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:proc_version:s0 tclass=file permissive=0 app=com.frostnav
+[ 1599.006915] type=1400 audit(1792224825.209:678): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+[ 1599.007186] type=1400 audit(1792224825.209:679): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+[ 1599.007375] type=1400 audit(1792224825.209:680): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+[ 1599.766865] type=1400 audit(1792224825.969:681): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1601.291931] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[ 1601.365354] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=114.118.67.101 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=121 ID=14351 PROTO=TCP SPT=443 DPT=34334 WINDOW=151 RES=0x00 ACK RST URGP=0 MARK=0x130066 
+[ 1602.072197] potentially unexpected fatal signal 11.
+[ 1602.072211] CPU: 6 PID: 8731 Comm: EvtQ_c2.qti.avc Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1602.072214] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1602.072218] pstate: 80000000 (Nzcv daif -PAN -UAO)
+[ 1602.072220] pc : 0000007b8d2f45f0
+[ 1602.072221] lr : 0000007b8d2f4528
+[ 1602.072223] sp : 0000007b93bc2380
+[ 1602.072225] x29: 0000007b93bc23c0 x28: 0000007b8d323420 
+[ 1602.072229] x27: 0000007b93bc3000 x26: 0000007b8d31fa78 
+[ 1602.072232] x25: 0000007b93bc2434 x24: 0000007b8d31fa80 
+[ 1602.072234] x23: 0000000000000001 x22: 0000000000000002 
+[ 1602.072237] x21: 0000000000000042 x20: 0000000000000008 
+[ 1602.072240] x19: 0000007b8d3204c8 x18: 0000007b934d0000 
+[ 1602.072243] x17: 0000007e9c10695c x16: 0000007b8d31e330 
+[ 1602.072246] x15: 7384e0784e0e621f x14: 0000000000000000 
+[ 1602.072249] x13: 0000000000000028 x12: 0000007b8d31e000 
+[ 1602.072251] x11: 0000000000000008 x10: 0000007e9d66b000 
+[ 1602.072254] x9 : 000000000000000c x8 : 0000000000000028 
+[ 1602.072257] x7 : 0000000000000000 x6 : 0000000000000000 
+[ 1602.072260] x5 : 0000000000000000 x4 : 0000000000000000 
+[ 1602.072263] x3 : 0000007b93bc2434 x2 : 0000000000000000 
+[ 1602.072265] x1 : 0000000000000000 x0 : 0000000000000000 
+[ 1602.072721] binder: 8573:8575 ioctl c0306201 7e9d811a80 returned -14
+[ 1602.079036] binder: send failed reply for transaction 3158262 to 8637:8707
+[ 1602.079397] init: Service 'vendor-qti-media-c2-hal-1-0' (pid 8573) received signal 11
+[ 1602.079436] init: Sending signal 9 to service 'vendor-qti-media-c2-hal-1-0' (pid 8573) process group...
+[ 1602.079820] libprocessgroup: Successfully killed process cgroup uid 1046 pid 8573 in 0ms
+[ 1602.767378] type=1400 audit(1792224828.969:682): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1603.124174] init: starting service 'vendor-qti-media-c2-hal-1-0'...
+[ 1603.125908] init: starting service 'vendor-qti-media-c2-hal-1-0' | pid: 8766 | class: hal
+[ 1603.515864] q6asm_session_alloc session 14
+[ 1603.519901] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+[ 1603.520746] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+[ 1603.525930] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+[ 1603.532980] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+[ 1603.537220] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+[ 1603.667898] init: Control message: Could not find 'android.hardware.media.c2@1.0::IComponentStore/default' for ctl.interface_start from pid: 303 (/system/bin/hwservicemanager)
+[ 1603.670685] init: Control message: Could not find 'android.hardware.media.c2@1.0::IComponentStore/default' for ctl.interface_start from pid: 303 (/system/bin/hwservicemanager)
+[ 1603.885164] binder: 1242:8821 transaction failed 29189/-22, size 176-32 line 2708
+[ 1604.127037] potentially unexpected fatal signal 11.
+[ 1604.127043] CPU: 1 PID: 376 Comm: ImageManager Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1604.127044] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1604.127045] pstate: 60000000 (nZCv daif -PAN -UAO)
+[ 1604.127046] pc : 000000789369d970
+[ 1604.127047] lr : 00000078925823dc
+[ 1604.127047] sp : 00000078911056d0
+[ 1604.127048] x29: 00000078911057c0 x28: b400007956bcb3bc 
+[ 1604.127050] x27: 0000007891106000 x26: 0000000000000028 
+[ 1604.127051] x25: 0000000000000000 x24: 0000007891105800 
+[ 1604.127052] x23: 0000000000000080 x22: 0000000000000089 
+[ 1604.127053] x21: 0000007891106000 x20: b400007b16bbc010 
+[ 1604.127054] x19: b400007986bbbab0 x18: 000000789035a000 
+[ 1604.127055] x17: 000000789369d948 x16: 00000078926df778 
+[ 1604.127056] x15: 0000000000000002 x14: 0000007891fec438 
+[ 1604.127057] x13: 00000000da7aca5e x12: 0000000000000000 
+[ 1604.127058] x11: 7422b3ed48c6f9df x10: b400007a26bc2d50 
+[ 1604.127059] x9 : b400007ad6bbc0a8 x8 : 7422b3ed48c6f9df 
+[ 1604.127060] x7 : 0000000000000000 x6 : 2c7f2c832c7f2c82 
+[ 1604.127061] x5 : b400007ac6bcd040 x4 : 0000007b8854ec34 
+[ 1604.127062] x3 : b400007ac6bccfc0 x2 : b400007a26bc31f0 
+[ 1604.127063] x1 : b400007a26bc3200 x0 : b400007afb3dc4c2 
+[ 1604.127240] init: Untracked pid 8849 exited with status 0
+[ 1604.129792] init: Untracked pid 8852 exited with status 0
+[ 1604.137253] potentially unexpected fatal signal 11.
+[ 1604.137259] CPU: 0 PID: 8841 Comm: EvtQ_c2.qti.avc Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1604.137261] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1604.137262] pstate: 20000000 (nzCv daif -PAN -UAO)
+[ 1604.137263] pc : 00000078ae665798
+[ 1604.137264] lr : 00000078ae9a7668
+[ 1604.137265] sp : 00000075b7ab90c0
+[ 1604.137265] x29: 00000075b7ab9110 x28: b4000075ed0ca768 
+[ 1604.137267] x27: 0000000000000000 x26: 00000075b7abb000 
+[ 1604.137268] x25: 00000000d2008001 x24: 0000000000000000 
+[ 1604.137269] x23: 00000078adb5a044 x22: 000000000000000a 
+[ 1604.137270] x21: 0000000000000001 x20: 00000075b7ab90c0 
+[ 1604.137271] x19: 0000000000000000 x18: 00000075b44a8000 
+[ 1604.137272] x17: 00000078ae665798 x16: 00000078ae9b0490 
+[ 1604.137273] x15: 00ffffffffffffff x14: 00000000d200180a 
+[ 1604.137274] x13: 00000000d200180a x12: 0000000000000000 
+[ 1604.137275] x11: 0000000000000000 x10: 0000000000000000 
+[ 1604.137276] x9 : 0000000000000001 x8 : 00000078ae9b1000 
+[ 1604.137277] x7 : 7f7f7f7f7f7f7f7f x6 : 4f43736465ff6073 
+[ 1604.137278] x5 : 0000000000800000 x4 : 00000075b7ab90db 
+[ 1604.137279] x3 : 5044746567006174 x2 : 000000000000001b 
+[ 1604.137280] x1 : 0000000000000000 x0 : 00000078af4613c4 
+[ 1604.137409] binder: 8766:8767 ioctl c0306201 78af2d5a80 returned -14
+[ 1604.144283] binder: release 314:332 transaction 3163729 in, still active
+[ 1604.144294] binder: send failed reply for transaction 3163729 to 8637:8680
+[ 1604.144329] binder: release 314:336 transaction 3163697 in, still active
+[ 1604.144334] binder: send failed reply for transaction 3163697 to 500:650
+[ 1604.144365] binder: release 314:2527 transaction 3163786 in, still active
+[ 1604.144369] binder: send failed reply for transaction 3163786 to 4184:5720
+[ 1604.144403] binder: release 314:4177 transaction 3163629 in, still active
+[ 1604.144406] binder: send failed reply for transaction 3163629 to 500:648
+[ 1604.144565] binder_alloc: 314: binder_alloc_buf, no vma
+[ 1604.144569] binder: 500:650 transaction failed 29189/-3, size 88-0 line 2879
+[ 1604.144641] init: Service 'surfaceflinger' (pid 314) received signal 11
+[ 1604.144661] init: Sending signal 9 to service 'surfaceflinger' (pid 314) process group...
+[ 1604.144991] binder: undelivered transaction 3163925, process died.
+[ 1604.145281] libprocessgroup: Successfully killed process cgroup uid 1000 pid 314 in 0ms
+[ 1604.145575] init: Sending signal 9 to service 'zygote' (pid 328) process group...
+[ 1604.310814] binder: undelivered transaction 3163978, process died.
+[ 1604.310818] binder: undelivered transaction 3163984, process died.
+[ 1604.310819] binder: undelivered transaction 3163993, process died.
+[ 1604.310820] binder: undelivered transaction 3164004, process died.
+[ 1604.310822] binder: undelivered transaction 3164013, process died.
+[ 1604.310920] binder: undelivered transaction 3163972, process died.
+[ 1604.331409] binder: undelivered transaction 3163977, process died.
+[ 1604.331413] binder: undelivered transaction 3163983, process died.
+[ 1604.331414] binder: undelivered transaction 3163992, process died.
+[ 1604.502675] binder_alloc: 500: binder_alloc_buf, no vma
+[ 1604.502681] binder: 519:1084 transaction failed 29189/-3, size 32-0 line 2879
+[ 1604.502940] binder: undelivered TRANSACTION_COMPLETE
+[ 1604.503154] binder: release 1242:1242 transaction 3163566 out, still active
+[ 1604.503157] binder: undelivered TRANSACTION_COMPLETE
+[ 1604.504179] binder_alloc: 500: binder_alloc_buf, no vma
+[ 1604.504183] binder: 852:914 transaction failed 29189/-3, size 100-0 line 2879
+[ 1604.595524] binder_alloc: 500: binder_alloc_buf, no vma
+[ 1604.595533] binder: 329:373 transaction failed 29189/-3, size 124-8 line 2879
+[ 1604.605104] binder_alloc: 500: binder_alloc_buf, no vma
+[ 1604.605115] binder: 329:4102 transaction failed 29189/-3, size 100-8 line 2879
+[ 1604.605142] binder_alloc: 500: binder_alloc_buf, no vma
+[ 1604.605146] binder: 329:4102 transaction failed 29189/-3, size 100-0 line 2879
+[ 1604.609317] event_handler: reclaimed all bufs
+[ 1604.611105] q6asm_session_free: sessionid[15]
+[ 1604.647937] state_store: called by 'init' (1)
+[ 1604.654063] binder: undelivered TRANSACTION_COMPLETE
+[ 1604.659958] binder: undelivered TRANSACTION_COMPLETE
+[ 1604.660691] vdc: Waited 0ms for vold
+[ 1604.708985] q6asm_session_free: sessionid[14]
+[ 1604.733577] binder: release 500:2171 transaction 3163566 in, still active
+[ 1604.733580] binder: send failed reply for transaction 3163566, target dead
+[ 1604.735529] binder: undelivered death notification, b40000747e481a70
+[ 1604.944223] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+[ 1604.945401] e2fsck: /dev/block/by-name/vrdata is mounted.
+[ 1604.945415] e2fsck: e2fsck: Cannot continue, aborting.
+[ 1604.945420] e2fsck: 
+[ 1604.945424] e2fsck: 
+[ 1604.946108] e2fsck: e2fsck terminated by exit(8)\x0a
+[ 1604.971544] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+[ 1604.973842] e2fsck: /dev/block/by-name/vrdata is mounted.
+[ 1604.973857] e2fsck: e2fsck: Cannot continue, aborting.
+[ 1604.973862] e2fsck: 
+[ 1605.097585] type=1400 audit(1792224831.301:683): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+[ 1605.152455] potentially unexpected fatal signal 6.
+[ 1605.152460] CPU: 3 PID: 8916 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1605.152462] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1605.152463] pstate: 00000000 (nzcv daif -PAN -UAO)
+[ 1605.152464] pc : 0000007f8cd1044c
+[ 1605.152465] lr : 0000007f8cd10420
+[ 1605.152466] sp : 0000007ff6c94540
+[ 1605.152466] x29: 0000007ff6c945e0 x28: 0000007f8cd1492c 
+[ 1605.152468] x27: 0000007ff6c94ec1 x26: 0000000000000000 
+[ 1605.152469] x25: 0000007f8d4d5000 x24: b400007e0c79e930 
+[ 1605.152470] x23: 0000007f8d4d5000 x22: 0000007f8d4d5000 
+[ 1605.152472] x21: 00000000ffffffff x20: 00000000000022d4 
+[ 1605.152473] x19: 00000000000022d4 x18: 0000007f8d616000 
+[ 1605.152474] x17: 0000007f8cd5c9f0 x16: 0000007f8cd7ac80 
+[ 1605.152475] x15: 0000ffff00000fff x14: 0000007f8cd7dd22 
+[ 1605.152476] x13: 2068732f6e69622f x12: 0000000000000001 
+[ 1605.152477] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[ 1605.152479] x9 : 2e6cb0d1aaf23a9f x8 : 00000000000000f0 
+[ 1605.152480] x7 : 000000000000000a x6 : 0000000000000000 
+[ 1605.152481] x5 : 0000000000000000 x4 : 0000000000000000 
+[ 1605.152482] x3 : 0000007ff6c94560 x2 : 0000000000000006 
+[ 1605.152483] x1 : 00000000000022d4 x0 : 0000000000000000 
+[ 1605.153402] potentially unexpected fatal signal 11.
+[ 1605.153407] CPU: 3 PID: 8876 Comm: surfaceflinger Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1605.153408] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1605.153410] pstate: 60000000 (nZCv daif -PAN -UAO)
+[ 1605.153410] pc : 0000007cacbf3970
+[ 1605.153411] lr : 0000007cac8433dc
+[ 1605.153412] sp : 0000007fcf045970
+[ 1605.153412] x29: 0000007fcf045a60 x28: b400007e4fffce2c 
+[ 1605.153414] x27: 0000007fa202d000 x26: b400007e4fffceac 
+[ 1605.153415] x25: 0000000000000000 x24: 0000007fcf045aa0 
+[ 1605.153416] x23: 0000000000000080 x22: 0000000000000089 
+[ 1605.153417] x21: 0000007fa202d000 x20: b400007f2fffa020 
+[ 1605.153418] x19: b400007d9fff08f0 x18: 0000007fa22cc000 
+[ 1605.153419] x17: 0000007cacbf3948 x16: 0000007cac9a0778 
+[ 1605.153420] x15: 0000000000000002 x14: 0000007cab51a438 
+[ 1605.153421] x13: 00000000da7aca5e x12: 0000000000000000 
+[ 1605.153422] x11: 699b89407b2b7ede x10: b400007e3fff5680 
+[ 1605.153423] x9 : b400007eefff78b8 x8 : 699b89407b2b7ede 
+[ 1605.153424] x7 : 0000000000000000 x6 : 677f6780677f6680 
+[ 1605.153425] x5 : b400007edfffa020 x4 : 0000007fa187cc34 
+[ 1605.153426] x3 : b400007edfff9fa0 x2 : b400007e3fff5b20 
+[ 1605.153427] x1 : b400007e3fff5b30 x0 : b400007f567dd7a9 
+[ 1605.164675] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[ 1605.206290] read descriptors
+[ 1605.206377] read strings
+[ 1605.214022] state_store: called by 'init' (1)
+[ 1605.218721] binder: release 8870:8870 transaction 3165287 out, still active
+[ 1605.218724] binder: undelivered TRANSACTION_COMPLETE
+[ 1605.227921] vdc: Waited 0ms for vold
+[ 1605.284634] binder: release 8866:8866 transaction 3165287 in, still active
+[ 1605.284637] binder: send failed reply for transaction 3165287, target dead
+[ 1605.345409] android_work: sent uevent USB_STATE=DISCONNECTED
+[ 1605.351235] dwc3 a600000.dwc3: USB-[dwc3_gadget_interrupt]: Resend remove event to APP, carplay_status: 1, gadget.state: 0
+[ 1605.352135] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Start Send USB CHANGE event to APP
+[ 1605.353006] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Send USB CHANGE event successful!
+[ 1605.355929] type=1400 audit(1792224831.557:684): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+[ 1605.358772] potentially unexpected fatal signal 6.
+[ 1605.358781] CPU: 6 PID: 8943 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1605.358784] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1605.358788] pstate: 00000000 (nzcv daif -PAN -UAO)
+[ 1605.358789] pc : 0000007f8cd1044c
+[ 1605.358791] lr : 0000007f8cd10420
+[ 1605.358792] sp : 0000007ff6c94540
+[ 1605.358794] x29: 0000007ff6c945e0 x28: 0000007f8cd1492c 
+[ 1605.358798] x27: 0000007ff6c94ec1 x26: 0000000000000000 
+[ 1605.358801] x25: 0000007f8d4d5000 x24: b400007e0c79e930 
+[ 1605.358803] x23: 0000007f8d4d5000 x22: 0000007f8d4d5000 
+[ 1605.358806] x21: 00000000ffffffff x20: 00000000000022ef 
+[ 1605.358809] x19: 00000000000022ef x18: 0000007f8d616000 
+[ 1605.358812] x17: 0000007f8cd5c9f0 x16: 0000007f8cd7ac80 
+[ 1605.358815] x15: 0000ffff00000fff x14: 0000007f8cd7dd22 
+[ 1605.358817] x13: 2068732f6e69622f x12: 0000000000000001 
+[ 1605.358820] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[ 1605.358823] x9 : 2e6cb0d1aaf23a9f x8 : 00000000000000f0 
+[ 1605.358825] x7 : 000000000000000a x6 : 0000000000000000 
+[ 1605.358828] x5 : 0000000000000000 x4 : 0000000000000000 
+[ 1605.358831] x3 : 0000007ff6c94560 x2 : 0000000000000006 
+[ 1605.358834] x1 : 00000000000022ef x0 : 0000000000000000 
+[ 1605.489837] android_work: did not send uevent (0 0 0000000000000000)
+[ 1605.490801] read descriptors
+[ 1605.490890] read strings
+[ 1605.504186] type=1400 audit(1792224831.705:685): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+[ 1605.505770] potentially unexpected fatal signal 6.
+[ 1605.505778] CPU: 5 PID: 8955 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1605.505780] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1605.505784] pstate: 00000000 (nzcv daif -PAN -UAO)
+[ 1605.505786] pc : 0000007f8cd1044c
+[ 1605.505787] lr : 0000007f8cd10420
+[ 1605.505789] sp : 0000007ff6c94540
+[ 1605.505790] x29: 0000007ff6c945e0 x28: 0000007f8cd1492c 
+[ 1605.505794] x27: 0000007ff6c94ec1 x26: 0000000000000000 
+[ 1605.505797] x25: 0000007f8d4d5000 x24: b400007e0c79e930 
+[ 1605.505800] x23: 0000007f8d4d5000 x22: 0000007f8d4d5000 
+[ 1605.505802] x21: 00000000ffffffff x20: 00000000000022fb 
+[ 1605.505830] x19: 00000000000022fb x18: 0000007f8d616000 
+[ 1605.505834] x17: 0000007f8cd5c9f0 x16: 0000007f8cd7ac80 
+[ 1605.505836] x15: 0000ffff00000fff x14: 0000007f8cd7dd22 
+[ 1605.505839] x13: 2068732f6e69622f x12: 0000000000000001 
+[ 1605.505842] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[ 1605.505845] x9 : 2e6cb0d1aaf23a9f x8 : 00000000000000f0 
+[ 1605.505848] x7 : 000000000000000a x6 : 0000000000000000 
+[ 1605.505850] x5 : 0000000000000000 x4 : 0000000000000000 
+[ 1605.505853] x3 : 0000007ff6c94560 x2 : 0000000000000006 
+[ 1605.505856] x1 : 00000000000022fb x0 : 0000000000000000 
+[ 1605.609932] android_work: did not send uevent (0 0 0000000000000000)
+[ 1605.768238] type=1400 audit(1792224831.973:686): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1605.817463] android_work: did not send uevent (0 0 0000000000000000)
+[ 1605.863680] android_work: sent uevent USB_STATE=CONNECTED
+[ 1605.868472] configfs-gadget gadget: high-speed config #1: b
+[ 1605.868506] configfs-gadget gadget: Using interface 0
+[ 1605.868607] usb: gadget online event
+[ 1605.868777] android_work: sent uevent USB_STATE=CONFIGURED
+[ 1606.113160] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[ 1608.131247] init: starting service 'vendor-qti-media-c2-hal-1-0'...
+[ 1608.133757] init: starting service 'vendor-qti-media-c2-hal-1-0' | pid: 8976 | class: hal
+[ 1608.769941] type=1400 audit(1792224834.973:687): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1609.782372] init: starting service 'vendor.audio-hal'...
+[ 1609.784400] init: starting service 'vendor.audio-hal' | pid: 9037 | class: hal
+[ 1609.813851] libprocessgroup: Failed to open /dev/stune/foreground/tasks: No such file or directory: No such file or directory
+[ 1609.813860] libprocessgroup: Failed to apply HighPerformance task profile: No such file or directory
+[ 1609.820109] init: starting service 'zygote'...
+[ 1609.821115] init: Created socket '/dev/socket/zygote', mode 660, user 0, group 1000
+[ 1609.821570] init: Created socket '/dev/socket/usap_pool_primary', mode 660, user 0, group 1000
+[ 1609.823868] init: starting service 'zygote' | pid: 9040 | class: main
+[ 1609.948897] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+[ 1609.949231] e2fsck: /dev/block/by-name/fotadata is mounted.
+[ 1609.949239] e2fsck: e2fsck: Cannot continue, aborting.
+[ 1609.949244] e2fsck: 
+[ 1609.949248] e2fsck: 
+[ 1609.949580] e2fsck: e2fsck terminated by exit(8)\x0a
+[ 1609.972684] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+[ 1609.973018] e2fsck: /dev/block/by-name/fotadata is mounted.
+[ 1609.973026] e2fsck: e2fsck: Cannot continue, aborting.
+[ 1609.973030] e2fsck: 
+[ 1610.094723] type=1400 audit(1792224836.297:688): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+[ 1610.098007] potentially unexpected fatal signal 6.
+[ 1610.098013] CPU: 2 PID: 9081 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1610.098014] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1610.098016] pstate: 00000000 (nzcv daif -PAN -UAO)
+[ 1610.098017] pc : 0000007f8cd1044c
+[ 1610.098018] lr : 0000007f8cd10420
+[ 1610.098018] sp : 0000007ff6c94540
+[ 1610.098019] x29: 0000007ff6c945e0 x28: 0000007f8cd1492c 
+[ 1610.098021] x27: 0000007ff6c94ec1 x26: 0000000000000000 
+[ 1610.098022] x25: 0000007f8d4d5000 x24: b400007e0c79e930 
+[ 1610.098023] x23: 0000007f8d4d5000 x22: 0000007f8d4d5000 
+[ 1610.098024] x21: 00000000ffffffff x20: 0000000000002379 
+[ 1610.098026] x19: 0000000000002379 x18: 0000007f8d616000 
+[ 1610.098027] x17: 0000007f8cd5c9f0 x16: 0000007f8cd7ac80 
+[ 1610.098028] x15: 0000ffff00000fff x14: 0000007f8cd7dd22 
+[ 1610.098029] x13: 2068732f6e69622f x12: 0000000000000001 
+[ 1610.098030] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[ 1610.098031] x9 : 2e6cb0d1aaf23a9f x8 : 00000000000000f0 
+[ 1610.098032] x7 : 000000000000000a x6 : 0000000000000000 
+[ 1610.098033] x5 : 0000000000000000 x4 : 0000000000000000 
+[ 1610.098034] x3 : 0000007ff6c94560 x2 : 0000000000000006 
+[ 1610.098035] x1 : 0000000000002379 x0 : 0000000000000000 
+[ 1610.104079] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[ 1610.175885] type=1400 audit(1792224836.377:689): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+[ 1610.175971] type=1400 audit(1792224836.377:690): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+[ 1610.222476] android_work: sent uevent USB_STATE=DISCONNECTED
+[ 1610.228339] dwc3 a600000.dwc3: USB-[dwc3_gadget_interrupt]: Resend remove event to APP, carplay_status: 1, gadget.state: 0
+[ 1610.229337] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Start Send USB CHANGE event to APP
+[ 1610.230493] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Send USB CHANGE event successful!
+[ 1610.256872] read descriptors
+[ 1610.256958] read strings
+[ 1610.276301] type=1400 audit(1792224836.477:691): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+[ 1610.279432] potentially unexpected fatal signal 6.
+[ 1610.279442] CPU: 4 PID: 9113 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[ 1610.279445] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[ 1610.279448] pstate: 00000000 (nzcv daif -PAN -UAO)
+[ 1610.279450] pc : 0000007f8cd1044c
+[ 1610.279451] lr : 0000007f8cd10420
+[ 1610.279453] sp : 0000007ff6c94540
+[ 1610.279455] x29: 0000007ff6c945e0 x28: 0000007f8cd1492c 
+[ 1610.279458] x27: 0000007ff6c94ec1 x26: 0000000000000000 
+[ 1610.279461] x25: 0000007f8d4d5000 x24: b400007e0c79e930 
+[ 1610.279464] x23: 0000007f8d4d5000 x22: 0000007f8d4d5000 
+[ 1610.279467] x21: 00000000ffffffff x20: 0000000000002399 
+[ 1610.279470] x19: 0000000000002399 x18: 0000007f8d616000 
+[ 1610.279473] x17: 0000007f8cd5c9f0 x16: 0000007f8cd7ac80 
+[ 1610.279476] x15: 0000ffff00000fff x14: 0000007f8cd7dd22 
+[ 1610.279479] x13: 2068732f6e69622f x12: 0000000000000001 
+[ 1610.279481] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[ 1610.279484] x9 : 2e6cb0d1aaf23a9f x8 : 00000000000000f0 
+[ 1610.279487] x7 : 000000000000000a x6 : 0000000000000000 
+[ 1610.279490] x5 : 0000000000000000 x4 : 0000000000000000 
+[ 1610.279492] x3 : 0000007ff6c94560 x2 : 0000000000000006 
+[ 1610.279495] x1 : 0000000000002399 x0 : 0000000000000000 
+[ 1610.320388] type=1400 audit(1792224836.521:692): avc: denied { read } for comm="audio.service" name="u:object_r:default_prop:s0" dev="tmpfs" ino=1555 scontext=u:r:hal_audio_default:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+[ 1610.320436] type=1400 audit(1792224836.521:693): avc: denied { read } for comm="audio.service" name="u:object_r:default_prop:s0" dev="tmpfs" ino=1555 scontext=u:r:hal_audio_default:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+[ 1610.365233] android_work: did not send uevent (0 0 0000000000000000)
+[ 1610.572497] android_work: did not send uevent (0 0 0000000000000000)
+[ 1610.618272] android_work: sent uevent USB_STATE=CONNECTED
+[ 1610.627850] configfs-gadget gadget: high-speed config #1: b
+[ 1610.627895] configfs-gadget gadget: Using interface 0
+[ 1610.628130] usb: gadget online event
+[ 1610.628446] android_work: sent uevent USB_STATE=CONFIGURED
+[ 1610.702427] type=1400 audit(1792224836.905:694): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+[ 1610.702487] type=1400 audit(1792224836.905:695): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+[ 1610.950030] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[ 1610.962048] type=1400 audit(1792224837.165:696): avc: denied { search } for comm=73796E6320737663203231 name="/" dev="vdd42" ino=2 scontext=u:r:adbd:s0 tcontext=u:object_r:log_file:s0 tclass=dir permissive=0
+[ 1611.470262] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[ 1611.470516] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[ 1611.474158] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[ 1611.771292] type=1400 audit(1792224837.973:697): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=1689 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[ 1611.773380] type=1400 audit(1792224837.977:698): avc: denied { read write } for comm="desaysv_adber" name="enforce" dev="selinuxfs" ino=4 scontext=u:r:su:s0 tcontext=u:object_r:selinuxfs:s0 tclass=file permissive=1
+[ 1611.773431] audit: audit_lost=1 audit_rate_limit=5 audit_backlog_limit=64
+[ 1611.773433] audit: rate limit exceeded
+[ 1612.255842] healthd: battery none chg=
+[ 1612.668444] binder: 831:1019 transaction failed 29189/-22, size 0-0 line 2708
+[ 1612.919160] [ADI214xx] put_mic_mute : mic_mute_value 0 
+[ 1612.968604] read descriptors
+[ 1612.968647] read strings
+[ 1612.968692] read descriptors
+[ 1612.968729] read strings
+[ 1613.088072] CFG80211-INFO) wl_cfgvendor_stop_hal : wl_cfgvendor_stop_hal,[DUMP] HAL STOPPED
+[ 1613.088301] CFG80211-INFO) wl_cfgvendor_stop_hal : wl_cfgvendor_stop_hal,[DUMP] HAL STOPPED
+[ 1613.088626] CFG80211-ERROR) wl_cfg80211_disconnect : Reason 3
+[ 1613.088642] CFG80211-INFO) wl_cfg80211_disconnect : [wlan0] wl disassoc
+[ 1613.098411] dhd_flow_rings_delete: ifindex 0
+[ 1613.098444] dhd_prot_flow_ring_delete: Send Flow Delete Req RING ID 39 for peer 01:00:5e:00:00:16 prio 3 ifindex 0
+[ 1613.098448] dhd_prot_flow_ring_delete: Send Flow Delete Req RING ID 40 for peer 33:33:ff:62:6d:a8 prio 0 ifindex 0
+[ 1613.098451] dhd_prot_flow_ring_delete: Send Flow Delete Req RING ID 41 for peer AP_BSSID_REDACTED prio 7 ifindex 0
+[ 1613.098485] dhd_flow_rings_delete: ifindex 0
+[ 1613.098493] CFG80211-INFO) wl_print_event_data : event_type (11), ifidx: 0 bssidx: 0 status:0 reason:8
+[ 1613.098505] CFG80211-INFO) wl_print_event_data : event_type (11), ifidx: 0 bssidx: 0 status:0 reason:8
+[ 1613.098507] wl_process_host_event: Deleting all STA from assoc list and flowrings.
+[ 1613.098509] dhd_flow_rings_delete: ifindex 0
+[ 1613.098515] CFG80211-INFO) wl_print_event_data : event_type (16), ifidx: 0 bssidx: 0 status:0 reason:2
+[ 1613.098523] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:16 status:0 reason:2
+[ 1613.098530] CFG80211-ERROR) wl_is_linkdown : Link down Reason : WLC_E_LINK
+[ 1613.098535] CFG80211-ERROR) wl_is_linkdown : Link down Reason : WLC_E_LINK
+[ 1613.098540] CFG80211-ERROR) wl_notify_connect_status : link down--clearing disconnect IEs
+[ 1613.098547] CFG80211-INFO) wl_notify_connect_status : link down. connection state bit status: [0:1:1:0]
+[ 1613.098685] dhd_prot_flow_ring_delete_response_process: Flow Delete Response status = 0 Flow 39
+[ 1613.098691] dhd_prot_flow_ring_delete_response_process: Flow Delete Response status = 0 Flow 40
+[ 1613.098694] dhd_prot_flow_ring_delete_response_process: Flow Delete Response status = 0 Flow 41
+[ 1613.100845] CFG80211-INFO) wl_cfg80211_cancel_scan : No scan in progress
+[ 1613.102246] CFG80211-INFO) wl_cfg80211_set_frameburst : frameburst is enabled
+[ 1613.102256] CFG80211-INFO) wl_notify_connect_status : [wlan0] Indicate disconnect event to upper layer. event: 16 reason=2 from AP_BSSID_REDACTED
+[ 1613.102307] CFG80211-INFO) wl_notify_connect_status : [wlan0] Disconnect event sent to upper layerevent:16 reason=2 ie_len=0 from AP_BSSID_REDACTED
+[ 1613.148107] CFG80211-INFO) wl_cfg80211_wait_for_disconnection : Wait for disconnection done. status:0 wait_cnt:9
+[ 1613.148124] CFG80211-ERROR) wl_cfg80211_disconnect : Clearing disconnect IEs 
+[ 1613.148465] [wlan0] tx queue stopped
+[ 1613.148471] dhd_stop: ######### dhd_stop called for ifidx=0 #########
+[ 1613.148473] dhd_stop: making dhdpub up FALSE
+[ 1613.148475] CFG80211-INFO) __wl_cfg80211_down : cfg80211 down
+[ 1613.149185] CFG80211-INFO) wl_cfg80211_cancel_scan : No scan in progress
+[ 1613.149188] CFG80211-INFO) __wl_cfg80211_down : wl_cfg80211_down. connection state bit status: [0:0:0:0] for wlan0
+[ 1613.150784] CFG80211-INFO) wl_cfg80211_set_frameburst : frameburst is enabled
+[ 1613.150790] wl_destroy_event_handler, cfg->event_workq=ffffff82801f4600, &cfg->event_work = ffffff829aef2258
+[ 1613.152364] WLC_E_IF: NO_IF set, event Ignored\x0d
+[ 1613.152376] CFGP2P-INFO) wl_cfgp2p_deinit_priv : 
+[ 1613.152377] In
+[ 1613.152387] dhd_rx_frame: net device is NOT registered. drop event packet
+[ 1613.152388] CFG80211-INFO) dhd_cfg80211_down : Dongle is already down
+[ 1613.188154] dhd_cancel_logtrace_process_sync(): thread:dhd_logtrace_thread:565 wait for terminate
+[ 1613.188166] dhd_logtrace_thread: task terminated
+[ 1613.188219] dhd_cancel_logtrace_process_sync(): thread:dhd_logtrace_thread:565 terminated OK
+[ 1613.188620] wl_android_wifi_off in
+[ 1613.194233] dhd_bus_devreset: == Power OFF ==
+[ 1613.194236] dhd_bus_devreset: making dhdpub up FALSE
+[ 1613.194746] dhd_bus_stop: making DHD_BUS_DOWN
+[ 1613.194769] dhd_dpc_kill: tasklet disabled
+[ 1613.194911] ******** Perform FLR ********
+[ 1613.194920] Chip does not support FLR
+[ 1613.266075] selinux: SELinux: Skipping restorecon on directory(/data/system_ce/0)
+[ 1613.266078] selinux: 
+[ 1613.267851] selinux: SELinux: Skipping restorecon on directory(/data/vendor_ce/0)
+[ 1613.267854] selinux: 
+[ 1613.269473] selinux: SELinux: Skipping restorecon on directory(/data/misc_ce/0)
+[ 1613.269477] selinux: 
+[ 1613.298816] msm_pcie_disable: PCIe: Assert the reset of endpoint of RC0.
+[ 1613.300037] dhd_bus_devreset: making DHD_BUS_DOWN
+[ 1613.300042] dhd_bus_devreset:  WLAN OFF Done
+[ 1613.300048] regulator: gpio wlreg_on off
+[ 1613.300049] dhd: wlreg_on regulator_disable
+[ 1613.303894] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+[ 1613.303897] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+[ 1613.303897] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+[ 1613.303898] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+[ 1613.303899] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+[ 1613.303900] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+[ 1613.304098] binder: 1968:1968 transaction failed 29189/-22, size 32-0 line 2708
+[ 1613.306010] init: processing action (sys.user.0.ce_available=true) from (/system/etc/init/wifi.rc:21)
+[ 1613.306930] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+[ 1613.306935] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+[ 1613.306937] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+[ 1613.310787] selinux: SELinux: Skipping restorecon on directory(/data/misc_ce/0/apexdata/com.android.wifi)
+[ 1613.310798] selinux: 
+[ 1613.718009] [ADI214xx] put_mic_mute : mic_mute_value 0 
+[ 1613.722907] audit: audit_lost=3 audit_rate_limit=5 audit_backlog_limit=64
+[ 1613.722910] audit: rate limit exceeded

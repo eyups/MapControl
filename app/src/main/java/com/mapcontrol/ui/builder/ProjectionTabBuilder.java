@@ -628,6 +628,8 @@ public class ProjectionTabBuilder {
                             : "Google Maps cluster kartları kapatıldı");
                 });
 
+        addGoogleClusterStyleSection(mapsClusterBlock);
+
         addClusterOverlayLayoutSection(
                 mainCardContainer,
                 R.string.projection_google_cluster_position_title,
@@ -818,6 +820,136 @@ public class ProjectionTabBuilder {
 
     private CharSequence contextText(int resId) {
         return googleMapsNavSummaryText.getContext().getText(resId);
+    }
+
+    private void addGoogleClusterStyleSection(LinearLayout parent) {
+        TextView title = new TextView(context);
+        title.setText(R.string.projection_google_cluster_design_title);
+        title.setTextSize(15);
+        title.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+        title.setPadding(0, 18, 0, 6);
+        parent.addView(title);
+
+        TextView desc = new TextView(context);
+        desc.setText(R.string.projection_google_cluster_design_desc);
+        desc.setTextSize(13);
+        desc.setTextColor(UiStyles.color(context, R.color.textHint));
+        desc.setPadding(0, 0, 0, 10);
+        parent.addView(desc);
+
+        String[] styles = {
+                GoogleMapsClusterNavOverlay.STYLE_CLASSIC,
+                GoogleMapsClusterNavOverlay.STYLE_TWO_LANE,
+                GoogleMapsClusterNavOverlay.STYLE_SINGLE_ROW,
+                GoogleMapsClusterNavOverlay.STYLE_GLASS
+        };
+        int[] labels = {
+                R.string.projection_cluster_style_classic,
+                R.string.projection_cluster_style_two_lane,
+                R.string.projection_cluster_style_single_row,
+                R.string.projection_cluster_style_glass
+        };
+        String selected = GoogleMapsClusterNavOverlay.getStyle(context);
+        java.util.List<LinearLayout> cards = new java.util.ArrayList<>();
+        for (int row = 0; row < 2; row++) {
+            LinearLayout line = new LinearLayout(context);
+            line.setOrientation(LinearLayout.HORIZONTAL);
+            line.setBaselineAligned(false);
+            for (int col = 0; col < 2; col++) {
+                int index = row * 2 + col;
+                LinearLayout card = new LinearLayout(context);
+                card.setOrientation(LinearLayout.VERTICAL);
+                card.setPadding(12, 10, 12, 10);
+                card.setMinimumHeight(Math.round(82 * context.getResources().getDisplayMetrics().density));
+                card.setClickable(true);
+                card.setFocusable(true);
+                TextView label = new TextView(context);
+                label.setText(labels[index]);
+                label.setTextSize(15);
+                label.setTextColor(UiStyles.color(context, R.color.textPrimary));
+                label.setTypeface(null, Typeface.BOLD);
+                card.addView(label);
+                TextView hint = new TextView(context);
+                hint.setText(R.string.projection_cluster_style_hint);
+                hint.setTextSize(13);
+                hint.setTextColor(UiStyles.color(context, R.color.textHint));
+                hint.setPadding(0, 3, 0, 0);
+                card.addView(hint);
+                final String style = styles[index];
+                card.setOnClickListener(v -> {
+                    GoogleMapsClusterNavOverlay.setStyle(context, style);
+                    applyClusterStyleSelection(cards, styles, GoogleMapsClusterNavOverlay.getStyle(context));
+                    callback.log("Google Maps cluster kart tasarımı: " + style);
+                });
+                cards.add(card);
+                LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                if (col == 0) cardLp.setMarginEnd(4); else cardLp.setMarginStart(4);
+                line.addView(card, cardLp);
+            }
+            LinearLayout.LayoutParams lineLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lineLp.topMargin = 8;
+            parent.addView(line, lineLp);
+        }
+        applyClusterStyleSelection(cards, styles, selected);
+
+        LinearLayout opacityHeader = new LinearLayout(context);
+        opacityHeader.setOrientation(LinearLayout.HORIZONTAL);
+        opacityHeader.setGravity(Gravity.CENTER_VERTICAL);
+        TextView opacityLabel = new TextView(context);
+        opacityLabel.setText(R.string.projection_cluster_opacity_title);
+        opacityLabel.setTextSize(15);
+        opacityLabel.setTextColor(UiStyles.color(context, R.color.textPrimary87));
+        opacityHeader.addView(opacityLabel, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView opacityValue = new TextView(context);
+        opacityValue.setText(GoogleMapsClusterNavOverlay.getOpacity(context) + "%");
+        opacityValue.setTextSize(15);
+        opacityValue.setTextColor(UiStyles.color(context, R.color.ck_accent));
+        opacityHeader.addView(opacityValue);
+        LinearLayout.LayoutParams opacityHeaderLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        opacityHeaderLp.topMargin = 16;
+        parent.addView(opacityHeader, opacityHeaderLp);
+
+        SeekBar opacity = new SeekBar(context);
+        opacity.setMax(80);
+        opacity.setProgress(GoogleMapsClusterNavOverlay.getOpacity(context) - 20);
+        opacity.setProgressTintList(ColorStateList.valueOf(
+                UiStyles.color(context, R.color.ck_accent)));
+        opacity.setThumbTintList(ColorStateList.valueOf(
+                UiStyles.color(context, R.color.ck_accent)));
+        opacity.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        opacity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                opacityValue.setText((progress + 20) + "%");
+            }
+            @Override public void onStartTrackingTouch(SeekBar seekBar) { }
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {
+                GoogleMapsClusterNavOverlay.setOpacity(context, seekBar.getProgress() + 20);
+            }
+        });
+        parent.addView(opacity, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                CockpitTokens.dim(context, R.dimen.ck_touch_min)));
+    }
+
+    private void applyClusterStyleSelection(java.util.List<LinearLayout> cards,
+            String[] styles, String selected) {
+        for (int i = 0; i < cards.size(); i++) {
+            boolean active = styles[i].equals(selected);
+            GradientDrawable bg = new GradientDrawable();
+            bg.setColor(UiStyles.color(context,
+                    active ? R.color.ck_surface_2 : R.color.ck_surface_1));
+            bg.setCornerRadius(12);
+            bg.setStroke(Math.max(1, Math.round(context.getResources().getDisplayMetrics().density
+                            * (active ? 2 : 1))),
+                    UiStyles.color(context, active ? R.color.ck_accent : R.color.ck_stroke));
+            cards.get(i).setBackground(bg);
+        }
     }
 
     private void addClusterOverlayLayoutSection(LinearLayout parent, int titleResId,

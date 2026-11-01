@@ -1,0 +1,58 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.eyups.fakevdbus'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 29
+        targetSdk 30
+        versionCode 1
+        versionName "1.0"
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+        }
+    }
+
+    flavorDimensions "service"
+    productFlavors {
+        carinfo {
+            dimension "service"
+            applicationId "com.desaysv.ivi.vds.carinfo"
+        }
+        sms {
+            dimension "service"
+            applicationId "com.desaysv.ivi.vds.sms"
+        }
+        carlan {
+            dimension "service"
+            applicationId "com.desaysv.ivi.vds.carlan"
+        }
+        carstate {
+            dimension "service"
+            applicationId "com.desaysv.ivi.vds.carstate"
+        }
+        setting {
+            dimension "service"
+            applicationId "com.desaysv.ivi.vds.setting"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}

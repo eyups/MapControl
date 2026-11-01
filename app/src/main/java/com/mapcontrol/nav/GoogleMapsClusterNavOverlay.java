@@ -32,6 +32,12 @@ import com.mapcontrol.util.AppLaunchHelper;
 public final class GoogleMapsClusterNavOverlay {
 
     public static final String PREF_ENABLED = "google_maps_cluster_nav_overlay";
+    public static final String PREF_STYLE = "google_cluster_nav_style";
+    public static final String PREF_OPACITY = "google_cluster_nav_opacity";
+    public static final String STYLE_CLASSIC = "classic";
+    public static final String STYLE_TWO_LANE = "two_lane";
+    public static final String STYLE_SINGLE_ROW = "single_row";
+    public static final String STYLE_GLASS = "glass";
     private static final String PREFS = "MapControlPrefs";
     private static final int LAYOUT_VERSION = 4;
     private static final int CARD_WIDTH_DP = 188;
@@ -89,6 +95,37 @@ public final class GoogleMapsClusterNavOverlay {
     public static boolean isEnabled(Context context) {
         return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 .getBoolean(PREF_ENABLED, true);
+    }
+
+    public static String getStyle(Context context) {
+        return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getString(PREF_STYLE, STYLE_CLASSIC);
+    }
+
+    public static void setStyle(Context context, String style) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .edit().putString(PREF_STYLE, style).apply();
+        getInstance(context).forceRebuild();
+        getInstance(context).invalidateCache();
+    }
+
+    public static int getOpacity(Context context) {
+        return context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getInt(PREF_OPACITY, 100);
+    }
+
+    public static void setOpacity(Context context, int opacity) {
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .edit().putInt(PREF_OPACITY, Math.max(20, Math.min(100, opacity))).apply();
+        getInstance(context).applyStoredOpacity();
+    }
+
+    private void applyStoredOpacity() {
+        mainHandler.post(() -> {
+            if (overlayRoot != null) {
+                overlayRoot.setAlpha(getOpacity(appContext) / 100f);
+            }
+        });
     }
 
     public static void setEnabled(Context context, boolean enabled) {
@@ -382,6 +419,7 @@ public final class GoogleMapsClusterNavOverlay {
                             | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                     PixelFormat.TRANSLUCENT);
             windowManager.addView(overlayRoot, overlayLayoutParams);
+            overlayRoot.setAlpha(getOpacity(appContext) / 100f);
             lastZOrderRaiseUptimeMs = SystemClock.uptimeMillis();
         } catch (Exception e) {
             hideInternal();
@@ -395,7 +433,8 @@ public final class GoogleMapsClusterNavOverlay {
 
         int screenWidth = ctx.getResources().getDisplayMetrics().widthPixels;
         int cardWidthPx = dp(ctx, CARD_WIDTH_DP);
-        int gapPx = dp(ctx, CENTER_GAP_DP);
+        String style = getStyle(appContext);
+        int gapPx = dp(ctx, STYLE_TWO_LANE.equals(style) ? 36 : CENTER_GAP_DP);
         int topMarginPx = dp(ctx, TOP_MARGIN_DP);
         int outwardPx = (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO);
         int pairWidth = cardWidthPx * 2 + gapPx;

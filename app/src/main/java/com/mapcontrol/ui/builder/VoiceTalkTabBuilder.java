@@ -248,12 +248,31 @@ public class VoiceTalkTabBuilder {
             speedValue.setText(formatSliderValue(R.string.voice_talk_speed,
                     prefs.getInt(MapControlSpeech.KEY_SHERPA_SPEED, 100)));
         } else {
-            TextView note = new TextView(context);
-            note.setText(R.string.voice_talk_no_extra_settings);
-            CockpitTokens.bodySm(note);
-            note.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
-            note.setPadding(dp(4), dp(12), dp(4), dp(12));
-            card.addView(note, matchWrap());
+            addLabel(card, R.string.settings_tts_iflytek_voice_select);
+            final int[] roles = {
+                    MapControlSpeech.IFLYTEK_ROLE_TR,
+                    MapControlSpeech.IFLYTEK_ROLE_EN,
+                    0
+            };
+            List<String> voiceOptions = new ArrayList<>();
+            voiceOptions.add(context.getString(R.string.settings_tts_iflytek_voice_tr));
+            voiceOptions.add(context.getString(R.string.settings_tts_iflytek_voice_en));
+            voiceOptions.add(context.getString(R.string.settings_tts_iflytek_voice_default));
+            int currentRole = MapControlSpeech.iflytekRole(context);
+            int selectedRole = currentRole == MapControlSpeech.IFLYTEK_ROLE_EN
+                    ? 1 : (currentRole == 0 ? 2 : 0);
+            CockpitSegmented voiceSegmented =
+                    new CockpitSegmented(context, voiceOptions, selectedRole, index -> {
+                        prefs.edit().putInt(MapControlSpeech.KEY_IFLYTEK_ROLE, roles[index])
+                                .apply();
+                    });
+            card.addView(voiceSegmented, matchWrap());
+            TextView voiceHelp = new TextView(context);
+            voiceHelp.setText(R.string.settings_tts_iflytek_voice_help);
+            CockpitTokens.bodySm(voiceHelp);
+            voiceHelp.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+            voiceHelp.setPadding(dp(4), dp(8), dp(4), dp(12));
+            card.addView(voiceHelp, matchWrap());
         }
         CockpitButton listen = CockpitButton.primary(context,
                 context.getString(R.string.voice_talk_listen));

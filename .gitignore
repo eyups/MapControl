@@ -33,6 +33,8 @@ svtasklist.flag
 # Araçtan çekilen ham dökümler ve OEM APK/jadx çıktıları (büyük, telifli)
 /car_info/
 /car_apks/
+# Araç RE notları (konu bazlı, hassas veri)
+/vehicle_reverse_engineering/
 .vscode/
 # Local reverse-engineering / test data (large, not source)
 jadx_all/
@@ -45,3 +47,5 @@ tts_probe/out/
 # Python
 __pycache__/
 *.pyc
+# Emulator smoke artifacts
+/tools/emulator/out/

@@ -8,4 +8,11 @@
             android:exported="true"
             tools:replace="android:exported" />
     </application>
+    <queries>
+        <package android:name="com.desaysv.ivi.vds.carinfo" />
+        <package android:name="com.desaysv.ivi.vds.sms" />
+        <package android:name="com.desaysv.ivi.vds.carlan" />
+        <package android:name="com.desaysv.ivi.vds.carstate" />
+        <package android:name="com.desaysv.ivi.vds.setting" />
+    </queries>
 </manifest>

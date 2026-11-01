@@ -29,6 +29,11 @@ public final class MapControlSpeech {
     public static final String ENGINE_SHERPA = "sherpa";
     public static final String ENGINE_ELEVENLABS = "elevenlabs";
     public static final String ENGINE_IFLYTEK = "iflytek";
+    /** iFlytek xTTS speaker/role id; 0 keeps the vehicle default. */
+    public static final String KEY_IFLYTEK_ROLE = "iflytekTtsRole";
+    public static final int IFLYTEK_ROLE_TR = 69640;   // Ersoy / tr-TR
+    public static final int IFLYTEK_ROLE_EN = 69260;   // Lindsay / en-US
+    public static final int IFLYTEK_ROLE_DEFAULT = IFLYTEK_ROLE_TR;
     public static final int ENGINE_MODE_SHERPA = 0;
     public static final int ENGINE_MODE_ELEVENLABS = 1;
     public static final int ENGINE_MODE_IFLYTEK = 2;
@@ -197,6 +202,14 @@ public final class MapControlSpeech {
     public static String apiKey(Context context) {
         String key = resolveApiKey(context);
         return key == null ? "" : key;
+    }
+
+    public static int iflytekRole(Context context) {
+        if (context == null) {
+            return IFLYTEK_ROLE_DEFAULT;
+        }
+        SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        return prefs.getInt(KEY_IFLYTEK_ROLE, IFLYTEK_ROLE_DEFAULT);
     }
 
     public static String voiceId(Context context) {

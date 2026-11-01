@@ -1301,4 +1301,12 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_home_eco_medium">Eco seviyesi: Orta</string>
     <string name="ck_home_eco_low">Eco seviyesi: Düşük</string>
     <string name="ck_home_max_speed">Maks %1$d km/h</string>
+    <string name="projection_google_cluster_design_title">Gösterge kart tasarımı</string>
+    <string name="projection_google_cluster_design_desc">Cluster ekranındaki navigasyon kartlarının görünümü.</string>
+    <string name="projection_cluster_style_classic">Klasik</string>
+    <string name="projection_cluster_style_two_lane">İki şerit</string>
+    <string name="projection_cluster_style_single_row">Tek satır</string>
+    <string name="projection_cluster_style_glass">Cam kart</string>
+    <string name="projection_cluster_style_hint">Kart düzeni</string>
+    <string name="projection_cluster_opacity_title">Opaklık</string>
 </resources>

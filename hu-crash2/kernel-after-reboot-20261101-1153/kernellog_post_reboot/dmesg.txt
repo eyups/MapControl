@@ -1,0 +1,1876 @@
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c8c000.qcom,qup_uart: Failed to create dbg dir
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c8c000.qcom,qup_uart: gsi_mode:0
+[Sat Oct 17 11:51:18 2026] c8c000.qcom,qup_uart: ttyHS0 at MMIO 0xc8c000 (irq = 154, base_baud = 0) is a MSM
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c94000.qcom,qup_uart: Wakeup byte 0xfd
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c94000.qcom,qup_uart: No Shutdown config specified
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c94000.qcom,qup_uart: Serial port1 added.FifoSize 64 is_console0
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c94000.qcom,qup_uart: gsi_mode:0
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c94000.qcom,qup_uart: Failed to create dbg dir
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c94000.qcom,qup_uart: gsi_mode:0
+[Sat Oct 17 11:51:18 2026] c94000.qcom,qup_uart: ttyHS1 at MMIO 0xc94000 (irq = 155, base_baud = 0) is a MSM
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c84000.qcom,qup_uart: No Shutdown config specified
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c84000.qcom,qup_uart: Serial port2 added.FifoSize 64 is_console0
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c84000.qcom,qup_uart: gsi_mode:0
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c84000.qcom,qup_uart: Failed to create dbg dir
+[Sat Oct 17 11:51:18 2026] msm_geni_serial c84000.qcom,qup_uart: gsi_mode:0
+[Sat Oct 17 11:51:18 2026] c84000.qcom,qup_uart: ttyHS2 at MMIO 0xc84000 (irq = 157, base_baud = 0) is a MSM
+[Sat Oct 17 11:51:18 2026] msm_geni_serial_init: Driver initialized
+[Sat Oct 17 11:51:18 2026] printk: console [hvc0] enabled
+[Sat Oct 17 11:51:18 2026] random: fast init done
+[Sat Oct 17 11:51:18 2026] random: crng init done
+[Sat Oct 17 11:51:18 2026] vfastrpc virtio12: Registered virtio fastrpc device
+[Sat Oct 17 11:51:18 2026] cacheinfo: Unable to detect cache hierarchy for CPU 0
+[Sat Oct 17 11:51:18 2026] brd: module loaded
+[Sat Oct 17 11:51:18 2026] loop: module loaded
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio4: [vda] 262144 4096-byte logical blocks (1.07 GB/1.00 GiB)
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio4: vda
+[Sat Oct 17 11:51:18 2026] virtblk_init_crypto_qti_spec: keyslot manager created
+[Sat Oct 17 11:51:18 2026] vda: vda1 vda2 vda3 vda4 vda5 vda6 vda7 vda8 vda9 vda10 vda11 vda12 vda13 vda14 vda15 vda16 vda17 vda18 vda19 vda20 vda21 vda22 vda23 vda24 vda25 vda26 vda27 vda28 vda29 vda30 vda31 vda32 vda33 vda34 vda35 vda36 vda37 vda38 vda39 vda40 vda41 vda42 vda43
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio5: [vdb] 2048 4096-byte logical blocks (8.39 MB/8.00 MiB)
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio5: vdb
+[Sat Oct 17 11:51:18 2026] vdb: vdb1 vdb2 vdb3
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio6: [vdc] 2048 4096-byte logical blocks (8.39 MB/8.00 MiB)
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio6: vdc
+[Sat Oct 17 11:51:18 2026] vdc: vdc1 vdc2 vdc3
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio7: [vdd] 30906368 4096-byte logical blocks (127 GB/118 GiB)
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio7: vdd
+[Sat Oct 17 11:51:18 2026] send_fbe_req (191) used greatest stack depth: 13488 bytes left
+[Sat Oct 17 11:51:18 2026] vdd: vdd1 vdd2 vdd3 vdd4 vdd5 vdd6 vdd7 vdd8 vdd9 vdd10 vdd11 vdd12 vdd13 vdd14 vdd15 vdd16 vdd17 vdd18 vdd19 vdd20 vdd21 vdd22 vdd23 vdd24 vdd25 vdd26 vdd27 vdd28 vdd29 vdd30 vdd31 vdd32 vdd33 vdd34 vdd35 vdd36 vdd37 vdd38 vdd39 vdd40 vdd41 vdd42 vdd43 vdd44
+[Sat Oct 17 11:51:18 2026] virtio_blk virtio8: [vde] 6815744 4096-byte logical blocks (27.9 GB/26.0 GiB)
+[Sat Oct 17 11:51:18 2026] zram: Added device: zram0
+[Sat Oct 17 11:51:18 2026] qseecom 87900000.qseecom: assigned reserved memory node qseecom_region
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x42000603, 0x1, 0xa, 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x1400000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] QSEECOM: qseecom_init_control: qseecom.qsee_version = 0x1400000
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x42000603, 0x1, 0xf, 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x401000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] QSEECOM: qseecom_retrieve_ce_data: Device does not support PFE/FDE
+[Sat Oct 17 11:51:18 2026] QSEECOM: qseecom_send_app_region: secure app region addr=0x87900000 size=0x2200000
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000105, 0x22, 0x87900000, 0x2200000, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] send_fbe_req (191): highest shadow stack usage: 128 bytes
+[Sat Oct 17 11:51:18 2026] spi_geni 88c000.spi: spi_geni_probe: completed
+[Sat Oct 17 11:51:18 2026] spi_geni 890000.spi: spi_geni_probe: completed
+[Sat Oct 17 11:51:18 2026] spi_geni 89c000.spi: spi_geni_probe: completed
+[Sat Oct 17 11:51:18 2026] tuner_spi_probe
+[Sat Oct 17 11:51:18 2026] libphy: Fixed MDIO Bus: probed
+[Sat Oct 17 11:51:18 2026] tun: Universal TUN/TAP device driver, 1.6
+[Sat Oct 17 11:51:18 2026] PPP generic driver version 2.4.2
+[Sat Oct 17 11:51:18 2026] PPP BSD Compression module registered
+[Sat Oct 17 11:51:18 2026] PPP Deflate Compression module registered
+[Sat Oct 17 11:51:18 2026] PPP MPPE Compression module registered
+[Sat Oct 17 11:51:18 2026] NET: Registered protocol family 24
+[Sat Oct 17 11:51:18 2026] PPTP driver version 0.8.5
+[Sat Oct 17 11:51:18 2026] cnss_utils: Unable to create debugfs -19
+[Sat Oct 17 11:51:18 2026] CLD80211: Initializing
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver r8152
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver asix
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver ax88179_178a
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver cdc_ether
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver rndis_host
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver cdc_ncm
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: Adding to iommu group 3
+[Sat Oct 17 11:51:18 2026] dwc3 a600000.dwc3: changing max_speed on rev 00000000
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: No interconnects found.
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: Dynamic voting failed
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ hs_phy_irq not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ dp_hs_phy_irq1 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ dm_hs_phy_irq1 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ dp_hs_phy_irq2 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ dm_hs_phy_irq2 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ dp_hs_phy_irq3 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ dm_hs_phy_irq3 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ ss_phy_irq1 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ ss_phy_irq2 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: IRQ ss_phy_irq3 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: USB-[dwc3_msm_runtime_resume]: Wait dwc3 resume
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: Adding to iommu group 4
+[Sat Oct 17 11:51:18 2026] dwc3 a800000.dwc3: changing max_speed on rev 00000000
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: No interconnects found.
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: Dynamic voting failed
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ hs_phy_irq not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ dp_hs_phy_irq1 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ dm_hs_phy_irq1 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ dp_hs_phy_irq2 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ dm_hs_phy_irq2 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ dp_hs_phy_irq3 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ dm_hs_phy_irq3 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ ss_phy_irq1 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ ss_phy_irq2 not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: IRQ ss_phy_irq3 not found
+[Sat Oct 17 11:51:18 2026] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[Sat Oct 17 11:51:18 2026] ehci-pci: EHCI PCI platform driver
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: Could not get usb psy
+[Sat Oct 17 11:51:18 2026] ehci-platform: EHCI generic platform driver
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: USB-[dwc3_msm_runtime_resume]: Wait dwc3 resume
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver uas
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver usb-storage
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver option
+[Sat Oct 17 11:51:18 2026] usbserial: USB Serial support registered for GSM modem (1-port)
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver usb_ehset_test
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver lvs
+[Sat Oct 17 11:51:18 2026] dummy_hcd dummy_hcd.0: USB Host+Gadget Emulator, driver 02 May 2005
+[Sat Oct 17 11:51:18 2026] dummy_hcd dummy_hcd.0: hcd sysdev dev_name = dummy_hcd.0
+[Sat Oct 17 11:51:18 2026] dummy_hcd dummy_hcd.0: Dummy host controller
+[Sat Oct 17 11:51:18 2026] dummy_hcd dummy_hcd.0: new USB bus registered, assigned bus number 1
+[Sat Oct 17 11:51:18 2026] usb usb1: USB-[usb_enumerate_device]: vid:0x1d6b, pid:0x0002
+[Sat Oct 17 11:51:18 2026] usb usb1: USB-[usb_enumerate_device]: UsbRootHubCnt: 1, UsbPowerFlag: 1, UsbWakeUpFalg: 0
+[Sat Oct 17 11:51:18 2026] usb usb1: USB-[is_unsupported_device]: device bInterfaceClass is 0x9
+[Sat Oct 17 11:51:18 2026] usb usb1: USB-[usb_enumerate_device]: tbox_dev_type[0]: 2, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.04
+[Sat Oct 17 11:51:18 2026] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[Sat Oct 17 11:51:18 2026] usb usb1: Product: Dummy host controller
+[Sat Oct 17 11:51:18 2026] usb usb1: Manufacturer: Linux 5.4.86-qgki-g82836c7304a0 dummy_hcd
+[Sat Oct 17 11:51:18 2026] usb usb1: SerialNumber: dummy_hcd.0
+[Sat Oct 17 11:51:18 2026] hub 1-0:1.0: USB hub found
+[Sat Oct 17 11:51:18 2026] hub 1-0:1.0: 1 port detected
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver xpad
+[Sat Oct 17 11:51:18 2026] pt_device_access_init: Parade TTSP Device Access Driver (Built TTDL.04.11.977092) rc = 0
+[Sat Oct 17 11:51:18 2026] i2c /dev entries driver
+[Sat Oct 17 11:51:18 2026] i2c_geni a80000.i2c: Bus frequency is set to 400000Hz.
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_i2c_probe:probe start
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_i2c_probe:probe end
+[Sat Oct 17 11:51:18 2026] i2c_geni a80000.i2c: I2C probed
+[Sat Oct 17 11:51:18 2026] NPU_ERR: npu_debugfs_init: 2238 debugfs_create_dir for npu failed, error -19
+[Sat Oct 17 11:51:18 2026] uvcvideo: Unable to create debugfs directory
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver uvcvideo
+[Sat Oct 17 11:51:18 2026] USB Video Class driver (1.1.1)
+[Sat Oct 17 11:51:18 2026] gspca_main: v2.14.0 registered
+[Sat Oct 17 11:51:18 2026] device-mapper: uevent: version 1.0.3
+[Sat Oct 17 11:51:18 2026] device-mapper: ioctl: 4.41.0-ioctl (2019-09-16) initialised: dm-devel@redhat.com
+[Sat Oct 17 11:51:18 2026] device-mapper: verity-avb: AVB error handler initialized with vbmeta device: /dev/vbmeta
+[Sat Oct 17 11:51:18 2026] Bluetooth: HCI UART driver ver 2.3
+[Sat Oct 17 11:51:18 2026] Bluetooth: HCI UART protocol H4 registered
+[Sat Oct 17 11:51:18 2026] Bluetooth: HCI UART protocol LL registered
+[Sat Oct 17 11:51:18 2026] Bluetooth: HCI UART protocol Broadcom registered
+[Sat Oct 17 11:51:18 2026] Bluetooth: HCI UART protocol QCA registered
+[Sat Oct 17 11:51:18 2026] sdhci: Secure Digital Host Controller Interface driver
+[Sat Oct 17 11:51:18 2026] sdhci: Copyright(c) Pierre Ossman
+[Sat Oct 17 11:51:18 2026] sdhci-pltfm: SDHCI platform and OF driver helper
+[Sat Oct 17 11:51:18 2026] hidraw: raw HID events driver (C) Jiri Kosina
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver usbhid
+[Sat Oct 17 11:51:18 2026] usbhid: USB HID core driver
+[Sat Oct 17 11:51:18 2026] ashmem: initialized
+[Sat Oct 17 11:51:18 2026] sdhci_msm 8804000.sdhci: Got CD GPIO
+[Sat Oct 17 11:51:18 2026] sdhci_msm 8804000.sdhci: core_reset unavailable,err = -2
+[Sat Oct 17 11:51:18 2026] spi_geni 89c000.spi: tx_fifo 16 rx_fifo 32 tx_width 32
+[Sat Oct 17 11:51:18 2026] sdhci_msm 8804000.sdhci: TCXO clk not present (-2)
+[Sat Oct 17 11:51:18 2026] sdhci_msm 8804000.sdhci: Failed to get bus_scale data
+[Sat Oct 17 11:51:18 2026] st_asm330lhh_spi spi2.0: Freq Fine 1875 (ts 23125)
+[Sat Oct 17 11:51:18 2026] gpio gpiochip1: (1c800000.virtio-spmi:qcom,pm8150@0:pinctrl@c000): allocate IRQ 203, hwirq 3
+[Sat Oct 17 11:51:18 2026] gpio gpiochip1: (1c800000.virtio-spmi:qcom,pm8150@0:pinctrl@c000): found parent hwirq 195
+[Sat Oct 17 11:51:18 2026] gpio gpiochip1: (1c800000.virtio-spmi:qcom,pm8150@0:pinctrl@c000): alloc_irqs_parent for 203 parent hwirq 195
+[Sat Oct 17 11:51:18 2026] mmc2: SDHCI controller on 8804000.sdhci [8804000.sdhci] using ADMA 64-bit
+[Sat Oct 17 11:51:18 2026] sdhci_msm 8804000.sdhci: IRQ sdiowakeup_irq not found
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: DWC3 exited from low power mode
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: hcd sysdev dev_name = a600000.ssusb
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: hcd sysdev dev_name = a600000.ssusb
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb_register_bus busnum 2
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 2
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: hcc params 0x0230ffe5 hci version 0x110 quirks 0x0000000000010010
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: irq 201, io mem 0x0a600000
+[Sat Oct 17 11:51:18 2026] usb usb2: USB-[usb_enumerate_device]: vid:0x1d6b, pid:0x0002
+[Sat Oct 17 11:51:18 2026] usb usb2: USB-[usb_enumerate_device]: UsbRootHubCnt: 2, UsbPowerFlag: 1, UsbWakeUpFalg: 0
+[Sat Oct 17 11:51:18 2026] usb usb2: USB-[is_unsupported_device]: device bInterfaceClass is 0x9
+[Sat Oct 17 11:51:18 2026] usb usb2: USB-[usb_enumerate_device]: tbox_dev_type[0]: 2, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] usb usb2: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.04
+[Sat Oct 17 11:51:18 2026] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[Sat Oct 17 11:51:18 2026] usb usb2: Product: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb usb2: Manufacturer: Linux 5.4.86-qgki-g82836c7304a0 xhci-hcd
+[Sat Oct 17 11:51:18 2026] usb usb2: SerialNumber: xhci-hcd.0.auto
+[Sat Oct 17 11:51:18 2026] hub 2-0:1.0: USB hub found
+[Sat Oct 17 11:51:18 2026] hub 2-0:1.0: 1 port detected
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb_register_bus busnum 3
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 3
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: DWC3 exited from low power mode
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: Host supports USB 3.1 Enhanced SuperSpeed
+[Sat Oct 17 11:51:18 2026] usb usb3: We don't know the algorithms for LPM for this host, disabling LPM.
+[Sat Oct 17 11:51:18 2026] usb usb3: USB-[usb_enumerate_device]: vid:0x1d6b, pid:0x0003
+[Sat Oct 17 11:51:18 2026] usb usb3: USB-[usb_enumerate_device]: UsbRootHubCnt: 3, UsbPowerFlag: 1, UsbWakeUpFalg: 0
+[Sat Oct 17 11:51:18 2026] usb usb3: USB-[is_unsupported_device]: device bInterfaceClass is 0x9
+[Sat Oct 17 11:51:18 2026] st_asm330lhh_spi spi2.0: mounting matrix not found: using identity...
+[Sat Oct 17 11:51:18 2026] usb usb3: USB-[usb_enumerate_device]: tbox_dev_type[0]: 2, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] usb usb3: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 5.04
+[Sat Oct 17 11:51:18 2026] usb usb3: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[Sat Oct 17 11:51:18 2026] usb usb3: Product: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb usb3: Manufacturer: Linux 5.4.86-qgki-g82836c7304a0 xhci-hcd
+[Sat Oct 17 11:51:18 2026] usb usb3: SerialNumber: xhci-hcd.0.auto
+[Sat Oct 17 11:51:18 2026] hub 3-0:1.0: USB hub found
+[Sat Oct 17 11:51:18 2026] hub 3-0:1.0: 1 port detected
+[Sat Oct 17 11:51:18 2026] genirq: irq_chip msmgpio did not update eff. affinity mask of irq 196
+[Sat Oct 17 11:51:18 2026] st_asm330lhh_spi spi2.0: st_asm330lhh_read_fifo: FIFO in bypass mode
+[Sat Oct 17 11:51:18 2026] st_asm330lhh_spi spi2.0: Device probed v 1.1
+[Sat Oct 17 11:51:18 2026] gnss: GNSS driver registered with major 504
+[Sat Oct 17 11:51:18 2026] usbcore: registered new interface driver snd-usb-audio
+[Sat Oct 17 11:51:18 2026] [drm] Initialized msm_drm_hyp_legacy 1.0.0 20181031 for soc:qcom,sde-cfg:qcom,sde-sub-cfg@1:qcom,sde_kms_hyp@ae00000 on minor 0
+[Sat Oct 17 11:51:18 2026] ignore empty connectors
+[Sat Oct 17 11:51:18 2026] u32 classifier
+[Sat Oct 17 11:51:18 2026] input device check on
+[Sat Oct 17 11:51:18 2026] Actions configured
+[Sat Oct 17 11:51:18 2026] xt_time: kernel timezone is -0000
+[Sat Oct 17 11:51:18 2026] ipip: IPv4 and MPLS over IPv4 tunneling driver
+[Sat Oct 17 11:51:18 2026] gre: GRE over IPv4 demultiplexor driver
+[Sat Oct 17 11:51:18 2026] ip_gre: GRE over IPv4 tunneling driver
+[Sat Oct 17 11:51:18 2026] IPv4 over IPsec tunneling driver
+[Sat Oct 17 11:51:18 2026] Initializing XFRM netlink socket
+[Sat Oct 17 11:51:18 2026] IPsec XFRM device driver
+[Sat Oct 17 11:51:18 2026] NET: Registered protocol family 10
+[Sat Oct 17 11:51:18 2026] Segment Routing with IPv6
+[Sat Oct 17 11:51:18 2026] mip6: Mobile IPv6
+[Sat Oct 17 11:51:18 2026] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+[Sat Oct 17 11:51:18 2026] ip6_gre: GRE over IPv6 tunneling driver
+[Sat Oct 17 11:51:18 2026] NET: Registered protocol family 17
+[Sat Oct 17 11:51:18 2026] NET: Registered protocol family 15
+[Sat Oct 17 11:51:18 2026] Bluetooth: RFCOMM TTY layer initialized
+[Sat Oct 17 11:51:18 2026] Bluetooth: RFCOMM socket layer initialized
+[Sat Oct 17 11:51:18 2026] Bluetooth: RFCOMM ver 1.11
+[Sat Oct 17 11:51:18 2026] Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+[Sat Oct 17 11:51:18 2026] Bluetooth: HIDP socket layer initialized
+[Sat Oct 17 11:51:18 2026] l2tp_core: L2TP core driver, V2.0
+[Sat Oct 17 11:51:18 2026] l2tp_ppp: PPPoL2TP kernel driver, V2.0
+[Sat Oct 17 11:51:18 2026] 8021q: 802.1Q VLAN Support v1.8
+[Sat Oct 17 11:51:18 2026] tipc: Activated (version 2.0.0)
+[Sat Oct 17 11:51:18 2026] NET: Registered protocol family 30
+[Sat Oct 17 11:51:18 2026] tipc: Started in single node mode
+[Sat Oct 17 11:51:18 2026] registered taskstats version 1
+[Sat Oct 17 11:51:18 2026] Loading compiled-in X.509 certificates
+[Sat Oct 17 11:51:18 2026] Key type ._fscrypt registered
+[Sat Oct 17 11:51:18 2026] Key type .fscrypt registered
+[Sat Oct 17 11:51:18 2026] Key type fscrypt-provisioning registered
+[Sat Oct 17 11:51:18 2026] sv_gpio_probe
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2TUNER_3V3_EN init 
+[Sat Oct 17 11:51:18 2026] USB-[usbhub_reset_thread]: Start SDP104-HUB reset thread
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, BT_REG_EN init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2SINGLEBT_RESET init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2GPS_PROGRAM_EN init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2GPS_RESET_1V8 init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2GPS_PWR_EN init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2HUB_PWR_EN init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2HUB_RESET_1V8 init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2TBOX_PWR_EN init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, Soc2CVBOX_PWR_EN init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2WL_HOST_WAKE reset nxp690
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2WL_HOST_WAKE init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, Soc2Tuner_RST init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, Soc2Tuner_IRQ init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, Soc2Tuner_Boot init 
+[Sat Oct 17 11:51:18 2026] sv_gpio_dt_init, SOC2DAB_ANT_PWR_EN init 
+[Sat Oct 17 11:51:18 2026] android,vendor is missing
+[Sat Oct 17 11:51:18 2026] qcom-slpi-pinctrl 2b40000.slpi_pinctrl: SLPI probe called !!!!!!
+[Sat Oct 17 11:51:18 2026] qcom-slpi-pinctrl 2b40000.slpi_pinctrl: Registered pinctrl SLPI !!!!!!
+[Sat Oct 17 11:51:18 2026] RNDIS_IPA module is loaded.
+[Sat Oct 17 11:51:18 2026] module installed
+[Sat Oct 17 11:51:18 2026] v4l2loopback driver version 0.12.0 loaded
+[Sat Oct 17 11:51:18 2026] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[Sat Oct 17 11:51:18 2026] cfg80211: Loaded X.509 cert 'uidq9816: 1c612bd72b88472eb57bf246fddbd6dd0aa130e3'
+[Sat Oct 17 11:51:18 2026] platform regulatory.0: Direct firmware load for regulatory.db failed with error -2
+[Sat Oct 17 11:51:18 2026] platform regulatory.0: Falling back to sysfs fallback for: regulatory.db
+[Sat Oct 17 11:51:18 2026] ALSA device list:
+[Sat Oct 17 11:51:18 2026] No soundcards found.
+[Sat Oct 17 11:51:18 2026] Freeing unused kernel memory: 3904K
+[Sat Oct 17 11:51:18 2026] cryptomgr_probe (223): highest shadow stack usage: 168 bytes
+[Sat Oct 17 11:51:18 2026] Run /init as init process
+[Sat Oct 17 11:51:18 2026] init: init first stage started!
+[Sat Oct 17 11:51:18 2026] init: Unable to open /lib/modules, skipping module loading.
+[Sat Oct 17 11:51:18 2026] init: Switching root to '/first_stage_ramdisk'
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]ReadFstabFromDt(): failed to read fstab from dt
+[Sat Oct 17 11:51:18 2026] init: Using Android DT directory /proc/device-tree/firmware/android/
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]superblock s_max_mnt_count:65535,/dev/block/by-name/la_metadata
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]Filesystem on /dev/block/by-name/la_metadata was not cleanly shutdown; state flags: 0x1, incompat feature flags: 0x46
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]check_fs(): mount(/dev/block/by-name/la_metadata,/metadata,ext4)=-1: No such file or directory
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]Not running /system/bin/e2fsck on /dev/block/vdd32 (executable not in system image)
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd32): recovery complete
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd32): mounted filesystem with ordered data mode. Opts: discard
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]__mount(source=/dev/block/by-name/la_metadata,target=/metadata,type=ext4)=0: Success
+[Sat Oct 17 11:51:18 2026] device-mapper: verity: sha1 using implementation "sha1-ce"
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-8): mounting with "discard" option, but the device does not support discard
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-8): mounted filesystem without journal. Opts: barrier=1,discard
+[Sat Oct 17 11:51:18 2026] device-mapper: verity: sha1 using implementation "sha1-ce"
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-9): mounting with "discard" option, but the device does not support discard
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-9): mounted filesystem without journal. Opts: barrier=1,discard
+[Sat Oct 17 11:51:18 2026] device-mapper: verity: sha1 using implementation "sha1-ce"
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-10): mounting with "discard" option, but the device does not support discard
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-10): mounted filesystem without journal. Opts: barrier=1,discard
+[Sat Oct 17 11:51:18 2026] device-mapper: verity: sha1 using implementation "sha1-ce"
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-11): mounting with "discard" option, but the device does not support discard
+[Sat Oct 17 11:51:18 2026] EXT4-fs (dm-11): mounted filesystem without journal. Opts: barrier=1,discard
+[Sat Oct 17 11:51:18 2026] printk: init: 38 output lines suppressed due to ratelimiting
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]Warning: unknown flag: inlinecrypt
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]Warning: unknown flag: noatime
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]Warning: unknown flag: nosuid
+[Sat Oct 17 11:51:18 2026] init: [libfs_mgr]Warning: unknown flag: nodev
+[Sat Oct 17 11:51:18 2026] init: Loading SELinux policy
+[Sat Oct 17 11:51:18 2026] SELinux:  policy capability network_peer_controls=1
+[Sat Oct 17 11:51:18 2026] SELinux:  policy capability open_perms=1
+[Sat Oct 17 11:51:18 2026] SELinux:  policy capability extended_socket_class=1
+[Sat Oct 17 11:51:18 2026] SELinux:  policy capability always_check_network=0
+[Sat Oct 17 11:51:18 2026] SELinux:  policy capability cgroup_seclabel=0
+[Sat Oct 17 11:51:18 2026] SELinux:  policy capability nnp_nosuid_transition=1
+[Sat Oct 17 11:51:18 2026] audit: type=1403 audit(1.731:2): auid=4294967295 ses=4294967295 lsm=selinux res=1
+[Sat Oct 17 11:51:18 2026] selinux: SELinux: Loaded policy from /vendor/etc/selinux/precompiled_sepolicy
+[Sat Oct 17 11:51:18 2026] selinux: 
+[Sat Oct 17 11:51:18 2026] audit: type=1404 audit(1.731:3): enforcing=1 old_enforcing=0 auid=4294967295 ses=4294967295 enabled=1 old-enabled=1 lsm=selinux res=1
+[Sat Oct 17 11:51:18 2026] selinux: SELinux: Loaded file_contexts
+[Sat Oct 17 11:51:18 2026] selinux: 
+[Sat Oct 17 11:51:18 2026] init: init second stage started!
+[Sat Oct 17 11:51:18 2026] init: Using Android DT directory /proc/device-tree/firmware/android/
+[Sat Oct 17 11:51:18 2026] init: Do not have permissions to set 'ro.adb.secure' to '1' in property file '/vendor/default.prop': SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] init: Do not have permissions to set 'audio.offload.pcm.16bit.enable' to 'true' in property file '/vendor/build.prop': SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] init: Do not have permissions to set 'audio.offload.pcm.24bit.enable' to 'true' in property file '/vendor/build.prop': SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] init: Do not have permissions to set 'audio.sys.noisy.broadcast.delay' to '600' in property file '/vendor/build.prop': SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] init: Do not have permissions to set 'audio.sys.offload.pstimeout.secs' to '3' in property file '/vendor/build.prop': SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] init: Overriding previous 'ro.' property 'dalvik.vm.heapsize':'36m' with new value '512m'
+[Sat Oct 17 11:51:18 2026] init: Do not have permissions to set 'persist.ais_camera_xml.enable' to '1' in property file '/vendor/build.prop': SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] init: Do not have permissions to set 'persist.audio.fluence.speaker' to 'true' in property file '/vendor/build.prop': SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] audit: type=1400 audit(1.855:4): avc:  denied  { relabelto } for  pid=1 comm="init" name="vdd30" dev="tmpfs" ino=9521 scontext=u:r:init:s0 tcontext=u:object_r:dev_block_vdd:s0 tclass=blk_file permissive=0
+[Sat Oct 17 11:51:18 2026] audit: type=1400 audit(1.863:5): avc:  denied  { relabelto } for  pid=1 comm="init" name="vbmeta_a" dev="tmpfs" ino=9523 scontext=u:r:init:s0 tcontext=u:object_r:dev_block_update:s0 tclass=lnk_file permissive=0
+[Sat Oct 17 11:51:18 2026] cgroup1: Unknown subsys name 'schedtune'
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: DWC3 in low power mode
+[Sat Oct 17 11:51:18 2026] linkerconfig (254) used greatest stack depth: 11344 bytes left
+[Sat Oct 17 11:51:18 2026] ueventd: ueventd started!
+[Sat Oct 17 11:51:18 2026] selinux: SELinux: Loaded file_contexts
+[Sat Oct 17 11:51:18 2026] selinux: 
+[Sat Oct 17 11:51:18 2026] ueventd: Parsing file /system/etc/ueventd.rc...
+[Sat Oct 17 11:51:18 2026] ueventd: Parsing file /vendor/ueventd.rc...
+[Sat Oct 17 11:51:18 2026] ueventd: /vendor/ueventd.rc: 411: Invalid section keyword found
+[Sat Oct 17 11:51:18 2026] ueventd: Parsing file /odm/ueventd.rc...
+[Sat Oct 17 11:51:18 2026] ueventd: Unable to read config file '/odm/ueventd.rc': open() failed: No such file or directory
+[Sat Oct 17 11:51:18 2026] ueventd: Parsing file /ueventd.qcom.rc...
+[Sat Oct 17 11:51:18 2026] ueventd: Unable to read config file '/ueventd.qcom.rc': open() failed: No such file or directory
+[Sat Oct 17 11:51:18 2026] wifi_wake_gpio_work. 
+[Sat Oct 17 11:51:18 2026] USB-[usbhub_gpio_work]: schedule, reset Hub again. 
+[Sat Oct 17 11:51:18 2026] linkerconfig (254): highest shadow stack usage: 328 bytes
+[Sat Oct 17 11:51:18 2026] apexd: This device does not support updatable APEX. Exiting
+[Sat Oct 17 11:51:18 2026] audit: type=1400 audit(2.391:6): avc:  denied  { read } for  pid=263 comm="ueventd" name="vbmeta_a" dev="tmpfs" ino=9523 scontext=u:r:ueventd:s0 tcontext=u:object_r:tmpfs:s0 tclass=lnk_file permissive=0
+[Sat Oct 17 11:51:18 2026] boringssl_self_ (259) used greatest stack depth: 11232 bytes left
+[Sat Oct 17 11:51:18 2026] boringssl_self_ (259): highest shadow stack usage: 336 bytes
+[Sat Oct 17 11:51:18 2026] platform regulatory.0: Direct firmware load for regulatory.db.p7s failed with error -2
+[Sat Oct 17 11:51:18 2026] platform regulatory.0: Falling back to sysfs fallback for: regulatory.db.p7s
+[Sat Oct 17 11:51:18 2026] apr_probe: hab_handle_tx 6500001 hab_handle_rx 6600001
+[Sat Oct 17 11:51:18 2026] apr_probe: apr_vm_cb_thread started pid 288
+[Sat Oct 17 11:51:18 2026] audio_notifier_reg_service: service SSR_ADSP is in use
+[Sat Oct 17 11:51:18 2026] 
+[Sat Oct 17 11:51:18 2026] init.qti.media. (287) used greatest stack depth: 11200 bytes left
+[Sat Oct 17 11:51:18 2026] **********************************************************
+[Sat Oct 17 11:51:18 2026] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
+[Sat Oct 17 11:51:18 2026] **                                                      **
+[Sat Oct 17 11:51:18 2026] ** trace_printk() being used. Allocating extra memory.  **
+[Sat Oct 17 11:51:18 2026] **                                                      **
+[Sat Oct 17 11:51:18 2026] ** This means that this is a DEBUG kernel and it is     **
+[Sat Oct 17 11:51:18 2026] ** unsafe for production use.                           **
+[Sat Oct 17 11:51:18 2026] **                                                      **
+[Sat Oct 17 11:51:18 2026] ** If you see this message and you are not debugging    **
+[Sat Oct 17 11:51:18 2026] ** the kernel, report this immediately to your vendor!  **
+[Sat Oct 17 11:51:18 2026] **                                                      **
+[Sat Oct 17 11:51:18 2026] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
+[Sat Oct 17 11:51:18 2026] **********************************************************
+[Sat Oct 17 11:51:18 2026] init.qti.media. (287): highest shadow stack usage: 344 bytes
+[Sat Oct 17 11:51:18 2026] msm-audio-ion soc:qcom,msm-audio-apr:qcom,msm-audio-ion: msm_audio_ion_probe: msm_audio_ion_hab_handle 6700001
+[Sat Oct 17 11:51:18 2026] Registered swp emulation handler
+[Sat Oct 17 11:51:18 2026] logd.auditd: start
+[Sat Oct 17 11:51:18 2026] type=1400 audit(2.955:7): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+[Sat Oct 17 11:51:18 2026] potentially unexpected fatal signal 6.
+[Sat Oct 17 11:51:18 2026] CPU: 1 PID: 315 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 00000000 (nzcv daif -PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : 0000007fa071144c
+[Sat Oct 17 11:51:18 2026] lr : 0000007fa0711420
+[Sat Oct 17 11:51:18 2026] sp : 0000007fe4aa57e0
+[Sat Oct 17 11:51:18 2026] x29: 0000007fe4aa5880 x28: 0000007fa071592c 
+[Sat Oct 17 11:51:18 2026] x27: 0000007fe4aa6161 x26: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x25: 0000007fa0905000 x24: b400007e1fb9f990 
+[Sat Oct 17 11:51:18 2026] x23: 0000007fa0905000 x22: 0000007fa0905000 
+[Sat Oct 17 11:51:18 2026] x21: 00000000ffffffff x20: 000000000000013b 
+[Sat Oct 17 11:51:18 2026] x19: 000000000000013b x18: 0000007fa0a46000 
+[Sat Oct 17 11:51:18 2026] x17: 0000007fa075d9f0 x16: 0000007fa077bc80 
+[Sat Oct 17 11:51:18 2026] x15: 0000ffff00000fff x14: 0000007fa077ed22 
+[Sat Oct 17 11:51:18 2026] x13: 2f2068732f6e6962 x12: 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x9 : 0605498d24fa125b x8 : 00000000000000f0 
+[Sat Oct 17 11:51:18 2026] x7 : 000000000000000a x6 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x5 : 0000000000000000 x4 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x3 : 0000007fe4aa5800 x2 : 0000000000000006 
+[Sat Oct 17 11:51:18 2026] x1 : 000000000000013b x0 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] init: wait for '/dev/qseecom' took 0ms
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000206, 0x83, 0xb, 0xcf000000, 0x5000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0x0
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000201, 0x83, 0xb, 0xcf000000, 0x5000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000206, 0x83, 0xa, 0xcf008000, 0x5000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register : model code is : 14  Microphone bias is set to 8.5V
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0x0
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000201, 0x83, 0xa, 0xcf008000, 0x5000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register:reg 0x2c read_value:0xc0
+[Sat Oct 17 11:51:18 2026] init_delayed_work_func end
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000206, 0x83, 0x7000, 0xcf080000, 0x7e000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0x0
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000201, 0x83, 0x7000, 0xcf080000, 0x7e000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000206, 0x83, 0x1100, 0xcf010000, 0x5000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0x0
+[Sat Oct 17 11:51:18 2026] msm_tdm_init --sound_effect_type=OTHER
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000201, 0x83, 0x1100, 0xcf010000, 0x5000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] sa8155-asoc-snd soc:qcom,msm-audio-apr:qcom,q6core-audio:sound-adp-star: ASoC: failed to init link QUIN_MI2S_RX: -517
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000206, 0x83, 0xc000, 0xcf018000, 0x7000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0x0
+[Sat Oct 17 11:51:18 2026] SCM IN [QCPE]: 0x72000201, 0x83, 0xc000, 0xcf018000, 0x7000, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] pcie:pcie_init.
+[Sat Oct 17 11:51:18 2026] SCM OUT [QCPE]: 0x0, 0x0, 0x0, 0x0
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie: PCIe: msm_pcie_probe
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie: 1c00000.qcom,pcie supply vreg-3p3 not found, using dummy regulator
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie: 1c00000.qcom,pcie supply vreg-mx not found, using dummy regulator
+[Sat Oct 17 11:51:18 2026] msm_pcie_get_reg: PCIe: RC0: no mhi resource found.
+[Sat Oct 17 11:51:18 2026] msm_pcie_get_reg: PCIe: RC0: no tcsr resource found.
+[Sat Oct 17 11:51:18 2026] msm_pcie_get_reg: PCIe: RC0: no rumi resource found.
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: Assert the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+[Sat Oct 17 11:51:18 2026] e2fsck: data: recovering journal
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: RC0: PCIE20_PARF_INT_ALL_MASK: 0x7f80c202
+[Sat Oct 17 11:51:18 2026] pcie_phy_init: PCIe RC0 PHY is ready!
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: Release the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] msm_pcie_link_train: PCIe: Assert the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] msm_pcie_link_train: PCIe RC0 link initialization failed
+[Sat Oct 17 11:51:18 2026] msm_pcie_enumerate: PCIe: RC0: failed to enable
+[Sat Oct 17 11:51:18 2026] msm_pcie_probe: PCIe: RC0 is not enabled during bootup; it will be enumerated upon client request.
+[Sat Oct 17 11:51:18 2026] msm_tdm_init --sound_effect_type=OTHER
+[Sat Oct 17 11:51:18 2026] sa8155-asoc-snd soc:qcom,msm-audio-apr:qcom,q6core-audio:sound-adp-star: ASoC: failed to init link QUIN_MI2S_RX: -517
+[Sat Oct 17 11:51:18 2026] type=1400 audit(3.463:8): avc: denied { read } for comm="ueventd" name="vbmeta_a" dev="tmpfs" ino=9523 scontext=u:r:ueventd:s0 tcontext=u:object_r:tmpfs:s0 tclass=lnk_file permissive=0
+[Sat Oct 17 11:51:18 2026] adi214xx_spi_probe: version 2021-9-30 spi->dev orignal name :spi0.0 !
+[Sat Oct 17 11:51:18 2026] adi214xx_codec_probe: Chery DSP_VERSION:2022-12-02 !
+[Sat Oct 17 11:51:18 2026] msm_tdm_init --sound_effect_type=OTHER
+[Sat Oct 17 11:51:18 2026] e2fsck: Clearing orphaned inode 180255 (uid=1058, gid=1000, mode=0100640, size=0)
+[Sat Oct 17 11:51:18 2026] e2fsck: Pass 1: Checking inodes, blocks, and sizes
+[Sat Oct 17 11:51:18 2026] e2fsck: Inode 647426 extent tree (at level 1) could be shorter.  Optimize? yes
+[Sat Oct 17 11:51:18 2026] e2fsck: 
+[Sat Oct 17 11:51:18 2026] spi_geni 88c000.spi: tx_fifo 16 rx_fifo 16 tx_width 32
+[Sat Oct 17 11:51:18 2026] [ADI214xx] : dsp_version:{1e23717_2512240}
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 0 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 0 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 1 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 1 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 4 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 4 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 9 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 9 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 12 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 12 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 29 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 29 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 33 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 33 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 35 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 35 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 36 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 36 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 54 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 54 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 55 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 55 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 56 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 56 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 57 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, Mute control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 57 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 59 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 59 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 60 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 60 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 61 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 61 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test playback vol knew.name:Playback 62 Mute !
+[Sat Oct 17 11:51:18 2026] msm_pcm_add_mute_control, volume control add
+[Sat Oct 17 11:51:18 2026] snd_pcm_add_mute_ctls:ywpan3 test Capture vol knew.name:Capture 62 Mute !
+[Sat Oct 17 11:51:18 2026] sa8155-asoc-snd soc:qcom,msm-audio-apr:qcom,q6core-audio:sound-adp-star: Sound card sa8155-adp-star-snd-card registered
+[Sat Oct 17 11:51:18 2026] sa8155-asoc-snd soc:qcom,msm-audio-apr:qcom,q6core-audio:sound-adp-star: sa8155_ssr_enable: setting snd_card to ONLINE
+[Sat Oct 17 11:51:18 2026] e2fsck: Pass 1E: Optimizing extent trees
+[Sat Oct 17 11:51:18 2026] e2fsck: Pass 2: Checking directory structure
+[Sat Oct 17 11:51:18 2026] e2fsck: Pass 3: Checking directory connectivity
+[Sat Oct 17 11:51:18 2026] e2fsck: Pass 4: Checking reference counts
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd44): Using encoding defined by superblock: utf8-12.1.0 with flags 0x0
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd44): mounted filesystem with ordered data mode. Opts: 
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd28): mounted filesystem with ordered data mode. Opts: 
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd42): Ignoring removed nomblk_io_submit option
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd42): recovery complete
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd42): mounted filesystem with ordered data mode. Opts: errors=remount-ro,nomblk_io_submit
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd42): mounted filesystem with ordered data mode. Opts: 
+[Sat Oct 17 11:51:18 2026] modprobe (278): highest shadow stack usage: 352 bytes
+[Sat Oct 17 11:51:18 2026] vdc: Waited 0ms for vold
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] s_fmt_out(0) 2...1920 1024 3932160
+[Sat Oct 17 11:51:18 2026] buffer size 3932160
+[Sat Oct 17 11:51:18 2026] vdc: Waited 0ms for vold
+[Sat Oct 17 11:51:18 2026] vdc: Waited 0ms for vold
+[Sat Oct 17 11:51:18 2026] fscrypt: AES-256-CTS-CBC using implementation "cts-cbc-aes-ce"
+[Sat Oct 17 11:51:18 2026] fscrypt: AES-256-XTS using implementation "xts-aes-ce"
+[Sat Oct 17 11:51:18 2026] apexd: This device does not support updatable APEX. Exiting
+[Sat Oct 17 11:51:18 2026] apexd: Marking APEXd as activated
+[Sat Oct 17 11:51:18 2026] vdc: Waited 0ms for vold
+[Sat Oct 17 11:51:18 2026] apexd: This device does not support updatable APEX. Exiting
+[Sat Oct 17 11:51:18 2026] apexd: Marking APEXd as ready
+[Sat Oct 17 11:51:18 2026] init: Top-level directory needs encryption action, eg mkdir /data/vehicle <mode> <uid> <gid> encryption=Require
+[Sat Oct 17 11:51:18 2026] init: Verified that /data/vehicle has the encryption policy b7d05311e91c36777ac9acd4de4597bc v2 modes 1/4 flags 0x2
+[Sat Oct 17 11:51:18 2026] init: Top-level directory needs encryption action, eg mkdir /data/recent_focuses <mode> <uid> <gid> encryption=Require
+[Sat Oct 17 11:51:18 2026] init: Verified that /data/recent_focuses has the encryption policy b7d05311e91c36777ac9acd4de4597bc v2 modes 1/4 flags 0x2
+[Sat Oct 17 11:51:18 2026] init: Top-level directory needs encryption action, eg mkdir /data/update <mode> <uid> <gid> encryption=Require
+[Sat Oct 17 11:51:18 2026] init: Verified that /data/update has the encryption policy b7d05311e91c36777ac9acd4de4597bc v2 modes 1/4 flags 0x2
+[Sat Oct 17 11:51:18 2026] init: Top-level directory needs encryption action, eg mkdir /data/someip_log <mode> <uid> <gid> encryption=Require
+[Sat Oct 17 11:51:18 2026] init: Verified that /data/someip_log has the encryption policy b7d05311e91c36777ac9acd4de4597bc v2 modes 1/4 flags 0x2
+[Sat Oct 17 11:51:18 2026] init: Top-level directory needs encryption action, eg mkdir /data/avm <mode> <uid> <gid> encryption=Require
+[Sat Oct 17 11:51:18 2026] logd.daemon: reinit
+[Sat Oct 17 11:51:18 2026] update_verifier: Started with arg 1: nonencrypted
+[Sat Oct 17 11:51:18 2026] update_verifier: Booting slot 0: isSlotMarkedSuccessful=1
+[Sat Oct 17 11:51:18 2026] update_verifier: Leaving update_verifier.
+[Sat Oct 17 11:51:18 2026] input: SVP UINPUT KEYBOARD as /devices/virtual/input/input3
+[Sat Oct 17 11:51:18 2026] healthd: No battery devices found
+[Sat Oct 17 11:51:18 2026] healthd: battery none chg=
+[Sat Oct 17 11:51:18 2026] healthd: No battery devices found
+[Sat Oct 17 11:51:18 2026] healthd: battery none chg=
+[Sat Oct 17 11:51:18 2026] ------------[ cut here ]------------
+[Sat Oct 17 11:51:18 2026] Unbalanced enable for IRQ 157
+[Sat Oct 17 11:51:18 2026] WARNING: CPU: 2 PID: 516 at kernel/irq/manage.c:636 enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] Modules linked in: snd_soc_adi21489 pci_msm_drv machine_dlkm hdmi_dlkm stub_dlkm native_dlkm platform_dlkm q6_dlkm adsp_loader_dlkm apr_dlkm q6_notifier_dlkm snd_event_dlkm
+[Sat Oct 17 11:51:18 2026] CPU: 2 PID: 516 Comm: android.hardwar Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 60400085 (nZCv daIf +PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] lr : enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] sp : ffffffc0153db980
+[Sat Oct 17 11:51:18 2026] x29: ffffffc0153db990 x28: ffffff82ce16c288 
+[Sat Oct 17 11:51:18 2026] x27: ffffff82ce16c288 x26: ffffff82d48bfc10 
+[Sat Oct 17 11:51:18 2026] x25: ffffffc0112590e4 x24: ffffff82ce16c000 
+[Sat Oct 17 11:51:18 2026] x23: ffffffc011256618 x22: ffffff82eb749360 
+[Sat Oct 17 11:51:18 2026] x21: ffffffc011afcb54 x20: 000000000000009d 
+[Sat Oct 17 11:51:18 2026] x19: ffffff82ec511600 x18: ffffffc0141dd080 
+[Sat Oct 17 11:51:18 2026] x17: 0000000000000041 x16: ffffffc01122a9d0 
+[Sat Oct 17 11:51:18 2026] x15: ffffffc011d1b6bf x14: 0000000000000050 
+[Sat Oct 17 11:51:18 2026] x13: 80b53ebf82ffffff x12: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x11: 7f4ac13d3dc143ff x10: 00000000ffffffff 
+[Sat Oct 17 11:51:18 2026] x9 : 077150540f5fce00 x8 : 077150540f5fce00 
+[Sat Oct 17 11:51:18 2026] x7 : 0000000000000a20 x6 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x5 : ffffff82bf3eb580 x4 : ffffff82fa0f41a0 
+[Sat Oct 17 11:51:18 2026] x3 : 00000000001434e2 x2 : 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x1 : 0000000000000000 x0 : 000000000000001d 
+[Sat Oct 17 11:51:18 2026] Call trace:
+[Sat Oct 17 11:51:18 2026] enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] msm_geni_serial_startup+0x10c/0x304
+[Sat Oct 17 11:51:18 2026] uart_port_startup+0x1c8/0x418
+[Sat Oct 17 11:51:18 2026] uart_port_activate+0x58/0xfc
+[Sat Oct 17 11:51:18 2026] tty_port_open+0xe4/0x1a8
+[Sat Oct 17 11:51:18 2026] uart_open+0x20/0x30
+[Sat Oct 17 11:51:18 2026] tty_open+0x358/0x57c
+[Sat Oct 17 11:51:18 2026] hab:hab_msg_dequeue:109 vcid c900002 rcv buf too small 264 < 268
+[Sat Oct 17 11:51:18 2026] chrdev_open+0x1d4/0x258
+[Sat Oct 17 11:51:18 2026] do_dentry_open+0x278/0x434
+[Sat Oct 17 11:51:18 2026] type=1400 audit(5.543:9): avc: denied { read } for comm="android.hardwar" name="u:object_r:default_prop:s0" dev="tmpfs" ino=70 scontext=u:r:hal_camera_default:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] vfs_open+0x2c/0x38
+[Sat Oct 17 11:51:18 2026] path_openat+0x4a4/0xc64
+[Sat Oct 17 11:51:18 2026] do_filp_open+0xb0/0x15c
+[Sat Oct 17 11:51:18 2026] do_sys_open+0x144/0x29c
+[Sat Oct 17 11:51:18 2026] __arm64_sys_openat+0x28/0x34
+[Sat Oct 17 11:51:18 2026] el0_svc_common+0xb4/0x19c
+[Sat Oct 17 11:51:18 2026] el0_svc_handler+0x74/0x98
+[Sat Oct 17 11:51:18 2026] el0_svc+0x8/0xc
+[Sat Oct 17 11:51:18 2026] ---[ end trace b5cbf454cfcb51cb ]---
+[Sat Oct 17 11:51:18 2026] type=1400 audit(5.639:10): avc: denied { write } for comm="com.desaysv.veh" name="/" dev="vdd44" ino=2 scontext=u:r:hal_vehicle_g6:s0 tcontext=u:object_r:system_data_root_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] rmt_storage:ERR:check_support_using_property: Remote storage service is not supported on unknown target
+[Sat Oct 17 11:51:18 2026] [ADI214xx] : init 
+[Sat Oct 17 11:51:18 2026] test in adi21489 by yuandan 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] adi214xx_set_sony_on : pri_mode=8,prj_num=703001668AA
+[Sat Oct 17 11:51:18 2026] [ADI214xx] adi214xx_set_sony_delay : set sony delay params,speaker_num:9 prj_mode = 8
+[Sat Oct 17 11:51:18 2026] [ADI214xx] adi214xx_set_sony_gain : set sony gain_value,speaker_num:9,
+[Sat Oct 17 11:51:18 2026] Mass Storage Function, version: 2009/09/11
+[Sat Oct 17 11:51:18 2026] LUN: removable file: (no medium)
+[Sat Oct 17 11:51:18 2026] [ADI214xx] adi214xx_set_sony_peq : set sony PEQ params,speaker_num:9 prj_mode:8
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a2 value = 3f7f5109
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a3 value = bfff5109
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a4 value = 3f7f5109
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a5 value = bf7ea28a
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a6 value = 3fff50cd
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a7 value = 3f7e7543
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a8 value = bfff4f8f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a9 value = 3f8016a0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2aa value = bf7ea282
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ab value = 3fff4f8f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ac value = 3f7e5a73
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ad value = bffeeda6
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ae value = 3f7f89e9
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2af value = bf7de45c
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b0 value = 3ffeeda6
+[Sat Oct 17 11:51:18 2026] file system registered
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b1 value = 3f7aaa75
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b2 value = bffcf8c3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b3 value = 3f7f637a
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b4 value = bf7a0def
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b5 value = 3ffcf8c3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b6 value = 3f7c2a0f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b7 value = bffdaecb
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b8 value = 3f7f73a8
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2b9 value = bf7b9db6
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ba value = 3ffdaecb
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2bb value = 3f74de81
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2bc value = bffa3124
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2bd value = 3f80a34f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2be value = bf762520
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2bf value = 3ffa3124
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c0 value = 3f63022f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c1 value = bfe986ba
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c2 value = 3f765de3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c3 value = bf596012
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c4 value = 3fe986ba
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c5 value = 3f4573e2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c6 value = bfc6daed
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c7 value = 3f75fd12
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c8 value = bf3b70f5
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2c9 value = 3fc6daed
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ca value = 3f29be04
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2cb value = bf48ca18
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2cc value = 3f67d62d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2cd value = bf119431
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ce value = 3f48ca18
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d0 value = 3f7f5109
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d1 value = bfff5109
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d2 value = 3f7f5109
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d3 value = bf7ea28a
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d4 value = 3fff50cd
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d5 value = 3f7e7543
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d6 value = bfff4f8f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d7 value = 3f8016a0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d8 value = bf7ea282
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2d9 value = 3fff4f8f
+[Sat Oct 17 11:51:18 2026] f_cdev_alloc: port_name:at_usb0 (0000000000000000) portno:(0)
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2da value = 3f7e5a73
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2db value = bffeeda6
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2dc value = 3f7f89e9
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2dd value = bf7de45c
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2de value = 3ffeeda6
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2df value = 3f7aaa75
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e0 value = bffcf8c3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e1 value = 3f7f637a
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e2 value = bf7a0def
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e3 value = 3ffcf8c3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e4 value = 3f7c2a0f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e5 value = bffdaecb
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e6 value = 3f7f73a8
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e7 value = bf7b9db6
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e8 value = 3ffdaecb
+[Sat Oct 17 11:51:18 2026] f_cdev_alloc: port_name:at_usb1 (0000000000000000) portno:(1)
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2e9 value = 3f74de81
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ea value = bffa3124
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2eb value = 3f80a34f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ec value = bf762520
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ed value = 3ffa3124
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ee value = 3f63022f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2ef value = bfe986ba
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f0 value = 3f765de3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f1 value = bf596012
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f2 value = 3fe986ba
+[Sat Oct 17 11:51:18 2026] f_cdev_alloc: port_name:at_usb2 (0000000000000000) portno:(2)
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f3 value = 3f4573e2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f4 value = bfc6daed
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f5 value = 3f75fd12
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f6 value = bf3b70f5
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f7 value = 3fc6daed
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f8 value = 3f29be04
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2f9 value = bf48ca18
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2fa value = 3f67d62d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2fb value = bf119431
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2fc value = 3f48ca18
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 321 value = 3f7f631d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 322 value = bfff631d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 323 value = 3f7f631d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 324 value = bf7ec69b
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 325 value = 3fff62ec
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 326 value = 3f7ece69
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 327 value = bfff7751
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 328 value = 3f801184
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 329 value = bf7ef170
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 32a value = 3fff7751
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 32b value = 3f7e017f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 32c value = bffe819c
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 32d value = 3f7f0ce4
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 32e value = bf7d0e63
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 32f value = 3ffe819c
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 330 value = 3f7c0cf2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 331 value = bffd58d7
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 332 value = 3f7ee4c6
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 333 value = bf7af1b8
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 334 value = 3ffd58d7
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 335 value = 3f76fb2e
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 336 value = bffc195b
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 337 value = 3f814363
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 338 value = bf7981f3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 339 value = 3ffc195b
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 33a value = 3f6b5df9
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 33b value = bff0b769
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 33c value = 3f7a3858
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 33d value = bf659651
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 33e value = 3ff0b769
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 33f value = 3f49ac82
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 340 value = bfcaafaa
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 341 value = 3f70c818
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 342 value = bf3a749a
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 343 value = 3fcaafaa
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 344 value = 3efcb968
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 345 value = a4c6a6f2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 346 value = 3f69d50f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 347 value = bed06387
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 348 value = 24c6a6f2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 349 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 34a value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 34b value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 34c value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 34d value = 80000000
+[Sat Oct 17 11:51:18 2026] using random self ethernet address
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 34f value = 3f7f631d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 350 value = bfff631d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 351 value = 3f7f631d
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 352 value = bf7ec69b
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 353 value = 3fff62ec
+[Sat Oct 17 11:51:18 2026] using random host ethernet address
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 354 value = 3f7ece69
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 355 value = bfff7751
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 356 value = 3f801184
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 357 value = bf7ef170
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 358 value = 3fff7751
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 359 value = 3f7e017f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 35a value = bffe819c
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 35b value = 3f7f0ce4
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 35c value = bf7d0e63
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 35d value = 3ffe819c
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 35e value = 3f7c0cf2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 35f value = bffd58d7
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 360 value = 3f7ee4c6
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 361 value = bf7af1b8
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 362 value = 3ffd58d7
+[Sat Oct 17 11:51:18 2026] using random self ethernet address
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 363 value = 3f76fb2e
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 364 value = bffc195b
+[Sat Oct 17 11:51:18 2026] using random host ethernet address
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 365 value = 3f814363
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 366 value = bf7981f3
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 367 value = 3ffc195b
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 368 value = 3f6b5df9
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 369 value = bff0b769
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 36a value = 3f7a3858
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 36b value = bf659651
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 36c value = 3ff0b769
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 36d value = 3f49ac82
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 36e value = bfcaafaa
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 36f value = 3f70c818
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 370 value = bf3a749a
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 371 value = 3fcaafaa
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 372 value = 3efcb968
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 373 value = a4c6a6f2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 374 value = 3f69d50f
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 375 value = bed06387
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 376 value = 24c6a6f2
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 377 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 378 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 379 value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 37a value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 37b value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 274 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 275 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 276 value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 277 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 278 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 279 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 27a value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 27b value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 27c value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 27d value = 80000000
+[Sat Oct 17 11:51:18 2026] using random self ethernet address
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 27e value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 27f value = 0
+[Sat Oct 17 11:51:18 2026] using random host ethernet address
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 280 value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 281 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 282 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 283 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 284 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 285 value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 286 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 287 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 288 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 289 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 28a value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 28b value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 28c value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 28d value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 28e value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 28f value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 290 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 291 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 292 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 293 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 294 value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 295 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 296 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 297 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 298 value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 299 value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 29a value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 29b value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 29c value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 29d value = 0
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 29e value = 3f800000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 29f value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] b2_addr = 2a0 value = 80000000
+[Sat Oct 17 11:51:18 2026] [ADI214xx] adi214xx_set_sony_on : set sony effect,pri_mode=8,prj_num=703001668AA
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_speaker_num :speaker_num:9
+[Sat Oct 17 11:51:18 2026] [ADI214xx] : close four_range 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_ref_switch : 0 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_ext_amp : 1 
+[Sat Oct 17 11:51:18 2026] type=1400 audit(5.891:11): avc: denied { read } for comm="getprop" name="u:object_r:persist_sv_svdebug:s0" dev="tmpfs" ino=165 scontext=u:r:vendor_qti_init_shell:s0 tcontext=u:object_r:persist_sv_svdebug:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(5.915:12): avc: denied { read } for comm="getprop" name="u:object_r:persist_sv_svdebug:s0" dev="tmpfs" ino=165 scontext=u:r:vendor_qti_init_shell:s0 tcontext=u:object_r:persist_sv_svdebug:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(5.983:13): avc: denied { read } for comm="getprop" name="u:object_r:persist_sv_svdebug:s0" dev="tmpfs" ino=165 scontext=u:r:vendor_qti_init_shell:s0 tcontext=u:object_r:persist_sv_svdebug:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] type=1107 audit(6.003:14): uid=0 auid=4294967295 ses=4294967295 subj=u:r:init:s0 msg='avc: denied { set } for property=persist.vendor.usb.config.extra pid=675 uid=0 gid=0 scontext=u:r:vendor_qti_init_shell:s0 tcontext=u:object_r:persist_sv_svdebug:s0 tclass=property_service permissive=0'
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: USB-[mode_store]: The current process commond : "init" the pid : 253 
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: USB-[mode_store]: Set host mode, vbus_active:0, id_state:0
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: DWC3 in low power mode
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a800000.ssusb: DWC3 exited from low power mode
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: hcd sysdev dev_name = a800000.ssusb
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: hcd sysdev dev_name = a800000.ssusb
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb_register_bus busnum 4
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 4
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: hcc params 0x0230ffe5 hci version 0x110 quirks 0x0000000000010010
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: irq 202, io mem 0x0a800000
+[Sat Oct 17 11:51:18 2026] usb usb4: USB-[usb_enumerate_device]: vid:0x1d6b, pid:0x0002
+[Sat Oct 17 11:51:18 2026] usb usb4: USB-[usb_enumerate_device]: UsbRootHubCnt: 4, UsbPowerFlag: 1, UsbWakeUpFalg: 0
+[Sat Oct 17 11:51:18 2026] usb usb4: USB-[usb_enumerate_device]: Detect SDP104-HUB is not connected. Start reset SDP104-HUB
+[Sat Oct 17 11:51:18 2026] usb usb4: USB-[is_unsupported_device]: device bInterfaceClass is 0x9
+[Sat Oct 17 11:51:18 2026] usb usb4: USB-[usb_enumerate_device]: tbox_dev_type[0]: 2, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] usb usb4: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.04
+[Sat Oct 17 11:51:18 2026] usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[Sat Oct 17 11:51:18 2026] usb usb4: Product: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb usb4: Manufacturer: Linux 5.4.86-qgki-g82836c7304a0 xhci-hcd
+[Sat Oct 17 11:51:18 2026] usb usb4: SerialNumber: xhci-hcd.1.auto
+[Sat Oct 17 11:51:18 2026] hub 4-0:1.0: USB hub found
+[Sat Oct 17 11:51:18 2026] hub 4-0:1.0: 1 port detected
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb_register_bus busnum 5
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 5
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.1.auto: Host supports USB 3.1 Enhanced SuperSpeed
+[Sat Oct 17 11:51:18 2026] usb usb5: We don't know the algorithms for LPM for this host, disabling LPM.
+[Sat Oct 17 11:51:18 2026] usb usb5: USB-[usb_enumerate_device]: vid:0x1d6b, pid:0x0003
+[Sat Oct 17 11:51:18 2026] usb usb5: USB-[usb_enumerate_device]: UsbRootHubCnt: 5, UsbPowerFlag: 1, UsbWakeUpFalg: 0
+[Sat Oct 17 11:51:18 2026] usb usb5: USB-[usb_enumerate_device]: Detect SDP104-HUB is not connected. Start reset SDP104-HUB
+[Sat Oct 17 11:51:18 2026] usb usb5: USB-[is_unsupported_device]: device bInterfaceClass is 0x9
+[Sat Oct 17 11:51:18 2026] usb usb5: USB-[usb_enumerate_device]: tbox_dev_type[0]: 2, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] usb usb5: New USB device found, idVendor=1d6b, idProduct=0003, bcdDevice= 5.04
+[Sat Oct 17 11:51:18 2026] usb usb5: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[Sat Oct 17 11:51:18 2026] usb usb5: Product: xHCI Host Controller
+[Sat Oct 17 11:51:18 2026] usb usb5: Manufacturer: Linux 5.4.86-qgki-g82836c7304a0 xhci-hcd
+[Sat Oct 17 11:51:18 2026] usb usb5: SerialNumber: xhci-hcd.1.auto
+[Sat Oct 17 11:51:18 2026] hub 5-0:1.0: USB hub found
+[Sat Oct 17 11:51:18 2026] hub 5-0:1.0: 1 port detected
+[Sat Oct 17 11:51:18 2026] dhd_module_init in
+[Sat Oct 17 11:51:18 2026] Power-up adapter 'DHD generic adapter'
+[Sat Oct 17 11:51:18 2026] regulator: gpio wlreg_on on
+[Sat Oct 17 11:51:18 2026] dhd: wlreg_on regulator_enable
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: Assert the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: RC0: PCIE20_PARF_INT_ALL_MASK: 0x7f80c202
+[Sat Oct 17 11:51:18 2026] pcie_phy_init: PCIe RC0 PHY is ready!
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: Release the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] msm_pcie_link_train: PCIe RC0 link initialized
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie: host bridge /soc/qcom,pcie@1c00000 ranges:
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie:   No bus range found for /soc/qcom,pcie@1c00000, using [bus 00-ff]
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie:    IO 0x60200000..0x602fffff -> 0x60200000
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie:   MEM 0x60300000..0x63ffffff -> 0x60300000
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie: MSI: qgic controller is present
+[Sat Oct 17 11:51:18 2026] FAT-fs (vdd38): Volume was not properly unmounted. Some data may be corrupt. Please run fsck.
+[Sat Oct 17 11:51:18 2026] pci-msm 1c00000.qcom,pcie: PCI host bridge to bus 0000:00
+[Sat Oct 17 11:51:18 2026] pci_bus 0000:00: root bus resource [bus 00-ff]
+[Sat Oct 17 11:51:18 2026] pci_bus 0000:00: root bus resource [io  0x0000-0xfffff] (bus address [0x60200000-0x602fffff])
+[Sat Oct 17 11:51:18 2026] pci_bus 0000:00: root bus resource [mem 0x60300000-0x63ffffff]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: [17cb:0108] type 01 class 0x060400
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: reg 0x10: [mem 0x00000000-0x00000fff 64bit]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: PME# supported from D0 D3hot D3cold
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd39): Ignoring removed nomblk_io_submit option
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+[Sat Oct 17 11:51:18 2026] pci 0000:01:00.0: [14e4:4415] type 00 class 0x028000
+[Sat Oct 17 11:51:18 2026] pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x00007fff 64bit]
+[Sat Oct 17 11:51:18 2026] pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x003fffff 64bit]
+[Sat Oct 17 11:51:18 2026] pci 0000:01:00.0: supports D1 D2
+[Sat Oct 17 11:51:18 2026] pci 0000:01:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+[Sat Oct 17 11:51:18 2026] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: bridge window [io  0x1000-0x0fff] to [bus 01] add_size 1000
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: bridge window [mem 0x00100000-0x000fffff 64bit pref] to [bus 01] add_size 200000 add_align 100000
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: BAR 8: assigned [mem 0x60400000-0x609fffff]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: BAR 9: assigned [mem 0x60a00000-0x60bfffff 64bit pref]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: BAR 0: assigned [mem 0x60300000-0x60300fff 64bit]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: BAR 7: assigned [io  0x1000-0x1fff]
+[Sat Oct 17 11:51:18 2026] pci 0000:01:00.0: BAR 2: assigned [mem 0x60400000-0x607fffff 64bit]
+[Sat Oct 17 11:51:18 2026] pci 0000:01:00.0: BAR 0: assigned [mem 0x60800000-0x60807fff 64bit]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0: PCI bridge to [bus 01]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0:   bridge window [io  0x1000-0x1fff]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0:   bridge window [mem 0x60400000-0x609fffff]
+[Sat Oct 17 11:51:18 2026] pci 0000:00:00.0:   bridge window [mem 0x60a00000-0x60bfffff 64bit pref]
+[Sat Oct 17 11:51:18 2026] pci-msm-rc 0000:00:00.0: Adding to iommu group 5
+[Sat Oct 17 11:51:18 2026] read descriptors
+[Sat Oct 17 11:51:18 2026] read strings
+[Sat Oct 17 11:51:18 2026] Qcom enumerate PCIe RC0 err = 0
+[Sat Oct 17 11:51:18 2026] pcieh 0000:01:00.0: Adding to iommu group 6
+[Sat Oct 17 11:51:18 2026] dhdpcie_chipmatch: Supporting vendor 14e4 device 4415
+[Sat Oct 17 11:51:18 2026] PCI_PROBE:  bus 1, slot 0,vendor 14E4, device 4415(good PCI location)
+[Sat Oct 17 11:51:18 2026] dhdpcie_init: found adapter info 'DHD generic adapter'
+[Sat Oct 17 11:51:18 2026] msm_pcie_pm_control: PCIe: RC0: requested to resume when link is already powered on.
+[Sat Oct 17 11:51:18 2026] PCIe:dhdpcie_get_resource:enabled link
+[Sat Oct 17 11:51:18 2026] pci-msm-rc 0000:00:00.0: enabling device (0006 -> 0007)
+[Sat Oct 17 11:51:18 2026] pcieh 0000:01:00.0: enabling device (0000 -> 0002)
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd39): recovery complete
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd39): mounted filesystem with ordered data mode. Opts: errors=remount-ro,nomblk_io_submit
+[Sat Oct 17 11:51:18 2026] usb usb4-port1: USB-[port_event]: Get reg connect_change: 1, port1: 1
+[Sat Oct 17 11:51:18 2026] usb usb4-port1: USB-[port_event]: portstatus: 00000101, portchange: 00000000, port1: 1
+[Sat Oct 17 11:51:18 2026] usb usb4-port1: USB-[port_event]: Get connect_change: 1
+[Sat Oct 17 11:51:18 2026] usb usb4-port1: status 0101, change 0000, 12 Mb/s
+[Sat Oct 17 11:51:18 2026] USB-[usbhub_reset_thread]: === Start SDP104-HUB reset, RstCnt:1 ===
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd39): mounted filesystem with ordered data mode. Opts: 
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd40): Ignoring removed nomblk_io_submit option
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd40): recovery complete
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd40): mounted filesystem with ordered data mode. Opts: errors=remount-ro,nomblk_io_submit
+[Sat Oct 17 11:51:18 2026] usb 4-1: new high-speed USB device number 2 using xhci-hcd
+[Sat Oct 17 11:51:18 2026] USB-[usbhub_gpio_work]: schedule, reset Hub again. 
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd40): mounted filesystem with ordered data mode. Opts: 
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd41): Ignoring removed nomblk_io_submit option
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,403750912
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd41): recovery complete
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd41): mounted filesystem with ordered data mode. Opts: errors=remount-ro,nomblk_io_submit
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,403750912
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] EXT4-fs (vdd41): mounted filesystem with ordered data mode. Opts: 
+[Sat Oct 17 11:51:18 2026] init: processing action (vendor.usb.controller=*) from (/vendor/etc/init/hw/init.target.rc:140)
+[Sat Oct 17 11:51:18 2026] init: processing action (persist.vendor.usb.config=*) from (/vendor/etc/init/hw/init.qcom.factory.rc:67)
+[Sat Oct 17 11:51:18 2026] init: processing action (init.svc.audioserver=running) from (/system/etc/init/audioserver.rc:35)
+[Sat Oct 17 11:51:18 2026] init: Command 'start vendor.audio-hal-4-0-msd' action=init.svc.audioserver=running (/system/etc/init/audioserver.rc:37) took 0ms and failed: service vendor.audio-hal-4-0-msd not found
+[Sat Oct 17 11:51:18 2026] init: Command 'start vendor.audio-hal-2-0' action=init.svc.audioserver=running (/system/etc/init/audioserver.rc:39) took 0ms and failed: service vendor.audio-hal-2-0 not found
+[Sat Oct 17 11:51:18 2026] init: Command 'start audio-hal-2-0' action=init.svc.audioserver=running (/system/etc/init/audioserver.rc:40) took 0ms and failed: service audio-hal-2-0 not found
+[Sat Oct 17 11:51:18 2026] init: processing action (ro.persistent_properties.ready=true) from (/system/etc/init/bootstat.rc:67)
+[Sat Oct 17 11:51:18 2026] init: processing action (ro.persistent_properties.ready=true) from (/system/etc/init/bootstat.rc:71)
+[Sat Oct 17 11:51:18 2026] init: starting service 'exec 23 (/system/bin/bootstat --set_system_boot_reason)'...
+[Sat Oct 17 11:51:18 2026] init: starting service 'exec 23 (/system/bin/bootstat --set_system_boot_reason)' | pid: 807 | class: default
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402657280
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: USB-[mode_store]: The current process commond : "init" the pid : 253 
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: USB-[mode_store]: Set peripheral mode, vbus_active:1, id_state:1
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: DWC3 exited from low power mode
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: remove, state 4
+[Sat Oct 17 11:51:18 2026] usb usb3: USB disconnect, device number 1
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: USB bus 3 deregistered
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: remove, state 4
+[Sat Oct 17 11:51:18 2026] usb usb2: USB disconnect, device number 1
+[Sat Oct 17 11:51:18 2026] xhci-hcd xhci-hcd.0.auto: USB bus 2 deregistered
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: DWC3 in low power mode
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: Could not get usb psy
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402657280
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] msm-dwc3 a600000.ssusb: DWC3 exited from low power mode
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] cnss-daemon: interop issues ap: read_iot_ap_file: No such file /data/vendor/wifi/iotap_ps.bin
+[Sat Oct 17 11:51:18 2026] cnss-daemon: interop issues ap: read_iot_ap_ps_from_file, read file error
+[Sat Oct 17 11:51:18 2026] cnss-daemon: Couldn't resolve family id
+[Sat Oct 17 11:51:18 2026] cnss-daemon: Failed to init genl between daemon and platform, continue
+[Sat Oct 17 11:51:18 2026] potentially unexpected fatal signal 6.
+[Sat Oct 17 11:51:18 2026] CPU: 6 PID: 917 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 00000000 (nzcv daif -PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : 0000007fa071144c
+[Sat Oct 17 11:51:18 2026] lr : 0000007fa0711420
+[Sat Oct 17 11:51:18 2026] sp : 0000007fe4aa57e0
+[Sat Oct 17 11:51:18 2026] x29: 0000007fe4aa5880 x28: 0000007fa071592c 
+[Sat Oct 17 11:51:18 2026] x27: 0000007fe4aa6161 x26: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x25: 0000007fa0905000 x24: b400007e1fb9e6d0 
+[Sat Oct 17 11:51:18 2026] x23: 0000007fa0905000 x22: 0000007fa0905000 
+[Sat Oct 17 11:51:18 2026] x21: 00000000ffffffff x20: 0000000000000395 
+[Sat Oct 17 11:51:18 2026] x19: 0000000000000395 x18: 0000007fa0a46000 
+[Sat Oct 17 11:51:18 2026] x17: 0000007fa075d9f0 x16: 0000007fa077bc80 
+[Sat Oct 17 11:51:18 2026] x15: 0000ffff00000fff x14: 0000007fa077ed22 
+[Sat Oct 17 11:51:18 2026] x13: 2068732f6e69622f x12: 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x9 : 0605498d24fa125b x8 : 00000000000000f0 
+[Sat Oct 17 11:51:18 2026] x7 : 000000000000000a x6 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x5 : 0000000000000000 x4 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x3 : 0000007fe4aa5800 x2 : 0000000000000006 
+[Sat Oct 17 11:51:18 2026] x1 : 0000000000000395 x0 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] using random self ethernet address
+[Sat Oct 17 11:51:18 2026] using random host ethernet address
+[Sat Oct 17 11:51:18 2026] carplay0: HOST MAC fa:8f:ce:d4:59:28
+[Sat Oct 17 11:51:18 2026] carplay0: MAC b2:c3:6c:62:49:ea
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402669568
+[Sat Oct 17 11:51:18 2026] android_work: did not send uevent (0 0 0000000000000000)
+[Sat Oct 17 11:51:18 2026] read descriptors
+[Sat Oct 17 11:51:18 2026] read strings
+[Sat Oct 17 11:51:18 2026] potentially unexpected fatal signal 6.
+[Sat Oct 17 11:51:18 2026] CPU: 2 PID: 944 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 00000000 (nzcv daif -PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : 0000007fa071144c
+[Sat Oct 17 11:51:18 2026] lr : 0000007fa0711420
+[Sat Oct 17 11:51:18 2026] sp : 0000007fe4aa57e0
+[Sat Oct 17 11:51:18 2026] x29: 0000007fe4aa5880 x28: 0000007fa071592c 
+[Sat Oct 17 11:51:18 2026] x27: 0000007fe4aa6161 x26: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x25: 0000007fa0905000 x24: b400007e1fb9e6d0 
+[Sat Oct 17 11:51:18 2026] x23: 0000007fa0905000 x22: 0000007fa0905000 
+[Sat Oct 17 11:51:18 2026] x21: 00000000ffffffff x20: 00000000000003b0 
+[Sat Oct 17 11:51:18 2026] x19: 00000000000003b0 x18: 0000007fa0a46000 
+[Sat Oct 17 11:51:18 2026] x17: 0000007fa075d9f0 x16: 0000007fa077bc80 
+[Sat Oct 17 11:51:18 2026] x15: 0000ffff00000fff x14: 0000007fa077ed22 
+[Sat Oct 17 11:51:18 2026] x13: 2068732f6e69622f x12: 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x9 : 0605498d24fa125b x8 : 00000000000000f0 
+[Sat Oct 17 11:51:18 2026] x7 : 000000000000000a x6 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x5 : 0000000000000000 x4 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x3 : 0000007fe4aa5800 x2 : 0000000000000006 
+[Sat Oct 17 11:51:18 2026] x1 : 00000000000003b0 x0 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402669568
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402673664
+[Sat Oct 17 11:51:18 2026] usb 4-1: USB-[usb_enumerate_device]: vid:0x2df4, pid:0x8008
+[Sat Oct 17 11:51:18 2026] usb 4-1: USB-[usb_enumerate_device]: UsbRootHubCnt: 5, UsbPowerFlag: 1, UsbWakeUpFalg: 0
+[Sat Oct 17 11:51:18 2026] usb 4-1: USB-[usb_enumerate_device]: Detect SDP104-HUB connect
+[Sat Oct 17 11:51:18 2026] usb 4-1: USB-[is_unsupported_device]: device bInterfaceClass is 0x9
+[Sat Oct 17 11:51:18 2026] usb 4-1: USB-[usb_enumerate_device]: tbox_dev_type[0]: 2, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] usb 4-1: New USB device found, idVendor=2df4, idProduct=8008, bcdDevice= 0.00
+[Sat Oct 17 11:51:18 2026] usb 4-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[Sat Oct 17 11:51:18 2026] usb 4-1: New USB device found, VID=2df4, PID=8008 
+[Sat Oct 17 11:51:18 2026] hub 4-1:1.0: USB hub found
+[Sat Oct 17 11:51:18 2026] hub 4-1:1.0: 4 ports detected
+[Sat Oct 17 11:51:18 2026] selinux: SELinux: Could not set context for /sys/devices/platform/soc/a800000.ssusb/a800000.dwc3/xhci-hcd.1.auto/usb4/4-1/4-1:1.0/waiting_for_supplier:  No such file or directory
+[Sat Oct 17 11:51:18 2026] usb usb4-port1: USB-[port_event]: Get reg connect_change: 0, port1: 1
+[Sat Oct 17 11:51:18 2026] android_work: did not send uevent (0 0 0000000000000000)
+[Sat Oct 17 11:51:18 2026] usb usb4-port1: USB-[port_event]: portstatus: 00000503, portchange: 00000000, port1: 1
+[Sat Oct 17 11:51:18 2026] usb usb4-port1: USB-[port_event]: Get connect_change: 0
+[Sat Oct 17 11:51:18 2026] selinux: 
+[Sat Oct 17 11:51:18 2026] ueventd: selinux_android_restorecon(/sys/devices/platform/soc/a800000.ssusb/a800000.dwc3/xhci-hcd.1.auto/usb4/4-1/4-1:1.0) failed: Success
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402673664
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402694144
+[Sat Oct 17 11:51:18 2026] potentially unexpected fatal signal 6.
+[Sat Oct 17 11:51:18 2026] CPU: 1 PID: 966 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 00000000 (nzcv daif -PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : 0000007fa071144c
+[Sat Oct 17 11:51:18 2026] lr : 0000007fa0711420
+[Sat Oct 17 11:51:18 2026] sp : 0000007fe4aa57e0
+[Sat Oct 17 11:51:18 2026] x29: 0000007fe4aa5880 x28: 0000007fa071592c 
+[Sat Oct 17 11:51:18 2026] x27: 0000007fe4aa6161 x26: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x25: 0000007fa0905000 x24: b400007e1fb9e6d0 
+[Sat Oct 17 11:51:18 2026] x23: 0000007fa0905000 x22: 0000007fa0905000 
+[Sat Oct 17 11:51:18 2026] x21: 00000000ffffffff x20: 00000000000003c6 
+[Sat Oct 17 11:51:18 2026] x19: 00000000000003c6 x18: 0000007fa0a46000 
+[Sat Oct 17 11:51:18 2026] x17: 0000007fa075d9f0 x16: 0000007fa077bc80 
+[Sat Oct 17 11:51:18 2026] x15: 0000ffff00000fff x14: 0000007fa077ed22 
+[Sat Oct 17 11:51:18 2026] x13: 2068732f6e69622f x12: 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x9 : 0605498d24fa125b x8 : 00000000000000f0 
+[Sat Oct 17 11:51:18 2026] x7 : 000000000000000a x6 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x5 : 0000000000000000 x4 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x3 : 0000007fe4aa5800 x2 : 0000000000000006 
+[Sat Oct 17 11:51:18 2026] x1 : 00000000000003c6 x0 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402694144
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] android_work: did not send uevent (0 0 0000000000000000)
+[Sat Oct 17 11:51:18 2026] read descriptors
+[Sat Oct 17 11:51:18 2026] read strings
+[Sat Oct 17 11:51:18 2026] potentially unexpected fatal signal 6.
+[Sat Oct 17 11:51:18 2026] CPU: 0 PID: 975 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 00000000 (nzcv daif -PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : 0000007fa071144c
+[Sat Oct 17 11:51:18 2026] lr : 0000007fa0711420
+[Sat Oct 17 11:51:18 2026] sp : 0000007fe4aa57e0
+[Sat Oct 17 11:51:18 2026] x29: 0000007fe4aa5880 x28: 0000007fa071592c 
+[Sat Oct 17 11:51:18 2026] x27: 0000007fe4aa6161 x26: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x25: 0000007fa0905000 x24: b400007e1fb9e6d0 
+[Sat Oct 17 11:51:18 2026] x23: 0000007fa0905000 x22: 0000007fa0905000 
+[Sat Oct 17 11:51:18 2026] x21: 00000000ffffffff x20: 00000000000003cf 
+[Sat Oct 17 11:51:18 2026] x19: 00000000000003cf x18: 0000007fa0a46000 
+[Sat Oct 17 11:51:18 2026] x17: 0000007fa075d9f0 x16: 0000007fa077bc80 
+[Sat Oct 17 11:51:18 2026] x15: 0000ffff00000fff x14: 0000007fa077ed22 
+[Sat Oct 17 11:51:18 2026] x13: 2068732f6e69622f x12: 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x9 : 0605498d24fa125b x8 : 00000000000000f0 
+[Sat Oct 17 11:51:18 2026] x7 : 000000000000000a x6 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x5 : 0000000000000000 x4 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x3 : 0000007fe4aa5800 x2 : 0000000000000006 
+[Sat Oct 17 11:51:18 2026] x1 : 00000000000003cf x0 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403701760
+[Sat Oct 17 11:51:18 2026] android_work: did not send uevent (0 0 0000000000000000)
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403701760
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403701760
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403701760
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] usb 4-1-port1: USB-[port_event]: Get reg connect_change: 1, port1: 1
+[Sat Oct 17 11:51:18 2026] usb 4-1-port1: USB-[port_event]: portstatus: 00000101, portchange: 00000000, port1: 1
+[Sat Oct 17 11:51:18 2026] usb 4-1-port1: USB-[port_event]: Get connect_change: 1
+[Sat Oct 17 11:51:18 2026] usb 4-1-port1: status 0101, change 0000, 12 Mb/s
+[Sat Oct 17 11:51:18 2026] android_work: sent uevent USB_STATE=CONNECTED
+[Sat Oct 17 11:51:18 2026] configfs-gadget gadget: high-speed config #1: b
+[Sat Oct 17 11:51:18 2026] configfs-gadget gadget: Using interface 0
+[Sat Oct 17 11:51:18 2026] usb: gadget online event
+[Sat Oct 17 11:51:18 2026] android_work: sent uevent USB_STATE=CONFIGURED
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: new high-speed USB device number 3 using xhci-hcd
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402653184
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403701760
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: USB-[usb_enumerate_device]: vid:0x05c6, pid:0x902d
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: USB-[usb_enumerate_device]: UsbRootHubCnt: 0, UsbPowerFlag: 0, UsbWakeUpFalg: 0
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: USB-[is_unsupported_device]: device bInterfaceClass is 0xe0
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: USB-[usb_enumerate_device]: tbox_dev_type[0]: 0, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: New USB device found, idVendor=05c6, idProduct=902d, bcdDevice= 3.18
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: Product: MDM9628-MTP _SN:E1DA865F
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: Manufacturer: Android
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: SerialNumber: MDM9607
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403701760
+[Sat Oct 17 11:51:18 2026] Disable CTO
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] usb 4-1.1: New USB device found, VID=05c6, PID=902d 
+[Sat Oct 17 11:51:18 2026] USB-[__dev_alloc_name]: Detect name is usb%d, prev i: 0, tbox_dev_type[0]: 0, tbox_dev_type[1]: 2
+[Sat Oct 17 11:51:18 2026] USB-[__dev_alloc_name]: Detect DESAY_TBOX_DEVICE, set i = 0
+[Sat Oct 17 11:51:18 2026] USB-[__dev_alloc_name]: i: 0, buf: usb0
+[Sat Oct 17 11:51:18 2026] rndis_host 4-1.1:1.0 usb0: register 'rndis_host' at usb-xhci-hcd.1.auto-1.1, RNDIS device, 46:d0:20:67:f6:38
+[Sat Oct 17 11:51:18 2026] logd: logdr: UID=2000 GID=2000 PID=1032 b tail=0 logMask=ff pid=0 start=0ns timeout=0ns
+[Sat Oct 17 11:51:18 2026] healthd: battery none chg=
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] ip (1065) used greatest stack depth: 10816 bytes left
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] ******** Perform FLR ********
+[Sat Oct 17 11:51:18 2026] Chip does not support FLR
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] ip (1083) used greatest stack depth: 10768 bytes left
+[Sat Oct 17 11:51:18 2026] ip (1085) used greatest stack depth: 10416 bytes left
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403714048
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403714048
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403714048
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_mic_mute : mic_mute_value 0 
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403714048
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] read descriptors
+[Sat Oct 17 11:51:18 2026] read strings
+[Sat Oct 17 11:51:18 2026] read descriptors
+[Sat Oct 17 11:51:18 2026] read strings
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_adc:start init
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register : model code is : 14  Microphone bias is set to 8.5V
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register:reg 0x2c read_value:0xc0
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] DHD: dongle ram size is set to 917504(orig 917504) at 0x160000
+[Sat Oct 17 11:51:18 2026] wifi_platform_get_mac_addr
+[Sat Oct 17 11:51:18 2026] dhd_pktid_map_init:2112: pktid_audit init succeeded 1025
+[Sat Oct 17 11:51:18 2026] dhd_pktid_map_init:2112: pktid_audit init succeeded 1025
+[Sat Oct 17 11:51:18 2026] dhd_pktid_map_init:2112: pktid_audit init succeeded 36865
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_setup_wiphy : Registering Vendor80211
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_attach : Vendor: Register BRCM cfg80211 vendor cmd(0x67) interface 
+[Sat Oct 17 11:51:18 2026] wl_create_event_handler, cfg->event_workq=ffffff8298065200, &cfg->event_work = ffffff8296312258
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_setup_debugfs : Debugfs is not enabled on this kernel
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] dhd_init_logstrs_array: Failed to open the file /installmedia/logstrs.bin 
+[Sat Oct 17 11:51:18 2026] dhd_log_dump_init: kernel log buf size = 128KB; logdump_prsrv_tailsize = 80KB; limit prsrv tail size to = 19KB
+[Sat Oct 17 11:51:18 2026] dhd_attach(): thread:dhd_watchdog_thread:4dc started
+[Sat Oct 17 11:51:18 2026] Created /proc/dhd_ecounters procfs interface
+[Sat Oct 17 11:51:18 2026] dhd_deferred_work_init: work queue initialized
+[Sat Oct 17 11:51:18 2026] dhd_cpumasks_init CPU masks primary(big)=0xf0 secondary(little)=0xe
+[Sat Oct 17 11:51:18 2026] dhd_init_logtrace_process(): thread:dhd_logtrace_thread:4dd started
+[Sat Oct 17 11:51:18 2026] dhd_init_logtrace_process: thr_logtrace_ctl(1245) succedded
+[Sat Oct 17 11:51:18 2026] get_mem_val_from_file: File [/installmedia/.memdump.info] doesn't exist
+[Sat Oct 17 11:51:18 2026] dhd_get_memdump_info: MEMDUMP ENABLED = 2
+[Sat Oct 17 11:51:18 2026] dhdpcie_bus_attach: making DHD_BUS_DOWN
+[Sat Oct 17 11:51:18 2026] dhdpcie_chip_support_msi: buscorerev=21 chipid=0x4355
+[Sat Oct 17 11:51:18 2026] dhdpcie_init: rc_dev from dev->bus->self (17cb:108) is 0000000000000000
+[Sat Oct 17 11:51:18 2026] dhdpcie_init: rc_ep_aspm_cap: 1 rc_ep_l1ss_cap: 1
+[Sat Oct 17 11:51:18 2026] Dongle Host Driver, version 100.10.65 (78c2de1)\x0aCompiled in /work/code/lagvm/LINUX/android/kernel/msm-5.4/drivers/net/wireless/broadcom/bcmdhd/ on Dec 27 2025 at 02:08:38
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+[Sat Oct 17 11:51:18 2026] Register interface [wlan0]  MAC: 00:90:4c:49:08:73\x0a
+[Sat Oct 17 11:51:18 2026] wl_destroy_event_handler, cfg->event_workq=ffffff8298065200, &cfg->event_work = ffffff8296312258
+[Sat Oct 17 11:51:18 2026] dhd_bus_devreset: == Power OFF ==
+[Sat Oct 17 11:51:18 2026] dhd_bus_devreset: making dhdpub up FALSE
+[Sat Oct 17 11:51:18 2026] dhd_dpc_kill: tasklet disabled
+[Sat Oct 17 11:51:18 2026] ******** Perform FLR ********
+[Sat Oct 17 11:51:18 2026] Chip does not support FLR
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] ip (1252) used greatest stack depth: 9872 bytes left
+[Sat Oct 17 11:51:18 2026] ip (1252): highest shadow stack usage: 400 bytes
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] type=1400 audit(9.979:23): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402665472
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403714048
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403714048
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x80,402661376
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=653;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] [Ivan L]#func=osl_pci_write_config#line=655;arg=000000006c4588a4,0x70,403709952
+[Sat Oct 17 11:51:18 2026] msm_pcie_disable: PCIe: Assert the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] dhd_bus_devreset:  WLAN OFF Done
+[Sat Oct 17 11:51:18 2026] regulator: gpio wlreg_on off
+[Sat Oct 17 11:51:18 2026] dhd: wlreg_on regulator_disable
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_register_static_if : [STATIC_IF] Enter (wlan1) iftype:2
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+[Sat Oct 17 11:51:18 2026] Register interface [wlan1]  MAC: 02:90:4c:49:08:73\x0a
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_register_static_if : Static I/F (wlan1) Registered
+[Sat Oct 17 11:51:18 2026] dhd_module_init out
+[Sat Oct 17 11:51:18 2026] insmod (704) used greatest stack depth: 9600 bytes left
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:18 2026] insmod (704): highest shadow stack usage: 504 bytes
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_mic_mute : mic_mute_value 0 
+[Sat Oct 17 11:51:18 2026] type=1400 audit(10.735:24): avc: denied { read } for comm=4E444B204D65646961436F6465635F name="u:object_r:vendor_media_validate_prop:s0" dev="tmpfs" ino=327 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] type=1107 audit(10.735:25): uid=0 auid=4294967295 ses=4294967295 subj=u:r:init:s0 msg='avc: denied { set } for property=persist.vendor.media.validate pid=469 uid=1000 gid=1000 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=property_service permissive=0'
+[Sat Oct 17 11:51:18 2026] type=1107 audit(10.739:26): uid=0 auid=4294967295 ses=4294967295 subj=u:r:init:s0 msg='avc: denied { set } for property=persist.vendor.media.validate pid=469 uid=1000 gid=1000 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=property_service permissive=0'
+[Sat Oct 17 11:51:18 2026] type=1400 audit(10.839:27): avc: denied { read } for comm=4E444B204D65646961436F6465635F name="u:object_r:vendor_media_validate_prop:s0" dev="tmpfs" ino=327 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] type=1107 audit(10.839:28): uid=0 auid=4294967295 ses=4294967295 subj=u:r:init:s0 msg='avc: denied { set } for property=persist.vendor.media.validate pid=469 uid=1000 gid=1000 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=property_service permissive=0'
+[Sat Oct 17 11:51:18 2026] type=1107 audit(10.847:29): uid=0 auid=4294967295 ses=4294967295 subj=u:r:init:s0 msg='avc: denied { set } for property=persist.vendor.media.validate pid=469 uid=1000 gid=1000 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=property_service permissive=0'
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_adi21489_test : 26 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] : close enc 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_mute_value : media in mute : 1 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_channel_mode : 0 
+[Sat Oct 17 11:51:18 2026] [ADI214XX]: music mode 
+[Sat Oct 17 11:51:18 2026] ------------[ cut here ]------------
+[Sat Oct 17 11:51:18 2026] Unbalanced enable for IRQ 155
+[Sat Oct 17 11:51:18 2026] WARNING: CPU: 1 PID: 1191 at kernel/irq/manage.c:636 enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] Modules linked in: bcmdhd snd_soc_adi21489 pci_msm_drv machine_dlkm hdmi_dlkm stub_dlkm native_dlkm platform_dlkm q6_dlkm adsp_loader_dlkm apr_dlkm q6_notifier_dlkm snd_event_dlkm
+[Sat Oct 17 11:51:18 2026] CPU: 1 PID: 1191 Comm: droid.bluetooth Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 60400085 (nZCv daIf +PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] lr : enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] sp : ffffffc017b6b980
+[Sat Oct 17 11:51:18 2026] x29: ffffffc017b6b990 x28: ffffff828d149288 
+[Sat Oct 17 11:51:18 2026] x27: ffffff828d149288 x26: ffffff828b038990 
+[Sat Oct 17 11:51:18 2026] x25: ffffffc0112590e4 x24: ffffff828d149000 
+[Sat Oct 17 11:51:18 2026] x23: ffffffc011256618 x22: ffffff82eb7491b0 
+[Sat Oct 17 11:51:18 2026] x21: ffffffc011afcb54 x20: 000000000000009b 
+[Sat Oct 17 11:51:18 2026] x19: ffffff82ec512200 x18: ffffffc017735080 
+[Sat Oct 17 11:51:18 2026] x17: 0000000000000058 x16: 0000000000000058 
+[Sat Oct 17 11:51:18 2026] x15: 0000000000000004 x14: 0000000000000030 
+[Sat Oct 17 11:51:18 2026] x13: 00000000000008ec x12: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x11: 0000000000000004 x10: 00000000ffffffff 
+[Sat Oct 17 11:51:18 2026] x9 : 077150540f5fce00 x8 : 077150540f5fce00 
+[Sat Oct 17 11:51:18 2026] x7 : 0000000000000000 x6 : ffffffc0123fe255 
+[Sat Oct 17 11:51:18 2026] x5 : ffffffc0122a2000 x4 : 0000000000000002 
+[Sat Oct 17 11:51:18 2026] x3 : 0000000000000035 x2 : 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x1 : 0000000000000000 x0 : 000000000000001d 
+[Sat Oct 17 11:51:18 2026] Call trace:
+[Sat Oct 17 11:51:18 2026] enable_irq+0x98/0xf0
+[Sat Oct 17 11:51:18 2026] msm_geni_serial_startup+0x10c/0x304
+[Sat Oct 17 11:51:18 2026] uart_port_startup+0x1c8/0x418
+[Sat Oct 17 11:51:18 2026] uart_port_activate+0x58/0xfc
+[Sat Oct 17 11:51:18 2026] tty_port_open+0xe4/0x1a8
+[Sat Oct 17 11:51:18 2026] uart_open+0x20/0x30
+[Sat Oct 17 11:51:18 2026] tty_open+0x358/0x57c
+[Sat Oct 17 11:51:18 2026] chrdev_open+0x1d4/0x258
+[Sat Oct 17 11:51:18 2026] do_dentry_open+0x278/0x434
+[Sat Oct 17 11:51:18 2026] vfs_open+0x2c/0x38
+[Sat Oct 17 11:51:18 2026] path_openat+0x4a4/0xc64
+[Sat Oct 17 11:51:18 2026] do_filp_open+0xb0/0x15c
+[Sat Oct 17 11:51:18 2026] do_sys_open+0x144/0x29c
+[Sat Oct 17 11:51:18 2026] __arm64_sys_openat+0x28/0x34
+[Sat Oct 17 11:51:18 2026] el0_svc_common+0xb4/0x19c
+[Sat Oct 17 11:51:18 2026] el0_svc_handler+0x74/0x98
+[Sat Oct 17 11:51:18 2026] el0_svc+0x8/0xc
+[Sat Oct 17 11:51:18 2026] ---[ end trace b5cbf454cfcb51cc ]---
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_mute_value : navi mute : 0 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_mute_value : phone mute : 0 
+[Sat Oct 17 11:51:18 2026] [ADI214xx] put_mute_value : bt mute : 0 
+[Sat Oct 17 11:51:18 2026] type=1400 audit(12.207:30): avc: denied { read } for comm="com.desaysv.ivi" name="u:object_r:exported3_system_prop:s0" dev="tmpfs" ino=96 scontext=u:r:hal_vehicle_g6:s0 tcontext=u:object_r:exported3_system_prop:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:18 2026] cnss-daemon: cnss_plat_ipc_qmi_init: Failed to init Platform QMI client
+[Sat Oct 17 11:51:18 2026] cnss-daemon: Failed to setup CNSS Platform QMI IPC. Fallback to direct FW QMI
+[Sat Oct 17 11:51:18 2026] cnss-daemon: wlfw_start: Starting
+[Sat Oct 17 11:51:18 2026] cnss-daemon: no interop issues ap currently
+[Sat Oct 17 11:51:18 2026] cnss-daemon: wlfw_service_request: Start the pthread: 0x0K
+[Sat Oct 17 11:51:18 2026] cnss-daemon: No Modem support for this target
+[Sat Oct 17 11:51:18 2026] cnss-daemon: DMS MAC Address Provisioning not supported
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_set_hal_started : wl_cfgvendor_set_hal_started,[DUMP] HAL STARTED
+[Sat Oct 17 11:51:18 2026] dhd_open: 
+[Sat Oct 17 11:51:18 2026] dhd_init_logstrs_array: Failed to open the file /installmedia/logstrs.bin 
+[Sat Oct 17 11:51:18 2026] \x0aDongle Host Driver, version 100.10.65 (78c2de1)\x0aCompiled in /work/code/lagvm/LINUX/android/kernel/msm-5.4/drivers/net/wireless/broadcom/bcmdhd/ on Dec 27 2025 at 02:08:38
+[Sat Oct 17 11:51:18 2026] wl_android_wifi_on in
+[Sat Oct 17 11:51:18 2026] regulator: gpio wlreg_on on
+[Sat Oct 17 11:51:18 2026] dhd: wlreg_on regulator_enable
+[Sat Oct 17 11:51:18 2026] dhd_bus_devreset: == Power ON ==
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: Assert the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: RC0: PCIE20_PARF_INT_ALL_MASK: 0x7f80c202
+[Sat Oct 17 11:51:18 2026] pcie_phy_init: PCIe RC0 PHY is ready!
+[Sat Oct 17 11:51:18 2026] msm_pcie_enable: PCIe: Release the reset of endpoint of RC0.
+[Sat Oct 17 11:51:18 2026] msm_pcie_link_train: PCIe RC0 link initialized
+[Sat Oct 17 11:51:18 2026] dhd_bus_devreset: dhdpcie_bus_clock_start OK
+[Sat Oct 17 11:51:18 2026] Disable CTO
+[Sat Oct 17 11:51:18 2026] ******** Perform FLR ********
+[Sat Oct 17 11:51:18 2026] Chip does not support FLR
+[Sat Oct 17 11:51:18 2026] init: Unable to set property 'vehicle.persist.bt.mac_addr' from uid:0 gid:1000 pid:503: SELinux permission check failed
+[Sat Oct 17 11:51:18 2026] type=1107 audit(1792227074.079:31): uid=0 auid=4294967295 ses=4294967295 subj=u:r:init:s0 msg='avc: denied { set } for property=vehicle.persist.bt.mac_addr pid=503 uid=0 gid=1000 scontext=u:r:tee:s0 tcontext=u:object_r:default_prop:s0 tclass=property_service permissive=0'
+[Sat Oct 17 11:51:18 2026] DHD: dongle ram size is set to 917504(orig 917504) at 0x160000
+[Sat Oct 17 11:51:18 2026] dhd_bus_download_firmware: firmware path=/vendor/etc/wifi/89459_pcie.bin, nvram path=/vendor/etc/wifi/89459_pcie.txt
+[Sat Oct 17 11:51:18 2026] dhdpcie_dump_resource: BAR0(VA): 0x0000000000000000, BAR0(PA): 0x0000000060800000, SIZE: 32768
+[Sat Oct 17 11:51:18 2026] dhdpcie_dump_resource: BAR1(VA): 0x0000000000000000, BAR1(PA): 0x0000000060400000, SIZE: 4194304
+[Sat Oct 17 11:51:18 2026] dhd_os_open_image1: /vendor/etc/wifi/89459_pcie.bin (620465 bytes) open success
+[Sat Oct 17 11:51:18 2026] dhdpcie_download_code_file: dhd_tcm_test_enable 0
+[Sat Oct 17 11:51:18 2026] dhdpcie_download_code_file: download firmware /vendor/etc/wifi/89459_pcie.bin
+[Sat Oct 17 11:51:18 2026] dhd_os_open_image1: /vendor/etc/wifi/89459_pcie.bin (620465 bytes) open success
+[Sat Oct 17 11:51:18 2026] dhd_os_open_image1: /vendor/etc/wifi/89459_pcie.txt (6645 bytes) open success
+[Sat Oct 17 11:51:18 2026] dhdpcie_download_nvram: dhd_get_download_buffer len 6645
+[Sat Oct 17 11:51:18 2026] dhdpcie_download_nvram: process_nvram_vars len 5088
+[Sat Oct 17 11:51:18 2026] dhdpcie_bus_write_vars: Download, Upload and compare of NVRAM succeeded.
+[Sat Oct 17 11:51:18 2026] dhd_get_rnd_info: File [/installmedia/.rnd.in] doesn't exist
+[Sat Oct 17 11:51:18 2026] dhd_dump_rnd_info: File [/installmedia/.rnd.out] doesn't exist
+[Sat Oct 17 11:51:18 2026] dhd_bus_aer_config: Configure AER registers for EP
+[Sat Oct 17 11:51:18 2026] dhd_bus_aer_config: Configure AER registers for RC
+[Sat Oct 17 11:51:18 2026] xt_recent: hitcount (1200) is larger than allowed maximum (255)
+[Sat Oct 17 11:51:18 2026] xt_recent: hitcount (1200) is larger than allowed maximum (255)
+[Sat Oct 17 11:51:18 2026] dhdpcie_readshared_console:PCIe shared addr (0x001c5450) read took 120095 usec before dongle is ready
+[Sat Oct 17 11:51:18 2026] conlog: bufsize=0x400
+[Sat Oct 17 11:51:18 2026] conlog: addr=0x2001a0, idx=0x3d4, last=0x0 
+[Sat Oct 17 11:51:18 2026] CONSOLE: ecounters enabled/disabled 00000000
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.337 
+[Sat Oct 17 11:51:18 2026] CONSOLE: RTE (SDIO-MSG_BUF) 13.35.340 (0831609 CY) on BCM4355 r13 @ 37.4/160.0/320.0MHz
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.338 allocating a max of 255 rxcplid buffers
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.338 pciemsgbuf0: Broadcom PCIE MSGBUF driver
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.352 reclaim section 0: Returned 70196 bytes (pre-reclaim: 223224)
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.372 wl0: FUNC_NAME: RF Band Cap: 2G:0 5G:1
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.393 MALLOC warning: allocations are persistent by default in attach phase!
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.399 wl0: Broadcom BCM4355 802.11 Wireless Controller 13.35.340 (0831609 CY)
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.399 MALLOC warning: allocations are persistent by default in attach phase!
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.415 wl1: FUNC_NAME: RF Band Cap: 2G:1 5G:1
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.445 wl1: Broadcom BCM4355 802.11 Wireless Controller 13.35.340 (0831609 CY)
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.445 MALLOC warning: allocations are persistent by default in attach phase!
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.445 TCAM: 256 used: 89 exceed:0
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.446 reclaim section 1: Returned 131092 bytes (pre-reclaim: 113292)
+[Sat Oct 17 11:51:18 2026] CONSOLE: 000000.446 ThreadX v5.6 initialized
+[Sat Oct 17 11:51:18 2026] PCIe shared addr (0x001c5450) read took 0 usec before dongle is ready
+[Sat Oct 17 11:51:18 2026] H2D DMA WR INDX : array size 172 = 4 * 43
+[Sat Oct 17 11:51:18 2026] D2H DMA RD INDX : array size 16 = 4 * 4
+[Sat Oct 17 11:51:18 2026] D2H DMA WR INDX : array size 16 = 4 * 4
+[Sat Oct 17 11:51:18 2026] H2D DMA RD INDX : array size 172 = 4 * 43
+[Sat Oct 17 11:51:18 2026] dhdpcie_readshared: max H2D queues 40
+[Sat Oct 17 11:51:18 2026] FW supports debug buf dest ? N 
+[Sat Oct 17 11:51:18 2026] dhd_bus_start: Initializing 43 h2drings
+[Sat Oct 17 11:51:18 2026] dhd_prot_init:3223: h2d_max_txpost = 512
+[Sat Oct 17 11:51:18 2026] dhd_prot_init:3232: MAX_RXBUFPOST = 255
+[Sat Oct 17 11:51:18 2026] ENABLING DW:0
+[Sat Oct 17 11:51:18 2026] Enable hostcap: EXTD TXS in txcpl
+[Sat Oct 17 11:51:18 2026] dhd_prot_d2h_sync_init(): D2H sync mechanism is NONE \x0d
+[Sat Oct 17 11:51:18 2026] dhd_bus_hostready : Read PCICMD Reg: 0x00100406
+[Sat Oct 17 11:51:18 2026] dhd_bus_dump_dar_registers: DAR not supported for corerev(21) < 24
+[Sat Oct 17 11:51:18 2026] dhd_bus_hostready: Ring Hostready:1
+[Sat Oct 17 11:51:18 2026] Attach flowrings pool for 40 rings
+[Sat Oct 17 11:51:18 2026] dhd_send_d2h_ringcreate ringid: 3 idx: 46 max_h2d: 43
+[Sat Oct 17 11:51:18 2026] get_mem_val_from_file: File [/installmedia/.memdump.info] doesn't exist
+[Sat Oct 17 11:51:18 2026] dhd_get_memdump_info: MEMDUMP ENABLED = 2
+[Sat Oct 17 11:51:18 2026] get_assert_val_from_file: File [/installmedia/.assert.info] doesn't exist
+[Sat Oct 17 11:51:18 2026] info buffer post after ring create
+[Sat Oct 17 11:51:18 2026] dhd_sync_with_dongle: GET_REVINFO device 0x4415, vendor 0x14e4, chipnum 0x4355
+[Sat Oct 17 11:51:18 2026] dhd_sync_with_dongle: GET RxBuf post FAILED, default to 2048
+[Sat Oct 17 11:51:18 2026] dhd_get_sssr_reg_info: sssr_reg_info failed (error=-23)
+[Sat Oct 17 11:51:18 2026] dhd_sssr_dump_init: dhd_get_sssr_reg_info failed
+[Sat Oct 17 11:51:18 2026] Firmware version = wl0: Mar 24 2024 20:35:22 version 13.35.340 (0831609 CY) FWID 01-78828f32
+[Sat Oct 17 11:51:18 2026] wifi_platform_get_mac_addr
+[Sat Oct 17 11:51:18 2026] dhd_os_open_image1: /vendor/etc/wifi/89459_pcie.clm_blob (6380 bytes) open success
+[Sat Oct 17 11:51:18 2026] dhd_check_current_clm_data: ----- This FW is not included CLM data -----
+[Sat Oct 17 11:51:18 2026] dhd_check_current_clm_data: ----- This FW is included CLM data -----
+[Sat Oct 17 11:51:18 2026] Firmware up: op_mode=0x0c05, MAC=WIFI_MAC_REDACTED
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls: roam trigger set failed -13
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls: roam delta set failed 0
+[Sat Oct 17 11:51:18 2026] Disable tdls_auto_op failed. -1
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls set keeplive failed -23
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls Set txbf failed  -23
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls Set scancache failed -23
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls Set scancache 0 ok
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls: event_log_max_sets: 24 ret: -23
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls: enable_memuse is failed ret=-23
+[Sat Oct 17 11:51:18 2026] dhd_iovar: GET failed. resp_buf NULL or length 0.
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls vht_features get failed -2
+[Sat Oct 17 11:51:18 2026] CLM version = Flaircomm.Chery
+[Sat Oct 17 11:51:18 2026] init: processing action (sys.vehicle.wifi.channel=*) from (/vendor/etc/init/init.desaysv.vehicle.rc:344)
+[Sat Oct 17 11:51:18 2026] dhd_rx_frame: net device is NOT registered. drop event packet
+[Sat Oct 17 11:51:18 2026] rtt_do_get_ioctl: failed to send getbuf proxd iovar (CMD ID : 1), status=-23
+[Sat Oct 17 11:51:18 2026] dhd_rtt_init : FTM is not supported
+[Sat Oct 17 11:51:18 2026] dhd_rtt_ftm_config : failed to set config
+[Sat Oct 17 11:51:18 2026] dhd_ndo_get_version: failed, retcode = -23
+[Sat Oct 17 11:51:18 2026] dhd_wl_ioctl_get_intiovar: get int iovar wnm_bsstrans_resp failed, ERR -23
+[Sat Oct 17 11:51:18 2026] failed to get wnm_bsstrans_resp
+[Sat Oct 17 11:51:18 2026] failed to set WNM capabilities
+[Sat Oct 17 11:51:18 2026] dhd_preinit_ioctls: Failed to get preserve log # !
+[Sat Oct 17 11:51:18 2026] dhd_bus_devreset: WLAN Power On Done
+[Sat Oct 17 11:51:18 2026] CFGP2P-INFO) wl_cfgp2p_supported : 
+[Sat Oct 17 11:51:18 2026] p2p is supported
+[Sat Oct 17 11:51:18 2026] wl_create_event_handler, cfg->event_workq=ffffff8284d18a00, &cfg->event_work = ffffff8296312258
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) __wl_cfg80211_up : wl version. Major: 6
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) init_roam_cache : roamscan_mode iovar failed. -23
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_up : Failed to enable RCC.
+[Sat Oct 17 11:51:18 2026] [wlan0] tx queue started
+[Sat Oct 17 11:51:18 2026] cnss-daemon: Invalid mac address
+[Sat Oct 17 11:51:18 2026] cnss-daemon: failed to update gateway
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_set_hal_started : wl_cfgvendor_set_hal_started,[DUMP] HAL STARTED
+[Sat Oct 17 11:51:18 2026] init: starting service 'wpa_supplicant'...
+[Sat Oct 17 11:51:18 2026] init: Created socket '/dev/socket/vendor_wpa_wlan0', mode 660, user 1010, group 1010
+[Sat Oct 17 11:51:18 2026] init: starting service 'wpa_supplicant' | pid: 2005 | class: main
+[Sat Oct 17 11:51:18 2026] init: Control message: Processed ctl.start for 'wpa_supplicant' from pid: 303 (/system/bin/hwservicemanager)
+[Sat Oct 17 11:51:18 2026] capability: warning: `wpa_supplicant' uses 32-bit capabilities (legacy support in use)
+[Sat Oct 17 11:51:18 2026] init: Control message: Processed ctl.start for 'wpa_supplicant' from pid: 303 (/system/bin/hwservicemanager)
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_adc:start init
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_add_if : if name: p2p0, wl_iftype:7 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_get_vif_macaddr : Get virtual I/F mac addr: 2e:9d:5a:3a:ad:c9
+[Sat Oct 17 11:51:18 2026] CFGP2P-ERROR) wl_cfgp2p_add_p2p_disc_if : 
+[Sat Oct 17 11:51:18 2026] P2P interface registered
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_add_if : Vif created. dev->ifindex:255 cfg_iftype:10, vif_count:1
+[Sat Oct 17 11:51:18 2026] WLC_E_IF: NO_IF set, event Ignored\x0d
+[Sat Oct 17 11:51:18 2026] CFGP2P-INFO) wl_cfgp2p_get_disc_idx : 
+[Sat Oct 17 11:51:18 2026] p2p_dev bsscfg_idx=2 ret=0
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register : model code is : 14  Microphone bias is set to 8.5V
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register:reg 0x2c read_value:0xc0
+[Sat Oct 17 11:51:18 2026] init: Untracked pid 625 exited with status 0
+[Sat Oct 17 11:51:18 2026] cnss-daemon: Invalid mac address
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "COUNTRY IT" on wlan0
+[Sat Oct 17 11:51:18 2026] WLDEV-INFO) 
+[Sat Oct 17 11:51:18 2026] wldev_set_country: set country for IT as IT rev -1
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-STOP" on wlan0
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-STOP" on wlan0
+[Sat Oct 17 11:51:18 2026] net_os_enable_packet_filter: val = 0
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-ADD 2" on wlan0
+[Sat Oct 17 11:51:18 2026] net_os_rxfilter_add_remove: add_remove = 1, num = 2
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-START" on wlan0
+[Sat Oct 17 11:51:18 2026] net_os_enable_packet_filter: val = 1
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-STOP" on wlan0
+[Sat Oct 17 11:51:18 2026] net_os_enable_packet_filter: val = 0
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-ADD 3" on wlan0
+[Sat Oct 17 11:51:18 2026] net_os_rxfilter_add_remove: add_remove = 1, num = 3
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-START" on wlan0
+[Sat Oct 17 11:51:18 2026] net_os_enable_packet_filter: val = 1
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "SETSUSPENDMODE 0" on wlan0
+[Sat Oct 17 11:51:18 2026] dhd_set_suspend: Remove extra suspend setting 
+[Sat Oct 17 11:51:18 2026] dhd_enable_packet_filter: enter, value = 0
+[Sat Oct 17 11:51:18 2026] dhd_set_suspend:lpas failed:-23
+[Sat Oct 17 11:51:18 2026] dhd_set_suspend:bcn_to_dly failed:-23
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:18 2026] init: Untracked pid 1306 exited with status 1
+[Sat Oct 17 11:51:18 2026] init: processing action (sys.sysctl.tcp_def_init_rwnd=*) from (/system/etc/init/hw/init.rc:1046)
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.879:35): avc: denied { search } for comm="df" name="vendor" dev="tmpfs" ino=9492 scontext=u:r:system_app:s0 tcontext=u:object_r:mnt_vendor_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.879:36): avc: denied { search } for comm="df" name="vendor" dev="tmpfs" ino=9492 scontext=u:r:system_app:s0 tcontext=u:object_r:mnt_vendor_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:37): avc: denied { getattr } for comm="df" path="/metadata" dev="vdd32" ino=2 scontext=u:r:system_app:s0 tcontext=u:object_r:metadata_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:38): avc: denied { getattr } for comm="df" path="/vendor/firmware_mnt" dev="vdd23" ino=1 scontext=u:r:system_app:s0 tcontext=u:object_r:firmware_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:39): avc: denied { getattr } for comm="df" name="/" dev="vdd23" ino=1 scontext=u:r:system_app:s0 tcontext=u:object_r:firmware_file:s0 tclass=filesystem permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:40): avc: denied { getattr } for comm="df" path="/vendor/bt_firmware" dev="vdd19" ino=1 scontext=u:r:system_app:s0 tcontext=u:object_r:bt_firmware_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:41): avc: denied { getattr } for comm="df" name="/" dev="vdd19" ino=1 scontext=u:r:system_app:s0 tcontext=u:object_r:bt_firmware_file:s0 tclass=filesystem permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:42): avc: denied { getattr } for comm="df" path="/linkerconfig" dev="tmpfs" ino=10771 scontext=u:r:system_app:s0 tcontext=u:object_r:linkerconfig_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:43): avc: denied { getattr } for comm="df" path="/linkerconfig" dev="tmpfs" ino=10771 scontext=u:r:system_app:s0 tcontext=u:object_r:linkerconfig_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] type=1400 audit(1792227075.883:44): avc: denied { getattr } for comm="df" path="/data_mirror" dev="tmpfs" ino=16710 scontext=u:r:system_app:s0 tcontext=u:object_r:mirror_data_file:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 0, bssidx: 0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:18 2026] Boot completed 
+[Sat Oct 17 11:51:18 2026] potentially unexpected fatal signal 6.
+[Sat Oct 17 11:51:18 2026] CPU: 3 PID: 2439 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+[Sat Oct 17 11:51:18 2026] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+[Sat Oct 17 11:51:18 2026] pstate: 00000000 (nzcv daif -PAN -UAO)
+[Sat Oct 17 11:51:18 2026] pc : 0000007fa071144c
+[Sat Oct 17 11:51:18 2026] lr : 0000007fa0711420
+[Sat Oct 17 11:51:18 2026] sp : 0000007fe4aa59e0
+[Sat Oct 17 11:51:18 2026] x29: 0000007fe4aa5a80 x28: 0000007fa071592c 
+[Sat Oct 17 11:51:18 2026] x27: 0000007fe4aa6161 x26: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x25: 0000007fe4aa6301 x24: b400007e1fb6f290 
+[Sat Oct 17 11:51:18 2026] x23: 0000007fa0905000 x22: 0000007fa0905000 
+[Sat Oct 17 11:51:18 2026] x21: 00000000ffffffff x20: 0000000000000987 
+[Sat Oct 17 11:51:18 2026] x19: 0000000000000987 x18: 0000007fa0a46000 
+[Sat Oct 17 11:51:18 2026] x17: 0000007fa075d9f0 x16: 0000007fa077bc80 
+[Sat Oct 17 11:51:18 2026] x15: 0000ffff00000fff x14: 0000007fa077ed22 
+[Sat Oct 17 11:51:18 2026] x13: 3a73747069726373 x12: 0000000000000001 
+[Sat Oct 17 11:51:18 2026] x11: ffffffc0ffffffdf x10: 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x9 : 0605498d24fa125b x8 : 00000000000000f0 
+[Sat Oct 17 11:51:18 2026] x7 : 000000000000000a x6 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x5 : 0000000000000000 x4 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] x3 : 0000007fe4aa5a00 x2 : 0000000000000006 
+[Sat Oct 17 11:51:18 2026] x1 : 0000000000000987 x0 : 0000000000000000 
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:51:18 2026] zram0: detected capacity change from 0 to 4294967296
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:18 2026] Adding 4194300k swap on /dev/block/zram0.  Priority:32758 extents:1 across:4194300k SS
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_connect :  failed to restore roam_trigger for auto env detection
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_set_wpa_version : [wlan0] wl wpa_auth 0xc0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_set_auth_type : [wlan0] wl auth 0x0 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_set_set_cipher : [wlan0] wl wsec 0x4
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_set_mfp : [wlan0] wl mfp 0x0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_set_key_mgmt : [wlan0] wl wpa_auth to 0x80
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_connect : [wlan0] Connecting with AP_BSSID_REDACTED ssid "SSID_REDACTED", len (7) channels:1 \x0a
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_connect : [wlan0] Connecting with AP_BSSID_REDACTED ssid "*****", len (7) channels:1 \x0a
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:3 status:0 reason:0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:88 status:0 reason:0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_print_event_data : event_type (16), ifidx: 0 bssidx: 0 status:0 reason:0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:16 status:0 reason:0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] link up for bssid AP_BSSID_REDACTED
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_bss_connect_done : [wlan0] Report connect result - connection succeeded
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] vendor oui: 00-90-4C 8C-FD-F0 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:7 status:0 reason:0
+[Sat Oct 17 11:51:18 2026] ETHER_TYPE_802_1X[wlan0] [RX]: EAPOL Packet, 4-way handshake, M1
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:1 status:0 reason:0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:0 status:0 reason:0
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] link up for bssid AP_BSSID_REDACTED
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_bss_connect_done :  Connected event of connected device e=0 s=0, ignore it
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_notify_connect_status : [wlan0] vendor oui: 00-90-4C 8C-FD-F0 
+[Sat Oct 17 11:51:18 2026] ETHER_TYPE_802_1X[wlan0] [TX]: EAPOL Packet, 4-way handshake, M2 TX_PKTHASH:0x0 TX_PKT_FATE:N/A
+[Sat Oct 17 11:51:18 2026] dhd_prot_flow_ring_create: Send Flow Create Req flow ID 41 for peer AP_BSSID_REDACTED prio 7 ifindex 0
+[Sat Oct 17 11:51:18 2026] dhd_prot_flow_ring_create_response_process: Flow Create Response status = 0 Flow 41
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_adc:start init
+[Sat Oct 17 11:51:18 2026] ETHER_TYPE_802_1X[wlan0] [RX]: EAPOL Packet, 4-way handshake, M3
+[Sat Oct 17 11:51:18 2026] ETHER_TYPE_802_1X[wlan0] [TX]: EAPOL Packet, 4-way handshake, M4 TX_PKTHASH:0x0 TX_PKT_FATE:N/A
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_add_key : key index (0) (0xfac04)
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_add_keyext : key index (0)
+[Sat Oct 17 11:51:18 2026] init (253): drop_caches: 3
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_add_keyext : [wlan0] wsec key set
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_add_key : key index (1) (0xfac04)
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfg80211_change_station : [wlan0] WLC_SCB_AUTHORIZE AP_BSSID_REDACTED
+[Sat Oct 17 11:51:18 2026] kck:
+[Sat Oct 17 11:51:18 2026] 0000: c0 85 4c cd 25 7a 48 21 60 8c e8 6a 50 bb 62 4e 
+[Sat Oct 17 11:51:18 2026] kek:
+[Sat Oct 17 11:51:18 2026] 0000: e1 26 24 f0 69 9b d6 5f 8e 7a 41 eb 27 a3 40 53 
+[Sat Oct 17 11:51:18 2026] replay_ctr:
+[Sat Oct 17 11:51:18 2026] 0000: 00 00 00 00 00 00 00 02 
+[Sat Oct 17 11:51:18 2026] CFG80211-ERROR) wl_cfg80211_set_rekey_data : seting gtk_key_info failed code=-23
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register : model code is : 14  Microphone bias is set to 8.5V
+[Sat Oct 17 11:51:18 2026] ti_pcm6xx0_init_register:reg 0x2c read_value:0xc0
+[Sat Oct 17 11:51:18 2026] wl_android_priv_cmd: Android private cmd "BTCOEXMODE 2" on wlan0
+[Sat Oct 17 11:51:18 2026] dhd_dev_apf_get_version: firmware doesn't support APF
+[Sat Oct 17 11:51:18 2026] dhd_dev_apf_get_max_len: firmware doesn't support APF
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:18 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:18 2026] cnss-daemon: Invalid mac address
+[Sat Oct 17 11:51:18 2026] cnss-daemon: failed to update gateway
+[Sat Oct 17 11:51:18 2026] dhd_prot_flow_ring_create: Send Flow Create Req flow ID 40 for peer 33:33:ff:be:d4:b0 prio 0 ifindex 0
+[Sat Oct 17 11:51:18 2026] dhd_prot_flow_ring_create_response_process: Flow Create Response status = 0 Flow 40
+[Sat Oct 17 11:51:19 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-STOP" on wlan0
+[Sat Oct 17 11:51:19 2026] net_os_enable_packet_filter: val = 0
+[Sat Oct 17 11:51:19 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-REMOVE 2" on wlan0
+[Sat Oct 17 11:51:19 2026] net_os_rxfilter_add_remove: add_remove = 0, num = 2
+[Sat Oct 17 11:51:19 2026] dhd_wl_ioctl_set_intiovar: set int iovar pkt_filter_delete failed, ERR -23
+[Sat Oct 17 11:51:19 2026] dhd_pktfilter_offload_delete: Failed to delete filter ID:102, ret=-23
+[Sat Oct 17 11:51:19 2026] wl_android_priv_cmd: Android private cmd "RXFILTER-START" on wlan0
+[Sat Oct 17 11:51:19 2026] net_os_enable_packet_filter: val = 1
+[Sat Oct 17 11:51:19 2026] wl_android_priv_cmd: Android private cmd "BTCOEXMODE 1" on wlan0
+[Sat Oct 17 11:51:19 2026] wl_android_priv_cmd: Android private cmd "SETSUSPENDMODE 0" on wlan0
+[Sat Oct 17 11:51:19 2026] dhd_set_suspend: Remove extra suspend setting 
+[Sat Oct 17 11:51:19 2026] dhd_wl_ioctl_set_intiovar: set int iovar arpoe failed, ERR -27
+[Sat Oct 17 11:51:19 2026] dhd_enable_packet_filter: enter, value = 0
+[Sat Oct 17 11:51:19 2026] dhd_wl_ioctl_set_intiovar: set int iovar pkt_filter_mode failed, ERR -23
+[Sat Oct 17 11:51:19 2026] dhd_wl_ioctl_set_intiovar: set int iovar pkt_filter_mode failed, ERR -23
+[Sat Oct 17 11:51:19 2026] dhd_set_suspend:lpas failed:-23
+[Sat Oct 17 11:51:19 2026] dhd_set_suspend:bcn_to_dly failed:-23
+[Sat Oct 17 11:51:19 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:19 2026] wl_android_priv_cmd: Android private cmd "BTCOEXMODE 2" on wlan0
+[Sat Oct 17 11:51:19 2026] init: Unable to set property 'ro.sys.ivi.eol.can.sw.version' from uid:0 gid:0 pid:540: Read-only property was already set
+[Sat Oct 17 11:51:19 2026] init: Unable to set property 'ro.sys.ivi.eol.can.hw.version' from uid:0 gid:0 pid:540: Read-only property was already set
+[Sat Oct 17 11:51:19 2026] cnss-daemon: Invalid mac address
+[Sat Oct 17 11:51:19 2026] cnss-daemon: failed to update gateway
+[Sat Oct 17 11:51:19 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:20 2026] init: processing action (sys.sysctl.tcp_def_init_rwnd=*) from (/system/etc/init/hw/init.rc:1046)
+[Sat Oct 17 11:51:20 2026] tuner_spi spi1.0: tuner_spi_open
+[Sat Oct 17 11:51:20 2026] tuner_spi open device sucess.
+[Sat Oct 17 11:51:21 2026] init: processing action (persist.vendor.carplay.network.config=start) from (/vendor/etc/init/init.desaysv.phonelink.rc:31)
+[Sat Oct 17 11:51:21 2026] init: starting service 'carplay_network_config'...
+[Sat Oct 17 11:51:21 2026] init: starting service 'carplay_network_config' | pid: 3349 | class: main
+[Sat Oct 17 11:51:21 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:21 2026] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+[Sat Oct 17 11:51:21 2026] init: Service 'carplay_network_config' (pid 3349) exited with status 0 oneshot service took 0.162000 seconds in background
+[Sat Oct 17 11:51:21 2026] init: Sending signal 9 to service 'carplay_network_config' (pid 3349) process group...
+[Sat Oct 17 11:51:21 2026] libprocessgroup: Successfully killed process cgroup uid 0 pid 3349 in 0ms
+[Sat Oct 17 11:51:21 2026] init: starting service 'mdnsd'...
+[Sat Oct 17 11:51:21 2026] dhd_prot_flow_ring_create: Send Flow Create Req flow ID 39 for peer 01:00:5e:00:00:16 prio 3 ifindex 0
+[Sat Oct 17 11:51:21 2026] dhd_prot_flow_ring_create_response_process: Flow Create Response status = 0 Flow 39
+[Sat Oct 17 11:51:21 2026] spi_geni 890000.spi: tx_fifo 16 rx_fifo 16 tx_width 32
+[Sat Oct 17 11:51:21 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-STOP" on wlan0
+[Sat Oct 17 11:51:21 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-START" on wlan0
+[Sat Oct 17 11:51:22 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:23 2026] type=1400 audit(1792227083.491:133): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:24 2026] q6asm_session_alloc session 15
+[Sat Oct 17 11:51:24 2026] type=1400 audit(1792227084.223:134): avc: denied { read } for comm="reader" name="u:object_r:default_prop:s0" dev="tmpfs" ino=70 scontext=u:r:hal_audio_default:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:24 2026] tdm_param_set_slot_mask: invalid slot map setting
+[Sat Oct 17 11:51:24 2026] afe_get_cal_topology_id: port_id = 0x9033 acdb_id = 11 topology_id = 0x112fb cal_type_index=8 ret=0
+[Sat Oct 17 11:51:24 2026] send_afe_cal_type: No cal sent for cal_index 1, port_id = 0x9033! ret -22
+[Sat Oct 17 11:51:24 2026] afe_send_hw_delay: port_id 0x9033 rate 48000 delay_usec 0 status 0
+[Sat Oct 17 11:51:24 2026] logd: logdr: UID=1000 GID=2000 PID=3860 b tail=0 logMask=ff pid=0 start=0ns timeout=0ns
+[Sat Oct 17 11:51:25 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:25 2026] type=1400 audit(1792227085.215:135): avc: denied { read } for comm="icle.carplayapp" name="a600000.dwc3" dev="sysfs" ino=31608 scontext=u:r:system_app:s0 tcontext=u:object_r:vendor_sysfs_usb_controller:s0 tclass=dir permissive=0
+[Sat Oct 17 11:51:25 2026] type=1400 audit(1792227085.855:136): avc: denied { read } for comm="pool-2-thread-1" name="version" dev="proc" ino=4026532187 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:proc_version:s0 tclass=file permissive=0 app=com.frostnav
+[Sat Oct 17 11:51:25 2026] type=1400 audit(1792227085.855:137): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+[Sat Oct 17 11:51:25 2026] type=1400 audit(1792227085.855:138): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+[Sat Oct 17 11:51:25 2026] type=1400 audit(1792227085.855:139): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+[Sat Oct 17 11:51:26 2026] type=1400 audit(1792227086.491:140): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:27 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:51:27 2026] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:27 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:27 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:51:27 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 1, bssidx: 0
+[Sat Oct 17 11:51:28 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:28 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:28 2026] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:28 2026] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:51:28 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:51:28 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:51:28 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:29 2026] type=1400 audit(1792227089.491:141): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:31 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:31 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-STOP" on wlan0
+[Sat Oct 17 11:51:31 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-START" on wlan0
+[Sat Oct 17 11:51:32 2026] type=1400 audit(1792227092.491:142): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:33 2026] vreg_conn_1p8: disabling
+[Sat Oct 17 11:51:33 2026] vreg_conn_pa: disabling
+[Sat Oct 17 11:51:34 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:34 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:51:34 2026] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:34 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:34 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:51:34 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 2, bssidx: 0
+[Sat Oct 17 11:51:35 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:35 2026] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:35 2026] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:51:35 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:51:35 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:51:35 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:35 2026] type=1400 audit(1792227095.491:143): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:37 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:38 2026] type=1400 audit(1792227098.495:144): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:40 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:41 2026] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x130064 
+[Sat Oct 17 11:51:41 2026] type=1400 audit(1792227101.495:145): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:41 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-STOP" on wlan0
+[Sat Oct 17 11:51:41 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:51:41 2026] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:41 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[Sat Oct 17 11:51:41 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:51:41 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 3, bssidx: 0
+[Sat Oct 17 11:51:42 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:42 2026] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:51:42 2026] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:51:42 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:51:42 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:51:42 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:42 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-START" on wlan0
+[Sat Oct 17 11:51:43 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:44 2026] type=1400 audit(1792227104.495:146): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:46 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:47 2026] type=1400 audit(1792227107.495:147): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:49 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:50 2026] type=1400 audit(1792227110.495:148): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:52 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:52 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-STOP" on wlan0
+[Sat Oct 17 11:51:52 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-START" on wlan0
+[Sat Oct 17 11:51:53 2026] type=1400 audit(1792227113.499:149): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:54 2026] type=1400 audit(1792227114.507:150): avc: denied { syslog_read } for comm="dmesg" scontext=u:r:shell:s0 tcontext=u:r:kernel:s0 tclass=system permissive=0
+[Sat Oct 17 11:51:54 2026] logd: logdr: UID=2000 GID=2000 PID=5076 n tail=0 logMask=ff pid=0 start=0ns timeout=0ns
+[Sat Oct 17 11:51:55 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:56 2026] type=1400 audit(1792227116.499:151): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:51:58 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:51:59 2026] type=1400 audit(1792227119.499:152): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:52:01 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:01 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:52:01 2026] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[Sat Oct 17 11:52:01 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[Sat Oct 17 11:52:01 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:52:01 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 4, bssidx: 0
+[Sat Oct 17 11:52:02 2026] type=1400 audit(1792227122.499:153): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:52:02 2026] wl_android_priv_cmd: Android private cmd "BTCOEXSCAN-STOP" on wlan0
+[Sat Oct 17 11:52:02 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_cfg80211_event : 
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_print_event_data : 
+[Sat Oct 17 11:52:02 2026] Enqueing escan completion (0). WQ state:0x2 
+[Sat Oct 17 11:52:02 2026] event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:52:02 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+[Sat Oct 17 11:52:02 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 5, bssidx: 0
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:02 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:52:02 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:04 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:05 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:52:05 2026] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[Sat Oct 17 11:52:05 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[Sat Oct 17 11:52:05 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:52:05 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 6, bssidx: 0
+[Sat Oct 17 11:52:05 2026] type=1400 audit(1792227125.499:154): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:52:06 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:52:06 2026] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:52:06 2026] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:52:06 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:52:06 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:52:06 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:07 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:08 2026] audit: audit_lost=1 audit_rate_limit=5 audit_backlog_limit=64
+[Sat Oct 17 11:52:08 2026] audit: rate limit exceeded
+[Sat Oct 17 11:52:08 2026] type=1400 audit(1792227128.499:155): avc: denied { read } for comm="desaysv_adber" name="u:object_r:ro_desay_cybersecurity:s0" dev="tmpfs" ino=204 scontext=u:r:adbd:s0 tcontext=u:object_r:ro_desay_cybersecurity:s0 tclass=file permissive=0
+[Sat Oct 17 11:52:08 2026] type=1400 audit(1792227128.503:156): avc: denied { read write } for comm="desaysv_adber" name="enforce" dev="selinuxfs" ino=4 scontext=u:r:su:s0 tcontext=u:object_r:selinuxfs:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:08 2026] type=1400 audit(1792227128.503:157): avc: denied { open } for comm="desaysv_adber" path="/sys/fs/selinux/enforce" dev="selinuxfs" ino=4 scontext=u:r:su:s0 tcontext=u:object_r:selinuxfs:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:08 2026] type=1404 audit(1792227128.503:158): enforcing=0 old_enforcing=1 auid=4294967295 ses=4294967295 enabled=1 old-enabled=1 lsm=selinux res=1
+[Sat Oct 17 11:52:08 2026] type=1400 audit(1792227128.503:159): avc: denied { write } for comm="desaysv_adber" name="property_service" dev="tmpfs" ino=9544 scontext=u:r:su:s0 tcontext=u:object_r:property_socket:s0 tclass=sock_file permissive=1
+[Sat Oct 17 11:52:08 2026] selinux: avc:  received setenforce notice (enforcing=0)
+[Sat Oct 17 11:52:08 2026] selinux: 
+[Sat Oct 17 11:52:10 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:12 2026] type=1400 audit(1792227132.511:162): avc: denied { execute } for comm="desaysv_adber" name="sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:12 2026] type=1400 audit(1792227132.511:163): avc: denied { read open } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:12 2026] type=1400 audit(1792227132.511:164): avc: denied { execute_no_trans } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:12 2026] type=1400 audit(1792227132.511:165): avc: denied { map } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:12 2026] type=1400 audit(1792227132.511:166): avc: denied { getattr } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:12 2026] audit: audit_lost=3 audit_rate_limit=5 audit_backlog_limit=64
+[Sat Oct 17 11:52:12 2026] audit: rate limit exceeded
+[Sat Oct 17 11:52:13 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:14 2026] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=188.114.96.3 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=46 ID=0 DF PROTO=TCP SPT=443 DPT=49866 WINDOW=0 RES=0x00 RST URGP=0 MARK=0x130066 
+[Sat Oct 17 11:52:14 2026] type=1400 audit(1792227134.523:169): avc: denied { execute } for comm="desaysv_adber" name="sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:14 2026] type=1400 audit(1792227134.523:170): avc: denied { read open } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:14 2026] type=1400 audit(1792227134.523:171): avc: denied { execute_no_trans } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:14 2026] type=1400 audit(1792227134.523:172): avc: denied { map } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:14 2026] type=1400 audit(1792227134.527:173): avc: denied { getattr } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+[Sat Oct 17 11:52:14 2026] audit: audit_lost=5 audit_rate_limit=5 audit_backlog_limit=64
+[Sat Oct 17 11:52:14 2026] audit: rate limit exceeded
+[Sat Oct 17 11:52:14 2026] selinux: avc:  received setenforce notice (enforcing=1)
+[Sat Oct 17 11:52:14 2026] selinux: 
+[Sat Oct 17 11:52:16 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:19 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:22 2026] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+[Sat Oct 17 11:52:22 2026] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 7, bssidx: 0
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:22 2026] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+[Sat Oct 17 11:52:22 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:25 2026] type=1400 audit(1792227145.311:185): avc: denied { read } for comm="getprop" name="u:object_r:superdoor_prop:s0" dev="tmpfs" ino=228 scontext=u:r:shell:s0 tcontext=u:object_r:superdoor_prop:s0 tclass=file permissive=0
+[Sat Oct 17 11:52:25 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:28 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+[Sat Oct 17 11:52:31 2026] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 

@@ -197,24 +197,31 @@ public final class IflytekTts {
         @Override
         public void onTTSPlayCompleted(boolean innerSpeak) {
             Log.i(TAG, "iFlytek TTS tamamlandı (inner=" + innerSpeak + ")");
-            notifyFinished();
+            notifyFinished(false);
         }
 
         @Override
         public void onTTSPlayInterrupted(boolean innerSpeak) {
             Log.i(TAG, "iFlytek TTS kesildi (inner=" + innerSpeak + ")");
-            notifyFinished();
+            notifyFinished(true);
         }
 
-        private void notifyFinished() {
+        private void notifyFinished(boolean interrupted) {
             if (!done.compareAndSet(false, true)) {
                 return;
             }
-            MAIN.post(() -> {
-                if (finishIfCurrent(id) && onFinished != null) {
+            Runnable finish = () -> {
+                if (finishIfCurrent(id, !interrupted) && onFinished != null) {
                     onFinished.run();
                 }
-            });
+            };
+            if (interrupted) {
+                MAIN.post(finish);
+            } else {
+                // onTTSPlayCompleted fires when PCM generation ends, not when the
+                // AudioTrack has drained. Do not release/destroy the session early.
+                MAIN.postDelayed(finish, 2500L);
+            }
         }
 
         @Override
@@ -239,6 +246,15 @@ public final class IflytekTts {
                     runFinished(onFinished);
                     report(listener, false, "iFlytek TTS oturumu açılamadı (" + created + ").");
                     return;
+                }
+                final int role = MapControlSpeech.iflytekRole(appContext);
+                if (role > 0) {
+                    try {
+                        int roleResult = svc.setParam(id, 1280, role);
+                        Log.i(TAG, "iFlytek role=" + role + " setParam=" + roleResult);
+                    } catch (Throwable t) {
+                        Log.w(TAG, "iFlytek role setParam failed", t);
+                    }
                 }
                 synchronized (LOCK) {
                     if (activeGeneration != generation) {
@@ -283,7 +299,7 @@ public final class IflytekTts {
         report(listener, true, "iFlytek TTS durduruldu.");
     }
 
-    private static boolean finishIfCurrent(VoiceServiceId id) {
+    private static boolean finishIfCurrent(VoiceServiceId id, boolean delayDestroy) {
         if (id == null) {
             return false;
         }
@@ -294,7 +310,13 @@ public final class IflytekTts {
             sessionId = null;
             activeFinished = null;
         }
-        BINDER.execute(() -> destroy(id));
+        if (delayDestroy) {
+            // Native completion means all PCM was produced, not necessarily played.
+            // Keep the AudioTrack/session alive while its buffer drains.
+            MAIN.postDelayed(() -> BINDER.execute(() -> destroy(id)), 10000L);
+        } else {
+            BINDER.execute(() -> destroy(id));
+        }
         return true;
     }
 

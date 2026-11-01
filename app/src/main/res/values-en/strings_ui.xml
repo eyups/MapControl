@@ -1285,4 +1285,12 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_home_eco_medium">Eco level: Medium</string>
     <string name="ck_home_eco_low">Eco level: Low</string>
     <string name="ck_home_max_speed">Max %1$d km/h</string>
+    <string name="projection_google_cluster_design_title">Cluster card design</string>
+    <string name="projection_google_cluster_design_desc">Appearance of navigation cards on the cluster screen.</string>
+    <string name="projection_cluster_style_classic">Classic</string>
+    <string name="projection_cluster_style_two_lane">Two lane</string>
+    <string name="projection_cluster_style_single_row">Single row</string>
+    <string name="projection_cluster_style_glass">Glass card</string>
+    <string name="projection_cluster_style_hint">Card layout</string>
+    <string name="projection_cluster_opacity_title">Opacity</string>
 </resources>

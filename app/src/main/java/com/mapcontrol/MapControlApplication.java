@@ -1,5 +1,7 @@
 package com.mapcontrol;
 
+import com.mapcontrol.BuildConfig;
+
 import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
@@ -20,6 +22,15 @@ public final class MapControlApplication extends Application {
     public void onCreate() {
         super.onCreate();
         GlitchTip.start(this);
+        if (BuildConfig.DEBUG) {
+            try {
+                Class.forName("com.mapcontrol.debug.DebugVdbusHooks")
+                        .getMethod("install", android.content.Context.class)
+                        .invoke(null, this);
+            } catch (Throwable ignored) {
+                // Debug helper yoksa release/normal debug akışı değişmez.
+            }
+        }
         AppLocaleManager.applyStoredLocale(this);
         LauncherLegacyPrefs.applyMigrations(this);
         DriverProfileManager.get(this);

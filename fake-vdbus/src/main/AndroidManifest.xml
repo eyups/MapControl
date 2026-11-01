@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="false"
+        android:label="Fake VDBus"
+        android:theme="@android:style/Theme.DeviceDefault">
+
+        <service
+            android:name=".FakeVdbusService"
+            android:exported="true"
+            android:foregroundServiceType="dataSync">
+            <intent-filter>
+                <action android:name="action.desaysv.ivi.vds.carinfo.SERVICE" />
+                <action android:name="action.desaysv.ivi.vds.sms.SERVICE" />
+                <action android:name="action.desaysv.ivi.vds.carlan.SERVICE" />
+                <action android:name="action.desaysv.ivi.vds.carstate.SERVICE" />
+                <action android:name="action.desaysv.ivi.vds.setting.SERVICE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".ControlReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.eyups.fakevdbus.CONTROL" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>

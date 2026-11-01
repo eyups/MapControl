@@ -25,7 +25,7 @@ if [[ -z "$APP_ID" ]]; then
 fi
 
 # Birden fazla cihaz bağlıysa:
-#   ANDROID_SERIAL=12efc750 ./install.sh
+#   ANDROID_SERIAL=ADB_SERIAL_REDACTED ./install.sh
 
 # Sistem property ayarı
 echo "⚙️ Sistem property ayarlanıyor..."

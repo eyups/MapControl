@@ -2,6 +2,7 @@ package com.mapcontrol.ui.builder;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
@@ -59,6 +60,12 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private final HomeCallback callback;
     private final SharedPreferences prefs;
 
+    /**
+     * Kısa pencere (araç: h800dp -> 744dp içerik; emülatör: h880dp -> 824dp) için sıkı yerleşim.
+     * false iken kartlar geniş ekran ölçülerini kullanır.
+     */
+    private boolean dense;
+
     private ScrollView scrollView;
     private LinearLayout content;
     private CockpitGrid grid;
@@ -109,9 +116,20 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         content = new LinearLayout(context);
         content.setOrientation(LinearLayout.VERTICAL);
         int m = CockpitTokens.dim(context, R.dimen.ck_margin);
-        boolean fillHeight = context.getResources().getConfiguration().screenWidthDp >= 1000;
-        content.setPadding(m, CockpitTokens.dim(context, R.dimen.ck_space_md), 0,
-                fillHeight ? 0 : m);
+        Configuration cfg = context.getResources().getConfiguration();
+        boolean fillHeight = cfg.screenWidthDp >= 1000;
+        // Gerçek içerik yüksekliği = pencere yüksekliği - üst bar. Araçta 800-56=744dp,
+        // emülatörde 880-56=824dp. Kartlar bu alana sığacak şekilde ölçeklenir.
+        float density = context.getResources().getDisplayMetrics().density;
+        int topBarDp = Math.round(
+                context.getResources().getDimension(R.dimen.ck_statusbar_h) / density);
+        dense = cfg.screenHeightDp - topBarDp < 860;
+        int topPad = CockpitTokens.dim(context,
+                dense ? R.dimen.ck_space_sm : R.dimen.ck_space_md);
+        int bottomPad = fillHeight
+                ? CockpitTokens.dim(context, R.dimen.ck_space_sm)
+                : m;
+        content.setPadding(m, topPad, 0, bottomPad);
         scrollView.addView(content, new ScrollView.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 fillHeight ? LinearLayout.LayoutParams.MATCH_PARENT
@@ -153,7 +171,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         subtitle.setText(context.getString(R.string.ck_home_subtitle));
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.bottomMargin = CockpitTokens.dim(context, R.dimen.ck_space_lg);
+        lp.bottomMargin = CockpitTokens.dim(context,
+                dense ? R.dimen.ck_space_sm : R.dimen.ck_space_lg);
         hero.addView(subtitle, lp);
         return hero;
     }
@@ -161,7 +180,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private CockpitCard buildVehicleVisual() {
         CockpitCard card = new CockpitCard(context,
                 context.getString(R.string.ck_home_vehicle_visual)).span(4);
-        card.setMinimumHeight(dp(300));
+        card.setMinimumHeight(dp(dense ? 280 : 300));
         card.status(StatusBadge.nominal(context, context.getString(R.string.ck_home_vehicle_visual_hint)));
         vehicleView = new android.widget.ImageView(context);
         vehicleView.setImageResource(R.drawable.t18_vehicle);
@@ -173,13 +192,13 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         vehicleView.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(320)
                 .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
         card.addContent(vehicleView, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, 210)));
+                LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, dense ? 180 : 210)));
         return card;
     }
 
     private CockpitCard buildVehicleCard() {
         CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_vehicle_card)).span(4);
-        card.setMinimumHeight(dp(300));
+        card.setMinimumHeight(dp(dense ? 280 : 300));
         statusBadge = StatusBadge.neutral(context, context.getString(R.string.ck_home_connecting));
         card.status(statusBadge);
 
@@ -205,7 +224,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
     private CockpitCard buildQuickActions() {
         CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_home_quick)).span(4);
-        card.setMinimumHeight(dp(300));
+        card.setMinimumHeight(dp(dense ? 280 : 300));
         LinearLayout row1 = new LinearLayout(context);
         row1.setOrientation(LinearLayout.HORIZONTAL);
         row1.addView(quick(context.getString(R.string.ck_home_vehicle_info), TAB_VEHICLE_INFO, context.getString(R.string.ck_home_vehicle_info)),
@@ -302,8 +321,12 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private CockpitCard buildLastDriveCard() {
         CockpitCard card = new CockpitCard(context,
                 context.getString(R.string.ck_home_last_drive)).span(4);
-        card.setMinimumHeight(dp(300));
-        card.getTitleView().setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 24);
+        card.setMinimumHeight(dp(dense ? 280 : 300));
+        card.getTitleView().setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, dense ? 22 : 24);
+        if (dense) {
+            int pad = dp(16);
+            card.setPadding(pad, pad, pad, pad);
+        }
         DrivingSessionRecorder recorder = DrivingSessionRecorder.get(context);
         DrivingTrip trip = recorder.isActive() ? recorder.getDisplayTrip() : recorder.getLastTrip();
         if (trip == null) {
@@ -330,7 +353,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         CockpitButton open = CockpitButton.secondary(context,
                 context.getString(R.string.ck_home_view_all) + " →");
         open.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12);
-        open.setMinHeight(dp(48));
+        open.setMinHeight(dp(dense ? 40 : 48));
         open.setOnClickListener(v -> callback.onNavigate(TAB_DRIVING_HISTORY,
                 context.getString(R.string.ck_home_drive_report)));
 
@@ -349,7 +372,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         LinearLayout hero = new LinearLayout(context);
         hero.setOrientation(LinearLayout.HORIZONTAL);
         hero.setGravity(Gravity.CENTER_VERTICAL);
-        hero.setPadding(dp(10), dp(10), dp(10), dp(10));
+        int heroPad = dp(dense ? 8 : 10);
+        hero.setPadding(heroPad, heroPad, heroPad, heroPad);
         GradientDrawable heroBg = new GradientDrawable();
         heroBg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
         heroBg.setCornerRadius(dp(14));
@@ -360,7 +384,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         scoreRing.setAccentColor(CockpitTokens.color(context, R.color.ck_accent));
         scoreRing.setTrackColor(CockpitTokens.color(context, R.color.ck_surface_1));
         scoreRing.setScore(trip.score, false);
-        hero.addView(scoreRing, new LinearLayout.LayoutParams(dp(78), dp(78)));
+        int ring = dp(dense ? 60 : 78);
+        hero.addView(scoreRing, new LinearLayout.LayoutParams(ring, ring));
 
         LinearLayout copy = new LinearLayout(context);
         copy.setOrientation(LinearLayout.VERTICAL);
@@ -434,10 +459,11 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             sparkline.setData(data);
             LinearLayout chartBox = new LinearLayout(context);
             chartBox.setOrientation(LinearLayout.VERTICAL);
-            chartBox.setPadding(dp(8), dp(6), dp(8), dp(6));
+            chartBox.setPadding(dp(dense ? 4 : 8), dp(dense ? 4 : 6),
+                    dp(dense ? 4 : 8), dp(dense ? 4 : 6));
             CockpitSurfaces.level2(chartBox);
             chartBox.addView(sparkline, new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, dp(34)));
+                    LinearLayout.LayoutParams.MATCH_PARENT, dp(dense ? 22 : 34)));
             LinearLayout.LayoutParams chartLp = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -451,7 +477,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         LinearLayout.LayoutParams metricsLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        metricsLp.topMargin = dp(5);
+        metricsLp.topMargin = dp(dense ? 4 : 5);
         card.addContent(metrics, metricsLp);
 
         metrics.addView(buildTelemetryMetric(
@@ -478,7 +504,8 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             String unit, String caption, int iconRes) {
         LinearLayout box = new LinearLayout(context);
         box.setOrientation(LinearLayout.VERTICAL);
-        box.setPadding(dp(8), dp(6), dp(8), dp(6));
+        box.setPadding(dp(dense ? 6 : 8), dp(dense ? 5 : 6),
+                dp(dense ? 6 : 8), dp(dense ? 5 : 6));
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
         bg.setCornerRadius(dp(12));

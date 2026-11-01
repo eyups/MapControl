@@ -1,0 +1,1778 @@
+<6>[ 1116.788991] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1119.798236] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1122.809459] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1124.518974] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1124.518979] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1124.518982] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1124.518983] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1124.534315] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 83, bssidx: 0
+<6>[ 1125.331068] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1125.331082] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1125.331143] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1125.331149] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1125.331202] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1125.337491] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1125.822307] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1128.836689] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1131.843726] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1134.853464] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1137.860750] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1140.868671] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1143.885300] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1144.617343] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1144.617353] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1144.617359] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1144.617362] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1144.634216] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 84, bssidx: 0
+<6>[ 1145.429445] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1145.429458] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1145.429466] CFG80211-INFO) wl_escan_handler : 
+<6>[ 1145.429467] CFG80211-INFO) wl_cfg80211_event : 
+<4>[ 1145.429468] ESCAN COMPLETED
+<4>[ 1145.429470] Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1145.429522] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1145.438626] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1146.899025] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1149.911918] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1152.924278] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1155.935419] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1158.949899] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1161.961797] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1164.681335] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1164.681340] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1164.681343] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1164.681345] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1164.698004] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 85, bssidx: 0
+<6>[ 1164.972199] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1165.493687] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1165.493697] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1165.493701] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1165.493703] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1165.493787] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1165.506054] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1167.288716] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 1167.982086] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1170.994265] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1174.003737] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1177.011606] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1180.018582] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1183.027261] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1184.748257] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1184.748266] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1184.748272] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1184.748276] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1184.763599] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 86, bssidx: 0
+<6>[ 1185.561903] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1185.561910] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1185.561931] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1185.561947] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1185.562104] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1185.574385] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1186.035714] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1189.046846] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1192.058356] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1195.067807] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1198.078777] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1201.089929] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1204.100758] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1204.838152] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1204.838157] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1204.838159] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1204.838161] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1204.853675] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 87, bssidx: 0
+<6>[ 1205.650358] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1205.650365] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1205.650366] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1205.650373] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1205.650436] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1205.657440] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1207.112288] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1210.122312] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1213.133151] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1214.073106] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1214.073248] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+<6>[ 1214.073254] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+<6>[ 1214.073258] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1214.075411] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 88, bssidx: 0
+<6>[ 1214.212414] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1214.212426] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1214.212428] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1214.212435] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1214.212468] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1214.219367] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1216.146377] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1219.158093] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1222.168506] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1224.934252] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1224.934261] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1224.934268] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1224.934271] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1224.950587] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 89, bssidx: 0
+<6>[ 1225.179060] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1225.745488] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1225.745494] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1225.745605] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1225.745619] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1225.745792] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1225.758330] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1228.191109] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1231.202941] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1234.213905] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1237.225019] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1240.236193] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1243.244945] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1245.028748] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1245.028757] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1245.028763] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1245.028767] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1245.044391] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 90, bssidx: 0
+<6>[ 1245.841184] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1245.841225] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1245.841235] CFG80211-INFO) wl_escan_handler : 
+<6>[ 1245.841236] CFG80211-INFO) wl_cfg80211_event : 
+<4>[ 1245.841237] ESCAN COMPLETED
+<4>[ 1245.841238] Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1245.841320] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1245.852774] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1246.253945] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1249.263581] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1252.277682] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1255.289387] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1258.300046] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1261.311499] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1264.325227] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1265.115154] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1265.115166] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1265.115172] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1265.115176] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1265.130468] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 91, bssidx: 0
+<6>[ 1265.927372] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1265.927386] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1265.927388] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1265.927397] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1265.927475] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1265.934547] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1267.336840] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1270.345074] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1273.355808] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1276.366957] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1279.379166] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1282.388426] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1285.207169] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1285.207182] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1285.207189] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1285.207193] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1285.222524] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 92, bssidx: 0
+<6>[ 1285.400876] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1286.020394] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1286.020401] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1286.020463] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1286.020470] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1286.020534] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1286.029522] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1288.413941] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1291.422416] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1292.734266] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 1294.432364] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1297.443493] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1300.455644] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1303.467325] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1305.266979] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1305.266987] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1305.266990] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1305.266991] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1305.282267] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 93, bssidx: 0
+<6>[ 1306.079842] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1306.079849] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1306.079854] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1306.079861] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1306.079930] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1306.085533] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1306.478269] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1309.492653] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1312.503405] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1315.513354] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1318.526107] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1321.539361] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1324.547872] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1325.324576] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1325.324586] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1325.324593] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1325.324596] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1325.341052] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 94, bssidx: 0
+<6>[ 1326.136795] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1326.136802] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1326.136810] CFG80211-INFO) wl_cfg80211_event : 
+<6>[ 1326.136811] CFG80211-INFO) wl_escan_handler : 
+<4>[ 1326.136812] Enqueing escan completion (0). WQ state:0x2 
+<4>[ 1326.136813] ESCAN COMPLETED
+<6>[ 1326.136869] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1326.144227] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1327.557713] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1330.571562] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1333.583884] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1336.595011] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1339.608696] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1342.619319] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1345.414279] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1345.414289] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1345.414295] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1345.414298] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1345.429642] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 95, bssidx: 0
+<6>[ 1345.629717] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1346.226508] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1346.226521] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1346.226523] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1346.226530] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1346.226582] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1346.235760] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1348.645452] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1351.654580] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1354.665654] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1357.676229] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1360.689809] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1363.700921] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1365.488197] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1365.488202] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1365.488205] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1365.488207] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1365.503617] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 96, bssidx: 0
+<6>[ 1366.302278] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1366.302285] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x3 
+<6>[ 1366.302288] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1366.302295] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1366.302339] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1366.308585] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1366.717639] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1369.736176] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1372.745165] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1374.073219] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1374.073228] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+<6>[ 1374.073233] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+<6>[ 1374.073237] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1374.075157] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 97, bssidx: 0
+<6>[ 1374.212117] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1374.212130] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1374.212138] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1374.212151] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1374.212224] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1374.216108] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1375.756884] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1378.766187] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1381.775117] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1384.786647] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1385.551188] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1385.551198] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1385.551205] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1385.551208] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1385.565499] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 98, bssidx: 0
+<6>[ 1386.363371] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1386.363379] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1386.363546] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1386.363554] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1386.363632] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1386.373284] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1387.795558] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1390.805864] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1393.812960] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1396.821717] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1399.828769] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1402.835836] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1405.581979] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1405.581983] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1405.581986] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1405.581988] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1405.597342] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 99, bssidx: 0
+<6>[ 1405.847020] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1406.394233] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1406.394254] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1406.394321] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1406.394326] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1406.394583] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1406.403463] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1408.864966] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1411.872873] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1414.881365] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1417.889097] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1418.176096] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 1420.898924] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1423.909539] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1425.674216] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1425.674226] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1425.674232] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1425.674235] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1425.689520] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 100, bssidx: 0
+<6>[ 1426.486586] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1426.486659] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1426.486666] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1426.486673] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1426.486747] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1426.494015] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1426.924265] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1429.931597] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1432.939268] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1435.948078] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1438.956321] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1441.969434] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1444.984322] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1445.758859] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1445.758864] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1445.758868] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1445.758869] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1445.774148] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 101, bssidx: 0
+<6>[ 1446.571219] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1446.571226] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1446.571235] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1446.571242] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1446.571324] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1446.576993] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1447.994763] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1451.006608] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1454.017000] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1457.027257] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1460.036525] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1463.049495] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1465.854718] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1465.854723] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1465.854726] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1465.854728] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1465.870180] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 102, bssidx: 0
+<6>[ 1466.061848] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1466.672198] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1466.672211] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1466.672240] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1466.672248] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1466.672321] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1466.682999] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1469.069357] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1472.079571] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1475.090349] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1478.103283] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1481.113853] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1484.121309] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1485.941306] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1485.941316] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1485.941323] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1485.941326] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1485.955536] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 103, bssidx: 0
+<6>[ 1486.752402] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1486.752424] CFG80211-INFO) wl_cfg80211_event : 
+<6>[ 1486.752425] CFG80211-INFO) wl_print_event_data : 
+<4>[ 1486.752426] Enqueing escan completion (0). WQ state:0x2 
+<4>[ 1486.752429] event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1486.752434] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1486.752512] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1486.759791] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1487.129474] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1490.140464] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1493.150852] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1496.160954] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1499.173261] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1502.183071] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1505.193934] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1506.008517] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1506.008526] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1506.008534] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1506.008537] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1506.023836] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 104, bssidx: 0
+<6>[ 1506.820789] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1506.820800] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1506.820807] CFG80211-INFO) wl_escan_handler : 
+<6>[ 1506.820809] CFG80211-INFO) wl_cfg80211_event : 
+<4>[ 1506.820810] ESCAN COMPLETED
+<4>[ 1506.820811] Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1506.820878] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1506.830723] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1508.207916] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1511.219769] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1514.232329] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1517.243746] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1520.253315] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1523.263014] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1526.082687] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1526.082692] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1526.082695] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1526.082697] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1526.097970] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 105, bssidx: 0
+<6>[ 1526.270938] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1526.895352] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1526.895360] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1526.895412] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1526.895424] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1526.895588] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1526.905323] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1529.287550] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1532.296978] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1534.072515] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1534.072521] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+<6>[ 1534.072524] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+<6>[ 1534.072525] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1534.074469] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 106, bssidx: 0
+<6>[ 1534.211514] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1534.211523] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1534.211550] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1534.211558] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1534.211597] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1534.218579] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1535.304860] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1538.313832] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1541.328106] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1543.620881] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 1544.338012] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1546.170467] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1546.170478] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1546.170485] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1546.170488] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1546.184783] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 107, bssidx: 0
+<6>[ 1546.981453] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1546.981460] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1546.981500] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1546.981513] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1546.981679] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1546.988850] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1547.348804] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1550.357945] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1553.371782] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1556.381135] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1559.391157] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1562.401085] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1565.411416] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1566.263428] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1566.263434] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1566.263436] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1566.263438] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1566.278797] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 108, bssidx: 0
+<6>[ 1567.075763] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1567.075778] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1567.075797] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1567.075804] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1567.075870] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1567.081749] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1568.422063] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1571.438454] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1574.451514] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1577.462391] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1580.473459] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1583.480199] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1586.336904] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1586.336914] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1586.336920] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1586.336923] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1586.352233] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 109, bssidx: 0
+<6>[ 1586.492568] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1587.149702] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1587.149708] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1587.149724] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1587.149737] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1587.149937] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1587.159974] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1589.504482] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1592.515159] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1595.524589] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1598.539803] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1598.767808] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=65.9.95.191 DST=10.78.154.211 LEN=40 TOS=0x00 PREC=0x00 TTL=242 ID=0 DF PROTO=TCP SPT=443 DPT=49602 WINDOW=0 RES=0x00 RST URGP=0 MARK=0x130066 
+<6>[ 1601.558481] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1604.580885] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1606.425127] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1606.425136] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1606.425142] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1606.425145] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1606.441421] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 110, bssidx: 0
+<6>[ 1607.237347] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1607.237354] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1607.237402] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1607.237416] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1607.237630] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1607.244371] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1607.595256] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1610.605300] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1613.625872] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1616.636229] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1619.653242] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1622.665851] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1625.676779] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1626.493450] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1626.493456] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1626.493460] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1626.493463] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1626.508866] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 111, bssidx: 0
+<6>[ 1627.305877] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1627.305891] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1627.305893] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1627.305898] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1627.305947] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1627.316558] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1628.685335] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1631.698355] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1634.708397] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1634.853591] q6asm_session_alloc session 14
+<6>[ 1634.861158] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1634.862137] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1634.863750] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1634.870951] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1634.876261] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1636.101060] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1636.101065] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1636.101068] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1636.101070] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1636.115055] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 112, bssidx: 0
+<6>[ 1636.917448] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1636.917455] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1636.917526] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1636.917533] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1636.917579] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1636.925431] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1637.267108] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1637.267117] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1637.267125] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1637.267128] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1637.281553] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 113, bssidx: 0
+<6>[ 1637.720140] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1638.064137] q6asm_session_free: sessionid[14]
+<6>[ 1638.078176] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1638.078192] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1638.078247] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1638.078253] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1638.078305] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1638.092829] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1640.750654] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1641.536768] q6asm_session_alloc session 14
+<6>[ 1641.543478] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1641.544265] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1641.546335] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1641.553889] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1641.558384] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1643.763830] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1645.056335] q6asm_session_free: sessionid[14]
+<6>[ 1646.583465] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1646.583475] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1646.583482] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1646.583485] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1646.599449] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 114, bssidx: 0
+<6>[ 1646.791462] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1647.395791] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1647.395806] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1647.395863] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1647.395869] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1647.395987] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1647.407547] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1648.879401] q6asm_session_alloc session 14
+<6>[ 1648.887853] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1648.889699] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1648.893509] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1648.901175] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1648.906036] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1649.807805] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1652.828151] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1655.874406] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1658.911921] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1659.309778] q6asm_session_free: sessionid[14]
+<6>[ 1661.155043] q6asm_session_alloc session 14
+<6>[ 1661.160731] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1661.161248] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1661.163307] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1661.170591] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1661.174957] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1661.921049] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1664.359467] q6asm_session_free: sessionid[14]
+<6>[ 1664.933048] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1666.656506] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1666.656517] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1666.656523] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1666.656526] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1666.670777] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 115, bssidx: 0
+<6>[ 1667.467657] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1667.467672] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1667.467681] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1667.467695] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1667.467818] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1667.472996] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1667.949769] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1668.111490] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1668.111499] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1668.111506] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1668.111509] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1668.126856] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 116, bssidx: 0
+<6>[ 1668.931212] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1668.931220] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1668.931231] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1668.931239] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1668.931309] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1668.939814] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1669.064885] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 1670.959124] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1673.967294] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1676.981133] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1679.994142] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1683.001529] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1686.011093] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1686.740502] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1686.740512] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1686.740518] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1686.740521] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1686.755843] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 117, bssidx: 0
+<6>[ 1687.553313] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1687.553328] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1687.553466] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1687.553472] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1687.553541] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1687.564496] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1689.020274] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1692.030123] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1695.041651] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1698.052776] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1698.951602] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1698.951612] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1698.951619] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1698.951622] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1698.966937] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 118, bssidx: 0
+<6>[ 1699.763800] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1699.763812] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1699.763813] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1699.763821] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1699.763897] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1699.772350] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1701.064539] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1704.073696] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1706.798811] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1706.798821] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1706.798827] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1706.798830] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1706.814233] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 119, bssidx: 0
+<6>[ 1707.085164] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1707.611468] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1707.611475] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1707.611479] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1707.611485] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1707.611537] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1707.622686] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1707.844822] security_firewall_28_row:IN=wlan0 OUT= MAC=WIFI_MAC_REDACTED:AP_BSSID_REDACTED:08:00 SRC=8.220.113.11 DST=10.78.154.211 LEN=40 TOS=0x14 PREC=0x00 TTL=35 ID=0 DF PROTO=TCP SPT=6443 DPT=57786 WINDOW=0 RES=0x00 RST URGP=0 MARK=0x130066 
+<6>[ 1710.092782] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1713.101579] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1716.111607] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1719.121146] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1722.133220] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1725.144318] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1726.887349] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1726.887358] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1726.887365] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1726.887368] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1726.902743] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 120, bssidx: 0
+<6>[ 1727.699624] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1727.699645] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x3 
+<6>[ 1727.699649] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1727.699656] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1727.699720] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1727.713912] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1728.155667] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1729.789675] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1729.789684] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1729.789690] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1729.789693] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1729.804336] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 121, bssidx: 0
+<6>[ 1730.600712] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1730.600726] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1730.600748] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1730.600755] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1730.600816] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1730.607322] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1731.165648] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1734.178186] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1737.189530] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1740.198749] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1743.207042] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<36>[ 1744.310325] type=1400 audit(1792226634.399:3138): avc: denied { execute } for comm="main" name="idmap2" dev="dm-8" ino=1333 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+<6>[ 1746.216036] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1746.977035] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1746.977044] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1746.977050] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1746.977053] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1746.992413] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 122, bssidx: 0
+<6>[ 1747.789156] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1747.789168] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1747.789178] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1747.789192] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1747.789357] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1747.800833] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1749.227517] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1752.240087] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1755.249024] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1756.014040] q6asm_session_alloc session 14
+<6>[ 1756.022871] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1756.024747] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1756.029201] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1756.036543] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1756.040992] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1758.258654] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1759.224189] q6asm_session_free: sessionid[14]
+<6>[ 1760.620565] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1760.620577] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1760.620584] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1760.620587] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1760.638043] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 123, bssidx: 0
+<6>[ 1761.266730] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1761.432875] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1761.432888] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1761.432899] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1761.432912] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1761.433107] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1761.438692] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1764.275451] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1766.576316] q6asm_session_alloc session 14
+<6>[ 1766.583079] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1766.583685] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1766.585821] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1766.593050] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1766.596937] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<36>[ 1766.813492] type=1400 audit(1792226656.899:3139): avc: denied { read } for comm="pool-2-thread-1" name="version" dev="proc" ino=4026532187 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:proc_version:s0 tclass=file permissive=0 app=com.frostnav
+<36>[ 1766.814050] type=1400 audit(1792226656.899:3140): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+<36>[ 1766.815231] type=1400 audit(1792226656.899:3141): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+<36>[ 1766.815468] type=1400 audit(1792226656.899:3142): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+<6>[ 1767.062313] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1767.062325] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1767.062331] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1767.062335] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1767.076689] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 124, bssidx: 0
+<6>[ 1767.285404] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1767.873678] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1767.873686] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1767.873737] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1767.873745] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1767.873815] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1767.881336] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1768.162511] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1768.162517] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1768.162520] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1768.162521] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1768.177154] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 125, bssidx: 0
+<6>[ 1768.973887] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1768.973895] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1768.973902] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1768.973909] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1768.973988] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1768.987671] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1769.775851] q6asm_session_free: sessionid[14]
+<6>[ 1770.300137] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1773.308063] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1774.116927] q6asm_session_alloc session 14
+<6>[ 1774.122240] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1774.122745] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1774.124286] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1774.131254] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1774.136280] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1776.317748] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1777.323688] q6asm_session_free: sessionid[14]
+<6>[ 1779.328561] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1781.568280] q6asm_session_alloc session 14
+<6>[ 1781.575069] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1781.575562] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1781.576846] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1781.583628] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1781.587889] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1782.339720] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1785.349770] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1787.131736] q6asm_session_free: sessionid[14]
+<6>[ 1787.152282] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1787.152287] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1787.152290] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1787.152292] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1787.170284] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 126, bssidx: 0
+<6>[ 1787.969975] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1787.969982] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1787.970498] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1787.970513] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1787.970649] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1787.985758] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1788.362375] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1791.382560] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1791.453229] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1791.453234] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1791.453236] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1791.453238] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1791.468764] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 127, bssidx: 0
+<6>[ 1792.265783] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1792.265790] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1792.265795] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1792.265802] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1792.265883] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1792.278345] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1794.402996] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1794.507713] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 1797.413281] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1800.050987] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1800.430820] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1803.444156] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1806.467489] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1807.243530] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1807.243535] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1807.243538] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1807.243539] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1807.259183] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 128, bssidx: 0
+<6>[ 1808.056517] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1808.056526] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1808.056568] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1808.056582] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1808.056732] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1808.073014] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1809.481692] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1809.646555] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1809.646561] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+<6>[ 1809.646564] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+<6>[ 1809.646565] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1809.648692] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 129, bssidx: 0
+<6>[ 1809.787439] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1809.787446] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1809.787834] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1809.787843] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1809.787892] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1809.799515] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1812.504477] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1815.518983] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1816.270045] wl_android_priv_cmd: Android private cmd "BTCOEXMODE 1" on wlan0
+<4>[ 1816.368464] wl_android_priv_cmd: Android private cmd "SETSUSPENDMODE 0" on wlan0
+<4>[ 1816.368482] dhd_set_suspend: Remove extra suspend setting 
+<4>[ 1816.370411] dhd_wl_ioctl_set_intiovar: set int iovar arpoe failed, ERR -27
+<4>[ 1816.370418] dhd_enable_packet_filter: enter, value = 0
+<4>[ 1816.374287] dhd_wl_ioctl_set_intiovar: set int iovar pkt_filter_mode failed, ERR -23
+<4>[ 1816.385969] dhd_wl_ioctl_set_intiovar: set int iovar pkt_filter_mode failed, ERR -23
+<4>[ 1816.388830] dhd_set_suspend:lpas failed:-23
+<4>[ 1816.389386] dhd_set_suspend:bcn_to_dly failed:-23
+<6>[ 1816.393490] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1816.447170] wl_android_priv_cmd: Android private cmd "BTCOEXMODE 2" on wlan0
+<6>[ 1818.530707] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<14>[ 1820.511193] init: Untracked pid 7851 exited with status 0
+<6>[ 1821.548242] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1822.292701] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1822.292706] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1822.292710] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1822.292711] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1822.310593] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 130, bssidx: 0
+<6>[ 1823.104986] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1823.104994] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1823.105029] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1823.105041] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1823.105114] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1823.116087] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1824.566370] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1827.326637] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1827.326642] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1827.326645] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1827.326646] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1827.345423] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 131, bssidx: 0
+<6>[ 1827.584872] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1828.141779] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1828.141793] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1828.143057] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1828.143128] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1828.143201] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1828.153370] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1830.603194] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1833.613816] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1836.636008] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1839.647308] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1842.661416] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1845.675696] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1847.406241] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1847.406246] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1847.406249] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1847.406250] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1847.422967] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 132, bssidx: 0
+<6>[ 1848.218495] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1848.218504] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1848.218519] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1848.218528] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1848.218604] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1848.229063] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1848.688074] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1851.703656] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1853.134223] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1853.134229] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1853.134233] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1853.134235] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1853.150989] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 133, bssidx: 0
+<6>[ 1853.947518] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1853.947527] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1853.947559] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1853.947574] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1853.947702] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1853.955564] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1854.722812] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1857.734314] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1860.759976] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1863.771671] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1866.801378] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1867.507681] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1867.507691] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1867.507698] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1867.507701] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1867.523176] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 134, bssidx: 0
+<6>[ 1868.321126] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1868.321143] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1868.321151] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1868.321157] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1868.321205] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1868.326405] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1869.821540] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1872.837950] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1875.854748] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1878.875690] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1881.889022] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1883.973178] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1883.973183] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1883.973187] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1883.973188] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1883.989594] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 135, bssidx: 0
+<6>[ 1884.786297] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1884.786305] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1884.786325] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1884.786334] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1884.786382] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1884.792235] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1884.905158] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1887.581426] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1887.581433] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1887.581438] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1887.581440] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1887.596862] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 136, bssidx: 0
+<6>[ 1887.920662] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1888.393979] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1888.393987] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1888.394007] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1888.394020] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1888.394187] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1888.403146] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1890.946090] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1893.962704] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1896.979548] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1900.004668] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1902.723868] q6asm_session_alloc session 14
+<6>[ 1902.731119] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 1902.731802] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 1902.735656] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 1902.743564] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 1902.748539] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 1903.018329] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1905.943177] q6asm_session_free: sessionid[14]
+<6>[ 1906.030126] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1907.680691] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1907.680701] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1907.680708] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1907.680711] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1907.696094] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 137, bssidx: 0
+<6>[ 1908.493581] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1908.493589] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1908.493595] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1908.493603] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1908.493677] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1908.505043] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1909.037061] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1912.043535] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1914.809102] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1914.809107] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1914.809110] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1914.809112] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1914.824514] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 138, bssidx: 0
+<6>[ 1915.051805] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1915.621440] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1915.621454] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1915.621456] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1915.621465] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1915.621555] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1915.633202] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1918.060766] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 1919.950938] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 1921.068500] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1924.077917] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1927.086293] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1927.758970] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1927.758980] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1927.758986] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1927.758990] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1927.773383] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 139, bssidx: 0
+<6>[ 1928.570582] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1928.570591] CFG80211-INFO) wl_print_event_data : 
+<6>[ 1928.570592] CFG80211-INFO) wl_cfg80211_event : 
+<4>[ 1928.570593] event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<4>[ 1928.570595] Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1928.570600] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1928.570669] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1928.577749] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1930.095944] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1933.110313] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1936.121505] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1939.130953] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1942.139657] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1945.151327] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1945.643996] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1945.644001] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1945.644004] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1945.644005] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1945.659184] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 140, bssidx: 0
+<6>[ 1946.456395] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1946.456414] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1946.456544] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1946.456551] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1946.456629] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1946.464574] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1947.804967] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1947.804978] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1947.804984] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1947.804988] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1947.820498] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 141, bssidx: 0
+<6>[ 1948.161425] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1948.617363] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1948.617385] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1948.617389] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1948.617400] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1948.617545] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1948.624488] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1951.170635] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1954.178831] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1957.188579] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1960.197863] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1963.208245] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1966.218028] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1967.905310] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1967.905321] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1967.905327] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1967.905331] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1967.920674] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 142, bssidx: 0
+<6>[ 1968.717507] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1968.717514] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1968.717524] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1968.717531] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1968.717579] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1968.724008] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1969.228448] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1969.644067] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1969.644077] CFG80211-INFO) wl_scan_prep : n_channels:3 n_ssids:1
+<6>[ 1969.644082] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:3 n_ssids:1
+<6>[ 1969.644086] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1969.646209] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 143, bssidx: 0
+<6>[ 1969.784598] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1969.784605] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1969.784611] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1969.784615] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1969.784648] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1969.789223] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1972.236255] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1975.244102] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1976.482017] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1976.482022] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1976.482025] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1976.482027] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1976.496376] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 144, bssidx: 0
+<6>[ 1977.293347] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1977.293361] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1977.293368] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1977.293376] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1977.293454] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1977.307322] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1978.252136] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1981.260596] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1984.272607] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1987.283798] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1987.940802] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 1987.940807] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 1987.940810] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 1987.940811] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 1987.956300] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 145, bssidx: 0
+<6>[ 1988.753168] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 1988.753182] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 1988.753185] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 1988.753191] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 1988.753257] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 1988.759650] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1990.292251] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1993.300734] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1996.309427] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 1999.320400] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2002.331091] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2005.341857] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2007.323529] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2007.323534] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2007.323537] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2007.323539] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2007.339261] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 146, bssidx: 0
+<6>[ 2008.140835] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2008.140842] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2008.140875] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2008.140882] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2008.140942] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2008.153007] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2008.153013] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2008.153018] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2008.153019] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2008.155591] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 147, bssidx: 0
+<6>[ 2008.155730] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2008.353034] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2008.951185] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2008.951202] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2008.951208] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x2 
+<6>[ 2008.951211] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2008.951280] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2008.957990] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2011.362513] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2014.372922] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2017.384746] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2020.396236] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2023.404443] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2026.413185] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2028.129337] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2028.129342] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2028.129345] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2028.129347] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2028.144758] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 148, bssidx: 0
+<6>[ 2028.941585] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2028.941592] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2028.941597] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2028.941605] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2028.941661] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2028.946455] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2029.420871] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2032.429970] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2035.439363] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2038.170432] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2038.170436] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2038.170440] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2038.170441] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2038.185827] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 149, bssidx: 0
+<6>[ 2038.446949] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2038.982619] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2038.982633] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2038.982654] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2038.982661] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2038.982732] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2038.989779] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2041.456189] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2043.100009] q6asm_session_alloc session 14
+<6>[ 2043.107533] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 2043.108167] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 2043.109238] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 2043.116477] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 2043.121316] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 2044.465683] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<4>[ 2045.395098] security_firewall_226_row:IN=usb0 OUT= MAC=01:00:5e:00:00:01:e6:20:9f:60:e2:65:08:00:46:c0:00:20:00:00:40:00:01:02:04:17:00:00:00:00:e0:00:00:01:94:04:00:00:11:64:ee:9b:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:00 SRC=0.0.0.0 DST=224.0.0.1 LEN=32 TOS=0x00 PREC=0xC0 TTL=1 ID=0 DF PROTO=2 MARK=0x170064 
+<6>[ 2047.477205] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2047.775603] q6asm_session_free: sessionid[14]
+<6>[ 2048.211312] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2048.211317] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2048.211320] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2048.211321] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2048.227112] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 150, bssidx: 0
+<6>[ 2049.023525] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2049.023533] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2049.023894] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2049.023908] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2049.024171] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2049.037007] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2050.498329] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2053.521834] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2056.535900] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2059.559114] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2062.572235] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2065.585105] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2068.258998] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2068.259008] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2068.259013] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2068.259017] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2068.274659] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 151, bssidx: 0
+<6>[ 2068.604708] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2069.073635] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2069.073645] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2069.073858] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2069.073866] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2069.074000] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2069.085060] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2071.619118] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2074.647643] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<31>[ 2077.443911] logd: logdr: UID=2000 GID=2000 PID=8218 b tail=0 logMask=ff pid=0 start=0ns timeout=0ns
+<6>[ 2077.659817] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2080.672814] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2083.691484] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2086.708802] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2088.323556] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2088.323567] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2088.323573] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2088.323577] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2088.337844] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 152, bssidx: 0
+<6>[ 2089.134763] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2089.134788] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2089.134807] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2089.134824] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2089.134966] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2089.140282] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2089.727193] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2091.806847] q6asm_session_alloc session 14
+<6>[ 2091.814992] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 2091.815741] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 2091.818766] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 2091.827759] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 2091.833229] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 2092.739248] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2095.031509] q6asm_session_free: sessionid[14]
+<6>[ 2095.775106] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2095.788784] binder: undelivered transaction 5211310, process died.
+<6>[ 2095.788788] binder: undelivered transaction 5211314, process died.
+<6>[ 2095.788790] binder: undelivered transaction 5211315, process died.
+<6>[ 2095.788792] binder: undelivered transaction 5211168, process died.
+<6>[ 2095.789102] binder: undelivered transaction 5211167, process died.
+<6>[ 2095.789103] binder: undelivered transaction 5211273, process died.
+<6>[ 2095.789105] binder: undelivered transaction 5211309, process died.
+<6>[ 2095.800853] binder: undelivered TRANSACTION_COMPLETE
+<6>[ 2095.800857] binder: undelivered transaction 5211154, process died.
+<6>[ 2095.998284] potentially unexpected fatal signal 11.
+<4>[ 2095.998290] CPU: 2 PID: 8131 Comm: EvtQ_c2.qti.avc Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2095.998291] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2095.998293] pstate: 80000000 (Nzcv daif -PAN -UAO)
+<4>[ 2095.998294] pc : 00000074b5c37598
+<4>[ 2095.998294] lr : 00000074b5c37498
+<4>[ 2095.998295] sp : 00000071b16916a0
+<4>[ 2095.998296] x29: 00000071b1691700 x28: b4000072a4af2760 
+<4>[ 2095.998298] x27: b4000071e4b1fd78 x26: b4000071e4b1fd60 
+<4>[ 2095.998299] x25: 00000071b16916c9 x24: 00000074b4dfe4b8 
+<4>[ 2095.998300] x23: 00000074b5c26623 x22: b4000072a4af2761 
+<4>[ 2095.998301] x21: 00000074b5c27b15 x20: 0000000000000000 
+<4>[ 2095.998302] x19: b4000072a4af2700 x18: 00000071b0a2a000 
+<4>[ 2095.998303] x17: 00000074b5a8dad4 x16: 00000074b53ed7d0 
+<4>[ 2095.998304] x15: 00000000022a3c0b x14: 00000000d2001800 
+<4>[ 2095.998306] x13: 0000000000000060 x12: 0000000000000000 
+<4>[ 2095.998307] x11: 0000000000000000 x10: 0000000000000000 
+<4>[ 2095.998308] x9 : 0000000000000001 x8 : 00000071b16916c8 
+<4>[ 2095.998309] x7 : 0000019000000280 x6 : d200180000000010 
+<4>[ 2095.998310] x5 : b4000071d4b14320 x4 : 0000000000000010 
+<4>[ 2095.998311] x3 : 0000000000000020 x2 : 00000071b16915e8 
+<4>[ 2095.998312] x1 : b4000071d4b0cab0 x0 : 0000000000000000 
+<14>[ 2096.011109] init: Service 'vendor-qti-media-c2-hal-1-0' (pid 546) received signal 11
+<14>[ 2096.011189] init: Sending signal 9 to service 'vendor-qti-media-c2-hal-1-0' (pid 546) process group...
+<14>[ 2096.012486] libprocessgroup: Successfully killed process cgroup uid 1046 pid 546 in 0ms
+<14>[ 2096.014474] init: starting service 'vendor-qti-media-c2-hal-1-0'...
+<14>[ 2096.017404] init: starting service 'vendor-qti-media-c2-hal-1-0' | pid: 8263 | class: hal
+<36>[ 2096.871925] type=1400 audit(1792226986.959:3143): avc: denied { read } for comm="pool-2-thread-1" name="version" dev="proc" ino=4026532187 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:proc_version:s0 tclass=file permissive=0 app=com.frostnav
+<36>[ 2096.872221] type=1400 audit(1792226986.959:3144): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+<36>[ 2096.872399] type=1400 audit(1792226986.959:3145): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+<36>[ 2096.872573] type=1400 audit(1792226986.963:3146): avc: denied { search } for comm="pool-2-thread-1" name="local" dev="vdd44" ino=655361 scontext=u:r:untrusted_app_27:s0:c54,c256,c512,c768 tcontext=u:object_r:data_local:s0 tclass=dir permissive=0 app=com.frostnav
+<6>[ 2098.789931] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<36>[ 2099.017776] type=1400 audit(1792226989.107:3147): avc: denied { read } for comm="app_process" name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=100 scontext=u:r:system_app:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+<36>[ 2099.017900] type=1400 audit(1792226989.107:3148): avc: denied { read } for comm="app_process" name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=100 scontext=u:r:system_app:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+<36>[ 2099.017929] type=1400 audit(1792226989.107:3149): avc: denied { read } for comm="app_process" name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=100 scontext=u:r:system_app:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+<36>[ 2099.018193] type=1400 audit(1792226989.107:3150): avc: denied { read } for comm="app_process" name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=100 scontext=u:r:system_app:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+<36>[ 2099.021047] type=1400 audit(1792226989.111:3151): avc: denied { lock } for comm="app_process" path="/apex/com.android.art/javalib/arm64/boot.art" dev="dm-8" ino=141 scontext=u:r:system_app:s0 tcontext=u:object_r:system_file:s0 tclass=file permissive=0
+<36>[ 2099.024335] type=1400 audit(1792226989.115:3152): avc: denied { lock } for comm="app_process" path="/apex/com.android.art/javalib/arm64/boot-core-libart.art" dev="dm-8" ino=135 scontext=u:r:system_app:s0 tcontext=u:object_r:system_file:s0 tclass=file permissive=0
+<4>[ 2099.024717] audit: audit_lost=2061 audit_rate_limit=5 audit_backlog_limit=64
+<3>[ 2099.024720] audit: rate limit exceeded
+<6>[ 2099.110138] CFG80211-ERROR) wl_scan_prep : Preparing Scan request
+<6>[ 2099.110144] CFG80211-INFO) wl_scan_prep : n_channels:22 n_ssids:1
+<6>[ 2099.110147] CFG80211-INFO) wl_scan_prep : scan_prep done. n_channels:22 n_ssids:1
+<6>[ 2099.110149] CFG80211-ERROR) wl_run_escan :  IOCTL[escan] 
+<6>[ 2099.125530] CFG80211-INFO) wl_run_escan : LEGACY_SCAN sync ID: 153, bssidx: 0
+<6>[ 2099.230108] binder: 1434:8396 transaction failed 29189/-22, size 176-32 line 2708
+<6>[ 2099.779170] q6asm_session_alloc session 14
+<6>[ 2099.787575] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 2099.788563] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 2099.790862] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 2099.798520] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 2099.803305] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 2099.924966] CFG80211-ERROR) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2099.924975] CFG80211-INFO) wl_cfg80211_event : Enqueing escan completion (0). WQ state:0x1 
+<6>[ 2099.925092] CFG80211-INFO) wl_print_event_data : event_type (69), ifidx: 0 bssidx: 0 scan_type:0
+<6>[ 2099.925100] CFG80211-INFO) wl_escan_handler : ESCAN COMPLETED
+<6>[ 2099.925143] CFG80211-INFO) wl_notify_escan_complete : [wlan0] Report scan done.
+<6>[ 2099.938667] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2101.807637] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<6>[ 2102.994162] q6asm_session_free: sessionid[14]
+<6>[ 2104.503108] q6asm_session_alloc session 14
+<6>[ 2104.511303] afe_get_cal_topology_id: port_id = 0x9038 acdb_id = 97 topology_id = 0x112fc cal_type_index=8 ret=0
+<3>[ 2104.512203] send_afe_cal_type: No cal sent for cal_index 0, port_id = 0x9038! ret -22
+<6>[ 2104.514222] afe_send_hw_delay: port_id 0x9038 rate 48000 delay_usec 0 status 0
+<3>[ 2104.521348] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 0 app_type 0 buffer_number 33
+<3>[ 2104.525864] q6asm_find_cal_by_buf_number: Can't find ASM Cal for cal_index 2 app_type 69936 buffer_number 66
+<6>[ 2104.824800] CFG80211-INFO) wl_cfgvendor_lstats_get_info : wl_cfgvendor_lstats_get_info: Enter 
+<38>[ 2106.363308] type=1400 audit(1792226996.451:3168): avc: denied { execute } for comm="desaysv_adber" name="sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2106.363463] type=1400 audit(1792226996.451:3169): avc: denied { read open } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2106.363514] type=1400 audit(1792226996.451:3170): avc: denied { execute_no_trans } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2106.363558] type=1400 audit(1792226996.451:3171): avc: denied { map } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2106.364141] type=1400 audit(1792226996.451:3172): avc: denied { getattr } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<4>[ 2106.367394] audit: audit_lost=2076 audit_rate_limit=5 audit_backlog_limit=64
+<3>[ 2106.367398] audit: rate limit exceeded
+<14>[ 2107.050251] init: Untracked pid 8449 exited with status 0
+<14>[ 2107.051919] init: Untracked pid 8451 exited with status 0
+<6>[ 2107.051927] potentially unexpected fatal signal 11.
+<4>[ 2107.051932] CPU: 0 PID: 377 Comm: ImageManager Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2107.051933] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2107.051935] pstate: 60000000 (nZCv daif -PAN -UAO)
+<4>[ 2107.051935] pc : 00000079fbae8970
+<4>[ 2107.051936] lr : 00000079fa9403dc
+<4>[ 2107.051937] sp : 00000079f95616d0
+<4>[ 2107.051937] x29: 00000079f95617c0 x28: b400007abef28c4c 
+<4>[ 2107.051939] x27: 00000079f9562000 x26: 0000000000000028 
+<4>[ 2107.051940] x25: 0000000000000000 x24: 00000079f9561800 
+<4>[ 2107.051941] x23: 0000000000000080 x22: 0000000000000089 
+<4>[ 2107.051942] x21: 00000079f9562000 x20: b400007c7ef1c020 
+<4>[ 2107.051943] x19: b400007aeef29170 x18: 00000079f91fe000 
+<4>[ 2107.051944] x17: 00000079fbae8948 x16: 00000079faa9d778 
+<4>[ 2107.051945] x15: 0000000000000002 x14: 00000079fa3e5438 
+<4>[ 2107.051946] x13: 00000000da7aca5e x12: 0000000000000000 
+<4>[ 2107.051947] x11: b73034d769bb79ac x10: b400007b8ef11040 
+<4>[ 2107.051948] x9 : b400007c3ef0e088 x8 : b73034d769bb79ac 
+<4>[ 2107.051949] x7 : 0000000000000000 x6 : 8380847f8580847f 
+<4>[ 2107.051950] x5 : b400007c2ef1a010 x4 : 0000007cf0543c34 
+<4>[ 2107.051951] x3 : b400007c2ef19f90 x2 : b400007b8ef114e0 
+<4>[ 2107.051952] x1 : b400007b8ef114f0 x0 : b400007c6f6fa091 
+<6>[ 2107.059309] binder: release 311:344 transaction 5239369 in, still active
+<6>[ 2107.059313] binder: send failed reply for transaction 5239369 to 581:688
+<14>[ 2107.059576] init: Service 'surfaceflinger' (pid 311) received signal 11
+<14>[ 2107.059597] init: Sending signal 9 to service 'surfaceflinger' (pid 311) process group...
+<6>[ 2107.059724] binder: undelivered transaction 5239572, process died.
+<14>[ 2107.059958] libprocessgroup: Successfully killed process cgroup uid 1000 pid 311 in 0ms
+<14>[ 2107.060252] init: Sending signal 9 to service 'zygote' (pid 325) process group...
+<6>[ 2107.217391] binder: undelivered death notification, 000000705c71c6e0
+<6>[ 2107.220167] binder: release 2763:3932 transaction 5239571 out, still active
+<6>[ 2107.220170] binder: undelivered TRANSACTION_COMPLETE
+<6>[ 2107.230336] binder_alloc: 1434: binder_alloc_buf, no vma
+<6>[ 2107.230348] binder: 486:1269 transaction failed 29189/-3, size 308-0 line 2879
+<6>[ 2107.286675] binder: undelivered transaction 5239585, process died.
+<6>[ 2107.286822] binder: undelivered transaction 5239598, process died.
+<6>[ 2107.286826] binder: undelivered transaction 5239604, process died.
+<6>[ 2107.286829] binder: undelivered transaction 5239610, process died.
+<6>[ 2107.286832] binder: undelivered transaction 5239616, process died.
+<6>[ 2107.286835] binder: undelivered transaction 5239627, process died.
+<6>[ 2107.286838] binder: undelivered transaction 5239636, process died.
+<6>[ 2107.286840] binder: undelivered transaction 5239649, process died.
+<6>[ 2107.286843] binder: undelivered transaction 5239654, process died.
+<6>[ 2107.312165] binder: release 8325:8325 transaction 5239371 out, still active
+<6>[ 2107.312169] binder: undelivered TRANSACTION_COMPLETE
+<11>[ 2107.326186] libprocessgroup: Failed to kill process cgroup uid 0 pid 325 in 265ms, 1 processes remain
+<14>[ 2107.328369] init: Command 'restart zygote' action=onrestart (<Service 'surfaceflinger' onrestart>:1) took 268ms and succeeded
+<14>[ 2107.328595] init: Service 'zygote' (pid 325) received signal 9
+<14>[ 2107.328602] init: Sending signal 9 to service 'zygote' (pid 325) process group...
+<6>[ 2107.334651] binder_alloc: 2222: binder_alloc_buf, no vma
+<6>[ 2107.334661] binder: 486:1269 transaction failed 29189/-3, size 316-0 line 2879
+<6>[ 2107.349150] binder: send failed reply for transaction 5239640 to 509:509
+<6>[ 2107.381547] binder: send failed reply for transaction 5239591 to 8263:8404
+<6>[ 2107.415412] binder_alloc: 581: binder_alloc_buf, no vma
+<6>[ 2107.415417] binder: 522:1174 transaction failed 29189/-3, size 32-0 line 2879
+<6>[ 2107.434485] binder: undelivered death notification, b40000705c72e170
+<6>[ 2107.469048] binder: undelivered death notification, b40000705c734680
+<6>[ 2107.470613] binder_alloc: 581: binder_alloc_buf, no vma
+<6>[ 2107.470633] binder: 326:326 transaction failed 29189/-3, size 124-8 line 2879
+<6>[ 2107.482865] binder_alloc: 581: binder_alloc_buf, no vma
+<6>[ 2107.482874] binder: 326:4207 transaction failed 29189/-3, size 100-8 line 2879
+<6>[ 2107.482898] binder_alloc: 581: binder_alloc_buf, no vma
+<6>[ 2107.482902] binder: 326:4207 transaction failed 29189/-3, size 100-0 line 2879
+<6>[ 2107.486895] event_handler: reclaimed all bufs
+<6>[ 2107.488963] q6asm_session_free: sessionid[15]
+<3>[ 2107.582055] state_store: called by 'init' (1)
+<6>[ 2107.588565] binder: undelivered TRANSACTION_COMPLETE
+<6>[ 2107.588582] binder: undelivered TRANSACTION_COMPLETE
+<15>[ 2107.591047] vdc: Waited 0ms for vold
+<6>[ 2107.602247] binder: release 854:3160 transaction 5239683 out, still active
+<6>[ 2107.602252] binder: undelivered TRANSACTION_COMPLETE
+<6>[ 2107.602302] binder: undelivered death notification, 00000000f5ec3df0
+<6>[ 2107.636986] binder: undelivered TRANSACTION_COMPLETE
+<6>[ 2107.647464] q6asm_session_free: sessionid[14]
+<6>[ 2107.724955] binder: release 581:2425 transaction 5239371 in, still active
+<6>[ 2107.724958] binder: send failed reply for transaction 5239371, target dead
+<6>[ 2107.724966] binder: release 581:2429 transaction 5239571 in, still active
+<6>[ 2107.724967] binder: send failed reply for transaction 5239571, target dead
+<6>[ 2107.727058] binder: send failed reply for transaction 5239683, target dead
+<14>[ 2107.874480] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+<14>[ 2107.875742] e2fsck: /dev/block/by-name/vrdata is mounted.
+<14>[ 2107.875750] e2fsck: e2fsck: Cannot continue, aborting.
+<14>[ 2107.875752] e2fsck: 
+<14>[ 2107.875753] e2fsck: 
+<14>[ 2107.876732] e2fsck: e2fsck terminated by exit(8)
+<14>[ 2107.876732] 
+<14>[ 2107.889810] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+<14>[ 2107.890369] e2fsck: /dev/block/by-name/vrdata is mounted.
+<14>[ 2107.890374] e2fsck: e2fsck: Cannot continue, aborting.
+<14>[ 2107.890375] e2fsck: 
+<6>[ 2108.049410] potentially unexpected fatal signal 11.
+<4>[ 2108.049415] CPU: 1 PID: 8472 Comm: surfaceflinger Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2108.049417] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2108.049419] pstate: 60000000 (nZCv daif -PAN -UAO)
+<4>[ 2108.049420] pc : 0000006e9de94970
+<4>[ 2108.049420] lr : 0000006e9dc733dc
+<4>[ 2108.049421] sp : 0000007fe8092010
+<4>[ 2108.049422] x29: 0000007fe8092100 x28: b4000070414a5e8c 
+<4>[ 2108.049424] x27: 00000071934e5000 x26: b4000070414a5f0c 
+<4>[ 2108.049425] x25: 0000000000000000 x24: 0000007fe8092140 
+<4>[ 2108.049426] x23: 0000000000000080 x22: 0000000000000089 
+<4>[ 2108.049427] x21: 00000071934e5000 x20: b4000071214c5030 
+<4>[ 2108.049428] x19: b400006f9149a0c0 x18: 0000007193afc000 
+<4>[ 2108.049430] x17: 0000006e9de94948 x16: 0000006e9ddd0778 
+<4>[ 2108.049431] x15: 0000000000000002 x14: 0000006e9ca26438 
+<4>[ 2108.049432] x13: 00000000da7aca5e x12: 0000000000000000 
+<4>[ 2108.049433] x11: dbd78921da78a004 x10: b4000070314a46b0 
+<4>[ 2108.049434] x9 : b4000070e14af8b8 x8 : dbd78921da78a004 
+<4>[ 2108.049435] x7 : 0000000000000000 x6 : 7f7d8080807d8080 
+<4>[ 2108.049437] x5 : b4000070d14b0040 x4 : 0000007193131c34 
+<4>[ 2108.049438] x3 : b4000070d14affc0 x2 : b4000070314a4b50 
+<4>[ 2108.049439] x1 : b4000070314a4b60 x0 : b40000714ec93dbf 
+<36>[ 2108.081626] type=1400 audit(1792226998.171:3175): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+<3>[ 2108.083261] state_store: called by 'init' (1)
+<6>[ 2108.084596] potentially unexpected fatal signal 6.
+<4>[ 2108.084604] CPU: 5 PID: 8520 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2108.084607] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2108.084610] pstate: 00000000 (nzcv daif -PAN -UAO)
+<4>[ 2108.084612] pc : 0000007f94f1444c
+<4>[ 2108.084614] lr : 0000007f94f14420
+<4>[ 2108.084615] sp : 0000007fcb4b4f70
+<4>[ 2108.084617] x29: 0000007fcb4b5010 x28: 0000007f94f1892c 
+<4>[ 2108.084620] x27: 0000007fcb4b58f1 x26: 0000000000000000 
+<4>[ 2108.084623] x25: 0000007f951a9000 x24: b400007e144b1930 
+<4>[ 2108.084626] x23: 0000007f951a9000 x22: 0000007f951a9000 
+<4>[ 2108.084629] x21: 00000000ffffffff x20: 0000000000002148 
+<4>[ 2108.084632] x19: 0000000000002148 x18: 0000007f952ea000 
+<4>[ 2108.084635] x17: 0000007f94f609f0 x16: 0000007f94f7ec80 
+<4>[ 2108.084638] x15: 0000ffff00000fff x14: 0000007f94f81d22 
+<4>[ 2108.084641] x13: 2068732f6e69622f x12: 0000000000000001 
+<4>[ 2108.084644] x11: ffffffc0ffffffdf x10: 0000000000000000 
+<4>[ 2108.084647] x9 : 71a4ab75c84dc476 x8 : 00000000000000f0 
+<4>[ 2108.084649] x7 : 000000000000000a x6 : 0000000000000000 
+<4>[ 2108.084652] x5 : 0000000000000000 x4 : 0000000000000000 
+<4>[ 2108.084655] x3 : 0000007fcb4b4f90 x2 : 0000000000000006 
+<4>[ 2108.084658] x1 : 0000000000002148 x0 : 0000000000000000 
+<6>[ 2108.088171] binder: release 8468:8468 transaction 5242314 out, still active
+<6>[ 2108.088175] binder: undelivered TRANSACTION_COMPLETE
+<15>[ 2108.093163] vdc: Waited 0ms for vold
+<6>[ 2108.157973] binder: release 8463:8463 transaction 5242314 in, still active
+<6>[ 2108.157975] binder: send failed reply for transaction 5242314, target dead
+<6>[ 2108.183150] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<6>[ 2108.301874] android_work: sent uevent USB_STATE=DISCONNECTED
+<3>[ 2108.307948] dwc3 a600000.dwc3: USB-[dwc3_gadget_interrupt]: Resend remove event to APP, carplay_status: 1, gadget.state: 0
+<3>[ 2108.308848] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Start Send USB CHANGE event to APP
+<3>[ 2108.310469] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Send USB CHANGE event successful!
+<6>[ 2108.351634] read descriptors
+<6>[ 2108.351724] read strings
+<36>[ 2108.362724] type=1400 audit(1792226998.451:3176): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+<6>[ 2108.364457] potentially unexpected fatal signal 6.
+<4>[ 2108.364465] CPU: 7 PID: 8548 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2108.364467] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2108.364471] pstate: 00000000 (nzcv daif -PAN -UAO)
+<4>[ 2108.364472] pc : 0000007f94f1444c
+<4>[ 2108.364474] lr : 0000007f94f14420
+<4>[ 2108.364475] sp : 0000007fcb4b4f70
+<4>[ 2108.364477] x29: 0000007fcb4b5010 x28: 0000007f94f1892c 
+<4>[ 2108.364481] x27: 0000007fcb4b58f1 x26: 0000000000000000 
+<4>[ 2108.364484] x25: 0000007f951a9000 x24: b400007e144b3550 
+<4>[ 2108.364487] x23: 0000007f951a9000 x22: 0000007f951a9000 
+<4>[ 2108.364490] x21: 00000000ffffffff x20: 0000000000002164 
+<4>[ 2108.364492] x19: 0000000000002164 x18: 0000007f952ea000 
+<4>[ 2108.364495] x17: 0000007f94f609f0 x16: 0000007f94f7ec80 
+<4>[ 2108.364498] x15: 0000ffff00000fff x14: 0000007f94f81d22 
+<4>[ 2108.364501] x13: 2068732f6e69622f x12: 0000000000000001 
+<4>[ 2108.364504] x11: ffffffc0ffffffdf x10: 0000000000000000 
+<4>[ 2108.364507] x9 : 71a4ab75c84dc476 x8 : 00000000000000f0 
+<4>[ 2108.364510] x7 : 000000000000000a x6 : 0000000000000000 
+<4>[ 2108.364513] x5 : 0000000000000000 x4 : 0000000000000000 
+<4>[ 2108.364515] x3 : 0000007fcb4b4f90 x2 : 0000000000000006 
+<4>[ 2108.364518] x1 : 0000000000002164 x0 : 0000000000000000 
+<38>[ 2108.369658] type=1400 audit(1792226998.459:3177): avc: denied { execute } for comm="desaysv_adber" name="sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2108.369749] type=1400 audit(1792226998.459:3178): avc: denied { read open } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2108.369771] type=1400 audit(1792226998.459:3179): avc: denied { execute_no_trans } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<4>[ 2108.369838] audit: audit_lost=2078 audit_rate_limit=5 audit_backlog_limit=64
+<3>[ 2108.369839] audit: rate limit exceeded
+<6>[ 2108.474231] android_work: did not send uevent (0 0 0000000000000000)
+<6>[ 2108.879833] android_work: did not send uevent (0 0 0000000000000000)
+<6>[ 2108.925200] android_work: sent uevent USB_STATE=CONNECTED
+<6>[ 2108.932695] configfs-gadget gadget: high-speed config #1: b
+<6>[ 2108.932729] configfs-gadget gadget: Using interface 0
+<7>[ 2108.932819] usb: gadget online event
+<6>[ 2108.932979] android_work: sent uevent USB_STATE=CONFIGURED
+<6>[ 2109.221177] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<4>[ 2109.398405] audit: audit_lost=2098 audit_rate_limit=5 audit_backlog_limit=64
+<3>[ 2109.398408] audit: rate limit exceeded
+<12>[ 2109.398732] KLOG_START Sat Oct 17 11:49:59 +03 2026
+<38>[ 2111.401185] type=1400 audit(1792227001.491:3209): avc: denied { execute } for comm="desaysv_adber" name="sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2111.401501] type=1400 audit(1792227001.491:3210): avc: denied { read open } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2111.401550] type=1400 audit(1792227001.491:3211): avc: denied { execute_no_trans } for comm="desaysv_adber" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2111.401600] type=1400 audit(1792227001.491:3212): avc: denied { map } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<38>[ 2111.401954] type=1400 audit(1792227001.491:3213): avc: denied { getattr } for comm="sh" path="/system/bin/sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<4>[ 2111.404975] audit: audit_lost=2102 audit_rate_limit=5 audit_backlog_limit=64
+<3>[ 2111.404977] audit: rate limit exceeded
+<14>[ 2112.714066] init: starting service 'vendor.audio-hal'...
+<14>[ 2112.716278] init: starting service 'vendor.audio-hal' | pid: 8601 | class: hal
+<14>[ 2112.727023] init: starting service 'zygote'...
+<14>[ 2112.727956] init: Created socket '/dev/socket/zygote', mode 660, user 0, group 1000
+<14>[ 2112.728660] init: Created socket '/dev/socket/usap_pool_primary', mode 660, user 0, group 1000
+<12>[ 2112.740621] libprocessgroup: Failed to open /dev/stune/foreground/tasks: No such file or directory: No such file or directory
+<12>[ 2112.740635] libprocessgroup: Failed to apply HighPerformance task profile: No such file or directory
+<14>[ 2112.740779] init: starting service 'zygote' | pid: 8602 | class: main
+<14>[ 2112.741889] init: starting service 'zygote_secondary'...
+<14>[ 2112.742660] init: Created socket '/dev/socket/zygote_secondary', mode 660, user 0, group 1000
+<14>[ 2112.877669] e2fsck: /dev/block/by-name/fotadata is mounted.
+<14>[ 2112.877717] e2fsck: e2fsck: Cannot continue, aborting.
+<14>[ 2112.877722] e2fsck: 
+<14>[ 2112.877726] e2fsck: 
+<14>[ 2112.878931] e2fsck: e2fsck terminated by exit(8)
+<14>[ 2112.878931] 
+<14>[ 2112.909751] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+<14>[ 2112.912384] e2fsck: /dev/block/by-name/fotadata is mounted.
+<14>[ 2112.912401] e2fsck: e2fsck: Cannot continue, aborting.
+<14>[ 2112.912406] e2fsck: 
+<14>[ 2112.912410] e2fsck: 
+<36>[ 2113.021970] type=1400 audit(1792227003.111:3215): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+<6>[ 2113.035765] potentially unexpected fatal signal 11.
+<4>[ 2113.035773] CPU: 3 PID: 8612 Comm: surfaceflinger Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2113.035776] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2113.035777] pstate: 60001000 (nZCv daif -PAN -UAO)
+<4>[ 2113.035778] pc : 00000075a3764970
+<4>[ 2113.035779] lr : 00000075a26c83dc
+<4>[ 2113.035780] sp : 0000007fde3a87c0
+<4>[ 2113.035781] x29: 0000007fde3a88b0 x28: b400007746cebe8c 
+<4>[ 2113.035783] x27: 0000007898d04000 x26: b400007746cebf0c 
+<4>[ 2113.035784] x25: 0000000000000000 x24: 0000007fde3a88f0 
+<4>[ 2113.035785] x23: 0000000000000080 x22: 0000000000000089 
+<4>[ 2113.035786] x21: 0000007898d04000 x20: b400007826d0d030 
+<4>[ 2113.035787] x19: b400007696cf2fa0 x18: 0000007899ca0000 
+<4>[ 2113.035788] x17: 00000075a3764948 x16: 00000075a2825778 
+<4>[ 2113.035789] x15: 0000000000000002 x14: 00000075a2035438 
+<4>[ 2113.035790] x13: 00000000da7aca5e x12: 0000000000000000 
+<4>[ 2113.035792] x11: 7435615d85f7da94 x10: b400007736ceb070 
+<4>[ 2113.035793] x9 : b4000077e6cea898 x8 : 7435615d85f7da94 
+<4>[ 2113.035794] x7 : 0000000000000000 x6 : 2a802a822a802a82 
+<4>[ 2113.035795] x5 : b4000077d6cf6020 x4 : 00000078989a4c34 
+<4>[ 2113.035796] x3 : b4000077d6cf5fa0 x2 : b400007736ceb510 
+<4>[ 2113.035797] x1 : b400007736ceb520 x0 : b4000077fd4f46a1 
+<6>[ 2113.037157] potentially unexpected fatal signal 6.
+<4>[ 2113.037170] CPU: 4 PID: 8652 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2113.037173] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2113.037177] pstate: 00000000 (nzcv daif -PAN -UAO)
+<4>[ 2113.037179] pc : 0000007f94f1444c
+<4>[ 2113.037181] lr : 0000007f94f14420
+<4>[ 2113.037183] sp : 0000007fcb4b4f70
+<4>[ 2113.037184] x29: 0000007fcb4b5010 x28: 0000007f94f1892c 
+<4>[ 2113.037188] x27: 0000007fcb4b58f1 x26: 0000000000000000 
+<4>[ 2113.037191] x25: 0000007f951a9000 x24: b400007e144b3550 
+<4>[ 2113.037194] x23: 0000007f951a9000 x22: 0000007f951a9000 
+<4>[ 2113.037197] x21: 00000000ffffffff x20: 00000000000021cc 
+<4>[ 2113.037200] x19: 00000000000021cc x18: 0000007f952ea000 
+<4>[ 2113.037203] x17: 0000007f94f609f0 x16: 0000007f94f7ec80 
+<4>[ 2113.037206] x15: 0000ffff00000fff x14: 0000007f94f81d22 
+<4>[ 2113.037209] x13: 2068732f6e69622f x12: 0000000000000001 
+<4>[ 2113.037212] x11: ffffffc0ffffffdf x10: 0000000000000000 
+<4>[ 2113.037215] x9 : 71a4ab75c84dc476 x8 : 00000000000000f0 
+<4>[ 2113.037218] x7 : 000000000000000a x6 : 0000000000000000 
+<4>[ 2113.037220] x5 : 0000000000000000 x4 : 0000000000000000 
+<4>[ 2113.037223] x3 : 0000007fcb4b4f90 x2 : 0000000000000006 
+<4>[ 2113.037226] x1 : 00000000000021cc x0 : 0000000000000000 
+<3>[ 2113.066919] state_store: called by 'init' (1)
+<6>[ 2113.080436] binder: release 8605:8605 transaction 5242759 out, still active
+<6>[ 2113.080442] binder: undelivered TRANSACTION_COMPLETE
+<15>[ 2113.080488] vdc: Waited 0ms for vold
+<36>[ 2113.099892] type=1400 audit(1792227003.187:3216): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+<36>[ 2113.099982] type=1400 audit(1792227003.187:3217): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+<6>[ 2113.140262] binder: release 8601:8601 transaction 5242759 in, still active
+<6>[ 2113.140269] binder: send failed reply for transaction 5242759, target dead
+<6>[ 2113.154927] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<6>[ 2113.273880] android_work: sent uevent USB_STATE=DISCONNECTED
+<3>[ 2113.279922] dwc3 a600000.dwc3: USB-[dwc3_gadget_interrupt]: Resend remove event to APP, carplay_status: 1, gadget.state: 0
+<3>[ 2113.280309] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Start Send USB CHANGE event to APP
+<3>[ 2113.280947] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Send USB CHANGE event successful!
+<6>[ 2113.313186] read descriptors
+<6>[ 2113.313226] read strings
+<36>[ 2113.325427] type=1400 audit(1792227003.415:3218): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+<6>[ 2113.326904] potentially unexpected fatal signal 6.
+<4>[ 2113.326908] CPU: 3 PID: 8683 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2113.326910] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2113.326912] pstate: 00000000 (nzcv daif -PAN -UAO)
+<4>[ 2113.326913] pc : 0000007f94f1444c
+<4>[ 2113.326914] lr : 0000007f94f14420
+<4>[ 2113.326914] sp : 0000007fcb4b4f70
+<4>[ 2113.326915] x29: 0000007fcb4b5010 x28: 0000007f94f1892c 
+<4>[ 2113.326917] x27: 0000007fcb4b58f1 x26: 0000000000000000 
+<4>[ 2113.326918] x25: 0000007f951a9000 x24: b400007e144b1930 
+<4>[ 2113.326919] x23: 0000007f951a9000 x22: 0000007f951a9000 
+<4>[ 2113.326920] x21: 00000000ffffffff x20: 00000000000021eb 
+<4>[ 2113.326922] x19: 00000000000021eb x18: 0000007f952ea000 
+<4>[ 2113.326923] x17: 0000007f94f609f0 x16: 0000007f94f7ec80 
+<4>[ 2113.326924] x15: 0000ffff00000fff x14: 0000007f94f81d22 
+<4>[ 2113.326925] x13: 2068732f6e69622f x12: 0000000000000001 
+<4>[ 2113.326926] x11: ffffffc0ffffffdf x10: 0000000000000000 
+<4>[ 2113.326927] x9 : 71a4ab75c84dc476 x8 : 00000000000000f0 
+<4>[ 2113.326928] x7 : 000000000000000a x6 : 0000000000000000 
+<4>[ 2113.326929] x5 : 0000000000000000 x4 : 0000000000000000 
+<4>[ 2113.326930] x3 : 0000007fcb4b4f90 x2 : 0000000000000006 
+<4>[ 2113.326931] x1 : 00000000000021eb x0 : 0000000000000000 
+<4>[ 2113.406973] audit: audit_lost=2103 audit_rate_limit=5 audit_backlog_limit=64
+<3>[ 2113.406976] audit: rate limit exceeded
+<38>[ 2113.407341] type=1400 audit(1792227003.499:3219): avc: denied { execute } for comm="desaysv_adber" name="sh" dev="dm-8" ino=1498 scontext=u:r:su:s0 tcontext=u:object_r:shell_exec:s0 tclass=file permissive=1
+<6>[ 2113.432749] android_work: did not send uevent (0 0 0000000000000000)
+<6>[ 2113.834307] android_work: did not send uevent (0 0 0000000000000000)
+<6>[ 2113.879636] android_work: sent uevent USB_STATE=CONNECTED
+<6>[ 2113.886099] configfs-gadget gadget: high-speed config #1: b
+<6>[ 2113.886131] configfs-gadget gadget: Using interface 0
+<7>[ 2113.886249] usb: gadget online event
+<6>[ 2113.886403] android_work: sent uevent USB_STATE=CONFIGURED
+<6>[ 2114.174678] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<14>[ 2117.721821] init: starting service 'vendor.audio-hal'...
+<14>[ 2117.722663] init: starting service 'vendor.audio-hal' | pid: 8712 | class: hal
+<14>[ 2117.742748] init: starting service 'zygote'...
+<14>[ 2117.743085] init: Created socket '/dev/socket/zygote', mode 660, user 0, group 1000
+<14>[ 2117.743226] init: Created socket '/dev/socket/usap_pool_primary', mode 660, user 0, group 1000
+<12>[ 2117.759749] libprocessgroup: Failed to open /dev/stune/foreground/tasks: No such file or directory: No such file or directory
+<12>[ 2117.759762] libprocessgroup: Failed to apply HighPerformance task profile: No such file or directory
+<14>[ 2117.759769] init: starting service 'zygote' | pid: 8713 | class: main
+<14>[ 2117.760552] init: starting service 'zygote_secondary'...
+<14>[ 2117.760848] init: Created socket '/dev/socket/zygote_secondary', mode 660, user 0, group 1000
+<14>[ 2117.900725] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+<14>[ 2117.902215] e2fsck: /dev/block/by-name/fotadata is mounted.
+<14>[ 2117.902234] e2fsck: e2fsck: Cannot continue, aborting.
+<14>[ 2117.902239] e2fsck: 
+<14>[ 2117.902243] e2fsck: 
+<14>[ 2117.903549] e2fsck: e2fsck terminated by exit(8)
+<14>[ 2117.903549] 
+<14>[ 2117.930359] e2fsck: e2fsck 1.45.4 (23-Sep-2019)
+<14>[ 2117.931872] e2fsck: /dev/block/by-name/fotadata is mounted.
+<14>[ 2117.931885] e2fsck: e2fsck: Cannot continue, aborting.
+<14>[ 2117.931890] e2fsck: 
+<36>[ 2118.002780] type=1400 audit(1792227008.091:3235): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+<36>[ 2118.003078] type=1400 audit(1792227008.091:3236): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+<36>[ 2118.015315] type=1400 audit(1792227008.103:3237): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+<6>[ 2118.017284] potentially unexpected fatal signal 6.
+<4>[ 2118.017289] CPU: 2 PID: 8770 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2118.017290] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2118.017292] pstate: 00000000 (nzcv daif -PAN -UAO)
+<4>[ 2118.017293] pc : 0000007f94f1444c
+<4>[ 2118.017293] lr : 0000007f94f14420
+<4>[ 2118.017294] sp : 0000007fcb4b4f70
+<4>[ 2118.017295] x29: 0000007fcb4b5010 x28: 0000007f94f1892c 
+<4>[ 2118.017296] x27: 0000007fcb4b58f1 x26: 0000000000000000 
+<4>[ 2118.017297] x25: 0000007f951a9000 x24: b400007e144b1930 
+<4>[ 2118.017298] x23: 0000007f951a9000 x22: 0000007f951a9000 
+<4>[ 2118.017299] x21: 00000000ffffffff x20: 0000000000002242 
+<4>[ 2118.017300] x19: 0000000000002242 x18: 0000007f952ea000 
+<4>[ 2118.017301] x17: 0000007f94f609f0 x16: 0000007f94f7ec80 
+<4>[ 2118.017302] x15: 0000ffff00000fff x14: 0000007f94f81d22 
+<4>[ 2118.017303] x13: 2068732f6e69622f x12: 0000000000000001 
+<4>[ 2118.017304] x11: ffffffc0ffffffdf x10: 0000000000000000 
+<4>[ 2118.017305] x9 : 71a4ab75c84dc476 x8 : 00000000000000f0 
+<4>[ 2118.017306] x7 : 000000000000000a x6 : 0000000000000000 
+<4>[ 2118.017307] x5 : 0000000000000000 x4 : 0000000000000000 
+<4>[ 2118.017308] x3 : 0000007fcb4b4f90 x2 : 0000000000000006 
+<4>[ 2118.017308] x1 : 0000000000002242 x0 : 0000000000000000 
+<6>[ 2118.022495] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<6>[ 2118.141228] android_work: sent uevent USB_STATE=DISCONNECTED
+<6>[ 2118.142579] read descriptors
+<6>[ 2118.142670] read strings
+<36>[ 2118.171357] type=1400 audit(1792227008.259:3238): avc: denied { ptrace } for comm="crash_dump64" scontext=u:r:crash_dump:s0 tcontext=u:r:init:s0 tclass=process permissive=0
+<6>[ 2118.173695] potentially unexpected fatal signal 6.
+<4>[ 2118.173705] CPU: 7 PID: 8782 Comm: init Tainted: G S      W         5.4.86-qgki-g82836c7304a0 #1
+<4>[ 2118.173708] Hardware name: Qualcomm Technologies, Inc. SA8155 Single LA Virtual Machine (G7PH Chery T26) (DT)
+<4>[ 2118.173711] pstate: 00000000 (nzcv daif -PAN -UAO)
+<4>[ 2118.173713] pc : 0000007f94f1444c
+<4>[ 2118.173715] lr : 0000007f94f14420
+<4>[ 2118.173716] sp : 0000007fcb4b4f70
+<4>[ 2118.173718] x29: 0000007fcb4b5010 x28: 0000007f94f1892c 
+<4>[ 2118.173722] x27: 0000007fcb4b58f1 x26: 0000000000000000 
+<4>[ 2118.173725] x25: 0000007f951a9000 x24: b400007e144b1930 
+<4>[ 2118.173728] x23: 0000007f951a9000 x22: 0000007f951a9000 
+<4>[ 2118.173731] x21: 00000000ffffffff x20: 000000000000224e 
+<4>[ 2118.173734] x19: 000000000000224e x18: 0000007f952ea000 
+<4>[ 2118.173737] x17: 0000007f94f609f0 x16: 0000007f94f7ec80 
+<4>[ 2118.173739] x15: 0000ffff00000fff x14: 0000007f94f81d22 
+<4>[ 2118.173742] x13: 2068732f6e69622f x12: 0000000000000001 
+<4>[ 2118.173745] x11: ffffffc0ffffffdf x10: 0000000000000000 
+<4>[ 2118.173748] x9 : 71a4ab75c84dc476 x8 : 00000000000000f0 
+<4>[ 2118.173751] x7 : 000000000000000a x6 : 0000000000000000 
+<4>[ 2118.173754] x5 : 0000000000000000 x4 : 0000000000000000 
+<4>[ 2118.173756] x3 : 0000007fcb4b4f90 x2 : 0000000000000006 
+<4>[ 2118.173759] x1 : 000000000000224e x0 : 0000000000000000 
+<6>[ 2118.261033] android_work: did not send uevent (0 0 0000000000000000)
+<3>[ 2118.266878] dwc3 a600000.dwc3: USB-[dwc3_gadget_interrupt]: Resend remove event to APP, carplay_status: 1, gadget.state: 0
+<3>[ 2118.268959] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Start Send USB CHANGE event to APP
+<3>[ 2118.269746] dwc3 a600000.dwc3: USB-[dwc3_remove_event_work]: Send USB CHANGE event successful!
+<36>[ 2118.378119] type=1400 audit(1792227008.467:3239): avc: denied { read } for comm="audio.service" name="u:object_r:default_prop:s0" dev="tmpfs" ino=92 scontext=u:r:hal_audio_default:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+<36>[ 2118.378370] type=1400 audit(1792227008.467:3240): avc: denied { read } for comm="audio.service" name="u:object_r:default_prop:s0" dev="tmpfs" ino=92 scontext=u:r:hal_audio_default:s0 tcontext=u:object_r:default_prop:s0 tclass=file permissive=0
+<6>[ 2118.436635] android_work: did not send uevent (0 0 0000000000000000)
+<6>[ 2118.481622] android_work: sent uevent USB_STATE=CONNECTED
+<6>[ 2118.488364] configfs-gadget gadget: high-speed config #1: b
+<6>[ 2118.488408] configfs-gadget gadget: Using interface 0
+<7>[ 2118.488638] usb: gadget online event
+<6>[ 2118.488943] android_work: sent uevent USB_STATE=CONFIGURED
+<36>[ 2118.637598] type=1400 audit(1792227008.727:3241): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+<36>[ 2118.637733] type=1400 audit(1792227008.727:3242): avc: denied { unmount } for comm="main" scontext=u:r:zygote:s0 tcontext=u:object_r:labeledfs:s0 tclass=filesystem permissive=0
+<6>[ 2118.764873] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<6>[ 2119.298018] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<6>[ 2119.298686] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<6>[ 2119.301226] CFG80211-ERROR) wl_cfg80211_netdev_notifier_call : wdev null. Do nothing
+<12>[ 2120.160129] healthd: battery none chg=
+<6>[ 2120.588536] binder: 842:1104 transaction failed 29189/-22, size 0-0 line 2708
+<6>[ 2120.766726]  [ADI214xx] put_mic_mute : mic_mute_value 0 
+<6>[ 2120.816867] read descriptors
+<6>[ 2120.816910] read strings
+<6>[ 2120.816952] read descriptors
+<6>[ 2120.816989] read strings
+<6>[ 2120.957251] CFG80211-INFO) wl_cfgvendor_stop_hal : wl_cfgvendor_stop_hal,[DUMP] HAL STOPPED
+<6>[ 2120.957613] CFG80211-INFO) wl_cfgvendor_stop_hal : wl_cfgvendor_stop_hal,[DUMP] HAL STOPPED
+<6>[ 2120.958025] CFG80211-ERROR) wl_cfg80211_disconnect : Reason 3
+<6>[ 2120.958041] CFG80211-INFO) wl_cfg80211_disconnect : [wlan0] wl disassoc
+<4>[ 2120.960112] dhd_flow_rings_delete: ifindex 0
+<4>[ 2120.960166] dhd_prot_flow_ring_delete: Send Flow Delete Req RING ID 39 for peer 01:00:5e:00:00:16 prio 3 ifindex 0
+<4>[ 2120.960173] dhd_prot_flow_ring_delete: Send Flow Delete Req RING ID 40 for peer 33:33:ff:a2:6c:31 prio 0 ifindex 0
+<4>[ 2120.960177] dhd_prot_flow_ring_delete: Send Flow Delete Req RING ID 41 for peer AP_BSSID_REDACTED prio 7 ifindex 0
+<4>[ 2120.960212] dhd_flow_rings_delete: ifindex 0
+<4>[ 2120.960223] wl_process_host_event: Deleting all STA from assoc list and flowrings.
+<4>[ 2120.960225] dhd_flow_rings_delete: ifindex 0
+<6>[ 2120.960238] CFG80211-INFO) wl_print_event_data : event_type (11), ifidx: 0 bssidx: 0 status:0 reason:8
+<6>[ 2120.960244] CFG80211-INFO) wl_print_event_data : event_type (11), ifidx: 0 bssidx: 0 status:0 reason:8
+<6>[ 2120.960247] CFG80211-INFO) wl_print_event_data : event_type (16), ifidx: 0 bssidx: 0 status:0 reason:2
+<6>[ 2120.960250] CFG80211-INFO) wl_notify_connect_status : [wlan0] Mode BSS. event:16 status:0 reason:2
+<6>[ 2120.960254] CFG80211-ERROR) wl_is_linkdown : Link down Reason : WLC_E_LINK
+<6>[ 2120.960257] CFG80211-ERROR) wl_is_linkdown : Link down Reason : WLC_E_LINK
+<6>[ 2120.960259] CFG80211-ERROR) wl_notify_connect_status : link down--clearing disconnect IEs
+<6>[ 2120.960265] CFG80211-INFO) wl_notify_connect_status : link down. connection state bit status: [0:1:1:0]
+<4>[ 2120.960414] dhd_prot_flow_ring_delete_response_process: Flow Delete Response status = 0 Flow 39
+<4>[ 2120.960440] dhd_prot_flow_ring_delete_response_process: Flow Delete Response status = 0 Flow 40
+<4>[ 2120.960446] dhd_prot_flow_ring_delete_response_process: Flow Delete Response status = 0 Flow 41
+<6>[ 2120.963142] CFG80211-INFO) wl_cfg80211_cancel_scan : No scan in progress
+<6>[ 2120.965334] CFG80211-INFO) wl_cfg80211_set_frameburst : frameburst is enabled
+<6>[ 2120.965342] CFG80211-INFO) wl_notify_connect_status : [wlan0] Indicate disconnect event to upper layer. event: 16 reason=2 from AP_BSSID_REDACTED
+<6>[ 2120.965455] CFG80211-INFO) wl_notify_connect_status : [wlan0] Disconnect event sent to upper layerevent:16 reason=2 ie_len=0 from AP_BSSID_REDACTED
+<6>[ 2121.016551] CFG80211-INFO) wl_cfg80211_wait_for_disconnection : Wait for disconnection done. status:0 wait_cnt:9
+<6>[ 2121.016560] CFG80211-ERROR) wl_cfg80211_disconnect : Clearing disconnect IEs 
+<4>[ 2121.016742] [wlan0] tx queue stopped
+<4>[ 2121.016751] dhd_stop: ######### dhd_stop called for ifidx=0 #########
+<4>[ 2121.016756] dhd_stop: making dhdpub up FALSE
+<6>[ 2121.016760] CFG80211-INFO) __wl_cfg80211_down : cfg80211 down
+<6>[ 2121.017781] CFG80211-INFO) wl_cfg80211_cancel_scan : No scan in progress
+<6>[ 2121.017787] CFG80211-INFO) __wl_cfg80211_down : wl_cfg80211_down. connection state bit status: [0:0:0:0] for wlan0
+<6>[ 2121.019010] CFG80211-INFO) wl_cfg80211_set_frameburst : frameburst is enabled
+<4>[ 2121.019022] wl_destroy_event_handler, cfg->event_workq=ffffff82745be600, &cfg->event_work = ffffff82976b2258
+<4>[ 2121.020368] WLC_E_IF: NO_IF set, event Ignored
+<4>[ 2121.020373] dhd_rx_frame: net device is NOT registered. drop event packet
+<6>[ 2121.020377] CFGP2P-INFO) wl_cfgp2p_deinit_priv : 
+<4>[ 2121.020378] In
+<6>[ 2121.020389] CFG80211-INFO) dhd_cfg80211_down : Dongle is already down
+<4>[ 2121.040296] dhd_cancel_logtrace_process_sync(): thread:dhd_logtrace_thread:4af wait for terminate
+<4>[ 2121.040305] dhd_logtrace_thread: task terminated
+<4>[ 2121.040362] dhd_cancel_logtrace_process_sync(): thread:dhd_logtrace_thread:4af terminated OK
+<4>[ 2121.043977] wl_android_wifi_off in
+<4>[ 2121.048379] dhd_bus_devreset: == Power OFF ==
+<4>[ 2121.048385] dhd_bus_devreset: making dhdpub up FALSE
+<4>[ 2121.048610] dhd_bus_stop: making DHD_BUS_DOWN
+<4>[ 2121.048645] dhd_dpc_kill: tasklet disabled
+<4>[ 2121.048858] ******** Perform FLR ********
+<4>[ 2121.048868] Chip does not support FLR
+<6>[ 2121.155946] msm_pcie_disable: PCIe: Assert the reset of endpoint of RC0.
+<4>[ 2121.160655] dhd_bus_devreset: making DHD_BUS_DOWN
+<4>[ 2121.160666] dhd_bus_devreset:  WLAN OFF Done
+<4>[ 2121.160679] regulator: gpio wlreg_on off
+<4>[ 2121.160681] dhd: wlreg_on regulator_disable
+<6>[ 2121.178375] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+<6>[ 2121.178379] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+<6>[ 2121.178380] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+<6>[ 2121.178381] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+<6>[ 2121.178381] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+<6>[ 2121.178382] CFG80211-INFO) wl_cfg80211_del_key : device is not ready
+<6>[ 2121.179001] binder: 2375:2375 transaction failed 29189/-22, size 32-0 line 2708
+<6>[ 2121.183501] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+<6>[ 2121.183506] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+<6>[ 2121.183508] CFG80211-INFO) wl_cfg80211_get_tx_power : device is not ready
+<36>[ 2121.582227] type=1400 audit(1792227011.671:3243): avc: denied { read } for comm=4E444B204D65646961436F6465635F name="u:object_r:vendor_media_validate_prop:s0" dev="tmpfs" ino=349 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=file permissive=0
+<36>[ 2121.582288] type=1107 audit(1792227011.671:3244): uid=0 auid=4294967295 ses=4294967295 subj=u:r:init:s0 msg='avc: denied { set } for property=persist.vendor.media.validate pid=8841 uid=1000 gid=1000 scontext=u:r:system_server:s0 tcontext=u:object_r:vendor_media_validate_prop:s0 tclass=property_service permissive=0'
+<4>[ 2121.653360] audit: audit_lost=2116 audit_rate_limit=5 audit_backlog_limit=64
+<3>[ 2121.653365] audit: rate limit exceeded
+<6>[ 2121.674126]  [ADI214xx] put_mic_mute : mic_mute_value 0 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
