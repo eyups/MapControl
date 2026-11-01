@@ -3,6 +3,7 @@ package com.mapcontrol.nav;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.Typeface;
 import android.hardware.display.DisplayManager;
 import android.os.Build;
@@ -71,6 +72,7 @@ public final class GoogleMapsClusterNavOverlay {
     private int layoutManeuverLeft;
     private int layoutEtaLeft;
     private int layoutTopMargin;
+    private int layoutEtaTopMargin;
     private int layoutCardWidthPx;
     private int layoutScreenWidthPx;
     private WindowManager.LayoutParams overlayLayoutParams;
@@ -358,7 +360,7 @@ public final class GoogleMapsClusterNavOverlay {
                 maneuver.offsetXDp, maneuver.offsetYDp, maneuver.scalePercent);
 
         etaCardLp.leftMargin = layoutEtaLeft;
-        etaCardLp.topMargin = layoutTopMargin;
+        etaCardLp.topMargin = layoutEtaTopMargin;
         etaCard.setLayoutParams(etaCardLp);
         ClusterNavOverlayOffsets.applyTranslationAndScale(
                 etaCard, ctx,
@@ -434,13 +436,27 @@ public final class GoogleMapsClusterNavOverlay {
         int screenWidth = ctx.getResources().getDisplayMetrics().widthPixels;
         int cardWidthPx = dp(ctx, CARD_WIDTH_DP);
         String style = getStyle(appContext);
-        int gapPx = dp(ctx, STYLE_TWO_LANE.equals(style) ? 36 : CENTER_GAP_DP);
+        int gapPx = dp(ctx, STYLE_SINGLE_ROW.equals(style) ? 8
+                : (STYLE_TWO_LANE.equals(style) ? 12 : CENTER_GAP_DP));
         int topMarginPx = dp(ctx, TOP_MARGIN_DP);
-        int outwardPx = (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO);
+        int outwardPx = (STYLE_CLASSIC.equals(style) || STYLE_GLASS.equals(style))
+                ? (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO) : 0;
         int pairWidth = cardWidthPx * 2 + gapPx;
         int pairLeft = (screenWidth - pairWidth) / 2;
-        int maneuverLeft = pairLeft - outwardPx;
-        int etaLeft = pairLeft + cardWidthPx + gapPx + outwardPx;
+        int maneuverLeft;
+        int etaLeft;
+        int etaTopMarginPx = topMarginPx;
+        if (STYLE_TWO_LANE.equals(style)) {
+            maneuverLeft = (screenWidth - cardWidthPx) / 2;
+            etaLeft = maneuverLeft;
+            etaTopMarginPx = topMarginPx + dp(ctx, 118);
+        } else if (STYLE_SINGLE_ROW.equals(style)) {
+            maneuverLeft = pairLeft;
+            etaLeft = pairLeft + cardWidthPx + gapPx;
+        } else {
+            maneuverLeft = pairLeft - outwardPx;
+            etaLeft = pairLeft + cardWidthPx + gapPx + outwardPx;
+        }
 
         maneuverCard = createManeuverCard(ctx);
         maneuverDistanceView = createManeuverText(ctx, 30, true);
@@ -478,11 +494,14 @@ public final class GoogleMapsClusterNavOverlay {
         etaStatusLp.topMargin = dp(ctx, 6);
         etaCard.addView(etaStatusView, etaStatusLp);
 
+        applyCardStyle(ctx, style);
+
         layoutScreenWidthPx = screenWidth;
         layoutCardWidthPx = cardWidthPx;
         layoutManeuverLeft = Math.max(0, maneuverLeft);
         layoutEtaLeft = Math.min(screenWidth - cardWidthPx, etaLeft);
         layoutTopMargin = topMarginPx;
+        layoutEtaTopMargin = etaTopMarginPx;
 
         maneuverCardLp = new FrameLayout.LayoutParams(
                 cardWidthPx,
@@ -497,7 +516,7 @@ public final class GoogleMapsClusterNavOverlay {
                 FrameLayout.LayoutParams.WRAP_CONTENT);
         etaCardLp.gravity = Gravity.TOP | Gravity.START;
         etaCardLp.leftMargin = layoutEtaLeft;
-        etaCardLp.topMargin = layoutTopMargin;
+        etaCardLp.topMargin = layoutEtaTopMargin;
         root.addView(etaCard, etaCardLp);
 
         applyStoredOffsetsOnMain();
@@ -570,6 +589,27 @@ public final class GoogleMapsClusterNavOverlay {
         return new LinearLayout.LayoutParams(
                 dp(ctx, CARD_WIDTH_DP),
                 LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
+
+    private void applyCardStyle(Context ctx, String style) {
+        if (STYLE_GLASS.equals(style)) {
+            maneuverCard.setBackground(glassBackground(ctx));
+            etaCard.setBackground(glassBackground(ctx));
+        } else if (STYLE_TWO_LANE.equals(style)) {
+            maneuverCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
+            etaCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
+        } else if (STYLE_SINGLE_ROW.equals(style)) {
+            maneuverCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
+            etaCard.setPadding(dp(ctx, 12), dp(ctx, 9), dp(ctx, 12), dp(ctx, 9));
+        }
+    }
+
+    private static GradientDrawable glassBackground(Context ctx) {
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(0x99161B22);
+        bg.setCornerRadius(dp(ctx, 16));
+        bg.setStroke(Math.max(1, dp(ctx, 1)), 0x66FFFFFF);
+        return bg;
     }
 
     private static LinearLayout createManeuverCard(Context ctx) {

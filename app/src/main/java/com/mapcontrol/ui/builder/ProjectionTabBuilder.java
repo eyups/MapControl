@@ -878,6 +878,8 @@ public class ProjectionTabBuilder {
                 final String style = styles[index];
                 card.setOnClickListener(v -> {
                     GoogleMapsClusterNavOverlay.setStyle(context, style);
+                    GoogleMapsClusterNavOverlay.getInstance(context).apply(
+                            GoogleMapsNavNotificationCoordinator.getLastSnapshot());
                     applyClusterStyleSelection(cards, styles, GoogleMapsClusterNavOverlay.getStyle(context));
                     callback.log("Google Maps cluster kart tasarımı: " + style);
                 });
