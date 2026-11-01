@@ -638,7 +638,8 @@ public final class GoogleMapsClusterNavOverlay {
 
         if (singleCard) {
             int width = Math.min(screenWidth - dp(ctx, 32),
-                    dp(ctx, STYLE_RADIAL.equals(style) ? 560 : 390));
+                    dp(ctx, STYLE_RADIAL.equals(style) ? 560
+                            : (STYLE_TRAFFIC.equals(style) ? 500 : 390)));
             maneuverLeft = (screenWidth - width) / 2;
             etaLeft = maneuverLeft;
             maneuverCard = createSingleCard(ctx, style);
@@ -846,28 +847,61 @@ public final class GoogleMapsClusterNavOverlay {
             boxes.addView(arrivalBox, arrivalLp);
             right.addView(boxes, matchWrapLp());
         } else {
-            LinearLayout top = new LinearLayout(ctx);
-            top.setOrientation(LinearLayout.HORIZONTAL);
-            top.setGravity(Gravity.CENTER_VERTICAL);
-            maneuverDistanceView = createManeuverText(ctx, 24, true);
-            top.addView(maneuverDistanceView);
-            nextStreetView = createManeuverText(ctx, 14, false);
-            LinearLayout.LayoutParams streetLp = new LinearLayout.LayoutParams(0,
-                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            streetLp.leftMargin = dp(ctx, 8);
-            top.addView(nextStreetView, streetLp);
+            maneuverCard.setBackground(null);
+            maneuverCard.setPadding(0, 0, 0, 0);
+            maneuverCard.setOrientation(LinearLayout.VERTICAL);
+
+            LinearLayout top = createTrafficPill(ctx, true);
+            maneuverIconView = new ImageView(ctx);
+            maneuverIconView.setImageResource(R.drawable.ic_ck_arrow_left);
+            maneuverIconView.setColorFilter(UiStyles.color(ctx, R.color.ck_accent));
+            top.addView(maneuverIconView, new LinearLayout.LayoutParams(
+                    dp(ctx, 30), dp(ctx, 30)));
+            maneuverDistanceView = createManeuverText(ctx, 28, true);
+            LinearLayout.LayoutParams distLp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            distLp.leftMargin = dp(ctx, 10);
+            top.addView(maneuverDistanceView, distLp);
+            TextView dot = createEtaText(ctx, 16, true);
+            dot.setText("·");
+            dot.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+            dot.setPadding(dp(ctx, 8), 0, dp(ctx, 8), 0);
+            top.addView(dot);
+            nextStreetView = createManeuverText(ctx, 19, true);
+            nextStreetView.setMaxLines(1);
+            nextStreetView.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            top.addView(nextStreetView, new LinearLayout.LayoutParams(0,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+            TextView statusDot = createEtaText(ctx, 12, true);
+            statusDot.setText("●");
+            statusDot.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
+            top.addView(statusDot, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
             maneuverCard.addView(top, matchWrapLp());
-            trafficProgress = new View(ctx);
-            trafficProgress.setBackgroundColor(UiStyles.color(ctx, R.color.ck_accent));
-            LinearLayout.LayoutParams lineLp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, dp(ctx, 4));
-            lineLp.topMargin = dp(ctx, 8);
-            lineLp.bottomMargin = dp(ctx, 8);
-            maneuverCard.addView(trafficProgress, lineLp);
-            LinearLayout etaRow = new LinearLayout(ctx);
-            etaRow.setOrientation(LinearLayout.HORIZONTAL);
-            addEtaRows(ctx, etaRow);
-            maneuverCard.addView(etaRow, matchWrapLp());
+
+            LinearLayout bottom = createTrafficPill(ctx, false);
+            LinearLayout.LayoutParams bottomLp = matchWrapLp();
+            bottomLp.topMargin = dp(ctx, 8);
+            etaTimeValue = createEtaText(ctx, 18, true);
+            bottom.addView(etaTimeValue);
+            TextView dot2 = createEtaText(ctx, 14, true);
+            dot2.setText("·");
+            dot2.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+            dot2.setPadding(dp(ctx, 8), 0, dp(ctx, 8), 0);
+            bottom.addView(dot2);
+            etaDistanceValue = createEtaText(ctx, 16, false);
+            bottom.addView(etaDistanceValue);
+            TextView dot3 = createEtaText(ctx, 14, true);
+            dot3.setText("·");
+            dot3.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
+            dot3.setPadding(dp(ctx, 8), 0, dp(ctx, 8), 0);
+            bottom.addView(dot3);
+            etaArrivalValue = createEtaText(ctx, 18, true);
+            etaArrivalValue.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
+            bottom.addView(etaArrivalValue);
+            maneuverCard.addView(bottom, bottomLp);
         }
     }
 
@@ -976,7 +1010,8 @@ public final class GoogleMapsClusterNavOverlay {
             bg.setStroke(dp(ctx, 1), UiStyles.color(ctx, R.color.ck_accent_stroke_30));
             maneuverCard.setBackground(bg);
         } else if (STYLE_TRAFFIC.equals(style)) {
-            maneuverCard.setBackground(glassBackground(ctx));
+            maneuverCard.setBackground(null);
+            maneuverCard.setPadding(0, 0, 0, 0);
         } else if (STYLE_DUAL.equals(style)) {
             // Kartlar kendi referans dolgularını kullanır.
         } else if (STYLE_SINGLE_ROW.equals(style)) {
@@ -994,6 +1029,23 @@ public final class GoogleMapsClusterNavOverlay {
     }
 
 
+
+
+    private static LinearLayout createTrafficPill(Context ctx, boolean accent) {
+        LinearLayout pill = new LinearLayout(ctx);
+        pill.setOrientation(LinearLayout.HORIZONTAL);
+        pill.setGravity(Gravity.CENTER_VERTICAL);
+        int padH = dp(ctx, 16);
+        int padV = dp(ctx, 10);
+        pill.setPadding(padH, padV, padH, padV);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(0xFF0B0F14);
+        bg.setCornerRadius(dp(ctx, 24));
+        bg.setStroke(dp(ctx, 1), UiStyles.color(ctx,
+                accent ? R.color.ck_accent : R.color.ck_stroke));
+        pill.setBackground(bg);
+        return pill;
+    }
 
     private static void addTextShadow(TextView view) {
         view.setShadowLayer(5f, 0f, 2f, 0xCC000000);
