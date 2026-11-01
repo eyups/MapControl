@@ -3,6 +3,7 @@ package com.mapcontrol.cloud;
 import android.content.Context;
 
 import com.mapcontrol.profile.DriverProfileManager;
+import com.mapcontrol.vehicle.FaceProfileStore;
 
 import org.json.JSONObject;
 
@@ -28,7 +29,15 @@ final class ProfileSyncService {
         if (!put("prefs", manager.exportPreferences())) {
             return false;
         }
+        if (config.backupFaceData()
+                && !put("faces", FaceProfileStore.exportBackup(context))) {
+            return false;
+        }
         return ProfileAudioBackup.upload(context, config, http);
+    }
+
+    boolean clearFaces() throws Exception {
+        return put("faces", FaceProfileStore.emptyBackup());
     }
 
     boolean restore() throws Exception {
@@ -43,6 +52,14 @@ final class ProfileSyncService {
         JSONObject preferences = get("prefs");
         if (preferences != null) {
             manager.importPreferences(preferences);
+        }
+        if (config.backupFaceData()) {
+            JSONObject faces = get("faces");
+            if (faces != null && faces.optJSONArray("profiles") != null
+                    && faces.optJSONArray("profiles").length() > 0
+                    && !FaceProfileStore.importBackup(context, faces)) {
+                return false;
+            }
         }
         return ProfileAudioBackup.restore(context, config, http);
     }

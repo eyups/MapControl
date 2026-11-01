@@ -152,4 +152,84 @@ public final class FaceProfileStore {
             throw new GeneralSecurityException("Android keystore sertifikası okunamadı", e);
         }
     }
+    /** F5: yüz şablonlarını (görüntü değil) yedeğe uygun JSON'a çevirir. */
+    public static JSONObject exportBackup(Context context) {
+        JSONObject root = new JSONObject();
+        JSONArray array = new JSONArray();
+        for (Profile profile : load(context)) {
+            JSONObject item = new JSONObject();
+            JSONArray templates = new JSONArray();
+            try {
+                item.put("name", profile.name);
+                item.put("seatMemory", profile.seatMemory);
+                for (byte[] template : profile.templates) {
+                    templates.put(Base64.encodeToString(template, Base64.NO_WRAP));
+                }
+                item.put("templates", templates);
+                array.put(item);
+            } catch (JSONException error) {
+                throw new IllegalStateException("Yüz profili yedeğe hazırlanamadı", error);
+            }
+        }
+        try {
+            root.put("version", 1);
+            root.put("profiles", array);
+        } catch (JSONException error) {
+            throw new IllegalStateException("Yüz yedeği hazırlanamadı", error);
+        }
+        return root;
+    }
+
+    public static JSONObject emptyBackup() {
+        JSONObject root = new JSONObject();
+        try {
+            root.put("version", 1);
+            root.put("profiles", new JSONArray());
+        } catch (JSONException ignored) {
+        }
+        return root;
+    }
+
+    /** Yedekten gelen yüz şablonlarını yerel keystore ile yeniden şifreler. */
+    public static boolean importBackup(Context context, JSONObject root) {
+        if (root == null) {
+            return false;
+        }
+        JSONArray array = root.optJSONArray("profiles");
+        if (array == null) {
+            return false;
+        }
+        List<Profile> restored = new ArrayList<>();
+        for (int i = 0; i < array.length() && restored.size() < MAX_PROFILES; i++) {
+            JSONObject item = array.optJSONObject(i);
+            if (item == null) {
+                continue;
+            }
+            String name = item.optString("name", "").trim();
+            JSONArray encoded = item.optJSONArray("templates");
+            if (name.isEmpty() || encoded == null) {
+                continue;
+            }
+            List<byte[]> templates = new ArrayList<>();
+            for (int j = 0; j < encoded.length(); j++) {
+                try {
+                    byte[] template = Base64.decode(encoded.optString(j, ""), Base64.NO_WRAP);
+                    if (template.length >= 64 && template.length <= 65536) {
+                        templates.add(template);
+                    }
+                } catch (IllegalArgumentException ignored) {
+                }
+            }
+            if (!templates.isEmpty()) {
+                restored.add(new Profile(name, Math.max(0, Math.min(3,
+                        item.optInt("seatMemory", 0))), templates));
+            }
+        }
+        if (restored.isEmpty()) {
+            return false;
+        }
+        save(context, restored);
+        return true;
+    }
+
 }

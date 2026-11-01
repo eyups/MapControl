@@ -734,6 +734,12 @@
 <string name="settings_tts_sherpa_help">Embedded, fully offline Turkish voice.</string>
 <string name="settings_tts_elevenlabs_help">Online neural voice. Offline or API error falls back to Sherpa.</string>
 <string name="settings_tts_iflytek_help">iFlytek (vehicle\'s built-in TTS): uses the car\'s installed voice engine. Reads ALL-CAPS words and abbreviations poorly.</string>
+<string name="settings_tts_iflytek_voice_select">iFlytek voice</string>
+<string name="settings_tts_iflytek_voice_dialog">Select iFlytek voice</string>
+<string name="settings_tts_iflytek_voice_tr">Turkish — Ersoy</string>
+<string name="settings_tts_iflytek_voice_en">English — Lindsay</string>
+<string name="settings_tts_iflytek_voice_default">Vehicle default</string>
+<string name="settings_tts_iflytek_voice_help">Applied to the next iFlytek TTS session.</string>
 <string name="settings_tts_api_key">ElevenLabs API key</string>
 <string name="settings_tts_api_hint">sk_... (leave empty to keep current)</string>
 <string name="settings_tts_voice_id">Voice ID</string>
@@ -999,6 +1005,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_stop">Stop</string>
     <string name="settings_cloud_running">Running</string>
     <string name="settings_cloud_ready">Paired; ready to start</string>
+    <string name="settings_cloud_backup_face_data">Back up face data</string>
+    <string name="settings_cloud_backup_face_data_sub">Face templates are included in the backup.</string>
     <string name="settings_cloud_share_location">Share location</string>
     <string name="settings_cloud_invalid_code">Enter the 8-character code.</string>
     <string name="settings_cloud_pair_failed">Pairing failed.</string>
@@ -1262,6 +1270,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_use">Use</string>
     <string name="voice_talk_fine_title">Voice fine tuning</string>
     <string name="voice_talk_speed">Speed</string>
+
     <string name="voice_talk_stability">Stability</string>
     <string name="voice_talk_clarity">Clarity &amp; power</string>
     <string name="voice_talk_sample">Hello, RoadDeck voice assistant is ready.</string>

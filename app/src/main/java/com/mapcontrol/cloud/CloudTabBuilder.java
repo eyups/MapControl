@@ -45,6 +45,7 @@ public final class CloudTabBuilder {
     private final TextView actionsPlaceholder;
     private final Button startStopButton;
     private final CockpitToggleRow shareLocationRow;
+    private final CockpitToggleRow faceBackupRow;
     private final CockpitGrid actionsGrid;
     private final LinearLayout logUploadButton;
     private final LinearLayout vdbusButton;
@@ -160,6 +161,13 @@ public final class CloudTabBuilder {
         LinearLayout.LayoutParams shareLp = matchWidth();
         shareLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         pairedRow.addView(shareLocationRow, shareLp);
+        faceBackupRow = new CockpitToggleRow(context, R.drawable.ic_mdi_account,
+                context.getString(R.string.settings_cloud_backup_face_data),
+                context.getString(R.string.settings_cloud_backup_face_data_sub),
+                config.backupFaceData());
+        LinearLayout.LayoutParams faceLp = matchWidth();
+        faceLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        pairedRow.addView(faceBackupRow, faceLp);
         pairCard.addView(pairedRow, matchWidth());
 
         identityLine = new TextView(context);
@@ -282,6 +290,18 @@ public final class CloudTabBuilder {
         shareLocationRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
             config.setShareLocation(checked);
             logger.accept("Konum paylaşımı: " + (checked ? "açık" : "kapalı"));
+        });
+        faceBackupRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
+            config.setBackupFaceData(checked);
+            logger.accept("Yüz yedeği: " + (checked ? "açık" : "kapalı"));
+            if (!checked) {
+                new Thread(() -> {
+                    try {
+                        new ProfileSyncService(context, config, new CloudHttp()).clearFaces();
+                    } catch (Exception ignored) {
+                    }
+                }, "MapControlFaceBackupClear").start();
+            }
         });
 
         manager.addListener(managerListener);
@@ -565,6 +585,10 @@ public final class CloudTabBuilder {
         shareLocationRow.getToggle().setEnabled(paired);
         if (shareLocationRow.getToggle().isChecked() != config.shareLocation()) {
             shareLocationRow.setCheckedSilently(config.shareLocation());
+        }
+        faceBackupRow.getToggle().setEnabled(paired);
+        if (faceBackupRow.getToggle().isChecked() != config.backupFaceData()) {
+            faceBackupRow.setCheckedSilently(config.backupFaceData());
         }
     }
 

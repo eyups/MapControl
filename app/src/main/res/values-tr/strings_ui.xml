@@ -750,6 +750,12 @@
 <string name="settings_tts_sherpa_help">Gömülü, tamamen offline Türkçe ses.</string>
 <string name="settings_tts_elevenlabs_help">Online neural ses. İnternet yoksa veya API hatasında Sherpa kullanılır.</string>
 <string name="settings_tts_iflytek_help">iFlytek (Aracın Kendi TTS Motoru): Araçta kurulu ses motorunu kullanır. Büyük harfli kelimeleri ve kısaltmaları kötü okuyabilir.</string>
+<string name="settings_tts_iflytek_voice_select">iFlytek sesi</string>
+<string name="settings_tts_iflytek_voice_dialog">iFlytek sesi seç</string>
+<string name="settings_tts_iflytek_voice_tr">Türkçe — Ersoy</string>
+<string name="settings_tts_iflytek_voice_en">İngilizce — Lindsay</string>
+<string name="settings_tts_iflytek_voice_default">Araç varsayılanı</string>
+<string name="settings_tts_iflytek_voice_help">Bir sonraki iFlytek TTS oturumunda uygulanır.</string>
 <string name="settings_tts_api_key">ElevenLabs API anahtarı</string>
 <string name="settings_tts_api_hint">sk_... (mevcut anahtarı korumak için boş bırak)</string>
 <string name="settings_tts_voice_id">Voice ID</string>
@@ -1015,6 +1021,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_stop">Durdur</string>
     <string name="settings_cloud_running">Çalışıyor</string>
     <string name="settings_cloud_ready">Eşleştirildi; başlatmaya hazır</string>
+    <string name="settings_cloud_backup_face_data">Yüz verilerini de yedekle</string>
+    <string name="settings_cloud_backup_face_data_sub">Yüz şablonları yedeğe eklenir.</string>
     <string name="settings_cloud_share_location">Konum paylaş</string>
     <string name="settings_cloud_invalid_code">8 karakterlik kodu girin.</string>
     <string name="settings_cloud_pair_failed">Eşleştirme başarısız.</string>
@@ -1278,6 +1286,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="voice_talk_use">Kullan</string>
     <string name="voice_talk_fine_title">Ses ince ayarları</string>
     <string name="voice_talk_speed">Hız</string>
+
     <string name="voice_talk_stability">Kararlılık</string>
     <string name="voice_talk_clarity">Netlik &amp; Güç</string>
     <string name="voice_talk_sample">Merhaba, RoadDeck sesli asistanı hazır.</string>

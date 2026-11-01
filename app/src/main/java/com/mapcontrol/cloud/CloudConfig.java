@@ -17,6 +17,7 @@ final class CloudConfig {
     private static final String KEY_DEVICE_ID = "cloudDeviceId";
     private static final String KEY_TOKEN_EXPIRES_AT = "cloudTokenExpiresAt";
     private static final String KEY_SHARE_LOCATION = "cloudShareLocation";
+    private static final String KEY_BACKUP_FACE_DATA = "cloudBackupFaceData";
     private static final String KEY_UPLOADED_TRIPS = "cloudUploadedTripIds";
     private static final int MAX_UPLOADED_TRIPS = 500;
 
@@ -62,6 +63,14 @@ final class CloudConfig {
 
     void setShareLocation(boolean enabled) {
         prefs.edit().putBoolean(KEY_SHARE_LOCATION, enabled).apply();
+    }
+
+    boolean backupFaceData() {
+        return prefs.getBoolean(KEY_BACKUP_FACE_DATA, false);
+    }
+
+    void setBackupFaceData(boolean enabled) {
+        prefs.edit().putBoolean(KEY_BACKUP_FACE_DATA, enabled).apply();
     }
 
     Set<Long> uploadedTripIds() {
