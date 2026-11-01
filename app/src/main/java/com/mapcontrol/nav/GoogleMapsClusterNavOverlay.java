@@ -756,47 +756,47 @@ public final class GoogleMapsClusterNavOverlay {
             etaTimeRow = new LinearLayout(ctx);
             etaStatusView = new TextView(ctx);
         } else if (STYLE_RADIAL.equals(style)) {
-            maneuverCard.setMinimumHeight(dp(ctx, 180));
+            maneuverCard.setMinimumHeight(dp(ctx, 190));
             FrameLayout gauge = new FrameLayout(ctx);
             RadialGaugeView ring = new RadialGaugeView(ctx);
             ring.setProgress(0.68f);
             gauge.addView(ring, new FrameLayout.LayoutParams(
-                    dp(ctx, 116), dp(ctx, 116)));
+                    dp(ctx, 132), dp(ctx, 132)));
             LinearLayout center = new LinearLayout(ctx);
             center.setOrientation(LinearLayout.VERTICAL);
             center.setGravity(Gravity.CENTER);
             radialDurationView = new TextView(ctx);
             radialDurationView.setGravity(Gravity.CENTER);
-            radialDurationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
+            radialDurationView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 44);
             radialDurationView.setTypeface(null, Typeface.BOLD);
             radialDurationView.setTextColor(UiStyles.color(ctx, R.color.ck_text_high));
             center.addView(radialDurationView);
-            radialDurationUnitView = createEtaText(ctx, 10, false);
+            radialDurationUnitView = createEtaText(ctx, 13, false);
             radialDurationUnitView.setText("DAKİKA");
             radialDurationUnitView.setTextColor(UiStyles.color(ctx, R.color.ck_accent));
             radialDurationUnitView.setGravity(Gravity.CENTER);
             center.addView(radialDurationUnitView);
             gauge.addView(center, new FrameLayout.LayoutParams(
-                    dp(ctx, 116), dp(ctx, 116)));
+                    dp(ctx, 132), dp(ctx, 132)));
             maneuverCard.addView(gauge, new LinearLayout.LayoutParams(
-                    dp(ctx, 116), dp(ctx, 116)));
+                    dp(ctx, 132), dp(ctx, 132)));
 
             LinearLayout right = new LinearLayout(ctx);
             right.setOrientation(LinearLayout.VERTICAL);
             LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-            rightLp.leftMargin = dp(ctx, 18);
+            rightLp.leftMargin = dp(ctx, 14);
             maneuverCard.addView(right, rightLp);
 
             LinearLayout header = new LinearLayout(ctx);
             header.setOrientation(LinearLayout.HORIZONTAL);
             header.setGravity(Gravity.CENTER_VERTICAL);
-            TextView title = createEtaText(ctx, 15, false);
+            TextView title = createEtaText(ctx, 18, false);
             title.setText("Rota İlerlemesi");
             title.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
             header.addView(title, new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-            radialProgressValue = createEtaText(ctx, 13, true);
+            radialProgressValue = createEtaText(ctx, 18, true);
             radialProgressValue.setText("%—");
             radialProgressValue.setTextColor(UiStyles.color(ctx, R.color.ck_accent));
             header.addView(radialProgressValue);
@@ -814,14 +814,14 @@ public final class GoogleMapsClusterNavOverlay {
 
             LinearLayout boxes = new LinearLayout(ctx);
             boxes.setOrientation(LinearLayout.HORIZONTAL);
-            boxes.setPadding(0, dp(ctx, 10), 0, 0);
+            boxes.setPadding(0, dp(ctx, 8), 0, 0);
             LinearLayout distanceBox = createRadialMetricBox(ctx, "KALAN YOL");
-            etaDistanceValue = createEtaText(ctx, 20, true);
+            etaDistanceValue = createEtaText(ctx, 30, true);
             distanceBox.addView(etaDistanceValue);
             boxes.addView(distanceBox, new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
             LinearLayout arrivalBox = createRadialMetricBox(ctx, "VARIŞ");
-            etaArrivalValue = createEtaText(ctx, 20, true);
+            etaArrivalValue = createEtaText(ctx, 30, true);
             arrivalBox.addView(etaArrivalValue);
             LinearLayout.LayoutParams arrivalLp = new LinearLayout.LayoutParams(0,
                     LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
@@ -981,12 +981,12 @@ public final class GoogleMapsClusterNavOverlay {
     private static LinearLayout createRadialMetricBox(Context ctx, String labelText) {
         LinearLayout box = new LinearLayout(ctx);
         box.setOrientation(LinearLayout.VERTICAL);
-        box.setPadding(dp(ctx, 10), dp(ctx, 7), dp(ctx, 10), dp(ctx, 7));
+        box.setPadding(dp(ctx, 12), dp(ctx, 10), dp(ctx, 12), dp(ctx, 10));
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(0xFF10151A);
         bg.setCornerRadius(dp(ctx, 8));
         box.setBackground(bg);
-        TextView label = createEtaText(ctx, 10, false);
+        TextView label = createEtaText(ctx, 12, false);
         label.setText(labelText);
         label.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
         label.setLetterSpacing(0.06f);
@@ -1018,7 +1018,7 @@ public final class GoogleMapsClusterNavOverlay {
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            float inset = dp(getContext(), 10);
+            float inset = dp(getContext(), 12);
             oval.set(inset, inset, getWidth() - inset, getHeight() - inset);
             canvas.drawArc(oval, -90f, 360f, false, trackPaint);
             int color = UiStyles.color(getContext(), R.color.ck_accent);
