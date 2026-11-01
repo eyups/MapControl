@@ -31,8 +31,6 @@ import androidx.core.content.ContextCompat;
 import com.mapcontrol.R;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.AppLaunchHelper;
-import com.mapcontrol.vehicle.VehicleMetricsRepository;
-import com.mapcontrol.vehicle.VehicleMetricsSnapshot;
 
 /**
  * Cluster ekranında Google Maps navigasyon özet kartları (bildirim verisi).
@@ -80,8 +78,6 @@ public final class GoogleMapsClusterNavOverlay {
     private View trafficProgress;
     private TextView hudEtaDetail;
     private TextView dualEtaSummary;
-    private TextView dualBatteryValue;
-    private TextView dualDelayChip;
     private boolean hudDistanceStyle;
     private LinearLayout etaDistanceRow;
     private LinearLayout etaArrivalRow;
@@ -221,6 +217,7 @@ public final class GoogleMapsClusterNavOverlay {
             return;
         }
         lastApplied = snapshot;
+        raiseToTopOnMain(true);
     }
 
     /**
@@ -332,14 +329,6 @@ public final class GoogleMapsClusterNavOverlay {
             }
             dualEtaSummary.setText(summary);
             any = summary.length() > 0;
-        }
-        if (dualBatteryValue != null) {
-            VehicleMetricsSnapshot vehicle =
-                    VehicleMetricsRepository.getInstance(appContext).getSnapshot();
-            int fuel = vehicle == null ? 0 : vehicle.fuelPercent;
-            dualBatteryValue.setText(vehicle != null && VehicleMetricsSnapshot.isValid(fuel)
-                    && fuel > 0 ? "%" + fuel : "—");
-            any = true;
         }
         if (radialDurationView != null) {
             String duration = snapshot.etaDurationLabel();
@@ -484,8 +473,6 @@ public final class GoogleMapsClusterNavOverlay {
         trafficProgress = null;
         hudEtaDetail = null;
         dualEtaSummary = null;
-        dualBatteryValue = null;
-        dualDelayChip = null;
         hudDistanceStyle = false;
         etaDistanceRow = null;
         etaArrivalRow = null;
@@ -604,6 +591,7 @@ public final class GoogleMapsClusterNavOverlay {
         int topMarginPx = dp(ctx, TOP_MARGIN_DP);
         boolean dualStyle = STYLE_DUAL.equals(style);
         int cardWidthPx = dp(ctx, dualStyle ? 300 : CARD_WIDTH_DP);
+        int dualCardHeightPx = dp(ctx, 154);
         int gapPx = dp(ctx, dualStyle ? 20 : CENTER_GAP_DP);
         int outwardPx = dualStyle ? 0 : (int) (screenWidth * CARD_OUTWARD_SHIFT_RATIO);
         int pairWidth = cardWidthPx * 2 + gapPx;
@@ -634,14 +622,14 @@ public final class GoogleMapsClusterNavOverlay {
             etaCard = createDualEtaCard(ctx);
 
             maneuverCardLp = new FrameLayout.LayoutParams(cardWidthPx,
-                    FrameLayout.LayoutParams.WRAP_CONTENT);
+                    dualCardHeightPx);
             maneuverCardLp.gravity = Gravity.TOP | Gravity.START;
             maneuverCardLp.leftMargin = Math.max(0, maneuverLeft);
             maneuverCardLp.topMargin = topMarginPx;
             root.addView(maneuverCard, maneuverCardLp);
 
             etaCardLp = new FrameLayout.LayoutParams(cardWidthPx,
-                    FrameLayout.LayoutParams.WRAP_CONTENT);
+                    dualCardHeightPx);
             etaCardLp.gravity = Gravity.TOP | Gravity.START;
             etaCardLp.leftMargin = Math.min(screenWidth - cardWidthPx, etaLeft);
             etaCardLp.topMargin = etaTopMarginPx;
@@ -996,15 +984,6 @@ public final class GoogleMapsClusterNavOverlay {
         top.addView(label, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
-        dualDelayChip = createEtaText(ctx, 11, true);
-        dualDelayChip.setText("Gecikme —");
-        dualDelayChip.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
-        dualDelayChip.setPadding(dp(ctx, 8), dp(ctx, 4), dp(ctx, 8), dp(ctx, 4));
-        GradientDrawable chipBg = new GradientDrawable();
-        chipBg.setColor(UiStyles.color(ctx, R.color.ck_nominal_bg));
-        chipBg.setCornerRadius(dp(ctx, 6));
-        dualDelayChip.setBackground(chipBg);
-        top.addView(dualDelayChip, wrapLp());
         card.addView(top, matchWrapLp());
 
         LinearLayout etaRow = new LinearLayout(ctx);
@@ -1021,32 +1000,6 @@ public final class GoogleMapsClusterNavOverlay {
         etaLp.topMargin = dp(ctx, 6);
         card.addView(etaRow, etaLp);
 
-        View divider = new View(ctx);
-        divider.setBackgroundColor(UiStyles.color(ctx, R.color.ck_stroke));
-        LinearLayout.LayoutParams dividerLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(ctx, 1));
-        dividerLp.topMargin = dp(ctx, 10);
-        dividerLp.bottomMargin = dp(ctx, 8);
-        card.addView(divider, dividerLp);
-
-        LinearLayout batteryRow = new LinearLayout(ctx);
-        batteryRow.setOrientation(LinearLayout.HORIZONTAL);
-        batteryRow.setGravity(Gravity.CENTER_VERTICAL);
-        TextView bolt = createEtaText(ctx, 16, true);
-        bolt.setText("⚡");
-        bolt.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
-        batteryRow.addView(bolt);
-        TextView batteryLabel = createEtaText(ctx, 14, false);
-        batteryLabel.setText("Batarya");
-        batteryLabel.setTextColor(UiStyles.color(ctx, R.color.ck_text_medium));
-        LinearLayout.LayoutParams batteryLabelLp = new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
-        batteryLabelLp.leftMargin = dp(ctx, 6);
-        batteryRow.addView(batteryLabel, batteryLabelLp);
-        dualBatteryValue = createEtaText(ctx, 16, true);
-        dualBatteryValue.setTextColor(UiStyles.color(ctx, R.color.ck_nominal));
-        batteryRow.addView(dualBatteryValue);
-        card.addView(batteryRow, matchWrapLp());
         return card;
     }
 
