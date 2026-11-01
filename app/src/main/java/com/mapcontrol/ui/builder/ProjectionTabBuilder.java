@@ -85,7 +85,619 @@ public class ProjectionTabBuilder {
         build();
     }
 
+
     public ScrollView build() {
+        scrollView = new ScrollView(context);
+        scrollView.setBackgroundColor(Color.TRANSPARENT);
+        scrollView.setFillViewport(true);
+
+        LinearLayout outer = new LinearLayout(context);
+        outer.setOrientation(LinearLayout.VERTICAL);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        outer.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
+
+        LinearLayout columns = new LinearLayout(context);
+        columns.setOrientation(LinearLayout.HORIZONTAL);
+        columns.setBaselineAligned(false);
+
+        LinearLayout leftCard = createSectionCard();
+        LinearLayout rightCard = createSectionCard();
+        buildCompactLeft(leftCard);
+        buildCompactRight(rightCard);
+
+        LinearLayout.LayoutParams leftLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.96f);
+        leftLp.setMarginEnd(CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.04f);
+        rightLp.setMarginStart(CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        columns.addView(leftCard, leftLp);
+        columns.addView(rightCard, rightLp);
+
+        outer.addView(columns, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        projectionTabContent = outer;
+        scrollView.addView(outer, new ScrollView.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        handler.post(this::refreshProjectionStatusUi);
+        refreshTargetLabel();
+        refreshProviderSelection();
+        return scrollView;
+    }
+
+    private void buildCompactLeft(LinearLayout card) {
+        LinearLayout titleRow = new LinearLayout(context);
+        titleRow.setOrientation(LinearLayout.HORIZONTAL);
+        titleRow.setGravity(Gravity.CENTER_VERTICAL);
+        TextView title = new TextView(context);
+        title.setText(R.string.projection_title);
+        title.setTextSize(24);
+        title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        title.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        titleRow.addView(title, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView hud = new TextView(context);
+        hud.setText(R.string.projection_hud_link_connected);
+        hud.setTextSize(10);
+        hud.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        hud.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        hud.setPadding(8, 5, 8, 5);
+        GradientDrawable hudBg = new GradientDrawable();
+        hudBg.setColor(0xFF252E38);
+        hudBg.setCornerRadius(4);
+        hud.setBackground(hudBg);
+        titleRow.addView(hud);
+        card.addView(titleRow);
+
+        LinearLayout status = new LinearLayout(context);
+        status.setOrientation(LinearLayout.HORIZONTAL);
+        status.setGravity(Gravity.CENTER_VERTICAL);
+        TextView dot = new TextView(context);
+        dot.setText("●");
+        dot.setTextSize(10);
+        dot.setTextColor(CockpitTokens.color(context, R.color.ck_nominal));
+        status.addView(dot);
+        TextView statusText = new TextView(context);
+        statusText.setText(R.string.projection_status_off);
+        statusText.setTextSize(13);
+        statusText.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        LinearLayout.LayoutParams statusLp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        statusLp.leftMargin = 6;
+        status.addView(statusText, statusLp);
+        LinearLayout.LayoutParams statusRowLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        statusRowLp.topMargin = 4;
+        statusRowLp.bottomMargin = 12;
+        card.addView(status, statusRowLp);
+        projectionStatusText = statusText;
+
+        LinearLayout actionRow = new LinearLayout(context);
+        actionRow.setOrientation(LinearLayout.HORIZONTAL);
+        Button open = compactButton(context.getString(R.string.projection_open), true);
+        Button stop = compactButton(context.getString(R.string.projection_stop), false);
+        LinearLayout.LayoutParams b1 = new LinearLayout.LayoutParams(
+                0, CockpitTokens.dim(context, R.dimen.button_height), 1f);
+        b1.setMarginEnd(4);
+        LinearLayout.LayoutParams b2 = new LinearLayout.LayoutParams(
+                0, CockpitTokens.dim(context, R.dimen.button_height), 1f);
+        b2.setMarginStart(4);
+        actionRow.addView(open, b1);
+        actionRow.addView(stop, b2);
+        card.addView(actionRow);
+
+        open.setOnClickListener(v -> {
+            callback.onOpenCluster();
+            refreshProjectionStatusUi();
+        });
+        stop.setOnClickListener(v -> {
+            callback.onCloseCluster();
+            refreshProjectionStatusUi();
+        });
+
+        addCompactSectionHeader(card, R.string.projection_target_section,
+                R.string.projection_target_single_tap);
+        LinearLayout providers = new LinearLayout(context);
+        providers.setOrientation(LinearLayout.HORIZONTAL);
+        providers.setBaselineAligned(false);
+        googleProviderCard = createProviderCard(
+                AppLaunchHelper.GOOGLE_MAPS_PACKAGE,
+                context.getString(R.string.projection_target_google),
+                context.getString(R.string.projection_target_google_desc),
+                R.drawable.ic_mdi_map);
+        yandexProviderCard = createProviderCard(
+                YandexNavScraper.PACKAGE_YANDEX_MAPS,
+                context.getString(R.string.projection_target_yandex),
+                context.getString(R.string.projection_target_yandex_desc),
+                R.drawable.ic_mdi_map);
+        LinearLayout.LayoutParams gp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        gp.setMarginEnd(4);
+        LinearLayout.LayoutParams yp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        yp.setMarginStart(4);
+        providers.addView(googleProviderCard, gp);
+        providers.addView(yandexProviderCard, yp);
+        card.addView(providers);
+
+        LinearLayout appRow = new LinearLayout(context);
+        appRow.setOrientation(LinearLayout.HORIZONTAL);
+        appRow.setGravity(Gravity.CENTER_VERTICAL);
+        int appPad = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        appRow.setPadding(appPad, appPad, appPad, appPad);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(appRow);
+        TextView appText = new TextView(context);
+        appText.setText(R.string.projection_app_desc);
+        appText.setTextSize(12);
+        appText.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        appText.setMaxLines(1);
+        appText.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        appRow.addView(appText, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        Button change = compactButton(context.getString(R.string.projection_change_app), false);
+        change.setTextSize(11);
+        appRow.addView(change, compactButtonLp());
+        Button launch = compactButton(context.getString(R.string.projection_launch_cluster), true);
+        launch.setTextSize(11);
+        appRow.addView(launch, compactButtonLp());
+        LinearLayout.LayoutParams appRowLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        appRowLp.topMargin = 8;
+        card.addView(appRow, appRowLp);
+        change.setOnClickListener(v -> selectTargetApp());
+
+        appText.setOnClickListener(v -> selectTargetApp());
+        launch.setOnClickListener(v -> launchTargetOnMainDisplay());
+
+        addCompactSectionHeader(card, R.string.projection_start_section, 0);
+        final UiStyles.TernarySegmentHandle[] power = new UiStyles.TernarySegmentHandle[1];
+        LinearLayout powerBlock = new LinearLayout(context);
+        powerBlock.setOrientation(LinearLayout.VERTICAL);
+        card.addView(powerBlock);
+        power[0] = UiStyles.addTernarySegmentedControl(context, powerBlock, null,
+                new String[]{context.getString(R.string.projection_power_engine),
+                        context.getString(R.string.projection_power_ready),
+                        context.getString(R.string.projection_power_manual)},
+                new String[]{"", "", ""},
+                new int[]{2, 1, 0}, prefs.getInt("powerModeSetting", 2),
+                modeId -> {
+                    callback.onSavePowerMode(modeId);
+                    callback.log("Navigasyon açma modu: " + modeId);
+                });
+        handler.post(() -> power[0].syncVisualFromModeId(prefs.getInt("powerModeSetting", 2)));
+
+        addCompactToggleRow(card, "Kapanış Otomasyonu",
+                "Araç kapanınca yansıtma otomatik kapansın mı?",
+                prefs.getBoolean("autoCloseOnPowerOff", true),
+                isEnabled -> {
+                    prefs.edit().putBoolean("autoCloseOnPowerOff", isEnabled).apply();
+                    callback.log("Araç kapanınca otomatik kapatma: " + isEnabled);
+                });
+        addCompactToggleRow(card, "Harita Kontrol Tuşu",
+                "Direksiyon/konsol donanım tuşuyla haritayı kontrol et.",
+                prefs.getBoolean("mapControlKeyEnabled", true),
+                isEnabled -> {
+                    prefs.edit().putBoolean("mapControlKeyEnabled", isEnabled).apply();
+                    if (isEnabled) callback.onStartKeyEventListener();
+                    else callback.onStopKeyEventListener();
+                });
+        addCompactToggleRow(card, "İki Parmak Harita Kaydırma",
+                "Sola: Göstergeye al | Sağa: Kapat",
+                CarSystemGestureController.isEnabled(context),
+                isEnabled -> {
+                    if (isEnabled) {
+                        int conflictOwner = GestureConflicts.findMapSwipeConflict(context);
+                        if (conflictOwner != 0) {
+                            DialogHelper.showGestureConflict(context, conflictOwner);
+                            return;
+                        }
+                    }
+                    if (isEnabled && !UsageAccessHelper.hasPackageUsageAccess(context)) {
+                        UsageAccessHelper.openUsageAccessSettings(context);
+                        Toast.makeText(context, R.string.projection_map_swipe_need_access,
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    prefs.edit().putBoolean(CarSystemGestureController.PREF_ENABLED, isEnabled).apply();
+                    callback.log("Harita kaydırma: " + isEnabled);
+                });
+    }
+
+    private void buildCompactRight(LinearLayout host) {
+        LinearLayout googlePanel = createSectionCard();
+        LinearLayout yandexPanel = createSectionCard();
+        buildCompactGooglePanel(googlePanel);
+        buildCompactYandexPanel(yandexPanel);
+        googleSettingsCard = googlePanel;
+        yandexSettingsCard = yandexPanel;
+        host.addView(googlePanel, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        host.addView(yandexPanel, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void buildCompactGooglePanel(LinearLayout card) {
+        addProviderHeader(card, R.string.projection_google_settings_title,
+                R.string.projection_google_settings_desc);
+        LinearLayout top = new LinearLayout(context);
+        top.setOrientation(LinearLayout.HORIZONTAL);
+        top.setBaselineAligned(false);
+        LinearLayout nav = compactSettingCard("Navigasyon Bildirimi",
+                "Bildirim gelince kümede otomatik başlat",
+                GoogleMapsNavNotificationCoordinator.isAutoProjectionEnabled(context),
+                enabled -> {
+                    if (enabled && !LauncherMediaController.isNotificationAccessEnabled(context)) {
+                        new LauncherMediaController(context).openNotificationAccessSettings();
+                        Toast.makeText(context, R.string.projection_google_maps_nav_need_access,
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    GoogleMapsNavNotificationCoordinator.setAutoProjectionEnabled(context, enabled);
+                });
+        LinearLayout cluster = compactSettingCard("Cluster Kartları (ETA & Dönüş)",
+                "Manevra ve varış süresini kadrana yerleştir",
+                GoogleMapsNavNotificationCoordinator.isClusterOverlayEnabled(context),
+                enabled -> {
+                    if (enabled && !LauncherMediaController.isNotificationAccessEnabled(context)) {
+                        new LauncherMediaController(context).openNotificationAccessSettings();
+                        Toast.makeText(context, R.string.projection_google_maps_nav_need_access,
+                                Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    GoogleMapsNavNotificationCoordinator.setClusterOverlayEnabled(context, enabled);
+                });
+        LinearLayout.LayoutParams navLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        navLp.setMarginEnd(4);
+        LinearLayout.LayoutParams clusterLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        clusterLp.setMarginStart(4);
+        top.addView(nav, navLp);
+        top.addView(cluster, clusterLp);
+        card.addView(top);
+
+        addCompactStyleHeader(card);
+        addCompactStyleCards(card);
+        addCompactLivePreview(card);
+        addClusterOverlayLayoutSection(card,
+                R.string.projection_google_cluster_position_title,
+                ClusterNavOverlayOffsets.Provider.GOOGLE,
+                () -> GoogleMapsClusterNavOverlay.getInstance(context).applyStoredOffsets());
+    }
+
+    private void buildCompactYandexPanel(LinearLayout card) {
+        addProviderHeader(card, R.string.projection_yandex_settings_title,
+                R.string.projection_yandex_settings_desc);
+        addCompactToggleRow(card, context.getString(R.string.yandex_cluster_nav_section_title),
+                context.getString(R.string.yandex_cluster_nav_section_desc),
+                YandexClusterNavOverlay.isEnabled(context),
+                enabled -> {
+                    if (!enabled) {
+                        YandexClusterNavCoordinator.deactivate(context);
+                        return;
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                            && !android.provider.Settings.canDrawOverlays(context)) {
+                        try {
+                            Intent intent = new Intent(
+                                    android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                            intent.setData(android.net.Uri.parse(
+                                    "package:" + context.getPackageName()));
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                        } catch (Exception ignored) {
+                        }
+                        return;
+                    }
+                    if (!GlobalBackService.isRegisteredInSystemAccessibilitySettings(context)) {
+                        YandexClusterNavCoordinator.openAccessibilitySettings(context);
+                        return;
+                    }
+                    YandexClusterNavCoordinator.activate(context);
+                });
+        addClusterOverlayLayoutSection(card,
+                R.string.projection_yandex_cluster_position_title,
+                ClusterNavOverlayOffsets.Provider.YANDEX,
+                () -> YandexClusterNavOverlay.getInstance(context).applyStoredOffsets());
+    }
+
+    private void addCompactSectionHeader(LinearLayout card, int titleRes, int hintRes) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        TextView title = new TextView(context);
+        title.setText(titleRes);
+        title.setTextSize(15);
+        title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        title.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        row.addView(title, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        if (hintRes != 0) {
+            TextView hint = new TextView(context);
+            hint.setText(hintRes);
+            hint.setTextSize(11);
+            hint.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+            row.addView(hint);
+        }
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 16;
+        lp.bottomMargin = 7;
+        card.addView(row, lp);
+    }
+
+    private void addCompactToggleRow(LinearLayout card, String title, String desc,
+            boolean initial, java.util.function.Consumer<Boolean> onCommit) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        int pad = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        row.setPadding(pad, pad, pad, pad);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(row);
+        LinearLayout textCol = new LinearLayout(context);
+        textCol.setOrientation(LinearLayout.VERTICAL);
+        TextView titleView = new TextView(context);
+        titleView.setText(title);
+        titleView.setTextSize(14);
+        titleView.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        titleView.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        textCol.addView(titleView);
+        TextView descView = new TextView(context);
+        descView.setText(desc);
+        descView.setTextSize(11);
+        descView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        descView.setMaxLines(1);
+        descView.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        textCol.addView(descView);
+        row.addView(textCol, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        row.addView(createCompactToggle(initial, onCommit));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 7;
+        card.addView(row, lp);
+    }
+
+    private LinearLayout compactSettingCard(String title, String desc, boolean initial,
+            java.util.function.Consumer<Boolean> onCommit) {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        int pad = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        card.setPadding(pad, pad, pad, pad);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(card);
+        TextView titleView = new TextView(context);
+        titleView.setText(title);
+        titleView.setTextSize(14);
+        titleView.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        titleView.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        card.addView(titleView);
+        TextView descView = new TextView(context);
+        descView.setText(desc);
+        descView.setTextSize(11);
+        descView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        descView.setMaxLines(2);
+        card.addView(descView);
+        card.addView(createCompactToggle(initial, onCommit));
+        return card;
+    }
+
+    private LinearLayout createCompactToggle(boolean initial,
+            java.util.function.Consumer<Boolean> onCommit) {
+        LinearLayout track = new LinearLayout(context);
+        track.setOrientation(LinearLayout.HORIZONTAL);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
+        bg.setCornerRadius(6);
+        track.setBackground(bg);
+        TextView on = new TextView(context);
+        TextView off = new TextView(context);
+        on.setText(R.string.common_on);
+        off.setText(R.string.common_off);
+        on.setTextSize(11);
+        off.setTextSize(11);
+        on.setGravity(Gravity.CENTER);
+        off.setGravity(Gravity.CENTER);
+        on.setPadding(10, 5, 10, 5);
+        off.setPadding(10, 5, 10, 5);
+        final boolean[] selected = {initial};
+        Runnable render = () -> {
+            on.setBackground(compactSegmentBg(selected[0]));
+            off.setBackground(compactSegmentBg(!selected[0]));
+            on.setTextColor(CockpitTokens.color(context,
+                    selected[0] ? R.color.ck_on_accent : R.color.ck_text_medium));
+            off.setTextColor(CockpitTokens.color(context,
+                    !selected[0] ? R.color.ck_on_accent : R.color.ck_text_medium));
+        };
+        on.setOnClickListener(v -> { selected[0] = true; render.run(); onCommit.accept(true); });
+        off.setOnClickListener(v -> { selected[0] = false; render.run(); onCommit.accept(false); });
+        track.addView(on);
+        track.addView(off);
+        render.run();
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 6;
+        track.setLayoutParams(lp);
+        return track;
+    }
+
+    private GradientDrawable compactSegmentBg(boolean selected) {
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(CockpitTokens.color(context,
+                selected ? R.color.ck_accent : R.color.ck_surface_1));
+        bg.setCornerRadius(5);
+        return bg;
+    }
+
+    private Button compactButton(String text, boolean accent) {
+        Button b = new Button(context);
+        b.setText(text);
+        b.setTextSize(13);
+        b.setAllCaps(false);
+        b.setMinHeight(0);
+        b.setMinimumHeight(0);
+        b.setPadding(12, 6, 12, 6);
+        UiStyles.styleOemButton(b, CockpitTokens.color(context,
+                accent ? R.color.ck_accent : R.color.ck_surface_2));
+        b.setTextColor(CockpitTokens.color(context,
+                accent ? R.color.ck_on_accent : R.color.ck_text_high));
+        return b;
+    }
+
+    private LinearLayout.LayoutParams compactButtonLp() {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMarginStart(6);
+        return lp;
+    }
+
+    private void launchTargetOnMainDisplay() {
+        String pkg = callback.getTargetPackage();
+        if (pkg == null || pkg.trim().isEmpty()) {
+            Toast.makeText(context, R.string.projection_select_app_first, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            AppLaunchHelper.launchAppOnDisplay(context, pkg.trim(),
+                    Display.DEFAULT_DISPLAY, Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            callback.onBringToMainDisplayCheckClusterSplash();
+        } catch (Exception e) {
+            callback.log("Uygulama başlatılamadı: " + e.getMessage());
+        }
+    }
+
+    private void addCompactStyleHeader(LinearLayout card) {
+        LinearLayout row = new LinearLayout(context);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        TextView title = new TextView(context);
+        title.setText(R.string.projection_google_cluster_design_title);
+        title.setTextSize(13);
+        title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        title.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        row.addView(title, new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        TextView hint = new TextView(context);
+        hint.setText("4 Hazır Stil");
+        hint.setTextSize(11);
+        hint.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        row.addView(hint);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 16;
+        lp.bottomMargin = 7;
+        card.addView(row, lp);
+    }
+
+    private void addCompactStyleCards(LinearLayout card) {
+        String[] styles = {
+                GoogleMapsClusterNavOverlay.STYLE_HUD,
+                GoogleMapsClusterNavOverlay.STYLE_DUAL,
+                GoogleMapsClusterNavOverlay.STYLE_RADIAL,
+                GoogleMapsClusterNavOverlay.STYLE_TRAFFIC
+        };
+        int[] labels = {
+                R.string.projection_cluster_variant1_title,
+                R.string.projection_cluster_variant2_title,
+                R.string.projection_cluster_variant3_title,
+                R.string.projection_cluster_variant4_title
+        };
+        String[] descs = {
+                "Hafif cam efektli tek parça",
+                "Manevra ve ETA ayrı pencereler",
+                "İlerleme çemberi + ETA sayacı",
+                "Yol şeridi ve varış grafiği"
+        };
+        LinearLayout selectedLine = null;
+        java.util.List<LinearLayout> cards = new java.util.ArrayList<>();
+        String selected = GoogleMapsClusterNavOverlay.getStyle(context);
+        for (int row = 0; row < 2; row++) {
+            LinearLayout line = new LinearLayout(context);
+            line.setOrientation(LinearLayout.HORIZONTAL);
+            line.setBaselineAligned(false);
+            for (int col = 0; col < 2; col++) {
+                int i = row * 2 + col;
+                LinearLayout option = new LinearLayout(context);
+                option.setOrientation(LinearLayout.VERTICAL);
+                int pad = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+                option.setPadding(pad, pad, pad, pad);
+                com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(option);
+                option.setClickable(true);
+                TextView badge = new TextView(context);
+                badge.setText("VARYANT " + (i + 1));
+                badge.setTextSize(9);
+                badge.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+                option.addView(badge);
+                TextView name = new TextView(context);
+                name.setText(labels[i]);
+                name.setTextSize(13);
+                name.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+                name.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+                option.addView(name);
+                TextView desc = new TextView(context);
+                desc.setText(descs[i]);
+                desc.setTextSize(10);
+                desc.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+                option.addView(desc);
+                String st = styles[i];
+                option.setOnClickListener(v -> {
+                    GoogleMapsClusterNavOverlay.setStyle(context, st);
+                    GoogleMapsClusterNavOverlay.getInstance(context).apply(
+                            GoogleMapsNavNotificationCoordinator.getLastSnapshot());
+                    applyClusterStyleSelection(cards, styles, st);
+                });
+                cards.add(option);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                if (col == 0) lp.setMarginEnd(4); else lp.setMarginStart(4);
+                line.addView(option, lp);
+            }
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.topMargin = 6;
+            card.addView(line, lp);
+        }
+        applyClusterStyleSelection(cards, styles, selected);
+    }
+
+    private void addCompactLivePreview(LinearLayout card) {
+        LinearLayout previewRow = new LinearLayout(context);
+        previewRow.setOrientation(LinearLayout.HORIZONTAL);
+        previewRow.setGravity(Gravity.CENTER_VERTICAL);
+        int pad = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        previewRow.setPadding(pad, pad, pad, pad);
+        com.mapcontrol.ui.cockpit.CockpitSurfaces.level2(previewRow);
+        TextView badge = new TextView(context);
+        badge.setText("CANLI ÖNİZLEME");
+        badge.setTextSize(9);
+        badge.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        previewRow.addView(badge);
+        View preview = buildClusterStylePreview(
+                GoogleMapsClusterNavOverlay.getStyle(context));
+        LinearLayout.LayoutParams previewLp = new LinearLayout.LayoutParams(
+                0, CockpitTokens.dim(context, R.dimen.ck_touch_primary), 1f);
+        previewLp.setMarginStart(8);
+        previewRow.addView(preview, previewLp);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.topMargin = 10;
+        card.addView(previewRow, lp);
+    }
+
+    private ScrollView buildLegacy() {
         scrollView = new ScrollView(context);
         scrollView.setBackgroundColor(Color.TRANSPARENT);
         scrollView.setPadding(0, 0, 0, 0);
