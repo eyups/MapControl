@@ -29,6 +29,9 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
     public static final String PREF_NAV_FRONT = "turnSignalCameraNavFront";
     /** Kamera gorundukten kac saniye sonra harita kartlari one gecsin. */
     public static final String PREF_NAV_DELAY_SEC = "turnSignalCameraNavDelaySec";
+    public static final String PREF_STYLE = "turnSignalCameraStyle";
+    public static final String STYLE_ISO = "iso";
+    public static final String STYLE_LIVE = "live";
     public static final int NAV_DELAY_MIN = 1;
     public static final int NAV_DELAY_MAX = 30;
     public static final int NAV_DELAY_DEFAULT = 5;
@@ -39,6 +42,18 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
 
     public static int clampSize(int pct) {
         return Math.max(SIZE_MIN, Math.min(SIZE_MAX, pct));
+    }
+
+    public static String getStyle(android.content.Context context) {
+        String raw = context.getSharedPreferences(PREFS, android.content.Context.MODE_PRIVATE)
+                .getString(PREF_STYLE, STYLE_ISO);
+        return STYLE_LIVE.equals(raw) ? STYLE_LIVE : STYLE_ISO;
+    }
+
+    public static void setStyle(android.content.Context context, String style) {
+        context.getSharedPreferences(PREFS, android.content.Context.MODE_PRIVATE).edit()
+                .putString(PREF_STYLE, STYLE_LIVE.equals(style) ? STYLE_LIVE : STYLE_ISO)
+                .apply();
     }
 
     public static int getOpacity(android.content.Context context) {
@@ -184,6 +199,10 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
         }
         if (PREF_OPACITY.equals(key) || PREF_SIZE.equals(key)) {
             if (enabled) overlay.applyPreferences();
+            return;
+        }
+        if (PREF_STYLE.equals(key)) {
+            if (enabled) overlay.rebuildForStyle();
             return;
         }
         if (PREF_NAV_FRONT.equals(key) || PREF_NAV_DELAY_SEC.equals(key)) {

@@ -1328,4 +1328,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="projection_cluster_y_offset">Vertical (Y) Offset</string>
     <string name="projection_cluster_scale">Scale (Size)</string>
     <string name="projection_cluster_bg_opacity">Background Opacity</string>
+    <string name="settings_turn_signal_camera_design">Camera card design</string>
+    <string name="turn_signal_camera_style_iso">ISO Cluster</string>
+    <string name="turn_signal_camera_style_live">Live Camera</string>
 </resources>

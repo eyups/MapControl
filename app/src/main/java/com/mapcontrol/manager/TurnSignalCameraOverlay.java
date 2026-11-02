@@ -181,6 +181,8 @@ public final class TurnSignalCameraOverlay {
         clusterDisplay = display;
         opacityPct = TurnSignalCameraController.getOpacity(context);
         sizePct = TurnSignalCameraController.getSize(context);
+        boolean liveStyle = TurnSignalCameraController.STYLE_LIVE.equals(
+                TurnSignalCameraController.getStyle(context));
         int cardWidth = computeCardWidth(metrics);
         int cardHeight = Math.max(CockpitTokens.dp(context, 150), cardWidth * 66 / 100);
         cardWidthPx = cardWidth;
@@ -197,7 +199,8 @@ public final class TurnSignalCameraOverlay {
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(0xF20B0F14);
         bg.setCornerRadius(cornerRadius);
-        bg.setStroke(Math.max(1, CockpitTokens.dp(context, 1)), 0xFF4CC9E8);
+        bg.setStroke(Math.max(1, CockpitTokens.dp(context, 1)),
+                liveStyle ? 0xFF4B5560 : 0xFF4CC9E8);
         card.setBackground(bg);
         applyRoundedOutline(card, cornerRadius);
 
@@ -207,22 +210,46 @@ public final class TurnSignalCameraOverlay {
         FrameLayout.LayoutParams textureLp = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         textureLp.setMargins(edge, headerHeight, edge, edge);
-        card.addView(texture, textureLp);
+        if (liveStyle) {
+            FrameLayout previewHolder = new FrameLayout(displayContext);
+            GradientDrawable previewBg = new GradientDrawable();
+            previewBg.setColor(0xFF0B0F14);
+            previewBg.setCornerRadius(innerRadius);
+            previewBg.setStroke(Math.max(1, CockpitTokens.dp(context, 1)), 0x554B5560);
+            previewHolder.setBackground(previewBg);
+            applyRoundedOutline(previewHolder, innerRadius);
+            textureLp.setMargins(0, 0, 0, 0);
+            previewHolder.addView(texture, new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+            card.addView(previewHolder, textureLp);
+        } else {
+            card.addView(texture, textureLp);
+        }
 
         LinearLayout header = new LinearLayout(displayContext);
         header.setOrientation(LinearLayout.HORIZONTAL);
         header.setGravity(Gravity.CENTER_VERTICAL);
         header.setPadding(edge, CockpitTokens.dp(context, 12), edge, 0);
+        String pillText = liveStyle ? "CANLI KAMERA" : label.toUpperCase(Locale.ROOT);
         TextView labelText = createCameraPill(displayContext,
-                "●", 0xFF4CC9E8, label.toUpperCase(Locale.ROOT), 13, true);
+                "●", liveStyle ? 0xFFE05A5A : 0xFF4CC9E8, pillText, 13, true,
+                liveStyle ? 0xFF2A3138 : 0x664CC9E8);
         header.addView(labelText, new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, CockpitTokens.dp(context, 34)));
-        View spacer = new View(displayContext);
-        header.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
-        fpsView = createCameraPill(displayContext,
-                "●", 0xFF10B981, PREVIEW_MAX_FPS + " FPS", 12, false);
-        header.addView(fpsView, new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, CockpitTokens.dp(context, 30)));
+        if (liveStyle) {
+            TextView spacer = new TextView(displayContext);
+            header.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+            fpsView = null;
+        } else {
+            View spacer = new View(displayContext);
+            header.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
+            fpsView = createCameraPill(displayContext,
+                    "●", 0xFF10B981, PREVIEW_MAX_FPS + " FPS", 12, false,
+                    0x664CC9E8);
+            header.addView(fpsView, new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, CockpitTokens.dp(context, 30)));
+        }
         FrameLayout.LayoutParams headerLp = new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 CockpitTokens.dp(context, 52), Gravity.TOP);
@@ -306,6 +333,14 @@ public final class TurnSignalCameraOverlay {
     }
 
     /** Opaklık/boyut ayarlarını canlı uygular (pref değişiminde controller çağırır). */
+    void rebuildForStyle() {
+        int cam = currentCam;
+        String label = labelView == null ? "" : labelView.getText().toString();
+        if (root == null || cam < 0) return;
+        hide();
+        show(cam, label);
+    }
+
     void applyPreferences() {
         int o = TurnSignalCameraController.getOpacity(context);
         int sz = TurnSignalCameraController.getSize(context);
@@ -383,7 +418,7 @@ public final class TurnSignalCameraOverlay {
 
 
     private TextView createCameraPill(Context ctx, String dotText, int dotColor,
-            String text, int sp, boolean strong) {
+            String text, int sp, boolean strong, int strokeColor) {
         TextView pill = new TextView(ctx);
         String value = dotText + "  " + text;
         android.text.SpannableStringBuilder sb = new android.text.SpannableStringBuilder(value);
@@ -404,7 +439,7 @@ public final class TurnSignalCameraOverlay {
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(0xCC101820);
         bg.setCornerRadius(CockpitTokens.dp(ctx, 18));
-        bg.setStroke(Math.max(1, CockpitTokens.dp(ctx, 1)), 0x664CC9E8);
+        bg.setStroke(Math.max(1, CockpitTokens.dp(ctx, 1)), strokeColor);
         pill.setBackground(bg);
         return pill;
     }

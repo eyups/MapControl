@@ -364,6 +364,21 @@ public class SettingsTabBuilder {
                     }
                 });
 
+        UiStyles.addBinarySegmentedControl(context, parentContainer,
+                context.getString(R.string.settings_turn_signal_camera_design),
+                context.getString(R.string.turn_signal_camera_style_iso),
+                context.getString(R.string.turn_signal_camera_style_live),
+                "", "",
+                TurnSignalCameraController.STYLE_ISO.equals(
+                        TurnSignalCameraController.getStyle(context)),
+                leftSelected -> {
+                    TurnSignalCameraController.setStyle(context,
+                            leftSelected ? TurnSignalCameraController.STYLE_ISO
+                                    : TurnSignalCameraController.STYLE_LIVE);
+                    callback.log("Sinyal kamerası tasarımı: "
+                            + (leftSelected ? "ISO Kadran" : "Canlı Kamera"));
+                });
+
         boolean navFront = prefs.getBoolean(TurnSignalCameraController.PREF_NAV_FRONT, false);
         UiStyles.addBinarySegmentedControl(context, parentContainer,
                 context.getString(R.string.settings_turn_signal_camera_nav_front),
