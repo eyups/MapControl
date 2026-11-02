@@ -737,10 +737,17 @@
 <string name="settings_driving_coach_on_help">Sert fren/gaz ve doğrulanmış hız limiti verisinde kısa uyarı verir. Takip mesafesi/şerit sinyalleri henüz doğrulanmadı.</string>
     <string name="settings_turn_signal_camera_title">Sinyal Kamerası</string>
     <string name="settings_turn_signal_camera_desc">Sağ veya sol sinyal açıldığında cluster ekranında ilgili kamera önizlemesini en üstte gösterir.</string>
+    <string name="settings_turn_signal_camera_opacity">Opaklık</string>
+    <string name="settings_turn_signal_camera_size">Boyut</string>
+    <string name="settings_turn_signal_camera_nav_front">Harita kartları kameranın önünde</string>
+    <string name="settings_turn_signal_camera_nav_front_help_on">Açık: kamera önce görünür, gecikme dolunca harita kartları öne geçer.</string>
+    <string name="settings_turn_signal_camera_nav_front_help_off">Kapalı: sinyal boyunca kamera en üstte kalır.</string>
+    <string name="settings_turn_signal_camera_nav_delay">Harita öne geçme gecikmesi</string>
+    <string name="settings_turn_signal_camera_nav_delay_value">%1$d sn</string>
     <string name="settings_turn_signal_camera_help_on">Açık: sinyal verildiğinde ilgili kamera cluster ekranında görünür.</string>
     <string name="settings_turn_signal_camera_help_off">Kapalı: sinyal kamerası gösterilmez.</string>
-    <string name="turn_signal_camera_left">SOL KAMERA</string>
-    <string name="turn_signal_camera_right">SAĞ KAMERA</string>
+    <string name="turn_signal_camera_left">SOL AYNA KAMERA</string>
+    <string name="turn_signal_camera_right">SAĞ AYNA KAMERA</string>
 <string name="settings_tts_section_title">TTS motoru</string>
 <string name="settings_tts_section_desc">Sherpa, ElevenLabs veya aracın kendi iFlytek motoru. ElevenLabs internet yoksa veya hata olursa Sherpa motoruna düşer.</string>
 <string name="settings_tts_engine_title">Motor</string>
@@ -941,13 +948,14 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="front_probe_subtitle">Salt okunur. CarInfo ID taraması ve ADAS event dinleme; araca yazmaz.</string>
     <string name="log_iflytek_read">iFlytek ile oku</string>
     <string name="log_iflytek_stop">iFlytek durdur</string>
-    <string name="camera360_auto_st_low_space">Yetersiz alan (2 GB rezerv)</string>
-    <string name="camera360_auto_legend_reserve">2 GB rezerv</string>
-    <string name="camera360_auto_reserve_note">2 GB her zaman boş bırakılır. Kayıt alanı = boş alan + klipler − 2 GB.</string>
+    <string name="camera360_auto_st_low_space">Yetersiz alan (%1$s rezerv)</string>
+    <string name="camera360_auto_legend_reserve">%1$s rezerv</string>
+    <string name="camera360_auto_reserve_note">%1$s her zaman boş bırakılır. Kayıt alanı = boş alan + klipler − %1$s.</string>
+    <string name="camera360_auto_reserve">Rezerv</string>
     <string name="camera360_fast_read_on">Kamera hızlı okuma: AÇIK (kameralar yeniden başlatılıyor)</string>
     <string name="camera360_fast_read_off">Kamera hızlı okuma: KAPALI (kameralar yeniden başlatılıyor)</string>
-    <string name="camera360_auto_retention_note">Klipler tarihe göre silinmez. Her klip sıra numarasıyla (_id_1, _id_2, …) kaydedilir; yeni klip her zaman son klibin numarasından devam eder, hiç klip yoksa _id_1 ile başlar. Boş alan 2 GB rezerve yaklaşınca, sonraki klip kaydedilirken boyutu hesaba katılır ve yeterli yer açılana kadar en küçük numaralı (en eski) klipten başlanarak klipler silinir; yer açılınca silme durur. ≈ %1$s kayıt sığar.</string>
-    <string name="camera360_auto_consent_msg">Kontak açıkken (powermode 2) kameralar seçilen kayıt moduyla %1$s klasörüne 3 dakikalık klipler halinde kaydedilir.\n\n• Klipler tarih/saat ve sıra numarasıyla (_id_N) kaydedilir; tarihe göre silme yoktur.\n• Boş alan 2 GB rezerve yaklaşınca en küçük numaralı (en eski) klip silinir, yer açılınca silme durur.\n• Cihazda her zaman en az 2 GB boş alan bırakılır.\n• Bu mod açıkken USB kaydı kullanılamaz.\n\nOnaylıyor musunuz?</string>
+    <string name="camera360_auto_retention_note">Klipler tarihe göre silinmez. Her klip sıra numarasıyla (_id_1, _id_2, …) kaydedilir; yeni klip her zaman son klibin numarasından devam eder, hiç klip yoksa _id_1 ile başlar. Boş alan %2$s rezerve yaklaşınca, sonraki klip kaydedilirken boyutu hesaba katılır ve yeterli yer açılana kadar en küçük numaralı (en eski) klipten başlanarak klipler silinir; yer açılınca silme durur. ≈ %1$s kayıt sığar.</string>
+    <string name="camera360_auto_consent_msg">Kontak açıkken (powermode 2) kameralar seçilen kayıt moduyla %1$s klasörüne 3 dakikalık klipler halinde kaydedilir.\n\n• Klipler tarih/saat ve sıra numarasıyla (_id_N) kaydedilir; tarihe göre silme yoktur.\n• Boş alan %2$s rezerve yaklaşınca en küçük numaralı (en eski) klip silinir, yer açılınca silme durur.\n• Cihazda her zaman en az %2$s boş alan bırakılır.\n• Bu mod açıkken USB kaydı kullanılamaz.\n\nOnaylıyor musunuz?</string>
     <string name="side_rail_split_screen">Bölünmüş Ekran</string>
     <string name="split_title">Bölünmüş Ekran</string>
     <string name="split_desc">İki uygulamayı yan yana açar (dikey ekranda alt alta). Ekran, seçtiğiniz orana göre iki pencereye bölünür.</string>

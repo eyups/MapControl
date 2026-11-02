@@ -34,6 +34,8 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import com.mapcontrol.R;
+import com.mapcontrol.manager.TurnSignalCameraController;
+import com.mapcontrol.manager.TurnSignalCameraOverlay;
 import com.mapcontrol.ui.theme.UiStyles;
 import com.mapcontrol.util.AppLaunchHelper;
 
@@ -106,6 +108,28 @@ public final class GoogleMapsClusterNavOverlay {
     private int appliedLayoutVersion = -1;
     private long lastZOrderRaiseUptimeMs = 0L;
     private static final long Z_ORDER_RAISE_MIN_INTERVAL_MS = 250L;
+
+    private boolean delayedRaisePosted;
+    private final Runnable delayedRaise = () -> {
+        delayedRaisePosted = false;
+        raiseToTopOnMain(false);
+    };
+
+    /** Kamera ustteyse ve nav-on gecikmesi dolmadiysa z-sirasini yukseltme. */
+    private boolean cameraBlocksZOrder() {
+        if (!TurnSignalCameraOverlay.isShowing()) return false;
+        if (!TurnSignalCameraController.isNavFrontEnabled(appContext)) return true;
+        long since = TurnSignalCameraOverlay.showingSinceMs();
+        if (since <= 0L) return false;
+        long delay = TurnSignalCameraController.getNavDelayMs(appContext);
+        long elapsed = SystemClock.uptimeMillis() - since;
+        if (elapsed >= delay) return false;
+        if (!delayedRaisePosted) {
+            delayedRaisePosted = true;
+            mainHandler.postDelayed(delayedRaise, Math.max(1L, delay - elapsed));
+        }
+        return true;
+    }
 
     @Nullable
     private GoogleMapsNavSnapshot lastApplied;
@@ -298,6 +322,9 @@ public final class GoogleMapsClusterNavOverlay {
 
     private void raiseToTopOnMain(boolean throttle) {
         if (overlayRoot == null || windowManager == null || overlayLayoutParams == null) {
+            return;
+        }
+        if (cameraBlocksZOrder()) {
             return;
         }
         long now = SystemClock.uptimeMillis();
@@ -653,6 +680,15 @@ public final class GoogleMapsClusterNavOverlay {
                             | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                     PixelFormat.TRANSLUCENT);
             windowManager.addView(overlayRoot, overlayLayoutParams);
+            boolean navFront = TurnSignalCameraController.isNavFrontEnabled(appContext);
+            long cameraSince = TurnSignalCameraOverlay.showingSinceMs();
+            boolean cameraTop = !navFront || cameraSince <= 0L
+                    || SystemClock.uptimeMillis() - cameraSince
+                       < TurnSignalCameraController.getNavDelayMs(appContext);
+            if (cameraTop) {
+                TurnSignalCameraOverlay.bringToFrontIfShowing();
+            }
+            raiseToTopOnMain(true);
             applyCardOpacityOnMain();
             lastZOrderRaiseUptimeMs = SystemClock.uptimeMillis();
         } catch (Exception e) {

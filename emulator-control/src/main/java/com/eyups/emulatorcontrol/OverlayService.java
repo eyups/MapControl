@@ -179,6 +179,14 @@ public final class OverlayService extends Service {
         powerRow.addView(button("OFF", v -> send(327684, 14, new int[]{0})));
         panel.addView(powerRow);
 
+        LinearLayout signalRow = new LinearLayout(this);
+        signalRow.setOrientation(LinearLayout.HORIZONTAL);
+        signalRow.addView(button("Sol", v -> signal(1)));
+        signalRow.addView(button("Sağ", v -> signal(2)));
+        signalRow.addView(button("Dörtlü", v -> signal(3)));
+        signalRow.addView(button("Sinyal Kapat", v -> signal(0)));
+        panel.addView(signalRow);
+
         EditText event = edit("event", "327684");
         event.setInputType(InputType.TYPE_CLASS_NUMBER);
         EditText cmd = edit("cmd", "14");
@@ -234,6 +242,18 @@ public final class OverlayService extends Service {
         e.setHintTextColor(Color.LTGRAY);
         e.setSingleLine(true);
         return e;
+    }
+
+    /** 0=off, 1=left, 2=right, 3=hazard. ReadOnly (327684) sinyal ID'leri. */
+    private void signal(int mode) {
+        boolean left = mode == 1 || mode == 3;
+        boolean right = mode == 2 || mode == 3;
+        boolean hazard = mode == 3;
+        send(327684, 35, new int[]{left ? 1 : 0});   // ID_DIRECTION_IND_LEFT
+        send(327684, 33, new int[]{left ? 1 : 0});   // ID_LH_TURN_LIGHT_STS
+        send(327684, 34, new int[]{right ? 1 : 0});  // ID_DIRECTION_IND_RIGHT
+        send(327684, 32, new int[]{right ? 1 : 0});  // ID_RH_TURN_LIGHT_STS
+        send(327684, 79, new int[]{hazard ? 1 : 0}); // ID_HAZARD_LIGHT
     }
 
     private void send(int event, int cmd, int[] values) {

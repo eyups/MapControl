@@ -74,9 +74,12 @@ public final class ControlReceiver extends BroadcastReceiver {
     private static void startService(Context context) {
         Intent svc = new Intent(context, FakeVdbusService.class);
         try {
-            context.startForegroundService(svc);
-        } catch (Throwable t) {
             context.startService(svc);
+        } catch (Throwable t) {
+            try {
+                context.startForegroundService(svc);
+            } catch (Throwable ignored) {
+            }
         }
     }
 }

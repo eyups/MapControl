@@ -60,6 +60,8 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
      * olmayanlarda en fazla bu kadar ek gecikme.
      */
     private static final long PREVIEW_COALESCE_NS = 20_000_000L;
+    /** Onizleme cizim ust siniri (30 fps); gercek HAB 30 fps, emulator simi daha hizli besliyor. */
+    private static final long PREVIEW_MIN_INTERVAL_NS = 33_000_000L;
     /** Cizim/sn olcumunun log araligi. */
     private static final long DRAW_STATS_LOG_MS = 5000;
 
@@ -173,10 +175,11 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
 
     /** Ayrı önizleme yüzeyi/consumer gerektiren cluster overlay'i için ikinci motor. */
     public static CameraGlEngine createSecondary(String tag) {
-        return new CameraGlEngine(tag);
+        return new CameraGlEngine(tag, true);
     }
 
     private final String hubTag;
+    private final boolean selectiveAcquire;
     private final CameraHub hub = CameraHub.get();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final Object lock = new Object();
@@ -189,12 +192,16 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
     private int previewH = 1;
     private boolean previewSurfaceChanged;
     private CountDownLatch previewReleased;
+    /** EGL onizleme yuzeyi birakilinca cam-gl thread'inde calisir (clearPreviewSurfaceAsync). */
+    private Runnable previewReleasedCallback;
+    private volatile long previewMinIntervalNs = PREVIEW_MIN_INTERVAL_NS;
     private Request startRequest;
     private Request stopRequest;
     /** Son onizleme ciziminden beri yeni kare gelen kameralar (bit i = kamera i). */
     private int frameDirtyMask;
     /** frameDirtyMask'in bos durumdan doldugu an (System.nanoTime). */
     private long frameDirtySinceNs;
+    private volatile long lastPreviewDrawNs;
     private boolean layoutDirty;
     /** Onizleme EGL yuzeyi sifirdan kurulsun (buyuk/izgara gecisinde bayat kare kalmasin). */
     private boolean previewRecreate;
@@ -260,7 +267,12 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
     private final CameraHub.FrameReader[] readers = new CameraHub.FrameReader[CAM_COUNT];
 
     private CameraGlEngine(String hubTag) {
+        this(hubTag, false);
+    }
+
+    private CameraGlEngine(String hubTag, boolean selectiveAcquire) {
         this.hubTag = hubTag;
+        this.selectiveAcquire = selectiveAcquire;
         for (int i = 0; i < CAM_COUNT; i++) {
             final int cam = i;
             readers[i] = (buf, width, height, seq) -> uploadCopy(cam, buf, width, height, seq);
@@ -293,8 +305,11 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
         }
         synchronized (lock) {
             layoutDirty = true;
-            // Buyuk <-> izgara gecisinde yuzeyi yeniden kurup ilk kareyi kesin cizdir.
-            previewRecreate = true;
+            // Yalnizca izgara <-> tek kamera gecisinde yuzeyi yeniden kur; tek kamera
+            // degisiminde ayni EGL yuzeyi kullanilir (sinyal sol/sag gecisinde kare kaybi olmaz).
+            boolean wasSingle = old >= 0;
+            boolean isSingle = cam >= 0;
+            previewRecreate = wasSingle != isSingle;
             lock.notifyAll();
         }
     }
@@ -343,6 +358,32 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             lock.notifyAll();
         }
         await(latch, 1000);
+    }
+
+    /**
+     * Beklemeden yuzeyi birakir; onReleased EGL yuzeyi yok edildikten sonra (motor thread'i
+     * yoksa hemen, cagiran thread'de) calisir. Surface/SurfaceTexture ancak o zaman birakilmali.
+     */
+    public void clearPreviewSurfaceAsync(Runnable onReleased) {
+        synchronized (lock) {
+            previewSurface = null;
+            previewSurfaceChanged = true;
+            if (thread != null) {
+                Runnable prev = previewReleasedCallback;
+                previewReleasedCallback = prev == null ? onReleased : () -> {
+                    prev.run();
+                    onReleased.run();
+                };
+                lock.notifyAll();
+                return;
+            }
+        }
+        onReleased.run();
+    }
+
+    /** Onizleme cizim ust siniri (motor basina); kayit temposunu etkilemez. */
+    public void setPreviewMaxFps(int fps) {
+        previewMinIntervalNs = fps > 0 ? 1_000_000_000L / fps - 1_000_000L : PREVIEW_MIN_INTERVAL_NS;
     }
 
     /** Encoder yuzeylerine cizime baslar; false ise cagiran CPU yoluna gecmeli. */
@@ -396,6 +437,7 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
      * veya ilk kareden beri PREVIEW_COALESCE_NS gecti. lock altinda cagrilir.
      */
     private boolean previewFramesDueLocked(long nowNs) {
+        if (nowNs - lastPreviewDrawNs < previewMinIntervalNs) return false;
         int mask = frameDirtyMask;
         if (mask == 0) {
             return false;
@@ -424,6 +466,15 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
         }
     }
 
+    private static void runReleasedCallback(Runnable r) {
+        if (r == null) return;
+        try {
+            r.run();
+        } catch (Throwable t) {
+            Log.w(TAG, "yuzey birakma geri cagrisi hata", t);
+        }
+    }
+
     private static boolean await(CountDownLatch latch, long ms) {
         try {
             return latch.await(ms, TimeUnit.MILLISECONDS);
@@ -443,7 +494,11 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             zeroCopy = HabNative.zcInit();
             initGl();
             hub.addFrameListener(this);
-            hub.acquire(hubTag, null);
+            if (selectiveAcquire) {
+                hub.acquireSelective(hubTag, null);
+            } else {
+                hub.acquire(hubTag, null);
+            }
             loop();
         } catch (Throwable t) {
             failed = true;
@@ -456,6 +511,8 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
                     previewReleased.countDown();
                     previewReleased = null;
                 }
+                runReleasedCallback(previewReleasedCallback);
+                previewReleasedCallback = null;
                 boolean retryAfterFailure = failed && previewEnabled && failRestarts < MAX_FAIL_RESTARTS;
                 if (retryAfterFailure) {
                     // Motor dusunce onizleme son kareyle donuyordu; sinirli sayida yeniden baslat.
@@ -493,6 +550,7 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             int pw;
             int ph;
             CountDownLatch released;
+            Runnable releasedCallback;
             Request startReq;
             Request stopReq;
             boolean layout;
@@ -518,8 +576,13 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
                     long waitMs = record != null ? Math.max(1, (nextRecordNs - now) / 1_000_000L) : 500;
                     if (lost) waitMs = Math.min(waitMs, Math.max(1, surfaceRetryAtMs - nowMs));
                     if (previewEnabled && surfaceUp && frameDirtyMask != 0) {
-                        // Toplama penceresi bitince eksik kamera beklenmeden cizilsin.
-                        long leftNs = PREVIEW_COALESCE_NS - (now - frameDirtySinceNs);
+                        // Toplama penceresi bitince eksik kamera beklenmeden cizilsin; FPS
+                        // siniri dolmadiysa 1 ms'lik bos donguler yerine sinir dolana kadar bekle.
+                        int want = expectedFrameMask();
+                        long coalesceLeftNs = (frameDirtyMask & want) == want
+                                ? 0L : PREVIEW_COALESCE_NS - (now - frameDirtySinceNs);
+                        long gapLeftNs = previewMinIntervalNs - (now - lastPreviewDrawNs);
+                        long leftNs = Math.max(coalesceLeftNs, gapLeftNs);
                         waitMs = Math.min(waitMs, Math.max(1, (leftNs + 999_999L) / 1_000_000L));
                     }
                     lock.wait(waitMs);
@@ -533,6 +596,8 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
                 ph = previewH;
                 released = previewReleased;
                 previewReleased = null;
+                releasedCallback = previewReleasedCallback;
+                previewReleasedCallback = null;
                 startReq = startRequest;
                 startRequest = null;
                 stopReq = stopRequest;
@@ -562,6 +627,7 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
                 layout = true;
             }
             if (released != null) released.countDown();
+            runReleasedCallback(releasedCallback);
             if (stopReq != null) {
                 destroyRecordSurfaces();
                 record = null;
@@ -582,7 +648,10 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
                 if (previewOn && previewEgl != EGL14.EGL_NO_SURFACE
                         && (framesReady || layout || surfaceChange || bigCam != drawnBig)) {
                     drew = drawPreview();
-                    if (drew) previewDraws++;
+                    if (drew) {
+                        previewDraws++;
+                        lastPreviewDrawNs = System.nanoTime();
+                    }
                 }
                 drawErrors = 0;
             } catch (RuntimeException e) {
@@ -745,7 +814,8 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
         for (int cam = 0; cam < CAM_COUNT; cam++) {
             int previewMode = HabNative.COPY_NONE;
             if (previewOn && (big < 0 || big == cam)) {
-                previewMode = big == cam ? HabNative.COPY_FULL : HabNative.COPY_HALF;
+                previewMode = big == cam && !halfRowsEnough(cam)
+                        ? HabNative.COPY_FULL : HabNative.COPY_HALF;
             }
             int recordMode = HabNative.COPY_NONE;
             if (record != null) {
@@ -763,12 +833,26 @@ public final class CameraGlEngine implements CameraHub.FrameListener {
             int copy = zeroCopy ? HabNative.COPY_NONE : mode;
             boolean hold = zeroCopy && mode != HabNative.COPY_NONE;
             if (!demandSent || copy != lastCopy[cam] || hold != lastHold[cam]) {
+                if (copy != HabNative.COPY_NONE || hold) {
+                    Log.i(TAG, hubTag + " talep: kamera " + cam + " kopya=" + copy + " tut=" + hold);
+                }
                 hub.setDemand(hubTag, cam, copy, hold);
                 lastCopy[cam] = copy;
                 lastHold[cam] = hold;
             }
         }
         demandSent = true;
+    }
+
+    /**
+     * Tek kamera onizlemesi icin yarim satir (W x H/2) kopya kayipsiz mi: kaynak yuksekligin
+     * tamamina gerilen goruntu en fazla H/2 piksel yuksekse ve balikgozu duzeltme kapaliysa.
+     */
+    private boolean halfRowsEnough(int cam) {
+        if (dewarp > 0.001f) return false;
+        int srcH = hub.getFrameHeight(cam);
+        if (srcH <= 0) srcH = HabNative.FRAME_HEIGHT;
+        return viewH > 1 && viewH * 2 <= srcH;
     }
 
     /** true: en az bir kamerada yeni kare. */

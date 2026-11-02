@@ -862,8 +862,24 @@ void SlotCloseLocked(int i) {
     s.active = false;
 }
 
+// Verilen maskeyi uygular: eksik kameralari acar, maskede olmayanlari kapatir.
+int ApplyMaskLocked(int mask, bool closeUnrequested) {
+    int opened = 0;
+    for (int i = 0; i < 4; i++) {
+        std::lock_guard<std::mutex> io(gSlots[i].io);
+        if ((mask & (1 << i)) != 0) {
+            if (gSlots[i].active || SlotOpenLocked(i)) opened |= 1 << i;
+        } else if (closeUnrequested) {
+            SlotCloseLocked(i);
+            gSlotStatus[i] = 0;
+        }
+    }
+    return opened;
+}
+
 // Dondurur: acilan kameralarin bit maskesi (bit i = kamera i), -1 = ION yok.
-int HubStart() {
+// mask=0 ise yalnizca ION/input listesi hazirlanir; kamera acilmaz.
+int HubStartMask(int mask) {
     std::lock_guard<std::mutex> lock(gHubMutex);
     if (!gHubStarted) {
         gIonFd = open("/dev/ion", O_RDONLY | O_CLOEXEC);
@@ -875,13 +891,24 @@ int HubStart() {
         gHubStarted = true;
     }
     EnsureInputListLocked(true);
-    int mask = 0;
-    for (int i = 0; i < 4; i++) {
-        std::lock_guard<std::mutex> io(gSlots[i].io);
-        if (gSlots[i].active || SlotOpenLocked(i)) mask |= 1 << i;
-    }
-    NLOG("HubStart: maske=0x%x", mask);
-    return mask;
+    int opened = ApplyMaskLocked(mask, true);
+    NLOG("HubStartMask: istek=0x%x maske=0x%x", mask, opened);
+    return opened;
+}
+
+// Eski tam acilis davranisi.
+int HubStart() {
+    return HubStartMask(0xF);
+}
+
+// Calisan hub'a verilen maskeyi uygular; maskede olmayanlari kapatir.
+int HubApplyMask(int mask) {
+    std::lock_guard<std::mutex> lock(gHubMutex);
+    if (!gHubStarted) return 0;
+    EnsureInputListLocked(false);
+    int opened = ApplyMaskLocked(mask, true);
+    NLOG("HubApplyMask: istek=0x%x maske=0x%x", mask, opened);
+    return opened;
 }
 
 bool HubRestart(int i) {
@@ -1586,6 +1613,16 @@ Java_com_mapcontrol_dvr_HabNative_nativeConvertSingle(JNIEnv* env, jclass /*claz
 extern "C" JNIEXPORT jint JNICALL
 Java_com_mapcontrol_dvr_HabNative_nativeHubStart(JNIEnv* /*env*/, jclass /*clazz*/) {
     return HubStart();
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_mapcontrol_dvr_HabNative_nativeHubStartMask(JNIEnv* /*env*/, jclass /*clazz*/, jint mask) {
+    return HubStartMask((int)mask);
+}
+
+extern "C" JNIEXPORT jint JNICALL
+Java_com_mapcontrol_dvr_HabNative_nativeHubApplyMask(JNIEnv* /*env*/, jclass /*clazz*/, jint mask) {
+    return HubApplyMask((int)mask);
 }
 
 extern "C" JNIEXPORT void JNICALL

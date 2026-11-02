@@ -13,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mapcontrol.R;
 import com.mapcontrol.dvr.DvrController;
 import com.mapcontrol.ui.theme.UiStyles;
@@ -47,6 +50,10 @@ final class Camera360AutoView {
     private Camera360Ui.Choice modeChoice;
     private TextView modeDesc;
     private TextView retentionNote;
+    private TextView reserveLegend;
+    private TextView reserveNote;
+    private final List<TextView> reserveChips = new ArrayList<>();
+    private static final int[] RESERVE_OPTIONS_MB = {2000, 1000, 500};
     private TextView statusText;
     private GradientDrawable statusDot;
     private TextView recLine;
@@ -152,8 +159,34 @@ final class Camera360AutoView {
         card.addView(legend, ui.matchWrapTop(8));
         legendItem(legend, accent, R.string.camera360_auto_legend_clips);
         legendItem(legend, Camera360Ui.withAlpha(other, 0x99), R.string.camera360_auto_legend_other);
-        legendItem(legend, Camera360Ui.COLOR_WAIT, R.string.camera360_auto_legend_reserve);
+        reserveLegend = legendItem(legend, Camera360Ui.COLOR_WAIT, R.string.camera360_auto_legend_reserve);
         legendItem(legend, Camera360Ui.COLOR_LIVE, R.string.camera360_auto_legend_free);
+
+        LinearLayout reserveRow = new LinearLayout(ui.context);
+        reserveRow.setOrientation(LinearLayout.HORIZONTAL);
+        reserveRow.setGravity(Gravity.CENTER_VERTICAL);
+        card.addView(reserveRow, ui.matchWrapTop(10));
+        TextView reserveLabel = ui.text(12, R.color.textSecondaryCool, false);
+        reserveLabel.setText(R.string.camera360_auto_reserve);
+        reserveRow.addView(reserveLabel, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        for (int mb : RESERVE_OPTIONS_MB) {
+            TextView chip = ui.text(12, R.color.textPrimary, true);
+            chip.setText(Camera360Ui.formatSize(mb * 1_000_000L));
+            chip.setGravity(Gravity.CENTER);
+            chip.setPadding(ui.dp(9), ui.dp(4), ui.dp(9), ui.dp(4));
+            chip.setBackground(ui.roundRect(ui.themeColor(R.color.surfaceCardInner), 10));
+            final int optionMb = mb;
+            chip.setOnClickListener(v -> {
+                dvr.setReserveMb(optionMb);
+                refresh();
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMarginStart(ui.dp(6));
+            reserveRow.addView(chip, lp);
+            reserveChips.add(chip);
+        }
 
         LinearLayout stats = new LinearLayout(ui.context);
         stats.setOrientation(LinearLayout.HORIZONTAL);
@@ -167,7 +200,7 @@ final class Camera360AutoView {
         freeValue = stat(stats, R.string.camera360_free);
 
         TextView note = ui.text(12, R.color.textSecondaryCool, false);
-        note.setText(R.string.camera360_auto_reserve_note);
+        reserveNote = note;
         card.addView(note, ui.matchWrapTop(10));
         return card;
     }
@@ -185,7 +218,7 @@ final class Camera360AutoView {
         v.setLayoutParams(p);
     }
 
-    private void legendItem(LinearLayout parent, int color, int labelRes) {
+    private TextView legendItem(LinearLayout parent, int color, int labelRes) {
         TextView tv = ui.text(11, R.color.textSecondaryCool, false);
         tv.setText(labelRes);
         tv.setSingleLine(true);
@@ -194,6 +227,7 @@ final class Camera360AutoView {
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         p.setMarginEnd(ui.dp(14));
         parent.addView(tv, p);
+        return tv;
     }
 
     private TextView stat(LinearLayout parent, int labelRes) {
@@ -366,7 +400,8 @@ final class Camera360AutoView {
         new AlertDialog.Builder(ui.context)
                 .setTitle(R.string.camera360_auto_consent_title)
                 .setMessage(ui.context.getString(R.string.camera360_auto_consent_msg,
-                        dvr.getInternalDir().getAbsolutePath()))
+                        dvr.getInternalDir().getAbsolutePath(),
+                        Camera360Ui.formatSize(dvr.reserveBytes())))
                 .setPositiveButton(R.string.camera360_auto_consent_ok, (d, w) -> {
                     if (!dvr.setAutoInternalEnabled(true)) {
                         enableSegment.syncVisualWithoutCommit(false);
@@ -426,7 +461,7 @@ final class Camera360AutoView {
         DvrController.StorageInfo s = dvr.getStorage();
         long total = Math.max(1, s.totalBytes);
         long free = Math.max(0, s.freeBytes);
-        long reserve = Math.min(free, DvrController.RESERVE_BYTES);
+        long reserve = Math.min(free, dvr.reserveBytes());
         long otherUsed = Math.max(0, total - free - s.clipsBytes);
         setWeight(barClips, s.clipsBytes / (float) total);
         setWeight(barOther, otherUsed / (float) total);
@@ -436,16 +471,32 @@ final class Camera360AutoView {
         clipsValue.setText(s.clipCount + " · " + Camera360Ui.formatSize(s.clipsBytes));
         capacityValue.setText(ui.formatDuration(s.capacityMinutes()));
         freeValue.setText(s.freeBytes >= 0 ? Camera360Ui.formatSize(s.freeBytes) : "-");
+        String reserveText = Camera360Ui.formatSize(dvr.reserveBytes());
         retentionNote.setText(ui.context.getString(R.string.camera360_auto_retention_note,
-                ui.formatDuration(s.capacityMinutes())));
+                ui.formatDuration(s.capacityMinutes()), reserveText));
+        if (reserveLegend != null) {
+            reserveLegend.setText(ui.context.getString(R.string.camera360_auto_legend_reserve, reserveText));
+        }
+        if (reserveNote != null) {
+            reserveNote.setText(ui.context.getString(R.string.camera360_auto_reserve_note, reserveText));
+        }
+        int reserveMb = dvr.getReserveMb();
+        for (int i = 0; i < reserveChips.size() && i < RESERVE_OPTIONS_MB.length; i++) {
+            boolean on = RESERVE_OPTIONS_MB[i] == reserveMb;
+            TextView chip = reserveChips.get(i);
+            chip.setTextColor(ui.themeColor(on ? R.color.textPrimary : R.color.textSecondaryCool));
+            chip.setBackground(ui.roundRect(on
+                    ? ui.themeColor(R.color.oemAccent)
+                    : ui.themeColor(R.color.surfaceCardInner), 10));
+        }
 
         boolean lowSpace = s.freeBytes >= 0
-                && s.freeBytes + s.clipsBytes < DvrController.RESERVE_BYTES + 10 * dvr.autoBytesPerMinute();
+                && s.freeBytes + s.clipsBytes < dvr.reserveBytes() + 10 * dvr.autoBytesPerMinute();
         if (!s.writable && dvr.getAutoStatus() == DvrController.AutoStatus.NOT_WRITABLE) {
             storageState.setText(R.string.camera360_auto_st_not_writable);
             ui.tintPill(storageState, storageStateDot, Camera360Ui.COLOR_REC);
         } else if (lowSpace) {
-            storageState.setText(R.string.camera360_auto_st_low_space);
+            storageState.setText(ui.context.getString(R.string.camera360_auto_st_low_space, reserveText));
             ui.tintPill(storageState, storageStateDot, Camera360Ui.COLOR_REC);
         } else {
             storageState.setText(R.string.camera360_auto_ready);

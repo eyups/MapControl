@@ -71,7 +71,13 @@ public final class FakeVdbusService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(1, notification());
+        // startForegroundService sözleşmesi için kısa süre foreground ol, sonra bildirimi kaldır.
+        // Servis bağlı/başlatılmış olarak çalışmaya devam eder; bildirim tepsisi temiz kalır.
+        try {
+            startForeground(1, notification());
+            stopForeground(STOP_FOREGROUND_REMOVE);
+        } catch (Throwable ignored) {
+        }
         return START_STICKY;
     }
 

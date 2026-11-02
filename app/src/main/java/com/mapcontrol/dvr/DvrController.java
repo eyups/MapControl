@@ -94,6 +94,7 @@ public final class DvrController {
     private static final long HEADROOM_MINUTES = SEGMENT_MS / 60_000L + 1;
 
     public static final String PREFS = "camera360";
+    public static final int DEFAULT_RESERVE_MB = 2000;
     private static final String KEY_AUTO_INTERNAL = "autoInternal";
     private static final String KEY_AUTO_USB = "autoUsb";
     private static final String KEY_RES_INDEX = "resIndex";
@@ -101,6 +102,7 @@ public final class DvrController {
     private static final String KEY_INTERNAL_MODE = "internalMode";
     /** Kamera tamponlari onbellekli ("hizli okuma"); gizli ayar, varsayilan acik. */
     private static final String KEY_ION_CACHED = "ionCached";
+    private static final String KEY_RESERVE_MB = "reserveMb";
 
     private static final long TICK_MS = 10_000;
     private static final long RETRY_MS = 30_000;
@@ -131,11 +133,13 @@ public final class DvrController {
         public long oldestClipMs;
         /** Hesaplandigi andaki kayit modunun dakikalik boyutu. */
         public long bytesPerMinute = InternalMode.QUALITY.bytesPerMinute();
+        /** Hesaplandigi andaki rezerv. */
+        public long reserveBytes = RESERVE_BYTES;
 
         /** Klipler icin kullanilabilecek toplam alan: bos + mevcut klipler - rezerv. */
         public long recordBudgetBytes() {
             if (freeBytes < 0) return 0;
-            return Math.max(0, freeBytes + clipsBytes - RESERVE_BYTES);
+            return Math.max(0, freeBytes + clipsBytes - reserveBytes);
         }
 
         public long capacityMinutes() {
@@ -210,6 +214,24 @@ public final class DvrController {
      * Hizli okumayi acar/kapatir ve kameralari yeni modla yeniden acar. Gizli ayar: sorun
      * cikan bir aracta yeniden derlemeden eski (onbelleksiz) davranisa donmek icin.
      */
+    public int getReserveMb() {
+        return clampReserveMb(prefs.getInt(KEY_RESERVE_MB, DEFAULT_RESERVE_MB));
+    }
+
+    public long reserveBytes() {
+        return getReserveMb() * 1_000_000L;
+    }
+
+    public void setReserveMb(int mb) {
+        prefs.edit().putInt(KEY_RESERVE_MB, clampReserveMb(mb)).apply();
+        refreshStorageAsync();
+        notifyState();
+    }
+
+    private static int clampReserveMb(int mb) {
+        return Math.max(128, Math.min(4000, mb));
+    }
+
     public void setCameraFastReadEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_ION_CACHED, enabled).apply();
         HabNative.setIonCached(enabled);
@@ -511,7 +533,7 @@ public final class DvrController {
                 main.post(() -> setFailure(AutoStatus.NOT_WRITABLE, internalDir.getAbsolutePath()));
                 return;
             }
-            long need = RESERVE_BYTES + MIN_INTERNAL_START_MINUTES * autoBytesPerMinute();
+            long need = reserveBytes() + MIN_INTERNAL_START_MINUTES * autoBytesPerMinute();
             long free = DvrClipStore.freeUpTo(internalDir, need, null);
             refreshStorage();
             if (free < need) {
@@ -597,9 +619,9 @@ public final class DvrController {
 
     private void enforceInternalSpace(Set<String> active) {
         long headroom = HEADROOM_MINUTES * autoBytesPerMinute();
-        long free = DvrClipStore.freeUpTo(internalDir, RESERVE_BYTES + headroom, active);
+        long free = DvrClipStore.freeUpTo(internalDir, reserveBytes() + headroom, active);
         refreshStorage(active);
-        if (free >= 0 && free < RESERVE_BYTES + headroom / 2) {
+        if (free >= 0 && free < reserveBytes() + headroom / 2) {
             main.post(() -> {
                 if (source == Source.AUTO_INTERNAL && recorder.isRecording()) {
                     Log.w(TAG, "rezerv korunamiyor, arac ici kayit durduruluyor");
@@ -631,6 +653,7 @@ public final class DvrController {
         info.clipCount = clips.size();
         info.oldestClipMs = clips.isEmpty() ? 0 : clips.get(clips.size() - 1).timeMs;
         info.bytesPerMinute = autoBytesPerMinute();
+        info.reserveBytes = reserveBytes();
         storage = info;
         main.post(this::notifyState);
     }

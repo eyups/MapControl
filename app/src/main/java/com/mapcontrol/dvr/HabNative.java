@@ -29,6 +29,10 @@ public final class HabNative {
 
     private static native int nativeHubStart();
 
+    private static native int nativeHubStartMask(int mask);
+
+    private static native int nativeHubApplyMask(int mask);
+
     private static native void nativeHubStop();
 
     private static native boolean nativeHubRestart(int cam);
@@ -91,6 +95,31 @@ public final class HabNative {
         } catch (Throwable t) {
             Log.w(TAG, "hub baslatma hata", t);
             return -1;
+        }
+    }
+
+    /**
+     * Yalnizca maskede isaretli kameralari acar (bit i = kamera i). 0 ise sadece
+     * ION/input listesi hazirlanir. Acilan kameralarin maskesi; -1 = ION/HAB yok.
+     */
+    public static int hubStart(int mask) {
+        if (!LOADED) return -1;
+        try {
+            return nativeHubStartMask(mask & 0xF);
+        } catch (Throwable t) {
+            Log.w(TAG, "hub baslatma (mask) hata", t);
+            return -1;
+        }
+    }
+
+    /** Calisan hub'a yeni kamera talepleri ekler; kapatma yapmaz. */
+    public static int hubApplyMask(int mask) {
+        if (!LOADED) return 0;
+        try {
+            return nativeHubApplyMask(mask & 0xF);
+        } catch (Throwable t) {
+            Log.w(TAG, "hub maske uygulama hata", t);
+            return 0;
         }
     }
 

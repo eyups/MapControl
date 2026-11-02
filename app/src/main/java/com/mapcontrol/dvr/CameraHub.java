@@ -71,8 +71,13 @@ public final class CameraHub {
     }
 
     private static final class Demand {
+        boolean allCameras;
         final int[] copy = new int[CAM_COUNT];
         final boolean[] hold = new boolean[CAM_COUNT];
+
+        Demand(boolean allCameras) {
+            this.allCameras = allCameras;
+        }
     }
 
     /**
@@ -116,8 +121,11 @@ public final class CameraHub {
     private final Map<String, Demand> consumers = new HashMap<>();
     private final List<IntConsumer> readyCallbacks = new ArrayList<>();
     private final Thread[] grabThreads = new Thread[CAM_COUNT];
-    private boolean started;
+    private volatile boolean started;
     private boolean ready;
+    /** Native tarafta acilmis/istenen kameralar (bit i = kamera i). */
+    private volatile int requestedMask;
+    private boolean maskApplyPosted;
 
     private final Runnable stopRunnable = this::stopIfIdle;
 
@@ -134,25 +142,46 @@ public final class CameraHub {
     /**
      * Akislari acik tutar. onReady (ana thread) ilk acilis denemesi bitince
      * o anda canli kameralarin bit maskesiyle cagrilir; hub zaten hazirsa hemen.
+     * Bu varyant tum kameralari ister (Camera360 grid/kayit/probe).
      */
     public void acquire(String tag, IntConsumer onReady) {
+        acquireInternal(tag, onReady, true);
+    }
+
+    /**
+     * Sadece talebi olan kameralari acar (or. tek kamera sinyal overlay'i).
+     * Kamera talebi {@link #setDemand} ile bildirilir; talep gelene kadar kamera acilmaz.
+     */
+    public void acquireSelective(String tag, IntConsumer onReady) {
+        acquireInternal(tag, onReady, false);
+    }
+
+    private void acquireInternal(String tag, IntConsumer onReady, boolean allCameras) {
         synchronized (this) {
             mainHandler.removeCallbacks(stopRunnable);
-            if (!consumers.containsKey(tag)) {
-                consumers.put(tag, new Demand());
+            Demand existing = consumers.get(tag);
+            if (existing == null) {
+                consumers.put(tag, new Demand(allCameras));
+            } else if (allCameras) {
+                existing.allCameras = true;
             }
             if (!started) {
                 started = true;
                 ready = false;
+                requestedMask = 0;
                 final int mySession = session.incrementAndGet();
                 control.execute(() -> doStart(mySession));
+            } else {
+                scheduleMaskUpdateLocked();
             }
             if (onReady != null) {
-                if (ready) {
+                int desired = desiredMaskLocked();
+                if (ready && (desired | requestedMask) == requestedMask) {
                     final int mask = liveMask();
                     mainHandler.post(() -> onReady.accept(mask));
                 } else {
                     readyCallbacks.add(onReady);
+                    if (ready) scheduleMaskUpdateLocked();
                 }
             }
         }
@@ -166,6 +195,8 @@ public final class CameraHub {
             if (consumers.isEmpty() && started) {
                 mainHandler.removeCallbacks(stopRunnable);
                 mainHandler.postDelayed(stopRunnable, STOP_DELAY_MS);
+            } else if (started) {
+                scheduleMaskUpdateLocked();
             }
         }
     }
@@ -178,6 +209,7 @@ public final class CameraHub {
         }
         d.copy[cam] = copyMode;
         d.hold[cam] = hold;
+        scheduleMaskUpdateLocked();
     }
 
     public synchronized void clearDemand(String tag) {
@@ -189,6 +221,7 @@ public final class CameraHub {
             d.copy[i] = HabNative.COPY_NONE;
             d.hold[i] = false;
         }
+        scheduleMaskUpdateLocked();
     }
 
     /** Tum kameralari kapatip yeniden acar (sinyal yenileme). */
@@ -308,6 +341,77 @@ public final class CameraHub {
 
     // ---------- Yasam dongusu (control thread) ----------
 
+    /** Tum tuketicilerin istedigi kameralarin birlesimi; allCameras varsa 0xF. */
+    private int desiredMaskLocked() {
+        int mask = 0;
+        for (Demand d : consumers.values()) {
+            if (d.allCameras) return 0xF;
+            for (int i = 0; i < CAM_COUNT; i++) {
+                if (d.copy[i] != HabNative.COPY_NONE || d.hold[i]) mask |= 1 << i;
+            }
+        }
+        return mask;
+    }
+
+    /** Talep maskesi degistiyse native tarafa uygulanmasini planla. */
+    private void scheduleMaskUpdateLocked() {
+        if (!started) return;
+        int desired = desiredMaskLocked();
+        if (desired == requestedMask) return;
+        if (maskApplyPosted) return;
+        maskApplyPosted = true;
+        final int mySession = session.get();
+        control.execute(() -> {
+            int desiredNow;
+            synchronized (CameraHub.this) {
+                maskApplyPosted = false;
+                if (!started || session.get() != mySession) return;
+                desiredNow = desiredMaskLocked();
+                if (desiredNow == requestedMask) return;
+            }
+            applyMask(desiredNow);
+        });
+    }
+
+    /** Talep maskesini uygular: eksik kamerayi acar, artik istenmeyeni kapatir. */
+    private void applyMask(int mask) {
+        int wanted = mask & 0xF;
+        if (wanted == requestedMask) return;
+        int opened = HabNative.hubApplyMask(wanted);
+        if (opened < 0) opened = 0;
+        requestedMask = wanted;
+        for (int i = 0; i < CAM_COUNT; i++) {
+            if ((wanted & (1 << i)) == 0) {
+                setState(i, STATE_OFF);
+            } else if ((opened & (1 << i)) != 0) {
+                setState(i, STATE_LIVE);
+            } else if (states.get(i) != STATE_LIVE) {
+                setState(i, STATE_CONNECTING);
+            }
+        }
+        Log.i(TAG, "maske uygulandi: istek=0x" + Integer.toHexString(wanted)
+                + " acilan=0x" + Integer.toHexString(opened));
+        dispatchReadyCallbacks();
+    }
+
+    private void dispatchReadyCallbacks() {
+        final List<IntConsumer> callbacks;
+        final int mask;
+        synchronized (this) {
+            if (readyCallbacks.isEmpty()) return;
+            callbacks = new ArrayList<>(readyCallbacks);
+            readyCallbacks.clear();
+            mask = liveMask();
+        }
+        for (IntConsumer cb : callbacks) {
+            mainHandler.post(() -> cb.accept(mask));
+        }
+    }
+
+    private boolean isRequested(int cam) {
+        return (requestedMask & (1 << cam)) != 0;
+    }
+
     private void stopIfIdle() {
         final Thread[] threads;
         synchronized (this) {
@@ -316,6 +420,8 @@ public final class CameraHub {
             }
             started = false;
             ready = false;
+            requestedMask = 0;
+            maskApplyPosted = false;
             session.incrementAndGet();
             threads = grabThreads.clone();
             for (int i = 0; i < CAM_COUNT; i++) {
@@ -326,11 +432,15 @@ public final class CameraHub {
     }
 
     private void doStart(int mySession) {
-        for (int i = 0; i < CAM_COUNT; i++) {
-            setState(i, STATE_CONNECTING);
+        final int desired;
+        synchronized (this) {
+            desired = desiredMaskLocked();
+            requestedMask = desired;
         }
-        int mask = HabNative.hubStart();
-        List<IntConsumer> callbacks;
+        for (int i = 0; i < CAM_COUNT; i++) {
+            setState(i, (desired & (1 << i)) != 0 ? STATE_CONNECTING : STATE_OFF);
+        }
+        int mask = HabNative.hubStart(desired);
         int liveMask;
         synchronized (this) {
             if (session.get() != mySession) {
@@ -338,8 +448,9 @@ public final class CameraHub {
                 return;
             }
             for (int i = 0; i < CAM_COUNT; i++) {
+                boolean wanted = (desired & (1 << i)) != 0;
                 boolean active = mask > 0 && (mask & (1 << i)) != 0;
-                setState(i, active ? STATE_LIVE : STATE_NO_SIGNAL);
+                setState(i, active ? STATE_LIVE : (wanted ? STATE_NO_SIGNAL : STATE_OFF));
                 restartRequested.set(i, 0);
                 final int cam = i;
                 Thread t = new Thread(() -> grabLoop(cam, mySession, active), "cam-hub-" + i);
@@ -348,13 +459,10 @@ public final class CameraHub {
             }
             ready = true;
             liveMask = liveMask();
-            callbacks = new ArrayList<>(readyCallbacks);
-            readyCallbacks.clear();
         }
-        Log.i(TAG, "akislar acik, canli maske=0x" + Integer.toHexString(liveMask));
-        for (IntConsumer cb : callbacks) {
-            mainHandler.post(() -> cb.accept(liveMask));
-        }
+        Log.i(TAG, "akislar acik, istek=0x" + Integer.toHexString(desired)
+                + " canli maske=0x" + Integer.toHexString(liveMask));
+        dispatchReadyCallbacks();
     }
 
     private void doStop(Thread[] threads) {
@@ -410,6 +518,7 @@ public final class CameraHub {
         Process.setThreadPriority(Process.THREAD_PRIORITY_DISPLAY);
         FrameSlot slot = slots[cam];
         boolean active = initiallyActive;
+        boolean forceRestart = false;
         long retryMs = RETRY_MIN_MS;
         long lastFrameMs = SystemClock.uptimeMillis();
         int errors = 0;
@@ -417,20 +526,43 @@ public final class CameraHub {
         while (session.get() == mySession) {
             if (restartRequested.getAndSet(cam, 0) == 1) {
                 active = false;
+                forceRestart = true;
                 retryMs = 0;
             }
-            if (!active) {
-                if (retryMs > 0 && !sleepUnlessRestart(cam, retryMs)) return;
-                if (session.get() != mySession) return;
-                setState(cam, STATE_CONNECTING);
-                active = HabNative.hubRestart(cam);
-                if (active) loadGeometry(cam);
-                setState(cam, active ? STATE_LIVE : STATE_NO_SIGNAL);
-                retryMs = active ? RETRY_MIN_MS
-                        : Math.min(Math.max(retryMs * 2, RETRY_MIN_MS), RETRY_MAX_MS);
-                lastFrameMs = SystemClock.uptimeMillis();
-                errors = 0;
+            if (!isRequested(cam)) {
+                // Bu kamera hicbir tuketici tarafindan istenmiyor: HAB karesi cekme,
+                // yalnizca talep gelene kadar bekle. HubStop tum oturumlari kapatir.
+                active = false;
+                forceRestart = false;
+                retryMs = RETRY_MIN_MS;
+                setState(cam, STATE_OFF);
+                if (!sleepQuietly(200)) return;
                 continue;
+            }
+            if (!active) {
+                // Maske genisletmesi kamerayi zaten acmis olabilir; yeniden acmadan devam et.
+                if (!forceRestart && HabNative.hubStatus(cam) == 1) {
+                    active = true;
+                    loadGeometry(cam);
+                    setState(cam, STATE_LIVE);
+                    retryMs = RETRY_MIN_MS;
+                    lastFrameMs = SystemClock.uptimeMillis();
+                    errors = 0;
+                } else {
+                    if (retryMs > 0 && !sleepUnlessRestart(cam, retryMs)) return;
+                    if (session.get() != mySession) return;
+                    if (!isRequested(cam)) continue;
+                    setState(cam, STATE_CONNECTING);
+                    active = HabNative.hubRestart(cam);
+                    if (active) loadGeometry(cam);
+                    setState(cam, active ? STATE_LIVE : STATE_NO_SIGNAL);
+                    retryMs = active ? RETRY_MIN_MS
+                            : Math.min(Math.max(retryMs * 2, RETRY_MIN_MS), RETRY_MAX_MS);
+                    lastFrameMs = SystemClock.uptimeMillis();
+                    errors = 0;
+                    forceRestart = false;
+                    continue;
+                }
             }
 
             int mode;
@@ -496,6 +628,7 @@ public final class CameraHub {
             if (errors >= MAX_CONSECUTIVE_ERRORS || now - lastFrameMs > FRAME_TIMEOUT_MS) {
                 Log.w(TAG, "kamera " + cam + " yanit vermiyor (hata=" + errors + "), yeniden aciliyor");
                 active = false;
+                forceRestart = true;
                 retryMs = 500;
                 setState(cam, STATE_NO_SIGNAL);
             }

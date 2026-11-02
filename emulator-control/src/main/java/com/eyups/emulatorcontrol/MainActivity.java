@@ -104,6 +104,22 @@ public final class MainActivity extends Activity {
         clear.setOnClickListener(v -> sendClear());
         root.addView(clear);
 
+        Button leftSignal = button("Sol sinyal");
+        leftSignal.setOnClickListener(v -> signal(1));
+        root.addView(leftSignal);
+
+        Button rightSignal = button("Sağ sinyal");
+        rightSignal.setOnClickListener(v -> signal(2));
+        root.addView(rightSignal);
+
+        Button hazard = button("Dörtlü (hazard)");
+        hazard.setOnClickListener(v -> signal(3));
+        root.addView(hazard);
+
+        Button signalOff = button("Sinyalleri kapat");
+        signalOff.setOnClickListener(v -> signal(0));
+        root.addView(signalOff);
+
         Button overlay = button("Overlay aç (tüm uygulamaların üstünde)");
         overlay.setOnClickListener(v -> startOverlay());
         root.addView(overlay);
@@ -121,6 +137,12 @@ public final class MainActivity extends Activity {
         adas.setOnClickListener(v -> launchActivity(
                 MAPCONTROL_PKG, "com.mapcontrol.ui.activity.AdasProbeActivity"));
         root.addView(adas);
+
+        if (android.provider.Settings.canDrawOverlays(this)) {
+            startOverlay();
+        } else {
+            log("Overlay izni yok; 'Overlay aç' ile izin isteyin.");
+        }
 
         output = new TextView(this);
         output.setTextSize(12);
@@ -201,6 +223,23 @@ public final class MainActivity extends Activity {
         } catch (Throwable t) {
             log("Temizleme hatası: " + t);
         }
+    }
+
+    /** 0=off, 1=left, 2=right, 3=hazard. ReadOnly (327684) sinyal ID'leri. */
+    private void signal(int mode) {
+        boolean left = mode == 1 || mode == 3;
+        boolean right = mode == 2 || mode == 3;
+        boolean hazard = mode == 3;
+        sendReadOnly(35, left ? 1 : 0);
+        sendReadOnly(33, left ? 1 : 0);
+        sendReadOnly(34, right ? 1 : 0);
+        sendReadOnly(32, right ? 1 : 0);
+        sendReadOnly(79, hazard ? 1 : 0);
+        log("Sinyal: " + (mode == 1 ? "sol" : mode == 2 ? "sağ" : mode == 3 ? "dörtlü" : "kapalı"));
+    }
+
+    private void sendReadOnly(int cmd, int value) {
+        VdbusCommandSender.send(this, VdbusCommandSender.CARINFO, 327684, cmd, new int[]{value});
     }
 
     private void startOverlay() {

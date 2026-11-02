@@ -1,0 +1,9 @@
+LIBC {
+  global:
+    __open_2;
+    __openat_2;
+    open;
+    openat;
+    close;
+    ioctl;
+};
