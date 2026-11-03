@@ -601,7 +601,7 @@ public final class VoiceAssistantManager {
         }
         String sound = AssistantPrefs.wakeSound(appContext);
         if (AssistantPrefs.WAKE_SOUND_SPEAK.equals(sound) && AssistantPrefs.voiceReply(appContext)) {
-            speaker.speak("Dinliyorum", done -> postStartRecording(false));
+            speaker.speak("Dinliyorum, buyurun.", done -> postStartRecording(false));
         } else {
             if (AssistantPrefs.WAKE_SOUND_TONE.equals(sound)) {
                 speaker.beep();
