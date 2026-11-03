@@ -110,8 +110,9 @@ public final class VoiceAssistantManager {
     private final AssistantToolExecutor executor;
 
     private AudioCaptureEngine capture;
-    private EnergyGate wakeGate;
+    private volatile EnergyGate wakeGate;
     private EnergyGate recordGate;
+    private String activeWakePhrase = "";
     private UtteranceRecorder recorder;
     private WakeWordEngine wakeEngine;
 
@@ -258,7 +259,13 @@ public final class VoiceAssistantManager {
             }
             registry = new AssistantToolRegistry(appContext);
             if (started) {
-                restartWakeEngine();
+                // Hassasiyet gibi ayarlar modeli yeniden yüklemeden uygulanır.
+                wakeGate = new EnergyGate(AssistantPrefs.sensitivity(appContext));
+                String phrase = WakeWordNormalizer.normalize(AssistantPrefs.wakeWord(appContext));
+                if (wakeEngine == null || !wakeEngine.isReady()
+                        || !phrase.equals(activeWakePhrase)) {
+                    restartWakeEngine();
+                }
             } else {
                 onPowerModeInternal(lastPowerMode);
             }
@@ -367,7 +374,9 @@ public final class VoiceAssistantManager {
                 wakePrerollCount = 0;
                 wakeSpeechActive = false;
                 wakeEngine.start(phrase, this::onWakeTriggered);
+                activeWakePhrase = phrase;
             } else {
+                activeWakePhrase = "";
                 Log.i(TAG, "Uyandırma modeli yok; yalnız push-to-talk");
             }
         } catch (Throwable t) {
@@ -376,6 +385,7 @@ public final class VoiceAssistantManager {
     }
 
     private void restartWakeEngine() {
+        activeWakePhrase = "";
         if (wakeEngine != null) {
             wakeEngine.stop();
             wakeEngine.release();

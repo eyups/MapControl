@@ -21,6 +21,7 @@ import java.util.Map;
 public final class VoskWakeWordEngine implements WakeWordEngine {
 
     private static final String TAG = "VaVoskKws";
+    private static volatile boolean nativeLogQuieted;
 
     private final File modelDir;
     private final Object lock = new Object();
@@ -68,6 +69,7 @@ public final class VoskWakeWordEngine implements WakeWordEngine {
     @Override
     public void start(String phrase, Listener listener) throws Exception {
         synchronized (lock) {
+            quietNativeLogs();
             closeLocked();
             this.phrase = WakeWordNormalizer.normalize(phrase);
             this.listener = listener;
@@ -154,6 +156,18 @@ public final class VoskWakeWordEngine implements WakeWordEngine {
         }
         if (current != null) {
             current.onWakeWord(target);
+        }
+    }
+
+    private static void quietNativeLogs() {
+        if (nativeLogQuieted) {
+            return;
+        }
+        try {
+            Class<?> lib = Class.forName("org.vosk.LibVosk");
+            lib.getMethod("vosk_set_log_level", int.class).invoke(null, -1);
+            nativeLogQuieted = true;
+        } catch (Throwable ignored) {
         }
     }
 
