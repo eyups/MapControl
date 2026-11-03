@@ -875,6 +875,12 @@ public final class VoiceAssistantManager {
                         continue;
                     }
                     if ("assistant_control".equals(call.name)
+                            && "disable".equals(call.args.get("action"))) {
+                        // Asistanı kapat: yönetici durur, arkasından TTS/yanıt üretilmez.
+                        executeCall(call);
+                        return;
+                    }
+                    if ("assistant_control".equals(call.name)
                             && "stop".equals(call.args.get("action"))) {
                         // "Sus/dur/iptal": TTS'i kes, yeni yanıt üretme.
                         speaker.stop();
