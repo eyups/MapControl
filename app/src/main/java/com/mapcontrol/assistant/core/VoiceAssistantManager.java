@@ -949,8 +949,12 @@ public final class VoiceAssistantManager {
 
     private void askConfirmation(String tool, Map<String, String> args, String question) {
         confirmation.setPending(tool, args, question);
-        states.set(AssistantState.CONFIRMING, "");
-        speaker.speak(question, done -> postStartRecording(true));
+        states.set(AssistantState.CONFIRMING, question);
+        // Soru sohbette de görünsün; sesli yanıt kapalıysa mikrofon açılmaz.
+        store.append(ConversationStore.ROLE_ASSISTANT, question, sessionId);
+        if (AssistantPrefs.voiceReply(appContext)) {
+            speaker.speak(question, done -> postStartRecording(true));
+        }
     }
 
     private void handleConfirmationText(String text) {

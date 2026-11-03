@@ -224,6 +224,8 @@ public final class FakeVdbusService extends Service {
                     int[] v = payload.getIntArray("VALUE");
                     if (cmd >= 0 && v != null) {
                         VALUES.put(valueKey(event.getId(), cmd), v);
+                        Log.i(TAG, "set event=" + event.getId() + " cmd=" + cmd
+                                + " values=" + java.util.Arrays.toString(v));
                     }
                 }
             }
