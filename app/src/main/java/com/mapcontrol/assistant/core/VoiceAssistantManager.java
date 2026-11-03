@@ -126,6 +126,11 @@ public final class VoiceAssistantManager {
     private int lastPowerMode = -1;
     private long cooldownUntil;
     private long wakeSilenceSince;
+    private static final int WAKE_PREROLL_SAMPLES = 16000; // 1 sn: ilk hece kaybolmasın
+    private final short[] wakePreroll = new short[WAKE_PREROLL_SAMPLES];
+    private int wakePrerollPos;
+    private int wakePrerollCount;
+    private boolean wakeSpeechActive;
     private volatile long lastInteractionAt;
     private volatile String sessionId = "";
     private volatile int consecutiveErrors;
@@ -325,6 +330,30 @@ public final class VoiceAssistantManager {
         log("Asistan dinlemeye başladı");
     }
 
+    private void appendWakePreroll(short[] pcm, int length) {
+        int n = Math.min(length, pcm.length);
+        for (int i = 0; i < n; i++) {
+            wakePreroll[wakePrerollPos] = pcm[i];
+            wakePrerollPos = (wakePrerollPos + 1) % wakePreroll.length;
+            if (wakePrerollCount < wakePreroll.length) {
+                wakePrerollCount++;
+            }
+        }
+    }
+
+    private void feedWakePreroll() {
+        if (wakeEngine == null || wakePrerollCount <= 0) {
+            return;
+        }
+        short[] ordered = new short[wakePrerollCount];
+        int start = (wakePrerollPos - wakePrerollCount + wakePreroll.length)
+                % wakePreroll.length;
+        for (int i = 0; i < wakePrerollCount; i++) {
+            ordered[i] = wakePreroll[(start + i) % wakePreroll.length];
+        }
+        wakeEngine.feed(ordered, ordered.length);
+    }
+
     private void startWakeEngine() {
         String phrase = WakeWordNormalizer.normalize(AssistantPrefs.wakeWord(appContext));
         File modelDir = WakeWordModelStore.modelDir(appContext);
@@ -333,6 +362,9 @@ public final class VoiceAssistantManager {
         }
         try {
             if (wakeEngine.isReady()) {
+                wakePrerollPos = 0;
+                wakePrerollCount = 0;
+                wakeSpeechActive = false;
                 wakeEngine.start(phrase, this::onWakeTriggered);
             } else {
                 Log.i(TAG, "Uyandırma modeli yok; yalnız push-to-talk");
@@ -510,12 +542,19 @@ public final class VoiceAssistantManager {
         }
         if (mode == CAPTURE_WAKE) {
             boolean speech = wakeGate != null && wakeGate.process(pcm, length);
-            if (speech) {
+            appendWakePreroll(pcm, length);
+            if (speech && wakeEngine != null) {
                 wakeSilenceSince = 0L;
-                if (wakeEngine != null) {
+                if (!wakeSpeechActive) {
+                    // Enerji kapısı açıldığında son 1 sn'yi de ver: "dinle" gibi
+                    // ilk hece, eşik altında kaldığı için kaybolmasın.
+                    wakeSpeechActive = true;
+                    feedWakePreroll();
+                } else {
                     wakeEngine.feed(pcm, length);
                 }
             } else if (wakeEngine != null) {
+                wakeSpeechActive = false;
                 if (wakeSilenceSince == 0L) {
                     wakeSilenceSince = timeMs;
                 } else if (timeMs - wakeSilenceSince >= WAKE_RESET_SILENCE_MS) {
