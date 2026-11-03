@@ -896,7 +896,8 @@ public class MainActivity extends AppCompatActivity {
         welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
         equalizerTabBuilder = new EqualizerTabBuilder(this);
         voiceTalkTabBuilder = new VoiceTalkTabBuilder(this);
-        assistantTabBuilder = new AssistantTabBuilder(this);
+        // AssistantTabBuilder yalnız sekme ilk açıldığında kurulur (asistan
+        // kapalıyken açılış maliyeti/ek PSS oluşmasın).
         valetTabBuilder = new ValetTabBuilder(this, msg -> MainActivity.this.log(msg),
                 this::onValetStateChanged);
         driverProfilesTabBuilder = new DriverProfilesTabBuilder(this, msg -> MainActivity.this.log(msg),
@@ -1542,10 +1543,11 @@ public class MainActivity extends AppCompatActivity {
                 addTabChildWithHeader(parent, voiceTalkTabBuilder.getScrollView(), matchParent, tabIndex);
             }
         } else if (tabIndex == CockpitNavModel.TAB_ASSISTANT) {
-            if (assistantTabBuilder != null) {
-                // Sekmenin kendi başlığı var; sayfa başlığını tekrarlama.
-                addTabChild(parent, assistantTabBuilder.getView(), matchParent);
+            if (assistantTabBuilder == null) {
+                assistantTabBuilder = new AssistantTabBuilder(this);
             }
+            // Sekmenin kendi başlığı var; sayfa başlığını tekrarlama.
+            addTabChild(parent, assistantTabBuilder.getView(), matchParent);
         } else if (tabIndex == TAB_LAUNCHER) {
             if (launcherScrollView != null) {
                 addTabChild(parent, launcherScrollView, matchParent);
