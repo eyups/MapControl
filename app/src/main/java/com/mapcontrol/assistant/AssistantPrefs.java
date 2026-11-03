@@ -25,6 +25,7 @@ public final class AssistantPrefs {
     /** iFlytek (araç) veya Sherpa (gömülü). */
     public static final String KEY_TTS_ENGINE = "assistantTtsEngine";
     public static final String KEY_VOICE_REPLY = "assistantVoiceReply";
+    public static final String KEY_CONVERSATION = "assistantConversationMode";
     /** none | tone | speak */
     public static final String KEY_WAKE_SOUND = "assistantWakeSound";
     public static final String KEY_OVERLAY = "assistantOverlayEnabled";
@@ -126,6 +127,11 @@ public final class AssistantPrefs {
 
     public static boolean voiceReply(Context context) {
         return prefs(context).getBoolean(KEY_VOICE_REPLY, true);
+    }
+
+    /** Yanıttan sonra "Başka bir isteğin var mı?" ile devam dinlemesi. */
+    public static boolean conversationMode(Context context) {
+        return prefs(context).getBoolean(KEY_CONVERSATION, false);
     }
 
     public static String wakeSound(Context context) {

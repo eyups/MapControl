@@ -123,6 +123,7 @@ public final class VoiceAssistantManager {
     private volatile boolean released;
     private volatile boolean listeningPaused;
     private volatile boolean turnActive;
+    private volatile boolean followUpDeclined;
 
     private long onSinceMs;
     private int lastPowerMode = -1;
@@ -838,6 +839,7 @@ public final class VoiceAssistantManager {
         ConversationStore.Entry userEntry = store.append(ConversationStore.ROLE_USER,
                 text == null ? "" : text, sessionId);
         states.set(AssistantState.THINKING, "");
+        followUpDeclined = text != null && ConversationPolicy.isDecline(text);
         final int generation = ++turnGeneration;
         turnActive = true;
         network.execute(() -> {
@@ -937,9 +939,13 @@ public final class VoiceAssistantManager {
                     }
                     if ("report_transcript".equals(call.name)) {
                         Object value = call.args.get("text");
-                        if (value instanceof String && userEntry != null
-                                && (userEntry.text == null || userEntry.text.isEmpty())) {
-                            store.updateText(userEntry, (String) value);
+                        if (value instanceof String && userEntry != null) {
+                            if (userEntry.text == null || userEntry.text.isEmpty()) {
+                                store.updateText(userEntry, (String) value);
+                            }
+                            if (ConversationPolicy.isDecline((String) value)) {
+                                followUpDeclined = true;
+                            }
                         }
                         responses.add(new GeminiRequestBuilder.Response(call.name,
                                 ToolResult.ok("alındı").responseJson()));
@@ -1122,10 +1128,25 @@ public final class VoiceAssistantManager {
         lastInteractionAt = System.currentTimeMillis();
         consecutiveErrors = 0;
         if (AssistantPrefs.voiceReply(appContext)) {
-            speaker.speak(answer, done -> postResume());
+            speaker.speak(answer, done -> afterAnswerSpoken());
         } else {
             postResume();
         }
+    }
+
+    /** Yanıt bittikten sonra sohbet modu açıksa devam komutunu sor. */
+    private void afterAnswerSpoken() {
+        if (AssistantPrefs.conversationMode(appContext)
+                && AssistantPrefs.voiceReply(appContext)
+                && !followUpDeclined
+                && started && !released && !listeningPaused
+                && environmentBlockReason() == null) {
+            states.set(AssistantState.SPEAKING, "");
+            speaker.speak("Başka bir isteğin var mı?",
+                    done -> postStartRecordingWithCue(false));
+            return;
+        }
+        postResume();
     }
 
     private void failTurn(int generation, String message, ConversationStore.Entry userEntry) {
@@ -1288,6 +1309,8 @@ public final class VoiceAssistantManager {
                 + "- Kullanıcı sesli konuştuysa söylediğini report_transcript ile aynen bildir.\n"
                 + "- Araç sonucunu uydurma; araç başarısızsa nedenini söyle.\n"
                 + "- Belirsizse tek bir kısa soru sor.\n"
+                + "- Kullanıcı 'hayır', 'yok' veya 'teşekkürler' derse kısa 'Tamam.' de; "
+                + "yeni soru sorma.\n"
                 + "- AEB, FCW, LDW, LDP, ISS gibi güvenlik sistemlerini değiştirme isteklerini "
                 + "reddet ve güvenlik nedeniyle yapamadığını söyle.\n"
                 + "- Asla API anahtarı veya kişisel veri okuma.\n"

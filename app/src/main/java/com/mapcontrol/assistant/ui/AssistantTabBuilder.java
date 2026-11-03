@@ -1016,6 +1016,16 @@ public final class AssistantTabBuilder {
                 prefs.edit().putBoolean(AssistantPrefs.KEY_VOICE_REPLY, checked).apply());
         voiceRow.addView(voiceToggle, new LinearLayout.LayoutParams(dp(72), dp(40)));
 
+        LinearLayout conversationRow = settingRow(body,
+                R.string.assistant_conversation_title,
+                R.string.assistant_conversation_desc);
+        CockpitToggle conversationToggle = new CockpitToggle(context);
+        conversationToggle.setChecked(AssistantPrefs.conversationMode(context), false);
+        conversationToggle.setOnCheckedChangeListener((toggle, checked) ->
+                prefs.edit().putBoolean(AssistantPrefs.KEY_CONVERSATION, checked).apply());
+        conversationRow.addView(conversationToggle,
+                new LinearLayout.LayoutParams(dp(72), dp(40)));
+
         addLabel(body, R.string.assistant_wake_sound);
         List<String> sounds = new ArrayList<>();
         sounds.add(context.getString(R.string.assistant_wake_sound_none));

@@ -1461,4 +1461,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_reset_done">Oturum sıfırlandı</string>
     <string name="assistant_state_ready_button">Hazır (bas-konuş)</string>
     <string name="assistant_wake_word_help">Türkçe küçük model yalnız kendi sözlüğünü tanır; “deck” tanınmaz. “dinle beni” veya “hey merhaba” önerilir.</string>
+    <string name="assistant_conversation_title">Sohbet modu</string>
+    <string name="assistant_conversation_desc">Yanıttan sonra \'Başka bir isteğin var mı?\' diye sorar ve uyandırma kelimesi beklemeden dinler.</string>
 </resources>
