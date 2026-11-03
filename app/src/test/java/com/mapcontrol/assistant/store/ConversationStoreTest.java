@@ -116,6 +116,27 @@ public class ConversationStoreTest {
     }
 
     @Test
+    public void keepsHistoryFileUnderByteCap() {
+        StringBuilder big = new StringBuilder();
+        for (int i = 0; i < 2500; i++) {
+            big.append('a');
+        }
+        for (int i = 0; i < ConversationStore.MAX_MESSAGES; i++) {
+            store.append(ConversationStore.ROLE_USER, i + ":" + big, "s");
+        }
+        store.flushNow();
+        assertTrue("file should be capped: " + store.file().length(),
+                store.file().length() <= ConversationStore.MAX_BYTES + 4096L);
+        ConversationStore reopened = new ConversationStore(dir, false);
+        List<ConversationStore.Entry> loaded = reopened.load();
+        assertTrue(loaded.size() > 0);
+        assertTrue(loaded.size() < ConversationStore.MAX_MESSAGES);
+        assertTrue(loaded.get(loaded.size() - 1).text.startsWith(
+                (ConversationStore.MAX_MESSAGES - 1) + ":"));
+        reopened.release();
+    }
+
+    @Test
     public void survivesCorruptLines() {
         store.flushNow();
         try {
