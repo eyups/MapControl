@@ -116,6 +116,7 @@ public final class VoiceAssistantManager {
     private WakeWordEngine wakeEngine;
 
     private volatile int captureMode = CAPTURE_NONE;
+    private int recordCueToken;
     private volatile float lastLevel;
     private volatile boolean started;
     private volatile boolean released;
@@ -601,7 +602,7 @@ public final class VoiceAssistantManager {
         }
         String sound = AssistantPrefs.wakeSound(appContext);
         if (AssistantPrefs.WAKE_SOUND_SPEAK.equals(sound) && AssistantPrefs.voiceReply(appContext)) {
-            speaker.speak("Dinliyorum, buyurun.", done -> postStartRecording(false));
+            speaker.speak("Dinliyorum, buyurun.", done -> postStartRecordingWithCue(false));
         } else {
             if (AssistantPrefs.WAKE_SOUND_TONE.equals(sound)) {
                 speaker.beep();
@@ -647,6 +648,26 @@ public final class VoiceAssistantManager {
         });
     }
 
+    /**
+     * TTS kuyruğu bittikten sonra kısa bir sessizlik + bip, sonra kayıt.
+     * Böylece mikrofon TTS kuyruğunu/odayı komut sanmıyor ve kullanıcı
+     * ne zaman konuşacağını net bir işaretle biliyor.
+     */
+    private void postStartRecordingWithCue(boolean confirm) {
+        final int token = ++recordCueToken;
+        handler.postDelayed(() -> {
+            if (token != recordCueToken) {
+                return;
+            }
+            speaker.beep();
+            handler.postDelayed(() -> {
+                if (token == recordCueToken) {
+                    postStartRecording(confirm);
+                }
+            }, 400L);
+        }, 160L);
+    }
+
     private void postStartRecording(boolean confirm) {
         handler.post(() -> startRecording(confirm));
     }
@@ -656,6 +677,7 @@ public final class VoiceAssistantManager {
     }
 
     private void startRecording(boolean confirm) {
+        recordCueToken++;
         if (capture == null) {
             return;
         }
@@ -993,7 +1015,7 @@ public final class VoiceAssistantManager {
         // Soru sohbette de görünsün; sesli yanıt kapalıysa mikrofon açılmaz.
         store.append(ConversationStore.ROLE_ASSISTANT, question, sessionId);
         if (AssistantPrefs.voiceReply(appContext)) {
-            speaker.speak(question, done -> postStartRecording(true));
+            speaker.speak(question, done -> postStartRecordingWithCue(true));
         }
     }
 

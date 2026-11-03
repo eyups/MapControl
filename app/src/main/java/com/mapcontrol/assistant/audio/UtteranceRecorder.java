@@ -28,6 +28,7 @@ public final class UtteranceRecorder {
     private long startedAtMs;
     private long lastSpeechAtMs;
     private boolean speechStarted;
+    private int speechRun;
     private boolean active;
 
     public UtteranceRecorder(EnergyGate gate, Listener listener) {
@@ -47,6 +48,7 @@ public final class UtteranceRecorder {
         startedAtMs = nowMs;
         lastSpeechAtMs = nowMs;
         speechStarted = false;
+        speechRun = 0;
         active = true;
         if (gate != null) {
             gate.reset();
@@ -60,13 +62,21 @@ public final class UtteranceRecorder {
         long elapsed = nowMs - startedAtMs;
         boolean speech = gate != null && gate.process(pcm, count);
         if (speech) {
-            if (!speechStarted) {
+            if (speechRun < 6) {
+                speechRun++;
+            }
+            // Tek karelik tık/bip/TTS kuyruğu konuşma sayılmasın; en az 150 ms.
+            if (!speechStarted && speechRun >= 6) {
                 speechStarted = true;
                 if (listener != null) {
                     listener.onSpeechStart();
                 }
             }
-            lastSpeechAtMs = nowMs;
+            if (speechStarted) {
+                lastSpeechAtMs = nowMs;
+            }
+        } else {
+            speechRun = 0;
         }
 
         // Konuşma başlamadan önce gelen çerçeveler de tampona girer (başlangıç kırpılmasın).
