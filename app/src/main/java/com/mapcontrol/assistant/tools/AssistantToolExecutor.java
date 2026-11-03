@@ -10,6 +10,7 @@ import android.media.session.MediaController;
 import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
 
+import com.desaysv.ivi.extra.project.carinfo.HvacID;
 import com.desaysv.ivi.extra.project.carinfo.NewEnergyID;
 import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
@@ -187,12 +188,28 @@ public final class AssistantToolExecutor {
         int posi = ComfortCommands.readSunroofPosition();
         int shade = ComfortCommands.readRaw(VDEventCarInfo.MODULE_CAR_SETTING, 10);
         float outside = ComfortCommands.readOutsideTempC();
+        int range = ComfortCommands.readRaw(
+                VDEventCarInfo.MODULE_READONLY_INFO, ReadOnlyID.ID_ENDURANCE_KM);
+        int pmIn = ComfortCommands.readRaw(
+                VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_PM25_INCAR);
+        int pmOut = ComfortCommands.readRaw(
+                VDEventCarInfo.MODULE_HVAC, HvacID.ID_AC_PM25_OUTCAR);
         StringBuilder state = new StringBuilder(128);
         state.append("{\"speed\":").append(speed)
                 .append(",\"gear\":\"").append(gearLabel(gear)).append('"')
-                .append(",\"powerMode\":").append(power)
+                .append(",\"powerMode\":").append(
+                        power == ComfortCommands.INVALID_TEMP ? -1 : power)
                 .append(",\"sunroofOpen\":").append(posi > 1)
                 .append(",\"sunshadeOpen\":").append(shade == 2);
+        if (range != ComfortCommands.INVALID_TEMP && range >= 0) {
+            state.append(",\"rangeKm\":").append(range);
+        }
+        if (pmIn != ComfortCommands.INVALID_TEMP && pmIn > 0 && pmIn != 0xFFFF) {
+            state.append(",\"pm25In\":").append(pmIn);
+        }
+        if (pmOut != ComfortCommands.INVALID_TEMP && pmOut > 0 && pmOut != 0xFFFF) {
+            state.append(",\"pm25Out\":").append(pmOut);
+        }
         if (!Float.isNaN(outside)) {
             state.append(String.format(Locale.US, ",\"outsideTempC\":%.1f", outside));
         }
@@ -202,6 +219,9 @@ public final class AssistantToolExecutor {
                 .append(gearLabel(gear));
         if (!Float.isNaN(outside)) {
             message.append(", dış sıcaklık ").append(Math.round(outside)).append(" derece");
+        }
+        if (range != ComfortCommands.INVALID_TEMP && range >= 0) {
+            message.append(", menzil ").append(range).append(" kilometre");
         }
         message.append(". Cam tavan ").append(posi > 1 ? "açık" : "kapalı").append('.');
         return ToolResult.ok(message.toString(), state.toString());

@@ -900,15 +900,10 @@ public final class VoiceAssistantManager {
                     lastToolMessage = result.message;
                     responses.add(new GeminiRequestBuilder.Response(call.name,
                             result.responseJson()));
-                    if (result.ok && AssistantSafetyPolicy.isWriteTool(call.name)) {
-                        store.appendTool(call.name,
-                                GeminiRequestBuilder.argsToJson(call.args),
-                                result.message, sessionId);
-                    } else if (!result.ok) {
-                        store.appendTool(call.name,
-                                GeminiRequestBuilder.argsToJson(call.args),
-                                result.message, sessionId);
-                    }
+                    // Okuma araçları da sohbette eylem kartı olarak görünsün.
+                    store.appendTool(call.name,
+                            GeminiRequestBuilder.argsToJson(call.args),
+                            result.message, sessionId);
                 }
                 request.functionResponses(responses);
                 if (confirmation.hasPending()) {
