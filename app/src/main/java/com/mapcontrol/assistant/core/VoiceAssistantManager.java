@@ -943,7 +943,8 @@ public final class VoiceAssistantManager {
                             if (userEntry.text == null || userEntry.text.isEmpty()) {
                                 store.updateText(userEntry, (String) value);
                             }
-                            if (ConversationPolicy.isDecline((String) value)) {
+                            if (ConversationPolicy.isDecline((String) value)
+                                    || ConversationPolicy.isNoiseTranscript((String) value)) {
                                 followUpDeclined = true;
                             }
                         }
@@ -1127,26 +1128,31 @@ public final class VoiceAssistantManager {
         store.append(ConversationStore.ROLE_ASSISTANT, answer, sessionId);
         lastInteractionAt = System.currentTimeMillis();
         consecutiveErrors = 0;
-        if (AssistantPrefs.voiceReply(appContext)) {
-            speaker.speak(answer, done -> afterAnswerSpoken());
+        if (shouldAskFollowUp()) {
+            // Tek TTS oturumu: yanıt + soru birlikte okunur. İkinci bir
+            // iFlytek oturumu açmak OEM TTS servisinde race/crash'e yol açıyordu.
+            store.append(ConversationStore.ROLE_FOLLOW_UP,
+                    "Başka bir isteğin var mı?", sessionId);
+            speaker.speak(answer + " Başka bir isteğin var mı?",
+                    done -> postStartFollowUpRecording());
+        } else if (AssistantPrefs.voiceReply(appContext)) {
+            speaker.speak(answer, done -> postResume());
         } else {
             postResume();
         }
     }
 
-    /** Yanıt bittikten sonra sohbet modu açıksa devam komutunu sor. */
-    private void afterAnswerSpoken() {
-        if (AssistantPrefs.conversationMode(appContext)
+    private void postStartFollowUpRecording() {
+        // Anonsun sonundaki kuyruk/oda yankısı komut sanılmasın; bip yok.
+        handler.postDelayed(() -> startRecording(false), 300L);
+    }
+
+    private boolean shouldAskFollowUp() {
+        return AssistantPrefs.conversationMode(appContext)
                 && AssistantPrefs.voiceReply(appContext)
                 && !followUpDeclined
                 && started && !released && !listeningPaused
-                && environmentBlockReason() == null) {
-            states.set(AssistantState.SPEAKING, "");
-            speaker.speak("Başka bir isteğin var mı?",
-                    done -> postStartRecordingWithCue(false));
-            return;
-        }
-        postResume();
+                && environmentBlockReason() == null;
     }
 
     private void failTurn(int generation, String message, ConversationStore.Entry userEntry) {

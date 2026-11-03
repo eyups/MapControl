@@ -31,6 +31,8 @@ public final class ConversationStore {
     public static final String ROLE_ASSISTANT = "assistant";
     public static final String ROLE_TOOL = "tool";
     public static final String ROLE_ERROR = "error";
+    /** Uygulamanın sorduğu "Başka bir isteğin var mı?" istemi; model bağlamına girmez. */
+    public static final String ROLE_FOLLOW_UP = "followup";
 
     public static final int MAX_MESSAGES = 500;
     public static final long MAX_BYTES = 1024L * 1024L;

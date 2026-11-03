@@ -8,6 +8,17 @@ public final class ConversationPolicy {
     private ConversationPolicy() {
     }
 
+    /** Gemini'nin sessizlik/bip için ürettiği "00:00..." gibi çöp transkriptler. */
+    public static boolean isNoiseTranscript(String text) {
+        if (text == null) {
+            return true;
+        }
+        String value = text.trim();
+        return value.length() < 2
+                || value.startsWith("00:00")
+                || value.matches("^\\d{2}:\\d{2}.*");
+    }
+
     public static boolean isDecline(String text) {
         if (text == null) {
             return false;
