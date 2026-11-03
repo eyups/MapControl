@@ -7,6 +7,7 @@ import com.desaysv.ivi.extra.project.carinfo.CarSettingID;
 import com.desaysv.ivi.extra.project.carinfo.HvacID;
 import com.desaysv.ivi.extra.project.carinfo.RadarID;
 import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
+import com.desaysv.ivi.extra.project.carinfo.VrID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 
@@ -47,6 +48,7 @@ public final class VehicleValueWatcher {
     private static final int CS = VDEventCarInfo.MODULE_CAR_SETTING;
     private static final int HV = VDEventCarInfo.MODULE_HVAC;
     private static final int RD = VDEventCarInfo.MODULE_RADAR;
+    private static final int VR = VDEventCarInfo.MODULE_VR;
 
     private static final Item[] ITEMS = {
             new Item(RO, ReadOnlyID.ID_CAR_SPEED, "hız"),
@@ -77,6 +79,18 @@ public final class VehicleValueWatcher {
             new Item(CS, CarSettingID.ID_CAR_SPF_OPERATE, "tavan operate"),
             new Item(CS, CarSettingID.ID_CAR_SPF_POSI, "tavan konum"),
             new Item(CS, ID_CAR_SUNSHADE, "güneşlik durumu"),
+            // Faz 6 keşif: cam ve klima yazma değerleri (araçta doğrulanacak)
+            new Item(CS, CarSettingID.ID_CAR_FL_WINDOW, "sol ön cam"),
+            new Item(CS, CarSettingID.ID_CAR_FR_WINDOW, "sağ ön cam"),
+            new Item(CS, CarSettingID.ID_CAR_RL_WINDOW, "sol arka cam"),
+            new Item(CS, CarSettingID.ID_CAR_RR_WINDOW, "sağ arka cam"),
+            new Item(CS, CarSettingID.ID_CAR_COMBINE_WINDOW_SET, "kombine cam"),
+            new Item(CS, CarSettingID.ID_CAR_WINDOW_PROHIBIT, "cam kilidi"),
+            new Item(VR, VrID.ID_VR_WINDOW, "VR pencere"),
+            new Item(HV, HvacID.ID_AC_TEMPERATURE_DRIVER, "klima sürücü sıcaklık"),
+            new Item(HV, HvacID.ID_AC_TEMPERATURE_COPILOT, "klima yolcu sıcaklık"),
+            new Item(HV, HvacID.ID_AC_BLOW_SPEED_LEVEL, "klima fan seviyesi"),
+            new Item(HV, HvacID.ID_AC_MODE_ADJUST, "klima modu"),
             new Item(CS, CarSettingID.ID_CAR_FRONT_DISTANCE, "ön mesafe"),
             new Item(CS, CarSettingID.ID_CAR_FRONT_BARRIER_TYPE, "ön engel türü"),
             new Item(CS, CarSettingID.ID_CAR_FRONT_BARRIER_WARNING, "ön engel uyarısı"),
