@@ -31,6 +31,7 @@ public final class CockpitNavModel {
     public static final int TAB_CAMERA_360 = 20;
     public static final int TAB_SPLIT_SCREEN = 21;
     public static final int TAB_VOICE_TALK = 25;
+    public static final int TAB_ASSISTANT = 26;
     public static final int TAB_SUNROOF_AUTOMATION = 22;
     public static final int TAB_ASSIST = 23;
     public static final int TAB_ROADMATE = 24;
@@ -119,6 +120,7 @@ public final class CockpitNavModel {
                     .add(TAB_SPLIT_SCREEN, R.string.side_rail_split_screen,
                             R.drawable.ic_mdi_view_split)
                     .add(TAB_VOICE_TALK, R.string.ck_sub_voice_talk, R.drawable.ic_mdi_volume_high)
+                    .add(TAB_ASSISTANT, R.string.ck_sub_assistant, R.drawable.ic_mdi_microphone)
                     .add(TAB_LAUNCHER, R.string.ck_sub_launcher, R.drawable.ic_mdi_home));
 
             list.add(new Domain(4, R.string.ck_domain_apps, R.drawable.ic_mdi_package_variant)

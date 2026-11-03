@@ -98,6 +98,11 @@ import com.mapcontrol.ui.builder.TopBarBuilder;
 import com.mapcontrol.ui.builder.VehicleInfoTabBuilder;
 import com.mapcontrol.ui.builder.WelcomeSoundTabBuilder;
 import com.mapcontrol.ui.builder.VoiceTalkTabBuilder;
+import com.mapcontrol.assistant.ui.AssistantTabBuilder;
+import com.mapcontrol.assistant.ui.AssistantOverlayButton;
+import com.mapcontrol.assistant.ui.AssistantListeningPanel;
+import com.mapcontrol.assistant.AssistantPrefs;
+import com.mapcontrol.assistant.core.VoiceAssistantManager;
 import com.mapcontrol.ui.builder.WifiTabBuilder;
 import com.mapcontrol.ui.cockpit.CockpitLegacyStyler;
 import com.mapcontrol.ui.cockpit.CockpitModal;
@@ -194,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                     });
     private EqualizerTabBuilder equalizerTabBuilder;
     private VoiceTalkTabBuilder voiceTalkTabBuilder;
+    private AssistantTabBuilder assistantTabBuilder;
     private DriverProfilesTabBuilder driverProfilesTabBuilder;
     private VehicleInfoTabBuilder vehicleInfoTabBuilder;
     private DrivingHistoryTabBuilder drivingHistoryTabBuilder;
@@ -301,6 +307,87 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    private boolean assistantBroadcastRegistered;
+    /** Yüzen buton / dinleme paneli: Sesli Asistan sekmesini veya bir iç ekranı açar. */
+    private final BroadcastReceiver assistantCommandReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null) {
+                return;
+            }
+            String action = intent.getAction();
+            if ("com.mapcontrol.action.ASSISTANT_SUBMIT_TEXT".equals(action)
+                    && com.mapcontrol.BuildConfig.DEBUG) {
+                // Emülatör doğrulama kancası; yalnız debug derlemede dinlenir.
+                String text = intent.getStringExtra("text");
+                if (text != null && AssistantPrefs.isEnabled(MainActivity.this)) {
+                    VoiceAssistantManager.get(MainActivity.this).submitText(text);
+                }
+                return;
+            }
+            int tabId = -1;
+            if ("com.mapcontrol.action.ASSISTANT_OPEN_TAB".equals(action)) {
+                tabId = CockpitNavModel.TAB_ASSISTANT;
+            } else if ("com.mapcontrol.action.ASSISTANT_OPEN_SCREEN".equals(action)) {
+                tabId = assistantScreenTab(intent.getStringExtra("screen"));
+            }
+            if (tabId < 0) {
+                return;
+            }
+            final int target = tabId;
+            Runnable open = () -> onSubTabSelected(target,
+                    CockpitNavModel.title(MainActivity.this, target));
+            if (handler != null) {
+                handler.post(open);
+            } else {
+                open.run();
+            }
+        }
+    };
+
+    private static int assistantScreenTab(String screen) {
+        if (screen == null) {
+            return -1;
+        }
+        switch (screen) {
+            case "camera360":
+                return CockpitNavModel.TAB_CAMERA_360;
+            case "driving_report":
+                return CockpitNavModel.TAB_DRIVING_HISTORY;
+            case "climate_automation":
+                return CockpitNavModel.TAB_CLIMATE_AUTOMATION;
+            case "sunroof":
+                return CockpitNavModel.TAB_SUNROOF_AUTOMATION;
+            case "equalizer":
+                return CockpitNavModel.TAB_EQUALIZER;
+            case "vehicle_info":
+                return CockpitNavModel.TAB_VEHICLE_INFO;
+            case "home":
+                return CockpitNavModel.TAB_HOME;
+            case "settings":
+                return CockpitNavModel.TAB_SETTINGS;
+            default:
+                return -1;
+        }
+    }
+
+    private void registerAssistantBroadcastReceiver() {
+        if (assistantBroadcastRegistered) {
+            return;
+        }
+        IntentFilter filter = new IntentFilter("com.mapcontrol.action.ASSISTANT_OPEN_TAB");
+        filter.addAction("com.mapcontrol.action.ASSISTANT_OPEN_SCREEN");
+        if (com.mapcontrol.BuildConfig.DEBUG) {
+            filter.addAction("com.mapcontrol.action.ASSISTANT_SUBMIT_TEXT");
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(assistantCommandReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(assistantCommandReceiver, filter);
+        }
+        assistantBroadcastRegistered = true;
+    }
+
     private final BroadcastReceiver targetPackageUpdatedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -809,6 +896,7 @@ public class MainActivity extends AppCompatActivity {
         welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
         equalizerTabBuilder = new EqualizerTabBuilder(this);
         voiceTalkTabBuilder = new VoiceTalkTabBuilder(this);
+        assistantTabBuilder = new AssistantTabBuilder(this);
         valetTabBuilder = new ValetTabBuilder(this, msg -> MainActivity.this.log(msg),
                 this::onValetStateChanged);
         driverProfilesTabBuilder = new DriverProfilesTabBuilder(this, msg -> MainActivity.this.log(msg),
@@ -1343,6 +1431,11 @@ public class MainActivity extends AppCompatActivity {
                 && drivingHistoryTabBuilder != null) {
             drivingHistoryTabBuilder.onTabHidden();
         }
+        if (currentTab == CockpitNavModel.TAB_ASSISTANT
+                && tabIndex != CockpitNavModel.TAB_ASSISTANT
+                && assistantTabBuilder != null) {
+            assistantTabBuilder.onTabHidden();
+        }
         currentTab = tabIndex;
         if (sideRailBuilder != null) {
             sideRailBuilder.setSelectionForTabIndex(tabIndex);
@@ -1446,6 +1539,11 @@ public class MainActivity extends AppCompatActivity {
             if (voiceTalkTabBuilder != null) {
                 addTabChildWithHeader(parent, voiceTalkTabBuilder.getScrollView(), matchParent, tabIndex);
             }
+        } else if (tabIndex == CockpitNavModel.TAB_ASSISTANT) {
+            if (assistantTabBuilder != null) {
+                // Sekmenin kendi başlığı var; sayfa başlığını tekrarlama.
+                addTabChild(parent, assistantTabBuilder.getView(), matchParent);
+            }
         } else if (tabIndex == TAB_LAUNCHER) {
             if (launcherScrollView != null) {
                 addTabChild(parent, launcherScrollView, matchParent);
@@ -1489,6 +1587,7 @@ public class MainActivity extends AppCompatActivity {
             case CockpitNavModel.TAB_PROJECTION: return getString(R.string.ck_page_projection_sub);
             case CockpitNavModel.TAB_SPLIT_SCREEN: return getString(R.string.ck_page_split_sub);
             case CockpitNavModel.TAB_VOICE_TALK: return getString(R.string.ck_page_voice_talk_sub);
+            case CockpitNavModel.TAB_ASSISTANT: return getString(R.string.ck_page_assistant_sub);
             case CockpitNavModel.TAB_EQUALIZER: return getString(R.string.ck_page_equalizer_sub);
             case CockpitNavModel.TAB_DRIVER_PROFILES: return getString(R.string.ck_page_driver_profiles_sub);
             case CockpitNavModel.TAB_FACE_RECOGNITION: return getString(R.string.ck_page_face_sub);
@@ -1607,6 +1706,13 @@ public class MainActivity extends AppCompatActivity {
         } else if (tabIndex == TAB_VOICE_TALK) {
             if (topBarTitle != null) {
                 topBarTitle.setText(R.string.ck_sub_voice_talk);
+            }
+        } else if (tabIndex == CockpitNavModel.TAB_ASSISTANT) {
+            if (topBarTitle != null) {
+                topBarTitle.setText(R.string.ck_sub_assistant);
+            }
+            if (assistantTabBuilder != null) {
+                assistantTabBuilder.onTabVisible();
             }
         } else if (tabIndex == TAB_LAUNCHER) {
             if (topBarTitle != null) {
@@ -2350,6 +2456,11 @@ public class MainActivity extends AppCompatActivity {
         registerNavigationClusterBroadcastReceiver();
         registerGoogleMapsNavBroadcastReceiver();
         registerFaceRecognitionStatusReceiver();
+        registerAssistantBroadcastReceiver();
+        if (AssistantPrefs.isEnabled(this)) {
+            AssistantOverlayButton.sync(this);
+            AssistantListeningPanel.sync(this);
+        }
         isNavigationOpen = ClusterNavigationState.getLastKnownOpen();
         if (projectionTabBuilder != null) {
             projectionTabBuilder.refreshProjectionStatusUi();
@@ -2383,6 +2494,13 @@ public class MainActivity extends AppCompatActivity {
         unregisterTargetPackageBroadcastReceiver();
         unregisterNavigationClusterBroadcastReceiver();
         unregisterGoogleMapsNavBroadcastReceiver();
+        if (assistantBroadcastRegistered) {
+            try {
+                unregisterReceiver(assistantCommandReceiver);
+            } catch (Throwable ignored) {
+            }
+            assistantBroadcastRegistered = false;
+        }
         if (faceRecognitionStatusBroadcastRegistered) {
             unregisterReceiver(faceRecognitionStatusReceiver);
             faceRecognitionStatusBroadcastRegistered = false;
@@ -2532,6 +2650,9 @@ public class MainActivity extends AppCompatActivity {
         }
         if (driverProfilesTabBuilder != null) {
             driverProfilesTabBuilder.release();
+        }
+        if (assistantTabBuilder != null) {
+            assistantTabBuilder.release();
         }
         if (settingsTabBuilder != null) {
             settingsTabBuilder.release();
