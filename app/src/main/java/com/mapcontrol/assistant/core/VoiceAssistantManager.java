@@ -571,13 +571,14 @@ public final class VoiceAssistantManager {
         }
         handler.post(() -> {
             if (!started) {
+                // Servis güç döngüsü henüz başlatmadıysa ilk bas-konuşta başlat.
+                ensureStarted();
+            }
+            if (!started) {
                 return;
             }
             if (isBusy()) {
                 cancelInternal();
-            }
-            if (capture == null) {
-                ensureStarted();
             }
             if (capture == null) {
                 return;
