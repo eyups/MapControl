@@ -51,6 +51,10 @@ import com.mapcontrol.manager.FloatingBackButtonManager;
 import com.mapcontrol.manager.MapControlVDBusKeyBridge;
 import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.vehicle.ComfortCommands;
+import com.mapcontrol.assistant.AssistantPrefs;
+import com.mapcontrol.assistant.core.VoiceAssistantManager;
+import com.mapcontrol.assistant.ui.AssistantOverlayButton;
+import com.mapcontrol.assistant.ui.AssistantListeningPanel;
 import com.mapcontrol.vehicle.RecirculationAutomation;
 import com.mapcontrol.R;
 import com.mapcontrol.vehicle.ClimateAutomationEngine;
@@ -383,6 +387,15 @@ public class MapControlService extends Service {
                     } catch (Throwable t) {
                         Log.w(TAG, "recirculation tick failed", t);
                     }
+                    // Sesli asistan kapalıyken hiçbir sınıf/thread yüklenmez.
+                    if (AssistantPrefs.isEnabled(MapControlService.this)) {
+                        try {
+                            VoiceAssistantManager.get(MapControlService.this)
+                                    .onPowerMode(currentPowerMode);
+                        } catch (Throwable t) {
+                            Log.w(TAG, "voice assistant tick failed", t);
+                        }
+                    }
                     
                     // Power mode değişti mi kontrol et
                     if (lastPowerMode != currentPowerMode) {
@@ -402,6 +415,10 @@ public class MapControlService extends Service {
                         int powerModeSetting = getPowerModeSetting();
 
                         if (currentPowerMode == 2) {
+                            if (AssistantPrefs.isEnabled(MapControlService.this)) {
+                                AssistantOverlayButton.sync(MapControlService.this);
+                                AssistantListeningPanel.sync(MapControlService.this);
+                            }
                             // Motor çalışınca - ayara göre kontrol et
                             if (powerModeSetting == 2) {
                                 log("✅ Araç power aldı! PowerMode: " + currentPowerMode);
@@ -471,6 +488,8 @@ public class MapControlService extends Service {
                             
                             // Sürüş modu sıfırla (bir sonraki açılışta tekrar uygulanabilir)
                             lastAppliedDriveMode = -1;
+                            AssistantOverlayButton.hide();
+                            AssistantListeningPanel.hide();
                         } else {
                             log("ℹ️ Araç power durumu: " + currentPowerMode);
                         }

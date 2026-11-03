@@ -26,6 +26,11 @@ public final class GlitchTip {
     private static final Pattern QUERY_SECRET = Pattern.compile(
             "(?i)\\b(latitude|longitude|lat|lon|lng|token|phone|authorization|password|email|imei|coordinate|coordinates)=([^&\\s]+)");
     private static final Pattern BEARER = Pattern.compile("(?i)\\bBearer\\s+[A-Za-z0-9._\\-]+");
+    /** Google AI Studio (Gemini) anahtarları; log/crash raporuna sızmamalı. */
+    private static final Pattern GEMINI_KEY = Pattern.compile(
+            "(AIza[0-9A-Za-z_\\-]{35}|AQ\\.[0-9A-Za-z_\\-]{20,})");
+    /** ElevenLabs anahtarları (sk_ + 48). */
+    private static final Pattern ELEVENLABS_KEY = Pattern.compile("sk_[0-9a-f]{48}");
 
     private GlitchTip() {
     }
@@ -197,6 +202,8 @@ public final class GlitchTip {
             return value;
         }
         String withoutQuery = QUERY_SECRET.matcher(value).replaceAll("$1=[redacted]");
-        return BEARER.matcher(withoutQuery).replaceAll("Bearer [redacted]");
+        String withoutBearer = BEARER.matcher(withoutQuery).replaceAll("Bearer [redacted]");
+        String withoutGemini = GEMINI_KEY.matcher(withoutBearer).replaceAll("[redacted-key]");
+        return ELEVENLABS_KEY.matcher(withoutGemini).replaceAll("[redacted-key]");
     }
 }
