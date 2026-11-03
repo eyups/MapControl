@@ -124,6 +124,8 @@ public final class VoiceAssistantManager {
     private volatile boolean listeningPaused;
     private volatile boolean turnActive;
     private volatile boolean followUpDeclined;
+    /** Son tur sesli miydi? Yazılı gönderimde sohbet sorusu sorulmaz. */
+    private volatile boolean lastTurnWasVoice;
 
     private long onSinceMs;
     private int lastPowerMode = -1;
@@ -757,6 +759,7 @@ public final class VoiceAssistantManager {
         byte[] wav = WavCodec.toWav(pcm, length, EnergyGate.SAMPLE_RATE);
         if (confirmationListening) {
             confirmationListening = false;
+            lastTurnWasVoice = true;
             handleConfirmationAudio(wav);
             return;
         }
@@ -783,6 +786,7 @@ public final class VoiceAssistantManager {
                 ensureStarted();
             }
             if (confirmation.hasPending()) {
+                lastTurnWasVoice = false;
                 handleConfirmationText(value);
                 return;
             }
@@ -840,6 +844,7 @@ public final class VoiceAssistantManager {
                 text == null ? "" : text, sessionId);
         states.set(AssistantState.THINKING, "");
         followUpDeclined = text != null && ConversationPolicy.isDecline(text);
+        lastTurnWasVoice = wav != null;
         final int generation = ++turnGeneration;
         turnActive = true;
         network.execute(() -> {
@@ -1150,6 +1155,7 @@ public final class VoiceAssistantManager {
     private boolean shouldAskFollowUp() {
         return AssistantPrefs.conversationMode(appContext)
                 && AssistantPrefs.voiceReply(appContext)
+                && lastTurnWasVoice
                 && !followUpDeclined
                 && started && !released && !listeningPaused
                 && environmentBlockReason() == null;
