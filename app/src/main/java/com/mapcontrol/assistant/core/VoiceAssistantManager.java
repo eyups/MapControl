@@ -869,6 +869,16 @@ public final class VoiceAssistantManager {
                                 ToolResult.ok("alındı").responseJson()));
                         continue;
                     }
+                    if ("assistant_control".equals(call.name)
+                            && "stop".equals(call.args.get("action"))) {
+                        // "Sus/dur/iptal": TTS'i kes, yeni yanıt üretme.
+                        speaker.stop();
+                        store.appendTool(call.name,
+                                GeminiRequestBuilder.argsToJson(call.args),
+                                "Durduruldu.", sessionId);
+                        postResume();
+                        return;
+                    }
                     if (toolCalls >= MAX_TOOL_CALLS) {
                         responses.add(new GeminiRequestBuilder.Response(call.name,
                                 ToolResult.fail("tur başına araç sınırı").responseJson()));

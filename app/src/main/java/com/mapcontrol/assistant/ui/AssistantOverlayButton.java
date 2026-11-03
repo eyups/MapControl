@@ -33,6 +33,7 @@ public final class AssistantOverlayButton {
     private static final long LONG_PRESS_MS = 550L;
 
     private static AssistantOverlayButton instance;
+    private static volatile boolean suppressed;
 
     public static void sync(Context context) {
         if (context == null) {
@@ -53,6 +54,22 @@ public final class AssistantOverlayButton {
             instance = new AssistantOverlayButton(app);
         }
         instance.show();
+    }
+
+    /** Kamera/360 gibi ekranlarda butonu gizle (ana thread'e post eder). */
+    public static void setSuppressed(Context context, boolean value) {
+        suppressed = value;
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            new Handler(Looper.getMainLooper()).post(() -> {
+                if (instance != null) {
+                    instance.applyVisibility();
+                }
+            });
+            return;
+        }
+        if (instance != null) {
+            instance.applyVisibility();
+        }
     }
 
     public static void hide() {
@@ -134,6 +151,7 @@ public final class AssistantOverlayButton {
             metricsRepository.addListener(metricsListener);
         } catch (Throwable ignored) {
         }
+        applyVisibility();
         onState(AssistantStateBus.get().state(), "");
     }
 
@@ -169,8 +187,12 @@ public final class AssistantOverlayButton {
             return;
         }
         reverse = reverseNow;
+        applyVisibility();
+    }
+
+    private void applyVisibility() {
         if (view != null) {
-            view.setVisibility(reverse ? View.GONE : View.VISIBLE);
+            view.setVisibility(reverse || suppressed ? View.GONE : View.VISIBLE);
         }
     }
 

@@ -1437,6 +1437,8 @@ public class MainActivity extends AppCompatActivity {
             assistantTabBuilder.onTabHidden();
         }
         currentTab = tabIndex;
+        AssistantOverlayButton.setSuppressed(this,
+                tabIndex == CockpitNavModel.TAB_CAMERA_360);
         if (sideRailBuilder != null) {
             sideRailBuilder.setSelectionForTabIndex(tabIndex);
         }
