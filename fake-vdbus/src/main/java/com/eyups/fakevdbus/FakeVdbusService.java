@@ -4,7 +4,9 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -31,6 +33,9 @@ public final class FakeVdbusService extends Service {
     static final Map<Integer, Bundle> EVENTS = new ConcurrentHashMap<>();
     static final Map<String, int[]> VALUES = new ConcurrentHashMap<>();
     private static volatile FakeVdbusService INSTANCE;
+    private static final String PREFS = "fake_vdbus_values";
+    private static volatile SharedPreferences valuesPrefs;
+    private static volatile boolean valuesLoaded;
 
     private final List<Subscriber> subscribers = new CopyOnWriteArrayList<>();
     private final Map<Integer, List<IVDBusNotify>> customNotify = new ConcurrentHashMap<>();
@@ -45,13 +50,62 @@ public final class FakeVdbusService extends Service {
         EVENTS.put(eventId, bundle);
     }
 
+    static void ensureLoaded(Context context) {
+        if (valuesLoaded || context == null) {
+            return;
+        }
+        synchronized (FakeVdbusService.class) {
+            if (valuesLoaded) {
+                return;
+            }
+            valuesPrefs = context.getApplicationContext()
+                    .getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+            for (Map.Entry<String, ?> entry : valuesPrefs.getAll().entrySet()) {
+                String key = entry.getKey();
+                Object value = entry.getValue();
+                if (!key.startsWith("v:") || !(value instanceof String)) {
+                    continue;
+                }
+                String[] parts = key.substring(2).split(":");
+                if (parts.length != 2) {
+                    continue;
+                }
+                try {
+                    int eventId = Integer.parseInt(parts[0]);
+                    int cmdId = Integer.parseInt(parts[1]);
+                    String[] raw = ((String) value).split(",");
+                    int[] ints = new int[raw.length];
+                    for (int i = 0; i < raw.length; i++) {
+                        ints[i] = Integer.parseInt(raw[i]);
+                    }
+                    VALUES.put(valueKey(eventId, cmdId), ints);
+                } catch (NumberFormatException ignored) {
+                }
+            }
+            valuesLoaded = true;
+        }
+    }
+
     static void putValues(int eventId, int cmdId, int[] values) {
         VALUES.put(valueKey(eventId, cmdId), values);
+        if (valuesPrefs != null) {
+            StringBuilder b = new StringBuilder();
+            for (int i = 0; i < values.length; i++) {
+                if (i > 0) {
+                    b.append(',');
+                }
+                b.append(values[i]);
+            }
+            valuesPrefs.edit().putString("v:" + eventId + ":" + cmdId, b.toString()).apply();
+        }
     }
 
     static void clearAll() {
         EVENTS.clear();
         VALUES.clear();
+        if (valuesPrefs != null) {
+            valuesPrefs.edit().clear().apply();
+        }
     }
 
     static void publishFromControl(VDEvent event) {
@@ -65,6 +119,7 @@ public final class FakeVdbusService extends Service {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
+        ensureLoaded(this);
         createChannel();
         Log.i(TAG, "fake service created: " + getPackageName());
     }

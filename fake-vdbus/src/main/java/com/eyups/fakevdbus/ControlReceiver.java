@@ -17,6 +17,7 @@ public final class ControlReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        FakeVdbusService.ensureLoaded(context);
         String json = intent.getStringExtra("json");
         if (json == null) {
             // adb: --ei event 327684 --ei cmd 13 --eia values 2
