@@ -38,6 +38,10 @@ public final class AssistantOverlayButton {
         if (context == null) {
             return;
         }
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            new Handler(Looper.getMainLooper()).post(() -> sync(context));
+            return;
+        }
         Context app = context.getApplicationContext();
         boolean wanted = AssistantPrefs.overlayEnabled(app)
                 && Settings.canDrawOverlays(app);
@@ -52,6 +56,10 @@ public final class AssistantOverlayButton {
     }
 
     public static void hide() {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            new Handler(Looper.getMainLooper()).post(AssistantOverlayButton::hide);
+            return;
+        }
         if (instance != null) {
             instance.hideInternal();
         }

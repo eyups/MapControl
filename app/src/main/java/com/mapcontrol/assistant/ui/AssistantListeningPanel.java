@@ -33,6 +33,10 @@ public final class AssistantListeningPanel {
         if (context == null) {
             return;
         }
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            new Handler(Looper.getMainLooper()).post(() -> sync(context));
+            return;
+        }
         Context app = context.getApplicationContext();
         boolean wanted = AssistantPrefs.isEnabled(app) && Settings.canDrawOverlays(app);
         if (!wanted) {
@@ -45,6 +49,10 @@ public final class AssistantListeningPanel {
     }
 
     public static void hide() {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            new Handler(Looper.getMainLooper()).post(AssistantListeningPanel::hide);
+            return;
+        }
         if (instance != null) {
             instance.hideInternal();
             AssistantStateBus.get().removeListener(instance.listener);
