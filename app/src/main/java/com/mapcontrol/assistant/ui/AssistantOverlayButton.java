@@ -31,6 +31,7 @@ public final class AssistantOverlayButton {
 
     private static final int SIZE_DP = 56;
     private static final long LONG_PRESS_MS = 550L;
+    private static final long LEVEL_POLL_MS = 80L;
 
     private static AssistantOverlayButton instance;
     private static volatile boolean suppressed;
@@ -90,6 +91,11 @@ public final class AssistantOverlayButton {
     private TextView view;
     private WindowManager.LayoutParams params;
     private android.animation.ValueAnimator pulse;
+    private final Runnable levelTick = this::onLevelTick;
+    private boolean levelAnimating;
+    private float levelValue;
+    private int levelFillColor;
+    private GradientDrawable levelBackground;
     private VehicleMetricsRepository metricsRepository;
     private VehicleMetricsRepository.Listener metricsListener;
     private boolean reverse;
@@ -158,6 +164,7 @@ public final class AssistantOverlayButton {
     private void hideInternal() {
         AssistantStateBus.get().removeListener(stateListener);
         stopPulse();
+        stopLevelMeter();
         if (metricsRepository != null) {
             try {
                 if (metricsListener != null) {
@@ -201,13 +208,18 @@ public final class AssistantOverlayButton {
             return;
         }
         applyBackground(view, state);
-        boolean animate = state == AssistantState.RECORDING
-                || state == AssistantState.CONFIRMING
-                || state == AssistantState.THINKING;
-        if (animate) {
+        boolean listening = state == AssistantState.LISTENING_WAKE
+                || state == AssistantState.RECORDING
+                || state == AssistantState.CONFIRMING;
+        if (listening) {
+            stopPulse();
+            startLevelMeter();
+        } else if (state == AssistantState.THINKING) {
+            stopLevelMeter();
             startPulse();
         } else {
             stopPulse();
+            stopLevelMeter();
         }
     }
 
@@ -248,6 +260,68 @@ public final class AssistantOverlayButton {
         target.setBackground(background);
         target.setTextColor(CockpitTokens.color(context, glyph));
         target.setAlpha(1f);
+        levelBackground = background;
+        levelFillColor = fill;
+    }
+
+    private void startLevelMeter() {
+        if (levelAnimating || view == null) {
+            return;
+        }
+        levelAnimating = true;
+        levelValue = 0f;
+        main.post(levelTick);
+    }
+
+    private void stopLevelMeter() {
+        levelAnimating = false;
+        main.removeCallbacks(levelTick);
+        levelValue = 0f;
+        if (view != null) {
+            applyLevelVisual(0f);
+            view.setAlpha(1f);
+        }
+    }
+
+    /** 80 ms'de bir canlı mic seviyesi: sürekli invalidate/60 fps döngüsü yok. */
+    private void onLevelTick() {
+        if (!levelAnimating || view == null) {
+            return;
+        }
+        VoiceAssistantManager manager = VoiceAssistantManager.peek();
+        float raw = manager == null ? 0f : manager.level();
+        float target = Math.min(1f, Math.max(0f, (raw - 0.05f) * 2.6f));
+        // Sessizlikte gereksiz çizim yapma: yalnız seviye değişince güncelle.
+        if (Math.abs(target - levelValue) < 0.012f && target < 0.02f) {
+            main.postDelayed(levelTick, LEVEL_POLL_MS);
+            return;
+        }
+        levelValue += (target - levelValue) * 0.45f;
+        applyLevelVisual(levelValue);
+        main.postDelayed(levelTick, LEVEL_POLL_MS);
+    }
+
+    private void applyLevelVisual(float level) {
+        if (view == null || levelBackground == null) {
+            return;
+        }
+        float clamped = Math.min(1f, Math.max(0f, level));
+        int base = CockpitTokens.color(context, levelFillColor);
+        int accent = CockpitTokens.color(context, R.color.ck_accent);
+        levelBackground.setColor(blend(base, accent, clamped * 0.75f));
+        int stroke = CockpitTokens.dp(context, 1)
+                + (int) (CockpitTokens.dp(context, 2) * clamped);
+        levelBackground.setStroke(stroke, accent);
+        view.setAlpha(0.9f + 0.1f * clamped);
+    }
+
+    private static int blend(int from, int to, float amount) {
+        float t = Math.min(1f, Math.max(0f, amount));
+        int a = (int) ((from >>> 24) + (((to >>> 24) - (from >>> 24)) * t));
+        int r = (int) (((from >> 16) & 0xFF) + ((((to >> 16) & 0xFF) - ((from >> 16) & 0xFF)) * t));
+        int g = (int) (((from >> 8) & 0xFF) + ((((to >> 8) & 0xFF) - ((from >> 8) & 0xFF)) * t));
+        int b = (int) ((from & 0xFF) + (((to & 0xFF) - (from & 0xFF)) * t));
+        return (a << 24) | (r << 16) | (g << 8) | b;
     }
 
     private void startPulse() {
