@@ -231,7 +231,8 @@ public final class VoiceAssistantManager {
         }
         pendingRestart = () -> {
             pendingRestart = null;
-            if (AssistantPrefs.isEnabled(appContext) && !released) {
+            if (AssistantPrefs.isEnabled(appContext) && !released
+                    && lastPowerMode == 2) {
                 ensureStarted();
                 evaluateEnvironment();
             }
@@ -314,10 +315,11 @@ public final class VoiceAssistantManager {
         if (lastPowerMode == 0 || lastPowerMode == 1) {
             listeningPaused = true;
         }
-        startWakeEngine();
         if (listeningPaused) {
+            // Güç yokken Vosk modelini yükleme; metin turu için yönetici hazır.
             states.set(AssistantState.PAUSED, "power");
         } else {
+            startWakeEngine();
             startWakeCapture();
         }
         log("Asistan dinlemeye başladı");
@@ -358,6 +360,9 @@ public final class VoiceAssistantManager {
         }
         if (!AssistantPrefs.isEnabled(appContext)) {
             return;
+        }
+        if (wakeEngine == null) {
+            startWakeEngine();
         }
         if (wakeEngine == null || !wakeEngine.isReady()) {
             // Model yok: mikrofonu boşuna açma; yalnız push-to-talk.
