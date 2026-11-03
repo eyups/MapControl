@@ -139,6 +139,7 @@ public final class VoskWakeWordEngine implements WakeWordEngine {
                 if (text.isEmpty()) {
                     return;
                 }
+                Log.i(TAG, "KWS metni: " + text);
                 current = listener;
                 target = phrase;
                 if (WakeWordNormalizer.matches(text, target)) {

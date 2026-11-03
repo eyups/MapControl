@@ -11,6 +11,7 @@ import android.media.session.MediaSessionManager;
 import android.media.session.PlaybackState;
 
 import com.desaysv.ivi.extra.project.carinfo.NewEnergyID;
+import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.desaysv.ivi.extra.project.carinfo.proxy.CarInfoProxy;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 import com.mapcontrol.audio.AudioEqualizerController;
@@ -176,32 +177,34 @@ public final class AssistantToolExecutor {
     // ---------------------------------------------------------------- araç
 
     private ToolResult vehicleStatus() {
-        VehicleMetricsSnapshot snapshot = VehicleMetricsRepository
-                .getInstance(appContext).getSnapshot();
-        if (snapshot == null || !snapshot.connected) {
+        if (!ComfortCommands.isConnected()) {
             return ToolResult.fail("Araç bağlantısı yok.");
         }
+        int speed = Math.max(0, ComfortCommands.readSpeedKmh());
+        int gear = ComfortCommands.readGear();
+        int power = ComfortCommands.readRaw(
+                VDEventCarInfo.MODULE_READONLY_INFO, ReadOnlyID.ID_SYSTEM_POWER_MODE);
+        int posi = ComfortCommands.readSunroofPosition();
+        int shade = ComfortCommands.readRaw(VDEventCarInfo.MODULE_CAR_SETTING, 10);
         float outside = ComfortCommands.readOutsideTempC();
-        String state = "{";
-        state += "\"speed\":" + snapshot.preferredSpeed();
-        state += ",\"gear\":\"" + gearLabel(snapshot.gearSignal) + "\"";
-        state += ",\"powerMode\":" + snapshot.powerMode;
-        state += ",\"sunroofOpen\":" + snapshot.isSunroofOpen();
-        state += ",\"sunshadeOpen\":" + snapshot.isSunshadeOpen();
-        state += ",\"rangeKm\":" + (VehicleMetricsSnapshot.isValid(snapshot.rangeKm)
-                ? snapshot.rangeKm : -1);
+        StringBuilder state = new StringBuilder(128);
+        state.append("{\"speed\":").append(speed)
+                .append(",\"gear\":\"").append(gearLabel(gear)).append('"')
+                .append(",\"powerMode\":").append(power)
+                .append(",\"sunroofOpen\":").append(posi > 1)
+                .append(",\"sunshadeOpen\":").append(shade == 2);
         if (!Float.isNaN(outside)) {
-            state += String.format(Locale.US, ",\"outsideTempC\":%.1f", outside);
+            state.append(String.format(Locale.US, ",\"outsideTempC\":%.1f", outside));
         }
-        state += "}";
+        state.append('}');
         StringBuilder message = new StringBuilder();
-        message.append("Hız ").append(snapshot.preferredSpeed()).append(" kilometre saat, vites ")
-                .append(gearLabel(snapshot.gearSignal));
+        message.append("Hız ").append(speed).append(" kilometre saat, vites ")
+                .append(gearLabel(gear));
         if (!Float.isNaN(outside)) {
             message.append(", dış sıcaklık ").append(Math.round(outside)).append(" derece");
         }
-        message.append(". Cam tavan ").append(snapshot.isSunroofOpen() ? "açık" : "kapalı").append('.');
-        return ToolResult.ok(message.toString(), state);
+        message.append(". Cam tavan ").append(posi > 1 ? "açık" : "kapalı").append('.');
+        return ToolResult.ok(message.toString(), state.toString());
     }
 
     private static String gearLabel(int gear) {
@@ -258,16 +261,16 @@ public final class AssistantToolExecutor {
     }
 
     private ToolResult sunroofStatus() {
-        VehicleMetricsSnapshot snapshot = VehicleMetricsRepository
-                .getInstance(appContext).getSnapshot();
-        if (snapshot == null || !snapshot.connected) {
+        if (!ComfortCommands.isConnected()) {
             return ToolResult.fail("Araç bağlantısı yok.");
         }
-        String state = "{\"sunroofOpen\":" + snapshot.isSunroofOpen()
-                + ",\"sunshadeOpen\":" + snapshot.isSunshadeOpen()
-                + ",\"positions\":" + snapshot.sunroofPosi + "}";
-        String message = "Cam tavan " + (snapshot.isSunroofOpen() ? "açık" : "kapalı")
-                + ", güneşlik " + (snapshot.isSunshadeOpen() ? "açık" : "kapalı") + ".";
+        int posi = ComfortCommands.readSunroofPosition();
+        int shade = ComfortCommands.readRaw(VDEventCarInfo.MODULE_CAR_SETTING, 10);
+        String state = "{\"sunroofOpen\":" + (posi > 1)
+                + ",\"sunshadeOpen\":" + (shade == 2)
+                + ",\"positions\":" + posi + "}";
+        String message = "Cam tavan " + (posi > 1 ? "açık" : "kapalı")
+                + ", güneşlik " + (shade == 2 ? "açık" : "kapalı") + ".";
         return ToolResult.ok(message, state);
     }
 

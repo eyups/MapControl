@@ -8,7 +8,10 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.Log;
+
+import com.mapcontrol.BuildConfig;
 
 /**
  * Tek {@link AudioRecord} sahibi. 16 kHz mono PCM16 okur, çerçeveleri
@@ -45,6 +48,11 @@ public final class AudioCaptureEngine {
     private boolean silentProbeDone;
     private long probeEnergy;
     private boolean released;
+    /** Debug: emülatör mikrofonu sessizse PCM dosyasını gerçek zamanlı besle. */
+    private static final String DEBUG_MIC_SETTING = "va_debug_mic";
+    private short[] debugPcm;
+    private int debugIndex;
+    private boolean debugConsumed;
 
     public AudioCaptureEngine(Context context) {
         this.appContext = context.getApplicationContext();
@@ -85,6 +93,9 @@ public final class AudioCaptureEngine {
         if (running || released) {
             return;
         }
+        if (BuildConfig.DEBUG && startDebugSource()) {
+            return;
+        }
         int minBuffer = AudioRecord.getMinBufferSize(SAMPLE_RATE,
                 AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
         if (minBuffer <= 0) {
@@ -112,10 +123,98 @@ public final class AudioCaptureEngine {
             return;
         }
         running = true;
+        Log.i(TAG, "AudioRecord başladı (source=" + record.getAudioSource() + ")");
         startedAtMs = SystemClock.elapsedRealtime();
         silentProbeDone = false;
         probeEnergy = 0L;
         handler.post(this::readLoop);
+    }
+
+    /**
+     * Yalnız debug: {@code settings put global va_debug_mic <pcm-yolu>} ile
+     * 16 kHz mono PCM16 dosyası, AudioRecord yerine 20 ms'lik çerçevelerle
+     * gerçek zamanlı beslenir. Emülatörün sanal mikrofonu sessiz kaldığında
+     * uyandırma + komut hattını deterministik test etmek içindir.
+     */
+    private boolean startDebugSource() {
+        String path;
+        try {
+            path = Settings.Global.getString(appContext.getContentResolver(),
+                    DEBUG_MIC_SETTING);
+        } catch (Throwable t) {
+            return false;
+        }
+        if (path == null || path.trim().isEmpty() || debugConsumed) {
+            return false;
+        }
+        try {
+            java.io.File file = new java.io.File(path.trim());
+            if (!file.isFile()) {
+                return false;
+            }
+            byte[] data = new byte[(int) file.length()];
+            java.io.FileInputStream in = new java.io.FileInputStream(file);
+            try {
+                int offset = 0;
+                while (offset < data.length) {
+                    int read = in.read(data, offset, data.length - offset);
+                    if (read <= 0) {
+                        break;
+                    }
+                    offset += read;
+                }
+            } finally {
+                in.close();
+            }
+            int samples = data.length / 2;
+            if (samples < FRAME_SAMPLES) {
+                return false;
+            }
+            short[] pcm = new short[samples];
+            for (int i = 0; i < samples; i++) {
+                int lo = data[i * 2] & 0xFF;
+                int hi = data[i * 2 + 1];
+                pcm[i] = (short) ((hi << 8) | lo);
+            }
+            debugPcm = pcm;
+            debugIndex = 0;
+            running = true;
+            silentProbeDone = true;
+            startedAtMs = SystemClock.elapsedRealtime();
+            handler.post(this::debugLoop);
+            Log.i(TAG, "Debug PCM mikrofon kaynağı: " + path + " (" + samples + " örnek)");
+            return true;
+        } catch (Throwable t) {
+            Log.w(TAG, "Debug PCM kaynağı okunamadı", t);
+            return false;
+        }
+    }
+
+    private void debugLoop() {
+        long nextFrameAt = SystemClock.elapsedRealtime();
+        while (running && debugPcm != null && debugIndex < debugPcm.length) {
+            int count = Math.min(FRAME_SAMPLES, debugPcm.length - debugIndex);
+            short[] frame = new short[count];
+            System.arraycopy(debugPcm, debugIndex, frame, 0, count);
+            debugIndex += count;
+            long now = SystemClock.elapsedRealtime();
+            Listener current = listener;
+            if (current != null) {
+                current.onFrame(frame, count, now);
+            }
+            nextFrameAt += 20L;
+            long delay = nextFrameAt - SystemClock.elapsedRealtime();
+            if (delay > 0L) {
+                SystemClock.sleep(delay);
+            } else {
+                nextFrameAt = SystemClock.elapsedRealtime();
+            }
+        }
+        if (debugPcm != null && debugIndex >= debugPcm.length) {
+            debugConsumed = true;
+        }
+        running = false;
+        debugPcm = null;
     }
 
     private AudioRecord createRecord(int source, int bufferSize) {

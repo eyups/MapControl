@@ -1444,4 +1444,5 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_settings_close">Close settings</string>
     <string name="assistant_reset_done">Session reset</string>
     <string name="assistant_state_ready_button">Ready (push-to-talk)</string>
+    <string name="assistant_wake_word_help">The small Turkish model only knows its own vocabulary; “deck” is not recognized. Prefer “dinle beni” or “hey merhaba”.</string>
 </resources>

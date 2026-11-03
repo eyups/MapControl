@@ -42,7 +42,7 @@ public final class AssistantPrefs {
     public static final String WAKE_SOUND_TONE = "tone";
     public static final String WAKE_SOUND_SPEAK = "speak";
 
-    public static final String DEFAULT_WAKE_WORD = "hey deck";
+    public static final String DEFAULT_WAKE_WORD = "dinle beni";
     public static final String DEFAULT_MODEL = "gemini-3.5-flash-lite";
     public static final int DEFAULT_SENSITIVITY = 1;
 

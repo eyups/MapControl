@@ -896,6 +896,11 @@ public final class AssistantTabBuilder {
         testLp.leftMargin = dp(8);
         wakeActions.addView(testWake, testLp);
         body.addView(wakeActions, matchWrap(6));
+        TextView wakeHelp = new TextView(context);
+        wakeHelp.setText(R.string.assistant_wake_word_help);
+        CockpitTokens.bodySm(wakeHelp);
+        wakeHelp.setTextColor(UiStyles.color(context, R.color.ck_text_medium));
+        body.addView(wakeHelp, matchWrap(4));
 
         // Hassasiyet
         addLabel(body, R.string.assistant_sensitivity);

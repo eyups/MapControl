@@ -161,6 +161,13 @@ public final class IflytekTts {
         Intent intent = new Intent(ACTION);
         intent.setComponent(new ComponentName(PACKAGE, SERVICE));
         try {
+            // Emülatör/Android 11: arka planda bind tek başına süreci ayağa
+            // kaldırmıyor. Foreground servisimiz startService yetkisine sahip.
+            appContext.startService(intent);
+        } catch (Throwable t) {
+            Log.w(TAG, "iFlytek TTS startService başarısız", t);
+        }
+        try {
             boolean ok = appContext.bindService(intent, CONNECTION, Context.BIND_AUTO_CREATE);
             if (!ok) {
                 synchronized (LOCK) {

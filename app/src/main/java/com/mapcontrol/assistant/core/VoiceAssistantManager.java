@@ -306,7 +306,7 @@ public final class VoiceAssistantManager {
         }
         if (wakeGate == null) {
             wakeGate = new EnergyGate(AssistantPrefs.sensitivity(appContext));
-            recordGate = new EnergyGate(EnergyGate.SENSITIVITY_MEDIUM);
+            recordGate = new EnergyGate(EnergyGate.SENSITIVITY_HIGH);
         }
         if (registry == null) {
             // registry final; ayar değişiminde yeni araç listesi için yeniden kurulamaz.
@@ -369,6 +369,7 @@ public final class VoiceAssistantManager {
         captureMode = CAPTURE_WAKE;
         wakeSilenceSince = 0L;
         capture.start();
+        Log.i(TAG, "Uyandırma dinlemesi başladı");
         states.set(AssistantState.LISTENING_WAKE, "");
     }
 
@@ -539,6 +540,7 @@ public final class VoiceAssistantManager {
         if (SystemClock.elapsedRealtime() < cooldownUntil) {
             return;
         }
+        Log.i(TAG, "Uyandırma algılandı: " + phrase);
         cooldownUntil = SystemClock.elapsedRealtime() + WAKE_COOLDOWN_MS;
         handler.post(this::beginListeningAfterWake);
     }
@@ -614,7 +616,7 @@ public final class VoiceAssistantManager {
             return;
         }
         if (recordGate == null) {
-            recordGate = new EnergyGate(EnergyGate.SENSITIVITY_MEDIUM);
+            recordGate = new EnergyGate(EnergyGate.SENSITIVITY_HIGH);
         }
         confirmationListening = confirm;
         recorder = new UtteranceRecorder(recordGate, new UtteranceRecorder.Listener() {
@@ -1141,14 +1143,23 @@ public final class VoiceAssistantManager {
 
     private VehicleContext vehicleContext() {
         try {
-            VehicleMetricsSnapshot snapshot = VehicleMetricsRepository
-                    .getInstance(appContext).getSnapshot();
-            if (snapshot == null) {
+            if (!ComfortCommands.isConnected()) {
                 return VehicleContext.unknown();
             }
-            return new VehicleContext(snapshot.connected, snapshot.powerMode,
-                    snapshot.preferredSpeed(), snapshot.gearSignal,
-                    ComfortCommands.isEngineRunning(), ComfortCommands.readOutsideTempC());
+            // UI metrics önbelleği yalnız araç sekmesi açıkken dolar; doğrudan oku.
+            int power = ComfortCommands.readRaw(
+                    com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo.MODULE_READONLY_INFO,
+                    com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_SYSTEM_POWER_MODE);
+            int gear = ComfortCommands.readRaw(
+                    com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo.MODULE_READONLY_INFO,
+                    com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_GEARBOX_STATE);
+            int speed = ComfortCommands.readSpeedKmh();
+            return new VehicleContext(true,
+                    power == ComfortCommands.INVALID_TEMP ? -1 : power,
+                    Math.max(0, speed),
+                    gear == ComfortCommands.INVALID_TEMP ? -1 : gear,
+                    ComfortCommands.isEngineRunning(),
+                    ComfortCommands.readOutsideTempC());
         } catch (Throwable t) {
             return VehicleContext.unknown();
         }
@@ -1162,12 +1173,11 @@ public final class VoiceAssistantManager {
                 .append(",\"powerMode\":").append(ctx.powerMode)
                 .append(",\"engineRunning\":").append(ctx.engineRunning);
         try {
-            VehicleMetricsSnapshot snapshot = VehicleMetricsRepository
-                    .getInstance(appContext).getSnapshot();
-            if (snapshot != null) {
-                b.append(",\"sunroofOpen\":").append(snapshot.isSunroofOpen())
-                        .append(",\"sunshadeOpen\":").append(snapshot.isSunshadeOpen());
-            }
+            int posi = ComfortCommands.readSunroofPosition();
+            int shade = ComfortCommands.readRaw(
+                    com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo.MODULE_CAR_SETTING, 10);
+            b.append(",\"sunroofOpen\":").append(posi > 1)
+                    .append(",\"sunshadeOpen\":").append(shade == 2);
         } catch (Throwable ignored) {
         }
         if (!Float.isNaN(ctx.outsideTempC)) {
