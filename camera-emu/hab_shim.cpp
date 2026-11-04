@@ -47,6 +47,7 @@ struct HabUnexportReq { uint32_t chan, handle, one; };
 struct Buffer { void* ptr = nullptr; uint32_t size = 0; uint32_t handle = 0; };
 struct Stream {
     uint32_t inputId = 0;
+    uint32_t sourceIndex = 0;   // 0..3: per-camera file index (front/right/left/rear)
     uint64_t token = 0;
     uint32_t width = 1280, height = 800, stride = 2560, format = 0x07080100;
     uint32_t frameSize = 1280 * 800 * 2;
@@ -117,6 +118,17 @@ static void ensureFile(int idx) {
         real_close(fd);
     }
     LOG("frame source cam%d: synthetic", idx);
+}
+
+static int sourceIndexForInput(uint32_t inputId) {
+    // Araç HAB kamera id'leri: 8=ön, 5=sağ, 9=sol, 4=arka.
+    switch (inputId) {
+        case 8: return 0;
+        case 5: return 1;
+        case 9: return 2;
+        case 4: return 3;
+        default: return (int)(inputId % 4);
+    }
 }
 
 static inline void putYuyv(uint8_t* row, int x, int Y, int U, int V) {
@@ -206,7 +218,7 @@ static void handleSend(FdState* st, uint32_t chan, const uint8_t* m, uint32_t si
         Buffer& b = s->bufs[idx];
         if (b.ptr && b.size >= s->frameSize) {
             std::lock_guard<std::mutex> fl(gFrameLock);
-            fillFrame((int)(s->inputId % 4), (uint8_t*)b.ptr, s->width, s->height);
+            fillFrame(sourceIndexForInput(s->inputId), (uint8_t*)b.ptr, s->width, s->height);
         }
         static int logged = 0;
         if (logged < 5) { logged++; LOG("grab ok cam%d idx%u token=0x%llx", s->inputId, idx, (unsigned long long)token); }
@@ -237,6 +249,7 @@ static void handleSend(FdState* st, uint32_t chan, const uint8_t* m, uint32_t si
         uint32_t inputId = 0; memcpy(&inputId, m + 8, 4);
         Stream s;
         s.inputId = inputId;
+        s.sourceIndex = (uint32_t)st->streams.size();
         s.token = st->nextToken++;
         st->streams[s.token] = s;
         uint8_t r[24] = {};
