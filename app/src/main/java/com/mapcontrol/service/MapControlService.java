@@ -52,6 +52,7 @@ import com.mapcontrol.manager.MapControlVDBusKeyBridge;
 import com.mapcontrol.profile.DriverProfileApplier;
 import com.mapcontrol.vehicle.ComfortCommands;
 import com.mapcontrol.assistant.AssistantPrefs;
+import com.mapcontrol.assistant.audio.OemMicArbiter;
 import com.mapcontrol.assistant.core.VoiceAssistantManager;
 import com.mapcontrol.assistant.ui.AssistantOverlayButton;
 import com.mapcontrol.assistant.ui.AssistantListeningPanel;
@@ -117,6 +118,9 @@ public class MapControlService extends Service {
         super.onCreate();
         createNotificationChannel();
         BootSession.noteServiceStart(this);
+        // Önceki çökmeden kalan OEM VR bırakma durumunu temizle; asistan
+        // başladığında mikrofonu yeniden ödünç alır.
+        OemMicArbiter.restoreIfStale(this);
         handler = new Handler(Looper.getMainLooper());
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduleClusterBootSplash();

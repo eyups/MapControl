@@ -2,7 +2,9 @@ package com.mapcontrol.assistant.audio;
 
 import android.content.Context;
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.media.AudioRecordingConfiguration;
 import android.media.MediaRecorder;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -10,6 +12,8 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
+
+import java.util.List;
 
 import com.mapcontrol.BuildConfig;
 
@@ -48,6 +52,8 @@ public final class AudioCaptureEngine {
     private boolean silentProbeDone;
     private long probeEnergy;
     private boolean released;
+    /** OEM VR mikrofonu bu kayıt için bırakıldı mı. */
+    private boolean micArbiterHeld;
     /** Debug: emülatör mikrofonu sessizse PCM dosyasını gerçek zamanlı besle. */
     private static final String DEBUG_MIC_SETTING = "va_debug_mic";
     private short[] debugPcm;
@@ -102,12 +108,18 @@ public final class AudioCaptureEngine {
             minBuffer = FRAME_SAMPLES * 2 * 8;
         }
         int bufferSize = Math.max(minBuffer, FRAME_SAMPLES * 2 * 4);
+        // OEM VR mikrofonu sürekli tutuyorsa yeni kayıt sessiz kalır; önce bırak.
+        if (!micArbiterHeld && OemMicArbiter.release(appContext)) {
+            micArbiterHeld = true;
+            awaitOemCaptureRelease(600L);
+        }
         record = createRecord(MediaRecorder.AudioSource.VOICE_RECOGNITION, bufferSize);
         if (record == null) {
             record = createRecord(MediaRecorder.AudioSource.MIC, bufferSize);
         }
         if (record == null) {
             notifyError("Mikrofon açılamadı.");
+            releaseRecord();
             return;
         }
         try {
@@ -297,6 +309,32 @@ public final class AudioCaptureEngine {
                 current.release();
             } catch (Throwable ignored) {
             }
+        }
+        if (micArbiterHeld) {
+            OemMicArbiter.restore(appContext);
+            micArbiterHeld = false;
+        }
+    }
+
+    /** OEM VR kaydı gerçekten bırakana kadar kısa süre bekle (en fazla timeout). */
+    private void awaitOemCaptureRelease(long timeoutMs) {
+        AudioManager am = (AudioManager) appContext.getSystemService(Context.AUDIO_SERVICE);
+        if (am == null) {
+            SystemClock.sleep(120L);
+            return;
+        }
+        long end = SystemClock.elapsedRealtime() + timeoutMs;
+        while (SystemClock.elapsedRealtime() < end) {
+            try {
+                List<AudioRecordingConfiguration> active = am.getActiveRecordingConfigurations();
+                if (active == null || active.isEmpty()) {
+                    return;
+                }
+            } catch (Throwable t) {
+                SystemClock.sleep(120L);
+                return;
+            }
+            SystemClock.sleep(50L);
         }
     }
 

@@ -14,6 +14,7 @@ import com.mapcontrol.assistant.AssistantSpeaker;
 import com.mapcontrol.assistant.ConfirmationFlow;
 import com.mapcontrol.assistant.audio.AudioCaptureEngine;
 import com.mapcontrol.assistant.audio.EnergyGate;
+import com.mapcontrol.assistant.audio.OemMicArbiter;
 import com.mapcontrol.assistant.audio.UtteranceRecorder;
 import com.mapcontrol.assistant.audio.WavCodec;
 import com.mapcontrol.assistant.llm.GeminiClient;
@@ -534,6 +535,7 @@ public final class VoiceAssistantManager {
             capture.release();
             capture = null;
         }
+        OemMicArbiter.restoreIfStale(appContext);
         if (wakeEngine != null) {
             wakeEngine.stop();
             wakeEngine.release();
