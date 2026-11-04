@@ -187,6 +187,15 @@ public final class OverlayService extends Service {
         signalRow.addView(button("Sinyal Kapat", v -> signal(0)));
         panel.addView(signalRow);
 
+        LinearLayout fuelRow = new LinearLayout(this);
+        fuelRow.setOrientation(LinearLayout.HORIZONTAL);
+        EditText fuelValue = edit("yakıt %", "50");
+        fuelValue.setInputType(InputType.TYPE_CLASS_NUMBER);
+        fuelValue.setSingleLine(true);
+        fuelRow.addView(fuelValue, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        fuelRow.addView(button("Yakıt", v -> setFuel(fuelValue)));
+        panel.addView(fuelRow);
+
         EditText event = edit("event", "327684");
         event.setInputType(InputType.TYPE_CLASS_NUMBER);
         EditText cmd = edit("cmd", "14");
@@ -242,6 +251,17 @@ public final class OverlayService extends Service {
         e.setHintTextColor(Color.LTGRAY);
         e.setSingleLine(true);
         return e;
+    }
+
+    private void setFuel(EditText input) {
+        try {
+            int pct = Integer.parseInt(input.getText().toString().trim());
+            if (pct < 0 || pct > 100) return;
+            send(327684, 68, new int[]{pct});
+            Log.i(TAG, "fuel set %" + pct);
+        } catch (Throwable t) {
+            Log.w(TAG, "invalid fuel", t);
+        }
     }
 
     /** 0=off, 1=left, 2=right, 3=hazard. ReadOnly (327684) sinyal ID'leri. */

@@ -170,6 +170,7 @@ seed 327681 6 1    # cam tavan kapalı
 seed 327681 10 1   # güneşlik kapalı
 seed 327690 19 145 # dış sıcaklık 17.5 °C
 seed 327690 18 1   # klima çalışıyor
+seed 327684 68 54  # yakıt %54
 
 if [ "$NO_START" = "0" ]; then
   adb shell am start -n "$APP_PKG/com.mapcontrol.ui.activity.MainActivity" >/dev/null 2>&1 || true

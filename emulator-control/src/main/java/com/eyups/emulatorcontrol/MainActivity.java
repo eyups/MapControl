@@ -120,6 +120,16 @@ public final class MainActivity extends Activity {
         signalOff.setOnClickListener(v -> signal(0));
         root.addView(signalOff);
 
+        root.addView(label("Yakıt (ReadOnly 327684 / ID_FUEL_PERCENT 68)"));
+        LinearLayout fuelRow = new LinearLayout(this);
+        fuelRow.setOrientation(LinearLayout.HORIZONTAL);
+        EditText fuelValue = input("Yakıt % (0-100)", "50");
+        fuelRow.addView(fuelValue, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        Button setFuelButton = button("Yakıt % ayarla");
+        setFuelButton.setOnClickListener(v -> setFuel(fuelValue));
+        fuelRow.addView(setFuelButton);
+        root.addView(fuelRow);
+
         Button overlay = button("Overlay aç (tüm uygulamaların üstünde)");
         overlay.setOnClickListener(v -> startOverlay());
         root.addView(overlay);
@@ -222,6 +232,20 @@ public final class MainActivity extends Activity {
             log("Temizleme gönderildi → " + target());
         } catch (Throwable t) {
             log("Temizleme hatası: " + t);
+        }
+    }
+
+    private void setFuel(EditText input) {
+        try {
+            int pct = Integer.parseInt(input.getText().toString().trim());
+            if (pct < 0 || pct > 100) {
+                log("Yakıt %0..100 aralığında olmalı.");
+                return;
+            }
+            sendReadOnly(68, pct);
+            log("Yakıt ayarlandı → %" + pct);
+        } catch (Throwable t) {
+            log("Yakıt değeri sayı olmalı: " + t);
         }
     }
 
