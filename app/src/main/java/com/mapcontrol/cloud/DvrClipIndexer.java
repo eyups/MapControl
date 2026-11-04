@@ -16,7 +16,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.function.Consumer;
@@ -32,6 +34,25 @@ final class DvrClipIndexer {
 
     private static final Object SIGNATURE_LOCK = new Object();
     private static String lastSignature = "";
+    private static final int THUMB_CACHE_MAX = 100;
+    private static final Map<String, ThumbCacheEntry> THUMB_CACHE =
+            new LinkedHashMap<String, ThumbCacheEntry>(16, 0.75f, true) {
+                @Override
+                protected boolean removeEldestEntry(
+                        Map.Entry<String, ThumbCacheEntry> eldest) {
+                    return size() > THUMB_CACHE_MAX;
+                }
+            };
+
+    private static final class ThumbCacheEntry {
+        final long durationMs;
+        final byte[] jpeg;
+
+        ThumbCacheEntry(long durationMs, byte[] jpeg) {
+            this.durationMs = durationMs;
+            this.jpeg = jpeg;
+        }
+    }
 
     private DvrClipIndexer() {
     }
@@ -107,36 +128,50 @@ final class DvrClipIndexer {
             if (primary == null) {
                 continue;
             }
+            String thumbKey = clip.base + ':' + primary.length() + ':'
+                    + primary.lastModified();
+            ThumbCacheEntry cached;
+            synchronized (THUMB_CACHE) {
+                cached = THUMB_CACHE.get(thumbKey);
+            }
             long durationMs = 0L;
             byte[] thumbnail = null;
-            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-            try {
-                retriever.setDataSource(primary.getAbsolutePath());
-                String duration = retriever.extractMetadata(
-                        MediaMetadataRetriever.METADATA_KEY_DURATION);
-                if (duration != null) {
-                    durationMs = Long.parseLong(duration);
-                }
-                long frameUs = Math.min(3_000_000L, Math.max(0L, durationMs * 500L));
-                Bitmap bitmap = retriever.getFrameAtTime(
-                        frameUs, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-                if (bitmap != null) {
-                    Bitmap scaled = Bitmap.createScaledBitmap(
-                            bitmap, THUMB_WIDTH, THUMB_HEIGHT, true);
-                    ByteArrayOutputStream output = new ByteArrayOutputStream();
-                    scaled.compress(Bitmap.CompressFormat.JPEG, 70, output);
-                    if (scaled != bitmap) {
-                        scaled.recycle();
-                    }
-                    bitmap.recycle();
-                    thumbnail = output.toByteArray();
-                }
-            } catch (Exception ignored) {
-                // Thumbnail/süre okunamazsa metadata yine gönderilir.
-            } finally {
+            if (cached != null) {
+                durationMs = cached.durationMs;
+                thumbnail = cached.jpeg;
+            } else {
+                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                 try {
-                    retriever.release();
+                    retriever.setDataSource(primary.getAbsolutePath());
+                    String duration = retriever.extractMetadata(
+                            MediaMetadataRetriever.METADATA_KEY_DURATION);
+                    if (duration != null) {
+                        durationMs = Long.parseLong(duration);
+                    }
+                    long frameUs = Math.min(3_000_000L, Math.max(0L, durationMs * 500L));
+                    Bitmap bitmap = retriever.getFrameAtTime(
+                            frameUs, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                    if (bitmap != null) {
+                        Bitmap scaled = Bitmap.createScaledBitmap(
+                                bitmap, THUMB_WIDTH, THUMB_HEIGHT, true);
+                        ByteArrayOutputStream output = new ByteArrayOutputStream();
+                        scaled.compress(Bitmap.CompressFormat.JPEG, 70, output);
+                        if (scaled != bitmap) {
+                            scaled.recycle();
+                        }
+                        bitmap.recycle();
+                        thumbnail = output.toByteArray();
+                    }
                 } catch (Exception ignored) {
+                    // Thumbnail/süre okunamazsa metadata yine gönderilir.
+                } finally {
+                    try {
+                        retriever.release();
+                    } catch (Exception ignored) {
+                    }
+                }
+                synchronized (THUMB_CACHE) {
+                    THUMB_CACHE.put(thumbKey, new ThumbCacheEntry(durationMs, thumbnail));
                 }
             }
             JSONObject item = new JSONObject();
