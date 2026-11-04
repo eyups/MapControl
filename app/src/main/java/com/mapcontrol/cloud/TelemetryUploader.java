@@ -2,6 +2,7 @@ package com.mapcontrol.cloud;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
 import com.desaysv.ivi.extra.project.carinfo.ReadOnlyID;
 import com.mapcontrol.vehicle.VehicleMetricsRepository;
@@ -12,6 +13,8 @@ import org.json.JSONObject;
 /** VehicleMetricsRepository aboneliğini yönetir ve sözleşmeye uygun telemetri üretir. */
 final class TelemetryUploader implements VehicleMetricsRepository.Listener {
 
+    private static final String TAG = "CloudTelemetry";
+
     private final Context context;
     private final CloudConfig config;
     private final VehicleMetricsRepository repository;
@@ -21,6 +24,9 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
     private volatile boolean finalSent;
     private volatile boolean sawPoweredOn;
     private volatile long lastMetricsAtMs;
+    private int lastLoggedPower = Integer.MIN_VALUE;
+    private int lastLoggedSystem = Integer.MIN_VALUE;
+    private int lastLoggedCar = Integer.MIN_VALUE;
 
     TelemetryUploader(Context context, CloudConfig config) {
         this.context = context.getApplicationContext();
@@ -52,7 +58,16 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
 
     int powerMode() {
         VehicleMetricsSnapshot snapshot = latest;
-        return snapshot == null ? -1 : effectivePowerMode(snapshot);
+        if (snapshot == null) {
+            logPowerMode(-1, -1, -1, false);
+            return -1;
+        }
+        int carPowerMode = repository.getCombined(ReadOnlyID.ID_CAR_POWER_MODE);
+        int mode = effectivePowerMode(snapshot, carPowerMode);
+        if (mode != 2) {
+            logPowerMode(mode, snapshot.powerMode, carPowerMode, snapshot.connected);
+        }
+        return mode;
     }
 
     int speedKmh() {
@@ -60,14 +75,25 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         return snapshot == null ? 0 : snapshot.preferredSpeed();
     }
 
-    private int effectivePowerMode(VehicleMetricsSnapshot snapshot) {
-        int carPowerMode = repository.getCombined(ReadOnlyID.ID_CAR_POWER_MODE);
-        // CAR_POWER_MODE bazı araçlarda yalnız OFF'ta anlamlı; OFF dışında
-        // sistem güç modunu kullan. Aksi hâlde ACC/ON geçişinde telemetri kesiliyor.
-        if (VehicleMetricsSnapshot.isValid(carPowerMode) && carPowerMode == 0) {
-            return 0;
+    private int effectivePowerMode(VehicleMetricsSnapshot snapshot, int carPowerMode) {
+        int systemPowerMode = snapshot.powerMode;
+        // CAR_POWER_MODE bazı araçlarda yalnız OFF'ta anlamlı. Sistem ON/ACC
+        // derken 0 değerini yok say; aksi hâlde heartbeat ve telemetri kesiliyor.
+        if (VehicleMetricsSnapshot.isValid(systemPowerMode)) {
+            return systemPowerMode;
         }
-        return snapshot.powerMode;
+        return VehicleMetricsSnapshot.isValid(carPowerMode) ? carPowerMode : -1;
+    }
+
+    private void logPowerMode(int mode, int system, int car, boolean connected) {
+        if (mode == lastLoggedPower && system == lastLoggedSystem && car == lastLoggedCar) {
+            return;
+        }
+        lastLoggedPower = mode;
+        lastLoggedSystem = system;
+        lastLoggedCar = car;
+        Log.i(TAG, "power mode=" + mode + " system=" + system + " car=" + car
+                + " connected=" + connected);
     }
 
     /** Gönderilecek gövde yoksa null döner. */
@@ -76,7 +102,7 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         if (snapshot == null) {
             return null;
         }
-        int powerMode = effectivePowerMode(snapshot);
+        int powerMode = effectivePowerMode(snapshot, repository.getCombined(ReadOnlyID.ID_CAR_POWER_MODE));
         long ageMs = lastMetricsAtMs == 0L
                 ? -1L : android.os.SystemClock.elapsedRealtime() - lastMetricsAtMs;
         if (powerMode == 2) {
@@ -188,7 +214,7 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         if (snapshot == null) {
             return null;
         }
-        int powerMode = effectivePowerMode(snapshot);
+        int powerMode = effectivePowerMode(snapshot, repository.getCombined(ReadOnlyID.ID_CAR_POWER_MODE));
         if (powerMode == 2) {
             sawPoweredOn = true;
             finalSent = false;

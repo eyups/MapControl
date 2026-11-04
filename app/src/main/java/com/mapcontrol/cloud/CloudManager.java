@@ -62,8 +62,10 @@ public final class CloudManager {
     private TripUploader tripUploader;
     private CommandExecutor commandExecutor;
     private CommandPoller commandPoller;
+    private DvrClipPoller dvrClipPoller;
     private HealthUploader healthUploader;
     private ValetUploader valetUploader;
+    private ParkingPhotoCapture parkPhotoCapture;
     private long nextHealthAt;
     private long nextValetAt;
 
@@ -184,9 +186,12 @@ public final class CloudManager {
         tripUploader = new TripUploader(appContext, config, http);
         commandExecutor = new CommandExecutor(appContext, config, http, telemetry);
         commandPoller = new CommandPoller(config, http, commandExecutor, this::onCommandAuthRevoked);
+        dvrClipPoller = new DvrClipPoller(appContext, config, http, this::onCommandAuthRevoked);
         healthUploader = new HealthUploader(appContext, config, http);
         nextHealthAt = 0L;
         valetUploader = new ValetUploader(appContext, config, http);
+        parkPhotoCapture = new ParkingPhotoCapture(appContext, config, http);
+        parkPhotoCapture.start();
         nextValetAt = 0L;
         setState(State.RUNNING, "Başlatılıyor");
         Handler target = ensureWorker();
@@ -200,6 +205,9 @@ public final class CloudManager {
             }
             if (commandPoller != null) {
                 commandPoller.start();
+            }
+            if (dvrClipPoller != null) {
+                dvrClipPoller.start();
             }
             loop();
         });
@@ -220,6 +228,10 @@ public final class CloudManager {
             commandPoller.stop();
             commandPoller = null;
         }
+        if (dvrClipPoller != null) {
+            dvrClipPoller.stop();
+            dvrClipPoller = null;
+        }
         if (commandExecutor != null) {
             commandExecutor.stop();
             commandExecutor = null;
@@ -227,6 +239,11 @@ public final class CloudManager {
         healthUploader = null;
         valetUploader = null;
         tripUploader = null;
+        ParkingPhotoCapture activeCapture = parkPhotoCapture;
+        parkPhotoCapture = null;
+        if (activeCapture != null) {
+            activeCapture.stop();
+        }
         setState(State.STOPPED, "Durduruldu");
     }
 
@@ -341,6 +358,10 @@ public final class CloudManager {
         TelemetryUploader current = telemetry;
         if (current == null) {
             return;
+        }
+        ParkingPhotoCapture capture = parkPhotoCapture;
+        if (capture != null) {
+            capture.captureOnce();
         }
         try {
             http.postJson("/api/v1/car/telemetry", config.token(),
@@ -474,6 +495,10 @@ public final class CloudManager {
             commandPoller.stop();
             commandPoller = null;
         }
+        if (dvrClipPoller != null) {
+            dvrClipPoller.stop();
+            dvrClipPoller = null;
+        }
         if (commandExecutor != null) {
             commandExecutor.stop();
             commandExecutor = null;
@@ -481,6 +506,11 @@ public final class CloudManager {
         healthUploader = null;
         valetUploader = null;
         tripUploader = null;
+        ParkingPhotoCapture activeCapture = parkPhotoCapture;
+        parkPhotoCapture = null;
+        if (activeCapture != null) {
+            activeCapture.stop();
+        }
         if (worker != null) {
             worker.removeCallbacksAndMessages(null);
         }

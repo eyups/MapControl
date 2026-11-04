@@ -1008,6 +1008,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_backup_face_data">Back up face data</string>
     <string name="settings_cloud_backup_face_data_sub">Face templates are included in the backup.</string>
     <string name="settings_cloud_share_location">Share location</string>
+    <string name="settings_cloud_park_photo">Parking photos</string>
+    <string name="settings_cloud_park_photo_sub">On ignition off, take four camera photos and upload them. JPEGs may be analyzed by a vision model for the parking spot.</string>
     <string name="settings_cloud_invalid_code">Enter the 8-character code.</string>
     <string name="settings_cloud_pair_failed">Pairing failed.</string>
     <string name="settings_cloud_error">Cloud error.</string>
@@ -1031,6 +1033,9 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_vdbus_snapshot">Send VDBus snapshot</string>
     <string name="settings_cloud_vdbus_sent">VDBus snapshot uploaded.</string>
     <string name="settings_cloud_vdbus_failed">VDBus snapshot failed.</string>
+    <string name="settings_cloud_dvr_index">Send DVR clip index</string>
+    <string name="settings_cloud_dvr_sent">DVR clip index uploaded.</string>
+    <string name="settings_cloud_dvr_failed">DVR clip index failed.</string>
 
 
     <string name="cloud_command_scene_message">Apply “%1$s” scene in the vehicle?</string>
@@ -1178,6 +1183,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_roadmate_actions_sub">System diagnostics &amp; synchronization console</string>
     <string name="ck_roadmate_log_sub">Live error and kernel logs</string>
     <string name="ck_roadmate_vdbus_sub">Capture and send CAN frame dump</string>
+    <string name="ck_roadmate_dvr_sub">Clip metadata and thumbnails</string>
     <string name="ck_roadmate_update_sub">OTA Telematics software version</string>
     <string name="ck_roadmate_backup_sub">Seat, mirror, climate settings</string>
     <string name="ck_roadmate_restore_sub">Restore the latest cloud backup</string>

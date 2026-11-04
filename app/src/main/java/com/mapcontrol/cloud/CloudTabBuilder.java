@@ -49,9 +49,11 @@ public final class CloudTabBuilder {
     private final Button startStopButton;
     private final CockpitToggleRow shareLocationRow;
     private final CockpitToggleRow faceBackupRow;
+    private final CockpitToggleRow parkPhotoRow;
     private final CockpitGrid actionsGrid;
     private final LinearLayout logUploadButton;
     private final LinearLayout vdbusButton;
+    private final LinearLayout dvrIndexButton;
     private final LinearLayout updateButton;
     private final LinearLayout backupButton;
     private final LinearLayout restoreButton;
@@ -179,6 +181,13 @@ public final class CloudTabBuilder {
         LinearLayout.LayoutParams faceLp = matchWidth();
         faceLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         pairedRow.addView(faceBackupRow, faceLp);
+        parkPhotoRow = new CockpitToggleRow(context, R.drawable.ic_mdi_camera,
+                context.getString(R.string.settings_cloud_park_photo),
+                context.getString(R.string.settings_cloud_park_photo_sub),
+                config.parkPhotoEnabled());
+        LinearLayout.LayoutParams parkPhotoLp = matchWidth();
+        parkPhotoLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        pairedRow.addView(parkPhotoRow, parkPhotoLp);
         pairCard.addView(pairedRow, matchWidth());
 
         identityLine = new TextView(context);
@@ -237,6 +246,9 @@ public final class CloudTabBuilder {
         vdbusButton = actionCard(R.drawable.ic_mdi_car,
                 R.string.settings_cloud_vdbus_snapshot, R.string.ck_roadmate_vdbus_sub);
         actionsGrid.add(vdbusButton, 4);
+        dvrIndexButton = actionCard(R.drawable.ic_mdi_camera,
+                R.string.settings_cloud_dvr_index, R.string.ck_roadmate_dvr_sub);
+        actionsGrid.add(dvrIndexButton, 4);
         updateButton = actionCard(R.drawable.ic_mdi_refresh,
                 R.string.settings_cloud_check_update, R.string.ck_roadmate_update_sub);
         actionsGrid.add(updateButton, 4);
@@ -295,6 +307,7 @@ public final class CloudTabBuilder {
         startStopButton.setOnClickListener(view -> toggleRunning());
         logUploadButton.setOnClickListener(view -> uploadLog());
         vdbusButton.setOnClickListener(view -> uploadVdbus());
+        dvrIndexButton.setOnClickListener(view -> uploadDvrIndex());
         updateButton.setOnClickListener(view -> checkUpdate());
         backupButton.setOnClickListener(view -> backupProfiles());
         restoreButton.setOnClickListener(view -> confirmRestoreProfiles());
@@ -313,6 +326,10 @@ public final class CloudTabBuilder {
                     }
                 }, "MapControlFaceBackupClear").start();
             }
+        });
+        parkPhotoRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
+            config.setParkPhotoEnabled(checked);
+            logger.accept("Park fotoğrafı: " + (checked ? "açık" : "kapalı"));
         });
 
         manager.addListener(managerListener);
@@ -547,6 +564,19 @@ public final class CloudTabBuilder {
         });
     }
 
+    private void uploadDvrIndex() {
+        dvrIndexButton.setEnabled(false);
+        Consumer<String> safeLog = message -> mainHandler.post(() -> logger.accept(message));
+        DvrClipIndexer.sync(context, config, new CloudHttp(), safeLog, ok ->
+                mainHandler.post(() -> {
+                    dvrIndexButton.setEnabled(true);
+                    Toast.makeText(context,
+                            ok ? R.string.settings_cloud_dvr_sent
+                                    : R.string.settings_cloud_dvr_failed,
+                            Toast.LENGTH_SHORT).show();
+                }));
+    }
+
     private void uploadVdbus() {
         vdbusButton.setEnabled(false);
         new VdbusLabUploader(context, config, new CloudHttp()).upload((ok, message) -> {
@@ -630,6 +660,10 @@ public final class CloudTabBuilder {
         faceBackupRow.getToggle().setEnabled(paired);
         if (faceBackupRow.getToggle().isChecked() != config.backupFaceData()) {
             faceBackupRow.setCheckedSilently(config.backupFaceData());
+        }
+        parkPhotoRow.getToggle().setEnabled(paired);
+        if (parkPhotoRow.getToggle().isChecked() != config.parkPhotoEnabled()) {
+            parkPhotoRow.setCheckedSilently(config.parkPhotoEnabled());
         }
     }
 
