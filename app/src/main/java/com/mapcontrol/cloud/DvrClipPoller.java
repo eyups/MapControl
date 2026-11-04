@@ -121,21 +121,29 @@ final class DvrClipPoller {
                     return;
                 }
                 String url = "http://" + localIp + ":" + localPort + "/dvr/upload";
-                CloudHttp.Response response = http.postLocalVideo(
-                        url, id, localToken, file);
-                if (response.code >= 200 && response.code < 300) {
-                    report(id, "uploaded", "", file.length());
-                } else {
-                    report(id, "failed", "local_http_" + response.code, file.length());
+                try {
+                    CloudHttp.Response response = http.postLocalVideo(
+                            url, id, localToken, file);
+                    if (response.code >= 200 && response.code < 300) {
+                        report(id, "uploaded", "", file.length());
+                    } else {
+                        report(id, "failed", "local_http_" + response.code, file.length());
+                    }
+                } catch (Exception error) {
+                    report(id, "failed", "local_error", file.length());
                 }
             } else {
-                CloudHttp.Response response = http.postVideoStreaming(
-                        "/api/v1/car/dvr/requests/" + id + "/clip",
-                        config.token(),
-                        file,
-                        "video/mp4");
-                if (response.code < 200 || response.code >= 300) {
-                    report(id, "failed", "cloud_http_" + response.code, file.length());
+                try {
+                    CloudHttp.Response response = http.postVideoStreaming(
+                            "/api/v1/car/dvr/requests/" + id + "/clip",
+                            config.token(),
+                            file,
+                            "video/mp4");
+                    if (response.code < 200 || response.code >= 300) {
+                        report(id, "failed", "cloud_http_" + response.code, file.length());
+                    }
+                } catch (Exception error) {
+                    report(id, "failed", "cloud_error", file.length());
                 }
             }
         } catch (Exception error) {

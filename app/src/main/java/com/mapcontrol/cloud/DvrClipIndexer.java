@@ -30,7 +30,51 @@ final class DvrClipIndexer {
     private static final int THUMB_WIDTH = 320;
     private static final int THUMB_HEIGHT = 180;
 
+    private static final Object SIGNATURE_LOCK = new Object();
+    private static String lastSignature = "";
+
     private DvrClipIndexer() {
+    }
+
+    /** CloudManager tarafından periyodik çağrılır; klip listesi değişmediyse ağa çıkmaz. */
+    static void syncIfChanged(Context context, CloudConfig config, CloudHttp http,
+            Consumer<String> log, Consumer<Boolean> done) {
+        DvrController.get(context).loadClips(clips -> {
+            String signature = signature(clips);
+            synchronized (SIGNATURE_LOCK) {
+                if (signature.equals(lastSignature)) {
+                    if (done != null) {
+                        done.accept(true);
+                    }
+                    return;
+                }
+            }
+            sync(context, config, http, log, ok -> {
+                if (Boolean.TRUE.equals(ok)) {
+                    synchronized (SIGNATURE_LOCK) {
+                        lastSignature = signature;
+                    }
+                }
+                if (done != null) {
+                    done.accept(ok);
+                }
+            });
+        });
+    }
+
+    private static String signature(List<DvrClipStore.Clip> clips) {
+        StringBuilder value = new StringBuilder();
+        for (DvrClipStore.Clip clip : clips) {
+            value.append(clip.base).append(':').append(clip.bytes).append(':');
+            if (clip.mosaic != null) {
+                value.append('m').append(clip.mosaic.length());
+            }
+            for (File file : clip.camFiles) {
+                value.append(file == null ? '-' : file.length()).append(',');
+            }
+            value.append(';');
+        }
+        return value.toString();
     }
 
     static void sync(Context context, CloudConfig config, CloudHttp http,
@@ -123,8 +167,10 @@ final class DvrClipIndexer {
                 thumbnails,
                 MAX_INDEX_BYTES);
         boolean ok = response.code == 201;
-        log.accept("DVR indeksi: " + (ok ? "ok" : "HTTP " + response.code)
-                + " (" + manifest.length() + " klip)");
+        String message = "DVR indeksi: " + (ok ? "ok" : "HTTP " + response.code)
+                + " (" + manifest.length() + " klip)";
+        Log.i(TAG, message);
+        log.accept(message);
         return ok;
     }
 }

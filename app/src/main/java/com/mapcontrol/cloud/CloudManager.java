@@ -33,6 +33,7 @@ public final class CloudManager {
     private static final long HEARTBEAT_INTERVAL_MS = 30_000L;
     private static final long TRIP_SCAN_INTERVAL_MS = 60_000L;
     private static final long HEALTH_INTERVAL_MS = 5 * 60_000L;
+    private static final long DVR_INDEX_INTERVAL_MS = 5 * 60_000L;
     private static final long VALET_INTERVAL_MS = 30_000L;
     private static final long LOOP_INTERVAL_MS = 1_000L;
 
@@ -68,6 +69,7 @@ public final class CloudManager {
     private ParkingPhotoCapture parkPhotoCapture;
     private long nextHealthAt;
     private long nextValetAt;
+    private long nextDvrIndexAt;
 
     private final Runnable loopRunnable = this::loop;
 
@@ -189,6 +191,7 @@ public final class CloudManager {
         dvrClipPoller = new DvrClipPoller(appContext, config, http, this::onCommandAuthRevoked);
         healthUploader = new HealthUploader(appContext, config, http);
         nextHealthAt = 0L;
+        nextDvrIndexAt = 0L;
         valetUploader = new ValetUploader(appContext, config, http);
         parkPhotoCapture = new ParkingPhotoCapture(appContext, config, http);
         parkPhotoCapture.start();
@@ -292,6 +295,10 @@ public final class CloudManager {
         if (heartbeatOk && now >= nextHealthAt) {
             sendHealth();
             nextHealthAt = now + HEALTH_INTERVAL_MS;
+        }
+        if (heartbeatOk && now >= nextDvrIndexAt) {
+            sendDvrIndex();
+            nextDvrIndexAt = now + DVR_INDEX_INTERVAL_MS;
         }
         if (heartbeatOk && now >= nextValetAt) {
             sendValet();
@@ -405,6 +412,14 @@ public final class CloudManager {
             setState(State.RUNNING, "Telemetri bağlantısı bekleniyor");
             return false;
         }
+    }
+
+    private void sendDvrIndex() {
+        DvrClipIndexer.syncIfChanged(appContext, config, http, message -> {
+            // Otomatik katalog sessiz çalışır; hata sonraki turda tekrar denenir.
+        }, ok -> {
+            // Başarılı katalog sonraki değişikliğe kadar tekrar gönderilmez.
+        });
     }
 
     private void sendHealth() {
