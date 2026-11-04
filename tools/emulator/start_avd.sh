@@ -19,7 +19,9 @@ if "$ADB" devices | awk '$2 == "device" && $1 ~ /^emulator-/ {found=1} END {exit
 fi
 
 echo "[INFO] AVD başlatılıyor: $AVD"
+# -grpc-use-token: voice_mic.py host mikrofon enjeksiyonu için gerekli.
 exec "$EMULATOR" -avd "$AVD" \
+  -grpc 8558 -grpc-use-token \
   -no-boot-anim \
   -no-snapshot \
   -gpu swiftshader_indirect
