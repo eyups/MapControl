@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Shared: Material DayNight + app colors (status bar flag in Theme.MapControl) -->
-    <style name="Theme.MapControl.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <!-- Shared: Material DayNight + app colors (status bar flag in Theme.RoadDeck) -->
+    <style name="Theme.RoadDeck.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/ck_bg_base</item>
@@ -24,12 +24,12 @@
     </style>
 
     <!-- Light UI: dark icons in status bar -->
-    <style name="Theme.MapControl" parent="Theme.MapControl.Base">
+    <style name="Theme.RoadDeck" parent="Theme.RoadDeck.Base">
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <!-- Dedicated dark report surface for the drive score screen. -->
-    <style name="Theme.MapControl.Driving" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.RoadDeck.Driving" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/ck_bg_base</item>
         <item name="android:statusBarColor">@color/ck_bg_base</item>
         <item name="android:navigationBarColor">@color/ck_bg_base</item>
@@ -40,8 +40,8 @@
         <item name="colorAccent">@color/ck_accent</item>
     </style>
 
-    <!-- Cold start: process window siyah olmasın; MainActivity sonra Theme.MapControl'e geçer -->
-    <style name="Theme.MapControl.Splash" parent="Theme.MapControl">
+    <!-- Cold start: process window siyah olmasın; MainActivity sonra Theme.RoadDeck'e geçer -->
+    <style name="Theme.RoadDeck.Splash" parent="Theme.RoadDeck">
         <item name="android:windowBackground">@drawable/bg_launch_splash</item>
         <item name="android:statusBarColor">@color/boot_splash_gradient_mid</item>
         <item name="android:navigationBarColor">@color/boot_splash_gradient_mid</item>

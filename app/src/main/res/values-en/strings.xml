@@ -226,4 +226,26 @@ Monitor — Foreground apps on display 2</string>
     <string name="launcher_media_volume_up">Volume up</string>
     <string name="launcher_media_mute">Mute</string>
     <string name="launcher_dashboard_vehicle_tap_select">Tap to choose vehicle image</string>
-    </resources>
+        <string name="ck_body_title">Vehicle body</string>
+    <string name="ck_body_front">FRONT</string>
+    <string name="ck_body_hood_short">HOOD</string>
+    <string name="ck_body_trunk_short">TRUNK</string>
+    <string name="ck_body_door_lf">Front left door</string>
+    <string name="ck_body_door_rf">Front right door</string>
+    <string name="ck_body_door_lr">Rear left door</string>
+    <string name="ck_body_door_rr">Rear right door</string>
+    <string name="ck_body_trunk">Trunk</string>
+    <string name="ck_body_hood">Hood</string>
+    <string name="ck_body_sunroof">Sunroof</string>
+    <string name="ck_body_sunshade">Sunshade</string>
+    <string name="ck_body_open_suffix">open</string>
+    <string name="ck_body_all_closed">All doors closed</string>
+    <string name="ck_body_waiting">Waiting for body data</string>
+    <string name="ck_body_moving_warning">Door or trunk open while moving</string>
+    <string name="ck_body_window_lf">Front left window</string>
+    <string name="ck_body_window_rf">Front right window</string>
+    <string name="ck_body_window_lr">Rear left window</string>
+    <string name="ck_body_window_rr">Rear right window</string>
+    <string name="ck_body_left_side">LEFT SIDE</string>
+    <string name="ck_body_right_side">RIGHT SIDE</string>
+</resources>

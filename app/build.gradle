@@ -21,7 +21,7 @@ def geminiApiKey = localProps.getProperty('GEMINI_API_KEY', '')
 def geminiApiKeyEscaped = geminiApiKey.replace('\\', '\\\\').replace('"', '\\"')
 
 android {
-    namespace 'com.mapcontrol'
+    namespace 'com.eyups.roaddeck'
     compileSdk 34
 
     buildFeatures {
@@ -65,7 +65,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("mapcontrol-release.keystore")
+            storeFile file("roaddeck-release.keystore")
             storePassword releaseStorePassword
             keyAlias "mapcontrol"
             keyPassword releaseKeyPassword

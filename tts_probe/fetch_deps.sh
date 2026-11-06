@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# MapControl'den bağımsız TTS probe için Sherpa-ONNX JNI + Türkçe Piper modelleri.
+# RoadDeck'ten bağımsız TTS probe için Sherpa-ONNX JNI + Türkçe Piper modelleri.
 # Kullanım: ./fetch_deps.sh
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"

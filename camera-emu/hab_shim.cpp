@@ -1,5 +1,5 @@
 // HAB camera emulator shim (emulator-only, LD_PRELOAD).
-// App's libmapcontrol_hab.so talks to /dev/hab with Desay qcarcam ioctls.
+// App's libroaddeck_hab.so talks to /dev/hab with Desay qcarcam ioctls.
 // This shim fakes that device+server and feeds YUYV frames from a looped file
 // (or a synthetic pattern) into the caller's exported ION buffers.
 #define _GNU_SOURCE
@@ -28,7 +28,7 @@
 #define LOG(...) __android_log_print(ANDROID_LOG_INFO, "HabShim", __VA_ARGS__)
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN, "HabShim", __VA_ARGS__)
 
-// ---- HAB ioctls (must match libmapcontrol_hab) ----
+// ---- HAB ioctls (must match libroaddeck_hab) ----
 static constexpr unsigned long kIoctlOpen     = 0xC0100A04UL;
 static constexpr unsigned long kIoctlSend     = 0x40180A02UL;
 static constexpr unsigned long kIoctlRecv     = 0xC0180A03UL;

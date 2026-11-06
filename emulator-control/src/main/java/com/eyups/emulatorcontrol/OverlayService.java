@@ -16,10 +16,14 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** Her uygulamanın üstünde duran küçük VDBus komut paneli. */
 public final class OverlayService extends Service {
@@ -32,6 +36,7 @@ public final class OverlayService extends Service {
     private View expanded;
     private boolean expandedVisible;
 
+    private final List<BodyToggle> bodyToggles = new ArrayList<>();
     private int downX;
     private int downY;
     private int startX;
@@ -107,6 +112,13 @@ public final class OverlayService extends Service {
     private void showCollapsed() {
         expandedVisible = false;
         if (expanded != null) {
+            try {
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(expanded.getWindowToken(), 0);
+                }
+            } catch (Throwable ignored) {
+            }
             try { windowManager.removeView(expanded); } catch (Throwable ignored) {}
             expanded = null;
         }
@@ -157,6 +169,10 @@ public final class OverlayService extends Service {
     }
 
     private void showExpanded(int x, int y) {
+        if (expanded != null) {
+            try { windowManager.removeView(expanded); } catch (Throwable ignored) {}
+            expanded = null;
+        }
         if (collapsed != null) {
             try { windowManager.removeView(collapsed); } catch (Throwable ignored) {}
             collapsed = null;
@@ -166,11 +182,17 @@ public final class OverlayService extends Service {
         panel.setPadding(dp(12), dp(10), dp(12), dp(10));
         panel.setBackgroundColor(Color.argb(235, 24, 24, 24));
 
+        LinearLayout titleRow = new LinearLayout(this);
+        titleRow.setOrientation(LinearLayout.HORIZONTAL);
+        titleRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
         TextView title = new TextView(this);
         title.setText("VDBus");
         title.setTextColor(Color.WHITE);
         title.setTextSize(16);
-        panel.addView(title);
+        titleRow.addView(title, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        Button topHide = button("Gizle", v -> showCollapsed());
+        titleRow.addView(topHide);
+        panel.addView(titleRow);
 
         LinearLayout powerRow = new LinearLayout(this);
         powerRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -195,6 +217,7 @@ public final class OverlayService extends Service {
         fuelRow.addView(fuelValue, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         fuelRow.addView(button("Yakıt", v -> setFuel(fuelValue)));
         panel.addView(fuelRow);
+        panel.addView(button("Gövde testi", v -> showBodyPanel(params.x, params.y)));
 
         EditText event = edit("event", "327684");
         event.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -231,6 +254,139 @@ public final class OverlayService extends Service {
         params.x = Math.max(0, Math.min(x, dp(10)));
         params.y = Math.max(0, y);
         windowManager.addView(expanded, params);
+    }
+
+    private void showBodyPanel(int x, int y) {
+        if (expanded != null) {
+            try { windowManager.removeView(expanded); } catch (Throwable ignored) {}
+            expanded = null;
+        }
+        bodyToggles.clear();
+
+        LinearLayout panel = new LinearLayout(this);
+        panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(dp(12), dp(10), dp(12), dp(10));
+        panel.setBackgroundColor(Color.argb(240, 24, 24, 24));
+
+        TextView title = new TextView(this);
+        title.setText("Gövde testi · fake VDBus");
+        title.setTextColor(Color.WHITE);
+        title.setTextSize(16);
+        panel.addView(title);
+
+        TextView hint = new TextView(this);
+        hint.setText("Yalnızca fake VDBus'a sinyal gönderir; gerçek araç actuator'ına komut gitmez.");
+        hint.setTextColor(Color.LTGRAY);
+        hint.setTextSize(11);
+        hint.setPadding(0, dp(2), 0, dp(6));
+        panel.addView(hint);
+
+        bodyRow(panel,
+                new BodyToggle("Sol ön kapı", 327684, 15, 1, 0),
+                new BodyToggle("Sağ ön kapı", 327684, 16, 1, 0));
+        bodyRow(panel,
+                new BodyToggle("Sol arka kapı", 327684, 17, 1, 0),
+                new BodyToggle("Sağ arka kapı", 327684, 18, 1, 0));
+        bodyRow(panel,
+                new BodyToggle("Sol ön cam", 327681, 100, 1, 0),
+                new BodyToggle("Sağ ön cam", 327681, 101, 1, 0));
+        bodyRow(panel,
+                new BodyToggle("Sol arka cam", 327681, 102, 1, 0),
+                new BodyToggle("Sağ arka cam", 327681, 103, 1, 0));
+        bodyRow(panel,
+                new BodyToggle("Bagaj", 327684, 19, 1, 0),
+                new BodyToggle("Kaput", 327684, 47, 1, 0));
+        bodyRow(panel,
+                new BodyToggle("Cam tavan", 327681, 6, 2, 1),
+                new BodyToggle("Güneşlik", 327681, 10, 2, 1));
+
+        LinearLayout speedRow = new LinearLayout(this);
+        speedRow.setOrientation(LinearLayout.HORIZONTAL);
+        Button speed = button("Hız: 0 km/s", null);
+        speed.setOnClickListener(v -> {
+            boolean high = Boolean.TRUE.equals(speed.getTag());
+            boolean next = !high;
+            speed.setTag(next);
+            speed.setText(next ? "Hız: 30 km/s" : "Hız: 0 km/s");
+            send(327684, 0, new int[]{next ? 30 : 0});
+        });
+        speedRow.addView(speed, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        Button closeAll = button("Tümünü kapat", v -> {
+            for (BodyToggle toggle : bodyToggles) {
+                toggle.setOpen(false);
+            }
+            send(327684, 0, new int[]{0});
+            closeAllBody();
+        });
+        speedRow.addView(closeAll, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        panel.addView(speedRow);
+        panel.addView(button("Geri", v -> showExpanded(x, y)));
+
+        expanded = panel;
+        params = baseParams(true);
+        params.x = Math.max(0, Math.min(x, dp(10)));
+        params.y = Math.max(0, y);
+        windowManager.addView(expanded, params);
+    }
+
+    private void bodyRow(LinearLayout panel, BodyToggle left, BodyToggle right) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        addBodyToggle(row, left);
+        addBodyToggle(row, right);
+        panel.addView(row);
+    }
+
+    private void addBodyToggle(LinearLayout row, BodyToggle toggle) {
+        toggle.button = button(toggle.label + ": kapalı", null);
+        toggle.button.setOnClickListener(v -> {
+            boolean open = !toggle.open;
+            toggle.setOpen(open);
+            send(toggle.event, toggle.cmd, new int[]{open ? toggle.openValue : toggle.closeValue});
+        });
+        bodyToggles.add(toggle);
+        row.addView(toggle.button, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+    }
+
+    private void closeAllBody() {
+        send(327684, 15, new int[]{0});
+        send(327684, 16, new int[]{0});
+        send(327684, 17, new int[]{0});
+        send(327684, 18, new int[]{0});
+        send(327681, 100, new int[]{0});
+        send(327681, 101, new int[]{0});
+        send(327681, 102, new int[]{0});
+        send(327681, 103, new int[]{0});
+        send(327684, 19, new int[]{0});
+        send(327684, 47, new int[]{0});
+        send(327681, 6, new int[]{1});
+        send(327681, 10, new int[]{1});
+        send(327684, 0, new int[]{0});
+    }
+
+    private static final class BodyToggle {
+        final String label;
+        final int event;
+        final int cmd;
+        final int openValue;
+        final int closeValue;
+        Button button;
+        boolean open;
+
+        BodyToggle(String label, int event, int cmd, int openValue, int closeValue) {
+            this.label = label;
+            this.event = event;
+            this.cmd = cmd;
+            this.openValue = openValue;
+            this.closeValue = closeValue;
+        }
+
+        void setOpen(boolean open) {
+            this.open = open;
+            if (button != null) {
+                button.setText(label + (open ? ": açık" : ": kapalı"));
+            }
+        }
     }
 
     private Button button(String text, View.OnClickListener listener) {

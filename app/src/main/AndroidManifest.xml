@@ -99,13 +99,13 @@
     </queries>
     
     <application
-        android:name=".MapControlApplication"
+        android:name=".RoadDeckApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MapControl"
+        android:theme="@style/Theme.RoadDeck"
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true">
 
@@ -118,7 +118,7 @@
             android:exported="true"
             android:launchMode="singleTop"
             android:label="RoadDeck"
-            android:theme="@style/Theme.MapControl.Splash"
+            android:theme="@style/Theme.RoadDeck.Splash"
             android:configChanges="orientation|screenSize|keyboardHidden|uiMode"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -133,7 +133,7 @@
             android:theme="@android:style/Theme.DeviceDefault.Dialog.Alert" />
 
         <!-- Araç Launcher Modu: varsayılan olarak KAPALI (enabled=false). Ayarlar > Araç Launcher
-             Modu açıldığında LauncherModeManager bu bileşeni etkinleştirir; böylece MapControl,
+             Modu açıldığında LauncherModeManager bu bileşeni etkinleştirir; böylece RoadDeck,
              cihazın Ana Ekran (HOME) uygulaması olarak seçilebilir hale gelir. MainActivity'yi
              hedefler; ayrı bir Activity sınıfı gerekmez, mevcut ekran akışı değişmez. -->
         <activity-alias
@@ -154,7 +154,7 @@
             android:name=".ui.activity.DrivingAnalysisActivity"
             android:label="Sürüş Karnesi"
             android:exported="false"
-            android:theme="@style/Theme.MapControl.Driving" />
+            android:theme="@style/Theme.RoadDeck.Driving" />
 
         <activity
             android:name=".ui.activity.DmsFaceProfileActivity"
@@ -172,19 +172,19 @@
             android:name=".ui.activity.AdasProbeActivity"
             android:label="ADAS diagnostics"
             android:exported="true"
-            android:theme="@style/Theme.MapControl"
+            android:theme="@style/Theme.RoadDeck"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.TrafficSignMonitorActivity"
             android:label="Traffic sign monitor"
             android:exported="false"
-            android:theme="@style/Theme.MapControl"
+            android:theme="@style/Theme.RoadDeck"
             android:screenOrientation="landscape" />
         <activity
             android:name=".ui.activity.FrontObjectProbeActivity"
             android:label="Front object discovery"
             android:exported="false"
-            android:theme="@style/Theme.MapControl"
+            android:theme="@style/Theme.RoadDeck"
             android:screenOrientation="landscape" />
 
         <activity
@@ -210,12 +210,12 @@
         
         <!-- Foreground Service - Arka planda çalışması için -->
         <receiver
-            android:name=".admin.MapControlDeviceAdminReceiver"
+            android:name=".admin.RoadDeckDeviceAdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN"
             android:exported="true">
             <meta-data
                 android:name="android.app.device_admin"
-                android:resource="@xml/device_admin_mapcontrol" />
+                android:resource="@xml/device_admin_roaddeck" />
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
@@ -239,7 +239,7 @@
             android:exported="false" />
 
         <service
-            android:name=".service.MapControlService"
+            android:name=".service.RoadDeckService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="dataSync|microphone" />
@@ -270,7 +270,7 @@
         <activity
             android:name=".ui.cockpit.CockpitGalleryActivity"
             android:exported="false"
-            android:theme="@style/Theme.MapControl" />
+            android:theme="@style/Theme.RoadDeck" />
     </application>
 
 </manifest>

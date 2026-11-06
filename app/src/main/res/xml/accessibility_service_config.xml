@@ -7,5 +7,5 @@
     android:notificationTimeout="50"
     android:canPerformGestures="true"
     android:canRetrieveWindowContent="true"
-    android:settingsActivity="com.mapcontrol.MainActivity" />
+    android:settingsActivity="com.eyups.roaddeck.ui.activity.MainActivity" />
 

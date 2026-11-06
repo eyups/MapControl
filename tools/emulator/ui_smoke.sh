@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 SERIAL="${ANDROID_SERIAL:-emulator-5554}"
 PKG="com.eyups.roaddeck"
-ACT="$PKG/com.mapcontrol.ui.activity.MainActivity"
+ACT="$PKG/com.eyups.roaddeck.ui.activity.MainActivity"
 OUT="$ROOT/tools/emulator/out/ui-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$OUT"
 

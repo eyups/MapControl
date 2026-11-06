@@ -31,5 +31,5 @@ for i in 0 1 2 3; do
     "${ADB[@]}" push "$TMP/cam$i.yuyv" "/data/local/tmp/habcam/cam$i.yuyv" >/dev/null
 done
 "${ADB[@]}" shell 'rm -f /data/local/tmp/habcam/frame.yuyv; chcon u:object_r:system_file:s0 /data/local/tmp/habcam/cam*.yuyv'
-"${ADB[@]}" shell 'am force-stop com.eyups.roaddeck; am start -n com.eyups.roaddeck/com.mapcontrol.ui.activity.MainActivity' >/dev/null 2>&1 || true
+"${ADB[@]}" shell 'am force-stop com.eyups.roaddeck; am start -n com.eyups.roaddeck/com.eyups.roaddeck.ui.activity.MainActivity' >/dev/null 2>&1 || true
 echo "dört kamera kuruldu (sol/ön/arka/sağ)"

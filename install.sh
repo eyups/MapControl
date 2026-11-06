@@ -34,7 +34,7 @@ echo "setprop persist.sys.sv.isl true" | $ADB shell || true
 if [[ ! -f "$APK" ]]; then
     if [[ $# -eq 0 ]]; then
         echo "⚠️  Release APK bulunamıyor: $APK"
-        echo "🔨 MapControl için ./gradlew assembleRelease çalıştırılıyor..."
+        echo "🔨 RoadDeck için ./gradlew assembleRelease çalıştırılıyor..."
         (cd "$SCRIPT_DIR" && ./gradlew assembleRelease) || exit 1
     else
         echo "❌ APK bulunamadı: $APK"
@@ -43,13 +43,13 @@ if [[ ! -f "$APK" ]]; then
 fi
 
 if [[ ! -f "$APK" ]]; then
-    echo "❌ APK oluşturulamadı. MapControl dizininde elle çalıştırın: ./gradlew assembleRelease"
+    echo "❌ APK oluşturulamadı. RoadDeck dizininde elle çalıştırın: ./gradlew assembleRelease"
     exit 1
 fi
 
 # APK'yı cihaza push et
 echo "📦 APK'yı cihaza yüklüyorum..."
-$ADB push "$APK" /data/local/tmp/mapcontrol.apk || {
+$ADB push "$APK" /data/local/tmp/roaddeck.apk || {
     echo "❌ $ADB push başarısız (cihaz bağlı mı, adb yetkisi var mı kontrol edin)."
     exit 1
 }
@@ -58,7 +58,7 @@ $ADB push "$APK" /data/local/tmp/mapcontrol.apk || {
 # Doğrudan `pm install` bazı araçlarda "Restriction prevents installing" ile engellenir.
 # Web kurulumunun kullandığı PackageInstaller session yardımcısını kullan.
 echo "📱 APK'yı yüklüyorum (silent installer)..."
-SILENT_DIR="${TMPDIR:-/tmp}/mapcontrol-silent-installer"
+SILENT_DIR="${TMPDIR:-/tmp}/roaddeck-silent-installer"
 mkdir -p "$SILENT_DIR"
 if [[ ! -s "$SILENT_DIR/mc-run.sh" ]]; then
     curl -L --fail --max-time 60 -sS \
@@ -81,7 +81,7 @@ $ADB push "$SILENT_DIR/mapcontrol-silent-installer.dex" \
     /data/local/tmp/mapcontrol-silent-installer.dex >/dev/null
 $ADB shell chmod 755 /data/local/tmp/mc-run.sh
 INSTALL_OUTPUT=$($ADB shell \
-    "sh /data/local/tmp/mc-run.sh /data/local/tmp/mapcontrol.apk --grant-runtime --expected-package=${APP_ID}" \
+    "sh /data/local/tmp/mc-run.sh /data/local/tmp/roaddeck.apk --grant-runtime --expected-package=${APP_ID}" \
     2>&1 | tr -d '\r')
 echo "$INSTALL_OUTPUT"
 if ! printf '%s' "$INSTALL_OUTPUT" | grep -q 'INSTALL_SUCCEEDED'; then
@@ -147,14 +147,14 @@ grant_permission "pm grant ${APP_ID} android.permission.BIND_ACCESSIBILITY_SERVI
 
 # AccessibilityService otomatik etkinleştirme
 echo "🔧 AccessibilityService etkinleştiriliyor..."
-# Dikkat: Sınıf com.mapcontrol.service.GlobalBackService — .GlobalBackService (service olmadan) YANLIŞSIR.
-grant_permission "settings put secure enabled_accessibility_services ${APP_ID}/com.mapcontrol.service.GlobalBackService" "AccessibilityService"
-grant_permission "cmd accessibility enable-service ${APP_ID}/com.mapcontrol.service.GlobalBackService" "AccessibilityService (cmd)"
+# Dikkat: Sınıf com.eyups.roaddeck.service.GlobalBackService — .GlobalBackService (service olmadan) YANLIŞSIR.
+grant_permission "settings put secure enabled_accessibility_services ${APP_ID}/com.eyups.roaddeck.service.GlobalBackService" "AccessibilityService"
+grant_permission "cmd accessibility enable-service ${APP_ID}/com.eyups.roaddeck.service.GlobalBackService" "AccessibilityService (cmd)"
 
 # NotificationListener — medya oturumu (BT / YouTube) için zorunlu
 # Manuel Ayarlar > Bildirim erişimi yerine yüklemede verilir.
 echo "🔧 NotificationListener (medya) etkinleştiriliyor..."
-NLS_COMPONENT="${APP_ID}/com.mapcontrol.media.LauncherMediaNotificationListener"
+NLS_COMPONENT="${APP_ID}/com.eyups.roaddeck.media.LauncherMediaNotificationListener"
 grant_permission "cmd notification allow_listener ${NLS_COMPONENT}" "NotificationListener (cmd)"
 # Mevcut dinleyicileri silmeden ekle
 NLS_CURRENT=$($ADB shell settings get secure enabled_notification_listeners 2>/dev/null | tr -d '\r')
@@ -172,7 +172,7 @@ fi
 grant_permission "pm grant ${APP_ID} android.permission.MEDIA_CONTENT_CONTROL" "MEDIA_CONTENT_CONTROL"
 
 echo "🔧 Cihaz sahibi atanıyor..."
-DPM_OUT=$($ADB shell dpm set-device-owner ${APP_ID}/com.mapcontrol.admin.MapControlDeviceAdminReceiver 2>&1 | tr -d '\r')
+DPM_OUT=$($ADB shell dpm set-device-owner ${APP_ID}/com.eyups.roaddeck.admin.RoadDeckDeviceAdminReceiver 2>&1 | tr -d '\r')
 if echo "$DPM_OUT" | grep -qiE "Success|already set"; then
     echo "  ✓ Device owner"
 else

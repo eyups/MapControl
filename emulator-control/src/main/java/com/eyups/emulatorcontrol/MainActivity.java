@@ -24,12 +24,12 @@ import java.util.List;
 
 /**
  * Emülatör test kontrol paneli.
- * Fake VDBus servislerine explicit broadcast gönderir; MapControl aktivitelerini açar.
+ * Fake VDBus servislerine explicit broadcast gönderir; RoadDeck aktivitelerini açar.
  */
 public final class MainActivity extends Activity {
     private static final String CONTROL_ACTION = "com.eyups.fakevdbus.CONTROL";
     private static final String CONTROL_RECEIVER = "com.eyups.fakevdbus.ControlReceiver";
-    private static final String MAPCONTROL_PKG = "com.eyups.roaddeck";
+    private static final String ROADDECK_PKG = "com.eyups.roaddeck";
 
     private Spinner targetSpinner;
     private EditText eventInput;
@@ -140,12 +140,12 @@ public final class MainActivity extends Activity {
 
         Button launch = button("RoadDeck'i aç");
         launch.setOnClickListener(v -> launchActivity(
-                MAPCONTROL_PKG, "com.mapcontrol.ui.activity.MainActivity"));
+                ROADDECK_PKG, "com.eyups.roaddeck.ui.activity.MainActivity"));
         root.addView(launch);
 
         Button adas = button("ADAS Probe'u aç");
         adas.setOnClickListener(v -> launchActivity(
-                MAPCONTROL_PKG, "com.mapcontrol.ui.activity.AdasProbeActivity"));
+                ROADDECK_PKG, "com.eyups.roaddeck.ui.activity.AdasProbeActivity"));
         root.addView(adas);
 
         if (android.provider.Settings.canDrawOverlays(this)) {

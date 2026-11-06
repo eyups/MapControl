@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Dark UI: light icons in status bar -->
-    <style name="Theme.MapControl" parent="Theme.MapControl.Base">
+    <style name="Theme.RoadDeck" parent="Theme.RoadDeck.Base">
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <style name="Theme.MapControl.Splash" parent="Theme.MapControl">
+    <style name="Theme.RoadDeck.Splash" parent="Theme.RoadDeck">
         <item name="android:windowBackground">@drawable/bg_launch_splash</item>
         <item name="android:statusBarColor">@color/boot_splash_gradient_mid</item>
         <item name="android:navigationBarColor">@color/boot_splash_gradient_mid</item>

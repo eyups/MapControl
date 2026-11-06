@@ -26,5 +26,5 @@ chcon u:object_r:system_file:s0 /data/local/tmp/habwrap.sh /data/local/tmp/libha
 [ -f /data/local/tmp/habcam/frame.yuyv ] && chcon u:object_r:system_file:s0 /data/local/tmp/habcam/frame.yuyv 2>/dev/null || true
 [ -e /dev/hab ] || touch /dev/hab
 setprop wrap.$PKG /data/local/tmp/habwrap.sh"
-$ADB shell "am force-stop $PKG; sleep 1; am start -n $PKG/com.mapcontrol.ui.activity.MainActivity" >/dev/null 2>&1 || true
+$ADB shell "am force-stop $PKG; sleep 1; am start -n $PKG/com.eyups.roaddeck.ui.activity.MainActivity" >/dev/null 2>&1 || true
 echo "installed; app restarted with shim"

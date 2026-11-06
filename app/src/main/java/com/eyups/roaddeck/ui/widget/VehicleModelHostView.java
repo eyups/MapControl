@@ -1,0 +1,374 @@
+package com.eyups.roaddeck.ui.widget;
+
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.util.SparseArray;
+import android.view.MotionEvent;
+import android.view.ViewConfiguration;
+import android.util.AttributeSet;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
+
+import com.eyups.roaddeck.R;
+import com.eyups.roaddeck.vehicle.material.MaterialVehicleCatalog;
+import com.eyups.roaddeck.vehicle.material.MaterialVehicleResources;
+import com.eyups.roaddeck.vehicle.material.VehicleMaterialPickerDialog;
+
+/**
+ * Launcher dashboard araç görseli — OEM materialvehicle APK'sından 2D görsel + frame animasyon.
+ * Görsele (veya varsayılan SVG'ye) dokununca araç seçim listesi açılır.
+ */
+public final class VehicleModelHostView extends FrameLayout {
+
+    public enum ViewMode {
+        NORMAL,
+        SUNROOF,
+        TRUNK
+    }
+
+    private static final String DRAWABLE_TAILGATE = "tailgate";
+    private static final String DRAWABLE_SCUTTLE = "scuttle";
+    private static final int MAX_FRAME_INDEX = 48;
+
+    private final MaterialVehicleResources resources = MaterialVehicleResources.getInstance();
+    private final View glowView;
+    private final ImageView carImageView;
+    private final OemFrameAnimationView animationView;
+    private final ImageView fallbackView;
+
+    private boolean active;
+    private boolean oemAssetsLoaded;
+    private String spinPrefix;
+    private int spinLastFrame;
+    private int spinFrame;
+    private float spinDownX;
+    private int spinDownFrame;
+    private boolean spinning;
+    private boolean introSpinning;
+    private boolean introSpinPlayed;
+    private final SparseArray<Bitmap> spinCache = new SparseArray<>();
+    private ViewMode currentMode = ViewMode.NORMAL;
+
+    public VehicleModelHostView(@NonNull Context context) {
+        this(context, null);
+    }
+
+    public VehicleModelHostView(@NonNull Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+        setClipChildren(false);
+        setClickable(true);
+        setFocusable(true);
+        setOnClickListener(v -> openVehiclePicker());
+
+        glowView = new View(context);
+        glowView.setBackgroundResource(R.drawable.bg_launcher_vehicle_glow);
+        addView(glowView, createGlowLayoutParams(0));
+
+        carImageView = new AppCompatImageView(context);
+        carImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        carImageView.setContentDescription(context.getString(R.string.launcher_dashboard_vehicle_tap_select));
+        carImageView.setClickable(false);
+        addView(carImageView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+        animationView = new OemFrameAnimationView(context);
+        animationView.setVisibility(GONE);
+        animationView.setClickable(false);
+        addView(animationView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+        fallbackView = new AppCompatImageView(context);
+        fallbackView.setImageResource(R.drawable.ic_launcher_vehicle_top);
+        fallbackView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        fallbackView.setVisibility(GONE);
+        fallbackView.setClickable(false);
+        fallbackView.setContentDescription(context.getString(R.string.launcher_dashboard_vehicle_tap_select));
+        addView(fallbackView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+        setOnTouchListener(this::handleSpinTouch);
+    }
+
+    private boolean handleSpinTouch(View view, MotionEvent event) {
+        if (spinPrefix == null || spinLastFrame <= 0) {
+            return false; // dokunma -> normal click / araç seçimi
+        }
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                if (introSpinning) {
+                    stopIntroSpin();
+                }
+                spinDownX = event.getX();
+                spinDownFrame = spinFrame;
+                spinning = false;
+                return true;
+            case MotionEvent.ACTION_MOVE: {
+                float dx = event.getX() - spinDownX;
+                int slop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+                if (Math.abs(dx) > slop) {
+                    spinning = true;
+                }
+                if (spinning) {
+                    float travel = getWidth() * 0.85f;
+                    int delta = Math.round(dx / Math.max(1f, travel) * spinLastFrame);
+                    int next = Math.floorMod(spinDownFrame + delta, spinLastFrame + 1);
+                    if (next != spinFrame) {
+                        showSpinFrame(next);
+                    }
+                }
+                return true;
+            }
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                if (!spinning) {
+                    performClick();
+                }
+                spinning = false;
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    private void playIntroSpin() {
+        if (introSpinPlayed || spinPrefix == null || spinLastFrame <= 1 || !isAttachedToWindow()) {
+            return;
+        }
+        introSpinPlayed = true;
+        introSpinning = true;
+        carImageView.setVisibility(GONE);
+        fallbackView.setVisibility(GONE);
+        animationView.setOnCompleteListener(() -> {
+            introSpinning = false;
+            animationView.hide();
+            carImageView.setVisibility(VISIBLE);
+            spinFrame = spinLastFrame;
+        });
+        animationView.setResources(resources);
+        animationView.setVisibility(VISIBLE);
+        animationView.play(spinPrefix, 0, spinLastFrame, false, 55);
+    }
+
+    private void stopIntroSpin() {
+        if (!introSpinning) {
+            return;
+        }
+        introSpinning = false;
+        animationView.stop();
+        animationView.hide();
+        carImageView.setVisibility(VISIBLE);
+    }
+
+    private void showSpinFrame(int index) {
+        if (spinPrefix == null) {
+            return;
+        }
+        Bitmap frame = spinCache.get(index);
+        if (frame == null) {
+            frame = resources.loadFrame(spinPrefix, index);
+            if (frame == null) {
+                return;
+            }
+            if (spinCache.size() >= 10) {
+                spinCache.remove(spinCache.keyAt(0));
+            }
+            spinCache.put(index, frame);
+        }
+        spinFrame = index;
+        carImageView.setImageBitmap(frame);
+        carImageView.setVisibility(VISIBLE);
+        fallbackView.setVisibility(GONE);
+        animationView.setVisibility(GONE);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (h > 0 && glowView.getLayoutParams() != null) {
+            LayoutParams glowLp = createGlowLayoutParams(h);
+            glowView.setLayoutParams(glowLp);
+        }
+    }
+
+    private LayoutParams createGlowLayoutParams(int hostHeight) {
+        int reference = hostHeight > 0
+                ? hostHeight
+                : getResources().getDimensionPixelSize(R.dimen.launcher_dashboard_vehicle_height);
+        LayoutParams glowLp = new LayoutParams((int) (reference * 0.95f), (int) (reference * 0.72f));
+        glowLp.gravity = Gravity.CENTER;
+        return glowLp;
+    }
+
+    private void animateReveal() {
+        View target = carImageView.getVisibility() == VISIBLE ? carImageView : fallbackView;
+        target.setAlpha(0f);
+        target.setScaleX(0.96f);
+        target.setScaleY(0.96f);
+        target.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(300)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator())
+                .start();
+    }
+
+    public void setGlowVisible(boolean visible) {
+        glowView.setVisibility(visible ? VISIBLE : GONE);
+    }
+
+    public void onHostStart() {
+        active = true;
+        resources.init(getContext());
+        animationView.setResources(resources);
+        loadOemCarImage();
+    }
+
+    public void reloadVehicleImage() {
+        resources.init(getContext());
+        animationView.setResources(resources);
+        loadOemCarImage();
+    }
+
+    private void openVehiclePicker() {
+        Activity activity = findActivity(getContext());
+        if (activity == null) {
+            return;
+        }
+        VehicleMaterialPickerDialog.show(activity, new VehicleMaterialPickerDialog.OnSelectedListener() {
+            @Override
+            public void onManualSelected(MaterialVehicleCatalog.Entry entry) {
+                reloadVehicleImage();
+            }
+
+            @Override
+            public void onAutoDetectionSelected() {
+                reloadVehicleImage();
+            }
+        });
+    }
+
+    @Nullable
+    private static Activity findActivity(Context context) {
+        Context ctx = context;
+        while (ctx instanceof ContextWrapper) {
+            if (ctx instanceof Activity) {
+                return (Activity) ctx;
+            }
+            ctx = ((ContextWrapper) ctx).getBaseContext();
+        }
+        return ctx instanceof Activity ? (Activity) ctx : null;
+    }
+
+    public void onHostStop() {
+        active = false;
+        animationView.hide();
+        currentMode = ViewMode.NORMAL;
+    }
+
+    public void showTrunkMode() {
+        if (!oemAssetsLoaded) {
+            return;
+        }
+        int lastFrame = resources.findLastFrameIndex(DRAWABLE_TAILGATE, MAX_FRAME_INDEX);
+        if (lastFrame < 0) {
+            return;
+        }
+        currentMode = ViewMode.TRUNK;
+        startTransition(false, DRAWABLE_TAILGATE, 0, lastFrame);
+    }
+
+    public void showSunroofMode() {
+        if (!oemAssetsLoaded) {
+            return;
+        }
+        currentMode = ViewMode.SUNROOF;
+        startTransition(false, DRAWABLE_SCUTTLE, 0, resources.findLastFrameIndex(DRAWABLE_SCUTTLE, MAX_FRAME_INDEX));
+    }
+
+    public void showNormalMode() {
+        if (!oemAssetsLoaded || currentMode == ViewMode.NORMAL) {
+            return;
+        }
+        String prefix = currentMode == ViewMode.SUNROOF ? DRAWABLE_SCUTTLE : DRAWABLE_TAILGATE;
+        int end = resources.findLastFrameIndex(prefix, MAX_FRAME_INDEX);
+        startTransition(true, prefix, end >= 0 ? end : 0, 0);
+        currentMode = ViewMode.NORMAL;
+    }
+
+    private void loadOemCarImage() {
+        Bitmap carBitmap = resources.loadCarModelBitmap();
+        if (carBitmap != null) {
+            oemAssetsLoaded = true;
+            String base = resources.getCarDrawableBaseName();
+            if (base != null && base.startsWith("car_model_face1")) {
+                int last = resources.findLastFrameIndex("car_model_face1", 30);
+                spinPrefix = last > 1 ? "car_model_face1" : null;
+                spinLastFrame = Math.max(0, last);
+                spinFrame = 0;
+            } else {
+                spinPrefix = null;
+            }
+            carImageView.setImageBitmap(carBitmap);
+            carImageView.setVisibility(VISIBLE);
+            fallbackView.setVisibility(GONE);
+            post(this::animateReveal);
+            postDelayed(this::playIntroSpin, 340);
+            return;
+        }
+        oemAssetsLoaded = false;
+        carImageView.setVisibility(GONE);
+        fallbackView.setVisibility(VISIBLE);
+        post(this::animateReveal);
+    }
+
+    private void startTransition(boolean backToNormal, String prefix, int fromFrame, int toFrame) {
+        final View outgoing = backToNormal ? animationView : carImageView;
+        final View incoming = backToNormal ? carImageView : animationView;
+
+        if (!backToNormal) {
+            animationView.showFrame(prefix, fromFrame);
+        }
+
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(outgoing, ALPHA, 1f, 0f);
+        fadeOut.setDuration(300L);
+        fadeOut.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                outgoing.setVisibility(GONE);
+                if (backToNormal) {
+                    animationView.hide();
+                }
+            }
+        });
+
+        incoming.setVisibility(VISIBLE);
+        incoming.setAlpha(0f);
+        incoming.setScaleX(0f);
+        incoming.setScaleY(0f);
+
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(incoming, ALPHA, 0f, 1f);
+        ObjectAnimator scaleX = ObjectAnimator.ofFloat(incoming, SCALE_X, 0f, 1f);
+        ObjectAnimator scaleY = ObjectAnimator.ofFloat(incoming, SCALE_Y, 0f, 1f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(fadeIn, scaleX, scaleY);
+        set.setStartDelay(200L);
+        set.setDuration(300L);
+        set.start();
+        fadeOut.start();
+
+        if (!backToNormal && toFrame != fromFrame) {
+            animationView.play(prefix, fromFrame, toFrame, toFrame < fromFrame);
+        }
+    }
+}

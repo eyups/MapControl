@@ -1,0 +1,849 @@
+package com.eyups.roaddeck.ui.builder;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.net.wifi.ScanResult;
+import android.provider.Settings;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.InputType;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
+
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+
+import com.eyups.roaddeck.R;
+import com.eyups.roaddeck.ui.cockpit.CockpitCard;
+import com.eyups.roaddeck.ui.cockpit.CockpitEmptyState;
+import com.eyups.roaddeck.ui.cockpit.CockpitSurfaces;
+import com.eyups.roaddeck.ui.cockpit.CockpitTokens;
+import com.eyups.roaddeck.ui.theme.UiStyles;
+
+public class WifiTabBuilder {
+    public interface WifiCallback {
+        void log(String message);
+    }
+
+    private final Context context;
+    private final WifiCallback callback;
+
+    private WifiManager wifiManager;
+    private LinearLayout wifiTabContent;
+    private LinearLayout wifiListContainer;
+    private Button btnWifiToggle;
+    private Button btnScanWifi;
+    private TextView wifiStatusLine;
+    private TextView wifiStatusIcon;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    public WifiTabBuilder(Context context, WifiCallback callback) {
+        this.context = context;
+        this.callback = callback;
+        wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        build();
+    }
+
+    public LinearLayout build() {
+        wifiTabContent = new LinearLayout(context);
+        wifiTabContent.setOrientation(LinearLayout.VERTICAL);
+        wifiTabContent.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        int margin = CockpitTokens.dim(context, R.dimen.ck_margin);
+        wifiTabContent.setPadding(margin, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                margin, margin);
+
+        CockpitCard control = new CockpitCard(context,
+                context.getString(R.string.topbar_wifi_management));
+        LinearLayout controlBody = new LinearLayout(context);
+        controlBody.setOrientation(LinearLayout.VERTICAL);
+        control.addContent(controlBody);
+        addStatusAndControls(controlBody);
+        wifiTabContent.addView(control, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        CockpitCard networks = new CockpitCard(context,
+                context.getString(R.string.wifi_networks_title));
+        LinearLayout.LayoutParams listLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, 360));
+        networks.addContent(createNetworkList(), listLp);
+        LinearLayout.LayoutParams networksLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        networksLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_gutter);
+        wifiTabContent.addView(networks, networksLp);
+
+        updateWifiStatus();
+        return wifiTabContent;
+    }
+
+    private LinearLayout createCard() {
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        CockpitSurfaces.level1(card);
+        int innerPad = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        card.setPadding(innerPad, innerPad, innerPad, innerPad);
+        return card;
+    }
+
+    private void addPanelTitle(LinearLayout card, int titleRes) {
+        TextView title = new TextView(context);
+        title.setText(titleRes);
+        title.setTextSize(18);
+        title.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        title.setTypeface(null, android.graphics.Typeface.BOLD);
+        title.setPadding(16, 8, 16, 12);
+        card.addView(title, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void addStatusAndControls(LinearLayout card) {
+        wifiStatusLine = new TextView(context);
+        wifiStatusLine.setText(R.string.wifi_not_connected);
+        CockpitTokens.bodySm(wifiStatusLine);
+        wifiStatusLine.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        wifiStatusLine.setPadding(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        wifiStatusLine.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+        card.addView(wifiStatusLine, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout controlButtonsRow = new LinearLayout(context);
+        controlButtonsRow.setOrientation(LinearLayout.HORIZONTAL);
+        controlButtonsRow.setPadding(0, CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                0, 0);
+        controlButtonsRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        controlButtonsRow.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+
+        btnWifiToggle = new Button(context);
+        btnWifiToggle.setText(R.string.wifi_turn_on);
+        btnWifiToggle.setTextSize(16);
+        btnWifiToggle.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnWifiToggle, CockpitTokens.color(context, R.color.ck_accent));
+        btnWifiToggle.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
+        btnWifiToggle.setPadding(24, 12, 24, 12);
+        btnWifiToggle.setOnClickListener(v -> toggleWifi());
+        LinearLayout.LayoutParams toggleParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        toggleParams.setMargins(0, 0, 8, 0);
+        controlButtonsRow.addView(btnWifiToggle, toggleParams);
+
+        btnScanWifi = new Button(context);
+        btnScanWifi.setText(R.string.wifi_refresh);
+        btnScanWifi.setTextSize(16);
+        btnScanWifi.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        UiStyles.styleOemButton(btnScanWifi, CockpitTokens.color(context, R.color.ck_surface_2));
+        btnScanWifi.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        btnScanWifi.setPadding(24, 12, 24, 12);
+        btnScanWifi.setOnClickListener(v -> scanWifiNetworks());
+        LinearLayout.LayoutParams scanParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        controlButtonsRow.addView(btnScanWifi, scanParams);
+
+        card.addView(controlButtonsRow, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private ScrollView createNetworkList() {
+        ScrollView wifiListScrollView = new ScrollView(context);
+        wifiListScrollView.setBackgroundColor(UiStyles.color(context, R.color.transparent));
+        wifiListScrollView.setPadding(0, 0, 0, 0);
+
+        wifiListContainer = new LinearLayout(context);
+        wifiListContainer.setOrientation(LinearLayout.VERTICAL);
+        wifiListScrollView.addView(wifiListContainer);
+        return wifiListScrollView;
+    }
+
+    public LinearLayout getTabContent() {
+        return wifiTabContent;
+    }
+
+    public LinearLayout buildTopBarIcon() {
+        LinearLayout wifiIconContainer = new LinearLayout(context);
+        wifiIconContainer.setOrientation(LinearLayout.HORIZONTAL);
+        wifiIconContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        wifiIconContainer.setPadding(8, 0, 0, 0);
+
+        AppCompatImageView wifiIcon = new AppCompatImageView(context);
+        wifiIcon.setImageResource(R.drawable.ic_mdi_wifi);
+        wifiIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        int topBarIcon = Math.round(22 * context.getResources().getDisplayMetrics().density);
+        LinearLayout.LayoutParams wifiIconLp = new LinearLayout.LayoutParams(topBarIcon, topBarIcon);
+        wifiIcon.setLayoutParams(wifiIconLp);
+        wifiIcon.setImageTintList(ColorStateList.valueOf(UiStyles.color(context, R.color.textPrimary)));
+        wifiIconContainer.addView(wifiIcon);
+
+        wifiStatusIcon = new TextView(context);
+        wifiStatusIcon.setText("●");
+        wifiStatusIcon.setTextSize(12);
+        wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+        wifiStatusIcon.setPadding(4, 0, 0, 0);
+        wifiIconContainer.addView(wifiStatusIcon);
+
+        // İlk renk güncellemesi
+        updateWifiStatusIcon();
+        return wifiIconContainer;
+    }
+
+    public void updateWifiStatus() {
+        if (wifiManager == null || btnWifiToggle == null) {
+            return;
+        }
+
+        try {
+            boolean isWifiEnabled = wifiManager.isWifiEnabled();
+
+            if (isWifiEnabled) {
+                btnWifiToggle.setText(R.string.wifi_turn_off_label);
+                UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.buttonPrimary));
+            } else {
+                btnWifiToggle.setText(R.string.wifi_turn_on);
+                UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.primaryDarkColor));
+            }
+
+            callback.log("Wi-Fi durumu güncellendi: " + (isWifiEnabled ? "AÇIK" : "KAPALI"));
+            updateWifiStatusIcon();
+
+            if (!isWifiEnabled) {
+                showWifiOffState();
+            }
+            if (isWifiEnabled) {
+                handler.postDelayed(this::scanWifiNetworks, 500);
+            }
+        } catch (Exception e) {
+            callback.log("Wi-Fi durumu kontrol hatası: " + e.getMessage());
+            if (btnWifiToggle != null) {
+                btnWifiToggle.setText(R.string.wifi_status_error);
+                UiStyles.styleOemButton(btnWifiToggle, UiStyles.color(context, R.color.textLoading));
+            }
+            if (wifiStatusIcon != null) {
+                wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textLoading));
+            }
+        }
+    }
+
+    private void showWifiOffState() {
+        if (wifiListContainer == null) {
+            return;
+        }
+        wifiListContainer.removeAllViews();
+        wifiListContainer.addView(new CockpitEmptyState(context,
+                R.drawable.ic_mdi_wifi, context.getString(R.string.wifi_off_label)),
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void updateWifiStatusIcon() {
+        if (wifiStatusIcon == null || wifiManager == null) return;
+        try {
+            if (!wifiManager.isWifiEnabled()) {
+                wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+                return;
+            }
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String ssid = wifiInfo != null ? wifiInfo.getSSID() : null;
+            boolean connected = ssid != null && !ssid.equals("<unknown ssid>") && !ssid.equals("0x") && !ssid.equals("null") && !ssid.equals("\"\"");
+            wifiStatusIcon.setTextColor(UiStyles.color(context, connected ? R.color.accentHighlight : R.color.textSecondaryCool));
+        } catch (Exception ignore) {
+            wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textSecondaryCool));
+        }
+    }
+
+    private void toggleWifi() {
+        if (wifiManager == null) {
+            callback.log("WifiManager bulunamadı");
+            return;
+        }
+
+        try {
+            boolean currentState = wifiManager.isWifiEnabled();
+            boolean newState = !currentState;
+
+            callback.log("Mevcut durum: " + (currentState ? "AÇIK" : "KAPALI"));
+            callback.log("Hedef durum: " + (newState ? "AÇIK" : "KAPALI"));
+            callback.log("UID: " + android.os.Process.myUid());
+
+            boolean result = wifiManager.setWifiEnabled(newState);
+            callback.log("setWifiEnabled(" + newState + ") sonucu: " + result);
+            if (!result) {
+                callback.log("Wi-Fi sistem tarafından reddedildi (SoftAp/Settings kısıtı)");
+                updateWifiStatus();
+                showWifiRestrictedDialog();
+                return;
+            }
+
+            handler.postDelayed(() -> {
+                updateWifiStatus();
+                if (newState) {
+                    scanWifiNetworks();
+                } else {
+                    if (wifiListContainer != null) {
+                        wifiListContainer.removeAllViews();
+                        TextView emptyText = new TextView(context);
+                        emptyText.setText(R.string.wifi_off_label);
+                        emptyText.setTextColor(UiStyles.color(context, R.color.textLoading));
+                        emptyText.setTextSize(14);
+                        emptyText.setPadding(8, 8, 8, 8);
+                        wifiListContainer.addView(emptyText);
+                    }
+                }
+            }, 1000);
+        } catch (Exception e) {
+            callback.log("Wi-Fi toggle hatası: " + e.getMessage());
+        }
+    }
+
+    private void showWifiRestrictedDialog() {
+        if (context instanceof Activity && ((Activity) context).isFinishing()) {
+            return;
+        }
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.wifi_restricted_title)
+                .setMessage(R.string.wifi_restricted_message)
+                .setPositiveButton(R.string.wifi_restricted_open_settings,
+                        (dialog, which) -> openWifiSettings())
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
+    private void openWifiSettings() {
+        try {
+            // OEM Settings owns the only allowed Wi-Fi toggle while SoftAp is active.
+            // This service action shows the floating Wi-Fi dialog each time it is invoked.
+            Intent intent = new Intent("com.desaysv.setting.WIFI_SETTING_DIALOG");
+            intent.setPackage("com.desaysv.setting");
+            context.startForegroundService(intent);
+            return;
+        } catch (Exception ignored) {
+        }
+        try {
+            Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+            if (!(context instanceof Activity)) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
+            context.startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(context,
+                    context.getString(R.string.common_error_prefix, e.getMessage()),
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void scanWifiNetworks() {
+        if (wifiManager == null) {
+            callback.log("WifiManager bulunamadı");
+            Toast.makeText(context, R.string.wifi_manager_missing, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!wifiManager.isWifiEnabled()) {
+            callback.log("Wi-Fi kapalı, önce Wi-Fi'yi açın");
+            Toast.makeText(context, R.string.wifi_enable_first, Toast.LENGTH_SHORT).show();
+            if (wifiListContainer != null) {
+                wifiListContainer.removeAllViews();
+                TextView emptyText = new TextView(context);
+                emptyText.setText(R.string.wifi_off_label);
+                emptyText.setTextColor(UiStyles.color(context, R.color.textLoading));
+                emptyText.setTextSize(14);
+                emptyText.setPadding(8, 8, 8, 8);
+                wifiListContainer.addView(emptyText);
+            }
+            return;
+        }
+
+        try {
+            displayWifiNetworks();
+            callback.log("Wi-Fi ağları taranıyor...");
+            btnScanWifi.setEnabled(false);
+            btnScanWifi.setText(R.string.wifi_scanning);
+
+            boolean scanStarted = wifiManager.startScan();
+            if (scanStarted) {
+                handler.postDelayed(() -> {
+                    displayWifiNetworks();
+                    btnScanWifi.setEnabled(true);
+                    btnScanWifi.setText(R.string.wifi_refresh);
+                }, 2000);
+            } else {
+                callback.log("Wi-Fi taraması başlatılamadı");
+                btnScanWifi.setEnabled(true);
+                btnScanWifi.setText(R.string.wifi_refresh);
+            }
+        } catch (Exception e) {
+            callback.log("Wi-Fi tarama hatası: " + e.getMessage());
+            Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();
+            btnScanWifi.setEnabled(true);
+            btnScanWifi.setText(R.string.wifi_refresh);
+        }
+    }
+
+    private void displayWifiNetworks() {
+        if (wifiManager == null || wifiListContainer == null) {
+            return;
+        }
+
+        try {
+            List<ScanResult> scanResults = wifiManager.getScanResults();
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String connectedSSID = null;
+            if (wifiInfo != null) {
+                String rawSsid = wifiInfo.getSSID();
+                if (rawSsid != null) {
+                    connectedSSID = rawSsid.replace("\"", "");
+                }
+            }
+
+            wifiListContainer.removeAllViews();
+
+            if (scanResults == null || scanResults.isEmpty()) {
+                CockpitEmptyState emptyCard = new CockpitEmptyState(context,
+                        R.drawable.ic_mdi_wifi, context.getString(R.string.wifi_scan_empty));
+                wifiListContainer.addView(emptyCard, new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                callback.log("Wi-Fi ağı bulunamadı");
+                return;
+            }
+
+            for (ScanResult result : scanResults) {
+                if (result.SSID != null && !result.SSID.isEmpty() && result.SSID.equals(connectedSSID)) {
+                    addWifiNetworkItem(result, true);
+                }
+            }
+
+            for (ScanResult result : scanResults) {
+                if (result.SSID != null && !result.SSID.isEmpty() && !result.SSID.equals(connectedSSID)) {
+                    addWifiNetworkItem(result, false);
+                }
+            }
+
+            callback.log("" + scanResults.size() + " Wi-Fi ağı bulundu");
+        } catch (Exception e) {
+            callback.log("Wi-Fi listesi hatası: " + e.getMessage());
+            Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addWifiNetworkItem(ScanResult result, boolean isConnected) {
+        LinearLayout wifiCard = new LinearLayout(context);
+        wifiCard.setOrientation(LinearLayout.HORIZONTAL);
+        wifiCard.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm),
+                CockpitTokens.dim(context, R.dimen.ck_space_md),
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        wifiCard.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        wifiCard.setClickable(true);
+        wifiCard.setFocusable(true);
+
+        CockpitSurfaces.level2(wifiCard);
+
+        LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardParams.setMargins(0, 0, 0, CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        wifiCard.setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
+
+        LinearLayout iconContainer = new LinearLayout(context);
+        iconContainer.setOrientation(LinearLayout.VERTICAL);
+        iconContainer.setGravity(android.view.Gravity.CENTER);
+
+        int listIconPx = CockpitTokens.dp(context, 32);
+        AppCompatImageView iconImg = new AppCompatImageView(context);
+        iconImg.setImageResource(R.drawable.ic_mdi_wifi);
+        iconImg.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        iconImg.setLayoutParams(new LinearLayout.LayoutParams(listIconPx, listIconPx));
+        iconImg.setImageTintList(ColorStateList.valueOf(UiStyles.color(context,
+                isConnected ? R.color.accentHighlight : R.color.textSecondaryCool)));
+        iconContainer.addView(iconImg);
+
+        LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        iconParams.setMargins(0, 0, 20, 0);
+        wifiCard.addView(iconContainer, iconParams);
+
+        LinearLayout infoContainer = new LinearLayout(context);
+        infoContainer.setOrientation(LinearLayout.VERTICAL);
+        infoContainer.setGravity(android.view.Gravity.CENTER_VERTICAL);
+
+        TextView ssidText = new TextView(context);
+        String ssid = result.SSID != null ? result.SSID : context.getString(R.string.wifi_hidden_network);
+        ssidText.setText(ssid);
+        CockpitTokens.title(ssidText);
+        infoContainer.addView(ssidText);
+
+        LinearLayout detailRow = new LinearLayout(context);
+        detailRow.setOrientation(LinearLayout.HORIZONTAL);
+        detailRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        detailRow.setPadding(0, 6, 0, 0);
+
+        int level = result.level;
+        String security = getSecurityDisplay(result);
+        String sep = context.getString(R.string.wifi_detail_separator);
+        String signalQuality;
+        if (level > -50) {
+            signalQuality = context.getString(R.string.wifi_signal_strong);
+        } else if (level > -70) {
+            signalQuality = context.getString(R.string.wifi_signal_good);
+        } else if (level > -85) {
+            signalQuality = context.getString(R.string.wifi_signal_medium);
+        } else {
+            signalQuality = context.getString(R.string.wifi_signal_weak);
+        }
+
+        TextView detailText = new TextView(context);
+        if (isConnected) {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String ipAddress = "";
+            if (wifiInfo != null) {
+                int ip = wifiInfo.getIpAddress();
+                if (ip != 0) {
+                    ipAddress = String.format("%d.%d.%d.%d",
+                            (ip & 0xff),
+                            (ip >> 8 & 0xff),
+                            (ip >> 16 & 0xff),
+                            (ip >> 24 & 0xff));
+                }
+            }
+            String detailStr = context.getString(R.string.wifi_list_connected);
+            if (isOpenNetwork(result)) {
+                detailStr += sep + context.getString(R.string.wifi_security_open);
+            }
+            if (!ipAddress.isEmpty()) {
+                detailStr += sep + ipAddress;
+            } else {
+                detailStr += sep + signalQuality;
+            }
+            detailText.setText(detailStr);
+            detailText.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        } else {
+            detailText.setText(security + sep + signalQuality);
+            detailText.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
+        }
+        CockpitTokens.bodySm(detailText);
+        detailRow.addView(detailText);
+
+        infoContainer.addView(detailRow);
+
+        LinearLayout.LayoutParams infoParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        wifiCard.addView(infoContainer, infoParams);
+
+        if (isConnected) {
+            int cpx = (int) (24 * context.getResources().getDisplayMetrics().density);
+            AppCompatImageView checkIcon = new AppCompatImageView(context);
+            checkIcon.setImageResource(R.drawable.ic_mdi_check);
+            checkIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            checkIcon.setImageTintList(ColorStateList.valueOf(
+                    UiStyles.color(context, R.color.accentHighlight)));
+            LinearLayout.LayoutParams checkParams = new LinearLayout.LayoutParams(cpx, cpx);
+            checkParams.setMargins(8, 0, 0, 0);
+            checkIcon.setLayoutParams(checkParams);
+            wifiCard.addView(checkIcon);
+        }
+
+        wifiCard.setOnClickListener(v -> {
+            if (isConnected) {
+                disconnectFromWifi();
+            } else {
+                connectToWifi(result);
+            }
+        });
+
+        wifiListContainer.addView(wifiCard, cardParams);
+    }
+
+    private boolean isOpenNetwork(ScanResult result) {
+        String capabilities = result.capabilities;
+        if (capabilities == null) {
+            return true;
+        }
+        return !capabilities.contains("WPA") && !capabilities.contains("WEP");
+    }
+
+    private String getSecurityDisplay(ScanResult result) {
+        String capabilities = result.capabilities;
+        if (capabilities == null) {
+            return context.getString(R.string.wifi_security_open);
+        }
+
+        if (capabilities.contains("WPA3")) {
+            return "WPA3";
+        } else if (capabilities.contains("WPA2")) {
+            return "WPA2";
+        } else if (capabilities.contains("WPA")) {
+            return "WPA";
+        } else if (capabilities.contains("WEP")) {
+            return "WEP";
+        } else {
+            return context.getString(R.string.wifi_security_open);
+        }
+    }
+    private void connectToWifi(ScanResult result) {
+        if (wifiManager == null) {
+            callback.log("WifiManager bulunamadı");
+            return;
+        }
+
+        String ssid = result.SSID;
+        if (ssid == null || ssid.isEmpty()) {
+            callback.log("SSID boş");
+            return;
+        }
+
+        String capabilities = result.capabilities;
+        boolean isSecure = capabilities != null &&
+                (capabilities.contains("WPA") || capabilities.contains("WEP"));
+
+        if (isSecure) {
+            showPasswordDialog(result);
+        } else {
+            connectToOpenNetwork(result);
+        }
+    }
+
+    private void showPasswordDialog(ScanResult result) {
+        LinearLayout dialogLayout = new LinearLayout(context);
+        dialogLayout.setOrientation(LinearLayout.VERTICAL);
+        dialogLayout.setPadding(40, 30, 40, 30);
+        dialogLayout.setBackgroundColor(UiStyles.color(context, R.color.cardColor));
+
+        TextView titleView = new TextView(context);
+        titleView.setText(R.string.wifi_password_title);
+        titleView.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        titleView.setTextSize(22);
+        titleView.setTypeface(null, android.graphics.Typeface.BOLD);
+        titleView.setPadding(0, 0, 0, 20);
+        dialogLayout.addView(titleView);
+
+        TextView networkName = new TextView(context);
+        networkName.setText(result.SSID);
+        networkName.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+        networkName.setTextSize(18);
+        networkName.setTypeface(null, android.graphics.Typeface.BOLD);
+        networkName.setPadding(0, 0, 0, 20);
+        dialogLayout.addView(networkName);
+
+        EditText passwordInput = new EditText(context);
+        passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        passwordInput.setHint(R.string.wifi_password_hint);
+        passwordInput.setTextColor(UiStyles.color(context, R.color.textPrimary));
+        passwordInput.setHintTextColor(UiStyles.color(context, R.color.statusNeutralGray));
+        passwordInput.setTextSize(17);
+        passwordInput.setPadding(40, 30, 40, 30);
+        passwordInput.setBackgroundColor(UiStyles.color(context, R.color.surfaceColor));
+        dialogLayout.addView(passwordInput);
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setView(dialogLayout)
+                .setPositiveButton(R.string.wifi_connect, (d, which) -> {
+                    String password = passwordInput.getText().toString();
+                    if (password.isEmpty()) {
+                        Toast.makeText(context, R.string.wifi_password_empty, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    connectToSecureNetwork(result, password);
+                })
+                .setNegativeButton(R.string.wifi_cancel, null)
+                .create();
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        }
+        dialog.setOnShowListener(d -> {
+            android.widget.Button pos = ((AlertDialog) d).getButton(AlertDialog.BUTTON_POSITIVE);
+            android.widget.Button neg = ((AlertDialog) d).getButton(AlertDialog.BUTTON_NEGATIVE);
+            if (pos != null) {
+                pos.setTextColor(UiStyles.color(context, R.color.buttonSuccessBright));
+                pos.setTextSize(17);
+                pos.setTypeface(null, android.graphics.Typeface.BOLD);
+            }
+            if (neg != null) {
+                neg.setTextColor(UiStyles.color(context, R.color.statusErrorBright));
+                neg.setTextSize(17);
+                neg.setTypeface(null, android.graphics.Typeface.BOLD);
+            }
+        });
+        dialog.show();
+    }
+
+    private void connectToOpenNetwork(ScanResult result) {
+        try {
+            WifiConfiguration config = new WifiConfiguration();
+            config.SSID = "\"" + result.SSID + "\"";
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+            config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+            config.allowedAuthAlgorithms.clear();
+            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+
+            int networkId = wifiManager.addNetwork(config);
+            if (networkId == -1) {
+                List<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
+                if (existingConfigs != null) {
+                    for (WifiConfiguration existingConfig : existingConfigs) {
+                        if (existingConfig.SSID != null && existingConfig.SSID.equals("\"" + result.SSID + "\"")) {
+                            networkId = existingConfig.networkId;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (networkId != -1) {
+                boolean enabled = wifiManager.enableNetwork(networkId, true);
+                if (enabled) {
+                    callback.log("Açık ağa bağlanılıyor: " + result.SSID);
+                    Toast.makeText(context, context.getString(R.string.wifi_connecting_to, result.SSID), Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(this::scanWifiNetworks, 2000);
+                } else {
+                    callback.log("Ağ etkinleştirilemedi: " + result.SSID);
+                    Toast.makeText(context, R.string.wifi_connection_error, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                callback.log("Ağ eklenemedi: " + result.SSID);
+                Toast.makeText(context, R.string.wifi_network_add_failed, Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            callback.log("Açık ağ bağlantı hatası: " + e.getMessage());
+            Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void connectToSecureNetwork(ScanResult result, String password) {
+        try {
+            String capabilities = result.capabilities;
+            WifiConfiguration config = new WifiConfiguration();
+            config.SSID = "\"" + result.SSID + "\"";
+
+            if (capabilities.contains("WPA3")) {
+                config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.SAE);
+                config.preSharedKey = "\"" + password + "\"";
+            } else if (capabilities.contains("WPA2")) {
+                config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+                config.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+                config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+                config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+                config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+                config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+                config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+                config.preSharedKey = "\"" + password + "\"";
+            } else if (capabilities.contains("WPA")) {
+                config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+                config.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+                config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+                config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+                config.preSharedKey = "\"" + password + "\"";
+            } else if (capabilities.contains("WEP")) {
+                config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+                config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+                config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.NONE);
+                config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+                config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+                if (password.length() == 10 || password.length() == 26 || password.length() == 58) {
+                    config.wepKeys[0] = password;
+                } else {
+                    config.wepKeys[0] = "\"" + password + "\"";
+                }
+                config.wepTxKeyIndex = 0;
+            }
+
+            int networkId = wifiManager.addNetwork(config);
+            if (networkId == -1) {
+                List<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
+                if (existingConfigs != null) {
+                    for (WifiConfiguration existingConfig : existingConfigs) {
+                        if (existingConfig.SSID != null && existingConfig.SSID.equals("\"" + result.SSID + "\"")) {
+                            networkId = existingConfig.networkId;
+                            if (capabilities.contains("WEP")) {
+                                if (password.length() == 10 || password.length() == 26 || password.length() == 58) {
+                                    existingConfig.wepKeys[0] = password;
+                                } else {
+                                    existingConfig.wepKeys[0] = "\"" + password + "\"";
+                                }
+                            } else {
+                                existingConfig.preSharedKey = "\"" + password + "\"";
+                            }
+                            wifiManager.updateNetwork(existingConfig);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (networkId != -1) {
+                boolean enabled = wifiManager.enableNetwork(networkId, true);
+                if (enabled) {
+                    callback.log("Şifreli ağa bağlanılıyor: " + result.SSID);
+                    Toast.makeText(context, context.getString(R.string.wifi_connecting_to, result.SSID), Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(this::scanWifiNetworks, 2000);
+                } else {
+                    callback.log("Ağ etkinleştirilemedi: " + result.SSID);
+                    Toast.makeText(context, R.string.wifi_connection_error, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                callback.log("Ağ eklenemedi: " + result.SSID);
+                Toast.makeText(context, R.string.wifi_network_add_failed, Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            callback.log("Şifreli ağ bağlantı hatası: " + e.getMessage());
+            Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void disconnectFromWifi() {
+        if (wifiManager == null) {
+            callback.log("WifiManager bulunamadı");
+            return;
+        }
+
+        try {
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo != null && wifiInfo.getNetworkId() != -1) {
+                String rawSsid = wifiInfo.getSSID();
+                if (rawSsid == null) {
+                    callback.log("SSID alınamadı");
+                    Toast.makeText(context, R.string.wifi_no_active, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String ssid = rawSsid.replace("\"", "");
+                boolean disconnected = wifiManager.disconnect();
+                if (disconnected) {
+                    callback.log("Bağlantı kesildi: " + ssid);
+                    Toast.makeText(context, context.getString(R.string.wifi_disconnected, ssid), Toast.LENGTH_SHORT).show();
+                    handler.postDelayed(this::scanWifiNetworks, 1000);
+                } else {
+                    callback.log("Bağlantı kesilemedi");
+                    Toast.makeText(context, R.string.wifi_disconnect_failed, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                callback.log("Aktif bağlantı yok");
+                Toast.makeText(context, R.string.wifi_no_active, Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            callback.log("Bağlantı kesme hatası: " + e.getMessage());
+            Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();
+        }
+    }
+}
+

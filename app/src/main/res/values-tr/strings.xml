@@ -226,5 +226,27 @@
     <string name="launcher_media_volume_up">Sesi aç</string>
     <string name="launcher_media_mute">Sessize al</string>
     <string name="launcher_dashboard_vehicle_tap_select">Araç görseli seçmek için dokunun</string>
-    </resources>
+        <string name="ck_body_title">Araç durumu</string>
+    <string name="ck_body_front">ÖN</string>
+    <string name="ck_body_hood_short">KAPUT</string>
+    <string name="ck_body_trunk_short">BAGAJ</string>
+    <string name="ck_body_door_lf">Sol ön kapı</string>
+    <string name="ck_body_door_rf">Sağ ön kapı</string>
+    <string name="ck_body_door_lr">Sol arka kapı</string>
+    <string name="ck_body_door_rr">Sağ arka kapı</string>
+    <string name="ck_body_trunk">Bagaj</string>
+    <string name="ck_body_hood">Kaput</string>
+    <string name="ck_body_sunroof">Cam tavan</string>
+    <string name="ck_body_sunshade">Güneşlik</string>
+    <string name="ck_body_open_suffix">açık</string>
+    <string name="ck_body_all_closed">Tüm kapılar kapalı</string>
+    <string name="ck_body_waiting">Gövde verisi bekleniyor</string>
+    <string name="ck_body_moving_warning">Hareket halinde açık kapı veya bagaj var</string>
+    <string name="ck_body_window_lf">Sol ön cam</string>
+    <string name="ck_body_window_rf">Sağ ön cam</string>
+    <string name="ck_body_window_lr">Sol arka cam</string>
+    <string name="ck_body_window_rr">Sağ arka cam</string>
+    <string name="ck_body_left_side">SOL TARAF</string>
+    <string name="ck_body_right_side">SAĞ TARAF</string>
+</resources>
 

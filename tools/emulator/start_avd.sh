@@ -12,16 +12,16 @@ if ! command -v "$EMULATOR" >/dev/null 2>&1; then
 fi
 
 # Zaten çalışan bir emülatör varsa ikinci instance açma.
-if "$ADB" devices | awk '$2 == "device" && $1 ~ /^emulator-/ {found=1} END {exit found ? 0 : 1}'; then
-  echo "[OK] Çalışan emülatör var:"
-  "$ADB" devices -l | grep '^emulator-' || true
+if "$ADB" devices | awk '$2 == "device" && $1 == "emulator-5554" {found=1} END {exit found ? 0 : 1}'; then
+  echo "[OK] Çalışan emülatör var: emulator-5554"
   exit 0
 fi
 
 echo "[INFO] AVD başlatılıyor: $AVD"
 # -grpc-use-token: voice_mic.py host mikrofon enjeksiyonu için gerekli.
-exec "$EMULATOR" -avd "$AVD" \
+exec "$EMULATOR" -avd "$AVD" -port 5554 \
   -grpc 8558 -grpc-use-token \
+  -allow-host-audio \
   -no-boot-anim \
   -no-snapshot \
   -gpu swiftshader_indirect

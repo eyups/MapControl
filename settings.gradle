@@ -14,8 +14,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MapControl"
+rootProject.name = "RoadDeck"
 include ':app'
 include ':fake-vdbus'
 include ':emulator-control'
-
+include ':oem-assistant-bridge'

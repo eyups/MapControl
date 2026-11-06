@@ -1545,7 +1545,7 @@ uint8_t* I420OutOrNull(JNIEnv* env, jobject buf, jint w, jint h) {
 }  // namespace
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeComposeMosaicSized(JNIEnv* env, jclass /*clazz*/,
+Java_com_eyups_roaddeck_dvr_HabNative_nativeComposeMosaicSized(JNIEnv* env, jclass /*clazz*/,
                                                        jobjectArray srcsArr, jintArray widthsArr,
                                                        jintArray heightsArr, jobject outBuf,
                                                        jint outW, jint outH, jstring line1,
@@ -1586,7 +1586,7 @@ Java_com_mapcontrol_dvr_HabNative_nativeComposeMosaicSized(JNIEnv* env, jclass /
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeConvertSingle(JNIEnv* env, jclass /*clazz*/,
+Java_com_eyups_roaddeck_dvr_HabNative_nativeConvertSingle(JNIEnv* env, jclass /*clazz*/,
                                                        jobject srcBuf, jint srcWidth,
                                                        jint srcHeight, jobject outBuf, jint outW,
                                                        jint outH, jstring label, jstring line1,
@@ -1611,39 +1611,39 @@ Java_com_mapcontrol_dvr_HabNative_nativeConvertSingle(JNIEnv* env, jclass /*claz
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubStart(JNIEnv* /*env*/, jclass /*clazz*/) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubStart(JNIEnv* /*env*/, jclass /*clazz*/) {
     return HubStart();
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubStartMask(JNIEnv* /*env*/, jclass /*clazz*/, jint mask) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubStartMask(JNIEnv* /*env*/, jclass /*clazz*/, jint mask) {
     return HubStartMask((int)mask);
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubApplyMask(JNIEnv* /*env*/, jclass /*clazz*/, jint mask) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubApplyMask(JNIEnv* /*env*/, jclass /*clazz*/, jint mask) {
     return HubApplyMask((int)mask);
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubStop(JNIEnv* /*env*/, jclass /*clazz*/) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubStop(JNIEnv* /*env*/, jclass /*clazz*/) {
     HubStop();
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubRestart(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubRestart(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
     return HubRestart((int)cam) ? JNI_TRUE : JNI_FALSE;
 }
 
 extern "C" JNIEXPORT jint JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubStatus(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubStatus(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
     if (cam < 0 || cam >= 4) return 0;
     return gSlotStatus[cam].load();
 }
 
 // Acik kameranin geometrisi: {id, W, H, format, fps*100}; kapaliysa null.
 extern "C" JNIEXPORT jintArray JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubDescriptor(JNIEnv* env, jclass /*clazz*/, jint cam) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubDescriptor(JNIEnv* env, jclass /*clazz*/, jint cam) {
     if (cam < 0 || cam >= 4) return nullptr;
     InputDesc d;
     {
@@ -1660,7 +1660,7 @@ Java_com_mapcontrol_dvr_HabNative_nativeHubDescriptor(JNIEnv* env, jclass /*claz
 
 // Son hata: "kod|ayrinti" (kodlar SetSlotError yaninda).
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubError(JNIEnv* env, jclass /*clazz*/, jint cam) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubError(JNIEnv* env, jclass /*clazz*/, jint cam) {
     if (cam < 0 || cam >= 4) return env->NewStringUTF("0|");
     std::lock_guard<std::mutex> g(gDescMutex);
     std::string out = std::to_string(gSlotErrCode[cam]) + "|" + gSlotErrDetail[cam];
@@ -1669,7 +1669,7 @@ Java_com_mapcontrol_dvr_HabNative_nativeHubError(JNIEnv* env, jclass /*clazz*/, 
 
 // out null olabilir (sadece hold). 1=yeni kare, 0=kare yok, -1=hata/kapali
 extern "C" JNIEXPORT jint JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeHubGrab(JNIEnv* env, jclass /*clazz*/, jint cam,
+Java_com_eyups_roaddeck_dvr_HabNative_nativeHubGrab(JNIEnv* env, jclass /*clazz*/, jint cam,
                                                 jobject out, jint mode, jboolean hold) {
     uint8_t* dst = nullptr;
     size_t cap = 0;
@@ -1683,24 +1683,24 @@ Java_com_mapcontrol_dvr_HabNative_nativeHubGrab(JNIEnv* env, jclass /*clazz*/, j
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeZcInit(JNIEnv* /*env*/, jclass /*clazz*/) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeZcInit(JNIEnv* /*env*/, jclass /*clazz*/) {
     return ZcInit() ? JNI_TRUE : JNI_FALSE;
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeZcAcquire(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeZcAcquire(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
     return (jlong)ZcAcquire((int)cam);
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeZcDetach(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeZcDetach(JNIEnv* /*env*/, jclass /*clazz*/, jint cam) {
     ZcDetach((int)cam);
 }
 
 // Onbellekli ION ("hizli okuma") acik/kapali. Kameralar bir sonraki acilista yeni modla
 // acilir. Acilinca onceki geri donusler (gSlotCachedBroken) sifirlanir, tekrar denenir.
 extern "C" JNIEXPORT void JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeSetIonCached(JNIEnv* /*env*/, jclass /*clazz*/,
+Java_com_eyups_roaddeck_dvr_HabNative_nativeSetIonCached(JNIEnv* /*env*/, jclass /*clazz*/,
                                                    jboolean enabled) {
     bool on = enabled == JNI_TRUE;
     bool old = gIonCachedEnabled.exchange(on);
@@ -1711,11 +1711,11 @@ Java_com_mapcontrol_dvr_HabNative_nativeSetIonCached(JNIEnv* /*env*/, jclass /*c
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeZcFenceInsert(JNIEnv* /*env*/, jclass /*clazz*/) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeZcFenceInsert(JNIEnv* /*env*/, jclass /*clazz*/) {
     ZcFenceInsert();
 }
 
 extern "C" JNIEXPORT void JNICALL
-Java_com_mapcontrol_dvr_HabNative_nativeZcShutdown(JNIEnv* /*env*/, jclass /*clazz*/) {
+Java_com_eyups_roaddeck_dvr_HabNative_nativeZcShutdown(JNIEnv* /*env*/, jclass /*clazz*/) {
     ZcShutdown();
 }

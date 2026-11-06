@@ -42,7 +42,7 @@ logs/
 car_info/
 car_apks/
 tmp/
-mapcontrol.ab
+roaddeck.ab
 tts_probe/out/
 # Python
 __pycache__/

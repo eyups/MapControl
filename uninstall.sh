@@ -8,6 +8,6 @@ echo "pm uninstall com.eyups.roaddeck" | adb shell
 # /data/local/tmp içindeki yüklenen APK'ları temizle
 # (wildcard'ı cihaz tarafında çalıştırmak için tek tırnak kullandık)
 echo "🧹 Geçici dosyalar temizleniyor..."
-echo 'rm -f /data/local/tmp/mapcontrol.apk /data/local/tmp/app-debug.apk /data/local/tmp/*.apk' | adb shell
+echo 'rm -f /data/local/tmp/roaddeck.apk /data/local/tmp/app-debug.apk /data/local/tmp/*.apk' | adb shell
 
 echo "✅ Uninstall ve tmp temizleme tamamlandı"

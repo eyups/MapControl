@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.mapcontrol.ttsprobe'
+    namespace 'com.eyups.roaddeck.ttsprobe'
     compileSdk 34
 
     defaultConfig {
-        applicationId 'com.mapcontrol.ttsprobe'
+        applicationId 'com.eyups.roaddeck.ttsprobe'
         minSdk 29
         targetSdk 30
         versionCode 1

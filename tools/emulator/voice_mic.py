@@ -62,6 +62,10 @@ def main():
                         help='ses enjekte etme; yalnız host mikrofonunu aç')
     parser.add_argument('--rate', type=int, default=16000)
     parser.add_argument('--chunk-ms', type=int, default=20)
+    parser.add_argument('--real', action='store_true',
+                        help='eski uyumluluk; host mikrofonu artik varsayilan acik')
+    parser.add_argument('--no-host-mic', action='store_true',
+                        help='host mikrofonunu kapat, yalniz enjeksiyon yap')
     args = parser.parse_args()
 
     sys.path.insert(0, prepare_stubs())
@@ -73,8 +77,10 @@ def main():
     stub = rpc.EmulatorControllerStub(
         grpc.insecure_channel('127.0.0.1:%d' % port))
     meta = [('authorization', 'Bearer ' + token)]
-    # ÖNEMLİ: realAudioEnabled=False enjeksiyonu da susturur.
-    stub.setMicrophoneState(pb.MicrophoneState(realAudioEnabled=True),
+    # Host mikrofonu varsayilan açık: aksi halde tarayıcı/AudioRecord
+    # kayıtları sessiz kalır. Enjeksiyon realAudioEnabled=True ile de çalışır.
+    real = not args.no_host_mic
+    stub.setMicrophoneState(pb.MicrophoneState(realAudioEnabled=real),
                             metadata=meta, timeout=5)
     if args.enable_only or not args.pcm:
         print('host mikrofonu açıldı (realAudioEnabled=True)')

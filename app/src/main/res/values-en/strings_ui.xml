@@ -277,7 +277,7 @@
     <string name="apps_dialog_reset_confirm_local">(%1$d) installed apps will be removed</string>
     <string name="apps_dialog_reset_confirm_multi_files"> and linked files (APKs under /data/local/tmp) will also be deleted</string>
     <string name="apps_dialog_reset_confirm_multi_suffix">; you may need to confirm once per installed app.</string>
-    <string name="apps_dialog_reset_confirm_self">Only this app (com.mapcontrol) will be removed.</string>
+    <string name="apps_dialog_reset_confirm_self">Only this app (com.eyups.roaddeck) will be removed.</string>
 
     <string name="target_picker_search_hint">Search…</string>
 
@@ -1408,6 +1408,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_overlay_desc_button">Voice assistant</string>
     <string name="assistant_page_title">Voice Assistant (AI Cockpit Voice)</string>
     <string name="assistant_page_subtitle">Google Gemini function calling &amp; iFlytek TTS vehicle assistant</string>
+    <string name="assistant_page_subtitle_oem">Uses the vehicle iFlytek speech recognition and command execution; wake word is detected locally.</string>
     <string name="assistant_quick_ai">AI ENGINE</string>
     <string name="assistant_quick_tts">TTS ENGINE</string>
     <string name="assistant_quick_wake">WAKE WORD</string>
@@ -1429,6 +1430,13 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_action_failed">Failed</string>
     <string name="assistant_action_meta">%1$s · %2$s</string>
     <string name="assistant_config_title">Assistant configuration</string>
+    <string name="assistant_engine_title">Assistant engine</string>
+    <string name="assistant_engine_gemini">Gemini</string>
+    <string name="assistant_engine_oem">iFlytek OEM</string>
+    <string name="assistant_engine_oem_desc">Uses the vehicle\'s iFlytek speech recognition and command execution. The wake word is detected by the local Vosk model; Gemini/Google is not used.</string>
+    <string name="assistant_engine_oem_on">OEM assistant selected</string>
+    <string name="assistant_engine_gemini_on">Gemini assistant selected</string>
+    <string name="assistant_state_oem">OEM assistant</string>
     <string name="assistant_config_tag">VOSK-TR</string>
     <string name="assistant_model_badge_ready">Model ready (%1$d MB)</string>
     <string name="assistant_model_badge_missing">Model missing</string>

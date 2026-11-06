@@ -86,7 +86,7 @@ fi
 
 echo "== uygulamayı başlat =="
 adb shell am force-stop com.eyups.roaddeck >/dev/null 2>&1 || true
-adb shell am start -n com.eyups.roaddeck/com.mapcontrol.ui.activity.MainActivity >/dev/null
+adb shell am start -n com.eyups.roaddeck/com.eyups.roaddeck.ui.activity.MainActivity >/dev/null
 
 echo "== doğrulama =="
 for pkg in \

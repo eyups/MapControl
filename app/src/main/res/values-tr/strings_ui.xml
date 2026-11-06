@@ -293,7 +293,7 @@
     <string name="apps_dialog_reset_confirm_local">(%1$d) yüklü uygulama silinecek</string>
     <string name="apps_dialog_reset_confirm_multi_files"> ve bağlı olanlar (/data/local/tmp altındaki APK\'lar) da silinecek</string>
     <string name="apps_dialog_reset_confirm_multi_suffix">, yüklü uygulama sayısı kadar onay vermeniz gerekebilir.</string>
-    <string name="apps_dialog_reset_confirm_self">Sadece mevcut uygulama (com.mapcontrol) silinecek.</string>
+    <string name="apps_dialog_reset_confirm_self">Sadece mevcut uygulama (com.eyups.roaddeck) silinecek.</string>
 
     <string name="target_picker_search_hint">Ara…</string>
 
@@ -1432,6 +1432,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_overlay_desc_button">Sesli asistan</string>
     <string name="assistant_page_title">Sesli Asistan (AI Cockpit Voice)</string>
     <string name="assistant_page_subtitle">Google Gemini Function Calling ve iFlytek TTS destekli araç asistanı</string>
+    <string name="assistant_page_subtitle_oem">Araçtaki iFlytek konuşma tanıma ve komut yürütmeyi kullanır; uyandırma kelimesi yerel olarak algılanır.</string>
     <string name="assistant_quick_ai">AI MOTORU</string>
     <string name="assistant_quick_tts">TTS MOTORU</string>
     <string name="assistant_quick_wake">UYANDIRMA KELİMESİ</string>
@@ -1453,6 +1454,13 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_action_failed">Başarısız</string>
     <string name="assistant_action_meta">%1$s · %2$s</string>
     <string name="assistant_config_title">Asistan Yapılandırması</string>
+    <string name="assistant_engine_title">Asistan motoru</string>
+    <string name="assistant_engine_gemini">Gemini</string>
+    <string name="assistant_engine_oem">iFlytek OEM</string>
+    <string name="assistant_engine_oem_desc">Araçtaki iFlytek konuşma tanıma ve komut yürütmeyi kullanır. Uyandırma kelimesi yerel Vosk modeliyle algılanır; Gemini/Google kullanılmaz.</string>
+    <string name="assistant_engine_oem_on">OEM asistanı seçildi</string>
+    <string name="assistant_engine_gemini_on">Gemini asistanı seçildi</string>
+    <string name="assistant_state_oem">OEM asistanı</string>
     <string name="assistant_config_tag">VOSK-TR</string>
     <string name="assistant_model_badge_ready">Model Hazır (%1$d MB)</string>
     <string name="assistant_model_badge_missing">Model kurulu değil</string>
@@ -1469,4 +1477,14 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_wake_word_help">Türkçe küçük model yalnız kendi sözlüğünü tanır; “deck” tanınmaz. “dinle beni” veya “hey merhaba” önerilir.</string>
     <string name="assistant_conversation_title">Sohbet modu</string>
     <string name="assistant_conversation_desc">Yanıttan sonra \'Başka bir isteğin var mı?\' diye sorar ve uyandırma kelimesi beklemeden dinler.</string>
+    <string name="assistant_command_engine_title">Komut motoru</string>
+    <string name="assistant_command_gemini">Gemini</string>
+    <string name="assistant_command_vosk">Vosk (yerel gramer)</string>
+    <string name="assistant_wake_engine_title">Uyandırma motoru</string>
+    <string name="assistant_wake_vosk">Vosk</string>
+    <string name="assistant_wake_porcupine">Porcupine</string>
+    <string name="assistant_wake_openwakeword">openWakeWord</string>
+    <string name="assistant_wake_engine_hint">Porcupine/openWakeWord için model/anahtar gerekir; yoksa Vosk kullanılır. Vosk sözlüğünde olmayan kelimeler (ör. Chery) exact tanınmaz.</string>
+    <string name="assistant_command_vosk_on">Yerel Vosk komut grameri etkin.</string>
+    <string name="assistant_command_gemini_on">Gemini komut yürütme etkin.</string>
 </resources>

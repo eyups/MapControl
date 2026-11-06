@@ -127,7 +127,7 @@ def _api(method, path, payload=None):
     request.add_header("Authorization", f"Bearer {token}")
     request.add_header("Accept", "application/vnd.github+json")
     request.add_header("X-GitHub-Api-Version", "2022-11-28")
-    request.add_header("User-Agent", "mapcontrol-pr-check")
+    request.add_header("User-Agent", "roaddeck-pr-check")
     if payload is not None:
         request.add_header("Content-Type", "application/json")
     try:

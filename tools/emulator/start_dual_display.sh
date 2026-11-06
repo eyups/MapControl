@@ -39,4 +39,4 @@ sleep 1
 echo "[INFO] Display durumu:"
 "$ADB" -s emulator-5554 shell dumpsys display | grep -E '^  Display [0-9]+:|DisplayDeviceInfo' | head -12
 echo "[OK] İkincil display hazır (guest display ID genelde 1). Uygulama:"
-echo "  ./tools/emulator/launch_on_display.sh 1 com.eyups.roaddeck/com.mapcontrol.ui.activity.MainActivity"
+echo "  ./tools/emulator/launch_on_display.sh 1 com.eyups.roaddeck/com.eyups.roaddeck.ui.activity.MainActivity"

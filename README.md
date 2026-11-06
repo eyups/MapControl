@@ -4,10 +4,10 @@
 
  | | |
  |---|---|
- | **🇹🇷 Başlangıçta uygulama açılmıyor** | Araç açılışında servis bazen MapControl’ü otomatik başlatmayabilir. **Geçici çözüm:** Uygulamayı elle açın veya IVI’yi yeniden başlatın. |
- | **🇬🇧 App not launched at startup** | On boot, the background service may fail to open MapControl automatically. **Workaround:** launch the app manually or reboot the IVI. |
- | **🇹🇷 Mikrofon kesintisi** | MapControl yüklüyken sesli asistan / mikrofon kesintisi tespit edildi. **Geçici çözüm:** IVI’yi yeniden başlatın (reset). |
- | **🇬🇧 Microphone dropouts** | Microphone / voice assistant interruptions observed while MapControl is installed. **Workaround:** reboot the IVI (reset). |
+ | **🇹🇷 Başlangıçta uygulama açılmıyor** | Araç açılışında servis bazen RoadDeck’i otomatik başlatmayabilir. **Geçici çözüm:** Uygulamayı elle açın veya IVI’yi yeniden başlatın. |
+ | **🇬🇧 App not launched at startup** | On boot, the background service may fail to open RoadDeck automatically. **Workaround:** launch the app manually or reboot the IVI. |
+ | **🇹🇷 Mikrofon kesintisi** | RoadDeck yüklüyken sesli asistan / mikrofon kesintisi tespit edildi. **Geçici çözüm:** IVI’yi yeniden başlatın (reset). |
+ | **🇬🇧 Microphone dropouts** | Microphone / voice assistant interruptions observed while RoadDeck is installed. **Workaround:** reboot the IVI (reset). |
  | **🇹🇷 Ses takılması** | Yüksek RAM veya GPU bellek (vRAM) kullanımında müzik / sistem sesinde takılma görülebilir. Launcher modunu kapatmak veya 3D modeli devre dışı bırakmak yardımcı olur. |
  | **🇬🇧 Audio stuttering** | High RAM or GPU memory (vRAM) usage may cause music / system audio stutter. Disabling Launcher mode or the 3D model helps. |
  | **🇹🇷 Yandex → Cluster** | Yandex navigasyon panelleri tam entegre değil; bazı sürümlerde yol bilgisi (manevra, ETA) okunamayabilir veya cluster kartları eksik kalabilir. |
@@ -117,7 +117,7 @@ Cluster / navigasyon panelini kapatır. Özet akış:
 3. **Cluster kapatma:** `NAVIGATION_DISPLAY_TO_CLUSTER` event’i `displayCluster = false`, `naviFrontDeskStatus = false` ile gönderilir; panel kapanır.
 4. **Uygulama taşıma:** Seçili uygulama cluster’da açıksa, varsayılan display’e (0) taşınır. `closeClusterDisplay(boolean sendBackground)` ile `sendBackground == true` ise uygulama ayrıca arka plana gönderilir (öne gelmez).
 
-MainActivity’de manuel aç/kapa butonları ve MapControlService’de araç güç moduna göre otomatik açma/kapama bu metodları kullanır.
+MainActivity’de manuel aç/kapa butonları ve RoadDeckService’te araç güç moduna göre otomatik açma/kapama bu metodları kullanır.
 
 ---
 

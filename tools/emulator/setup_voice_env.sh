@@ -120,7 +120,7 @@ fi
 
 echo "== prefs =="
 adb shell am force-stop "$APP_PKG"
-adb exec-out "run-as $APP_PKG cat shared_prefs/MapControlPrefs.xml" > /tmp/mcprefs.xml 2>/dev/null || true
+adb exec-out "run-as $APP_PKG cat shared_prefs/RoadDeckPrefs.xml" > /tmp/mcprefs.xml 2>/dev/null || true
 python3 - "$ROOT" <<'PY'
 import re, sys
 path='/tmp/mcprefs.xml'
@@ -150,7 +150,7 @@ open(path,'w').write(s)
 print('  prefs hazır')
 PY
 adb push /tmp/mcprefs.xml /data/local/tmp/mcprefs.xml >/dev/null
-adb shell "run-as $APP_PKG cp /data/local/tmp/mcprefs.xml shared_prefs/MapControlPrefs.xml"
+adb shell "run-as $APP_PKG cp /data/local/tmp/mcprefs.xml shared_prefs/RoadDeckPrefs.xml"
 
 echo "== host mikrofonu =="
 python3 "$ROOT/tools/emulator/voice_mic.py" --enable-only 2>/dev/null || \
@@ -173,7 +173,7 @@ seed 327690 18 1   # klima çalışıyor
 seed 327684 68 54  # yakıt %54
 
 if [ "$NO_START" = "0" ]; then
-  adb shell am start -n "$APP_PKG/com.mapcontrol.ui.activity.MainActivity" >/dev/null 2>&1 || true
+  adb shell am start -n "$APP_PKG/com.eyups.roaddeck.ui.activity.MainActivity" >/dev/null 2>&1 || true
 fi
 
 cat <<EOF
