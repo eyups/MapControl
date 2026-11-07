@@ -20,7 +20,7 @@ public class StatusBadge extends AppCompatTextView {
         super(context);
         setGravity(Gravity.CENTER);
         setSingleLine(true);
-        setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 13);
+        setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 14);
         setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_BOLD));
         setAllCaps(true);
         int h = CockpitTokens.dim(context, R.dimen.ck_space_sm);

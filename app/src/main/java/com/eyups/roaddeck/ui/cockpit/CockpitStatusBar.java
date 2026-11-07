@@ -84,7 +84,7 @@ public class CockpitStatusBar extends LinearLayout {
 
         profileChip = new TextView(context);
         CockpitTokens.labelCaps(profileChip);
-        profileChip.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
+        profileChip.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         profileChip.setBackground(CockpitSurfaces.outlined(context,
                 CockpitTokens.color(context, R.color.ck_surface_1),
                 CockpitTokens.color(context, R.color.ck_stroke), 12f));
@@ -98,7 +98,6 @@ public class CockpitStatusBar extends LinearLayout {
         LayoutParams profileLp = new LayoutParams(LayoutParams.WRAP_CONTENT,
                 LayoutParams.WRAP_CONTENT);
         profileLp.rightMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
-        addView(profileChip, profileLp);
         refreshProfile();
 
         clockView = new TextView(context);
@@ -112,7 +111,15 @@ public class CockpitStatusBar extends LinearLayout {
         actions = new LinearLayout(context);
         actions.setOrientation(HORIZONTAL);
         actions.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
-        addView(actions, new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f));
+
+        // Sol ve sağ eşit ağırlık: saat gerçekten içerik merkezinde kalır.
+        LinearLayout right = new LinearLayout(context);
+        right.setOrientation(HORIZONTAL);
+        right.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
+        addView(right, new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f));
+        right.addView(profileChip, profileLp);
+        right.addView(actions, new LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.MATCH_PARENT));
 
         updateClock();
         registerClock();

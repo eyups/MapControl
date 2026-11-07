@@ -27,6 +27,7 @@ public class CockpitButton extends AppCompatTextView {
         setGravity(Gravity.CENTER);
         setClickable(true);
         setFocusable(true);
+        setDefaultFocusHighlightEnabled(true);
         setSingleLine(false);
         setMaxLines(2);
         setIncludeFontPadding(false);
@@ -91,7 +92,7 @@ public class CockpitButton extends AppCompatTextView {
                     CockpitTokens.color(c, R.color.ck_critical),
                     CockpitSurfaces.alpha(CockpitTokens.color(c, R.color.ck_critical), 0.82f),
                     CockpitTokens.color(c, R.color.ck_surface_2), 16f));
-            setTextColor(0xFFFFFFFF);
+            setTextColor(CockpitTokens.color(c, R.color.ck_on_critical));
             setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_SEMIBOLD));
         } else {
             setBackground(CockpitSurfaces.stateOutlined(c, 16f));

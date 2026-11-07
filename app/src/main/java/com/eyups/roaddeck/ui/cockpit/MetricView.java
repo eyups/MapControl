@@ -28,6 +28,8 @@ public class MetricView extends LinearLayout {
 
         label = new TextView(context);
         CockpitTokens.labelCaps(label);
+        // DESIGN typography floor: telemetry labels never render below 14 sp.
+        label.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 14f);
         label.setText(labelText == null ? "" : labelText);
         label.setVisibility(labelText == null ? GONE : VISIBLE);
         addView(label);

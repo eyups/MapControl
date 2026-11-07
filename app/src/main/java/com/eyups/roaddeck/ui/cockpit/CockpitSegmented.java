@@ -26,10 +26,10 @@ public class CockpitSegmented extends LinearLayout {
         setGravity(Gravity.CENTER);
         setBackground(CockpitSurfaces.outlined(context,
                 CockpitTokens.color(context, R.color.ck_bg_recessed),
-                CockpitTokens.color(context, R.color.ck_stroke), 12f));
+                CockpitTokens.color(context, R.color.ck_stroke), CockpitTokens.RADIUS_CONTROL_DP));
         int pad = CockpitTokens.dim(context, R.dimen.ck_space_xs);
         setPadding(pad, pad, pad, pad);
-        setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        setMinimumHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min) + 2 * pad);
 
         selectedIndex = Math.max(0, Math.min(initialIndex, labels.size() - 1));
         for (int i = 0; i < labels.size(); i++) {
@@ -38,9 +38,10 @@ public class CockpitSegmented extends LinearLayout {
             segment.setText(labels.get(i));
             segment.setGravity(Gravity.CENTER);
             segment.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15);
-            segment.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min) - 2 * pad);
+            segment.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
             segment.setClickable(true);
             segment.setFocusable(true);
+            segment.setDefaultFocusHighlightEnabled(true);
             segment.setOnClickListener(v -> select(index));
             addView(segment, new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f));
         }
@@ -86,9 +87,10 @@ public class CockpitSegmented extends LinearLayout {
         Context c = getContext();
         for (int i = 0; i < getChildCount(); i++) {
             TextView seg = (TextView) getChildAt(i);
+            seg.setSelected(i == selectedIndex);
             if (i == selectedIndex) {
                 seg.setBackground(CockpitSurfaces.rounded(c,
-                        CockpitTokens.color(c, R.color.ck_accent), 10f));
+                        CockpitTokens.color(c, R.color.ck_accent), CockpitTokens.RADIUS_CONTROL_DP));
                 seg.setTextColor(CockpitTokens.color(c, R.color.ck_on_accent));
                 seg.setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_SEMIBOLD));
             } else {

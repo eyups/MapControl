@@ -51,10 +51,12 @@ public class CockpitGalleryActivity extends AppCompatActivity {
         root.addView(section("TOGGLES · CHIPS · BADGES"));
         LinearLayout toggles = row();
         CockpitToggle on = new CockpitToggle(this);
+        on.setLabel("On");
         on.setChecked(true, false);
         toggles.addView(on);
         toggles.addView(spacer());
         CockpitToggle off = new CockpitToggle(this);
+        off.setLabel("Off");
         off.setChecked(false, false);
         toggles.addView(off);
         toggles.addView(spacer());
@@ -133,6 +135,7 @@ public class CockpitGalleryActivity extends AppCompatActivity {
         CockpitListRow row1 = new CockpitListRow(this, R.drawable.ic_mdi_wifi,
                 "Ekolayzer", "DynamicsProcessing · 20 sn bekçi");
         CockpitToggle rowToggle = new CockpitToggle(this);
+        rowToggle.setLabel("Row toggle");
         rowToggle.setChecked(true, false);
         row1.trailing(rowToggle);
         root.addView(row1, rowLp());

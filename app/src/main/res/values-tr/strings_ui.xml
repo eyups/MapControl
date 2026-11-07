@@ -69,6 +69,7 @@
     <string name="topbar_vehicle_home">Araç Ana Ekranı</string>
 
     <string name="wifi_not_connected">Bağlı değil</string>
+    <string name="wifi_connected_to">Bağlı: %1$s</string>
     <string name="wifi_turn_on">Wi-Fi Aç</string>
     <string name="wifi_refresh">Yenile</string>
     <string name="wifi_scanning">Taranıyor…</string>
@@ -185,8 +186,8 @@
 
     <string name="web_mgmt_title">Web Yönetimi</string>
     <string name="web_mgmt_desc">Web sunucusunu başlatarak aynı ağdaki cihazlardan dosya yükleyebilir, harita ve klavye denetimi kullanabilirsiniz.</string>
-    <string name="web_server_start">▶ Web Server Başlat</string>
-    <string name="web_server_stop">■ Web Server Durdur</string>
+    <string name="web_server_start">Web Sunucusu Başlat</string>
+    <string name="web_server_stop">Web Sunucusu Durdur</string>
     <string name="web_server_stopped">Sunucu durduruldu</string>
     <string name="web_text_sent">Metin gönderildi</string>
 
@@ -204,7 +205,7 @@
 
     <string name="floating_back_permission_settings">İzin ayarlarına gidilemedi: %1$s</string>
     <string name="floating_back_show_failed">Yüzen buton gösterilemedi: %1$s</string>
-    <string name="wifi_turn_off_label">■ Wi‑Fi Kapat</string>
+    <string name="wifi_turn_off_label">Wi‑Fi Kapat</string>
     <string name="wifi_off_label">Wi‑Fi kapalı</string>
     <string name="wifi_manager_missing">Wi‑Fi yöneticisi bulunamadı</string>
     <string name="wifi_enable_first">Wi‑Fi kapalı, önce Wi‑Fi\'yi açın</string>
@@ -300,7 +301,7 @@
     <string name="side_rail_wifi">Wi-Fi Yönetimi</string>
     <string name="side_rail_apps">Uygulama Yönetimi</string>
     <string name="side_rail_web">Web Yönetimi</string>
-    <string name="camera360_menu_title">Bir mod seçin</string>
+    <string name="camera360_menu_title">Kamera modu seçin</string>
     <string name="camera360_menu_live">Canlı Önizleme</string>
     <string name="camera360_menu_live_sub">4 kamerayı canlı izle</string>
     <string name="camera360_menu_record">USB Kayıt</string>
@@ -708,8 +709,8 @@
     <string name="dms_face_match_name">✓ Tespit Edildi: %1$s</string>
     <string name="dms_face_unknown">Kayıtlı kişilerle eşleşmedi</string>
     <string name="dms_face_profile_count">%1$d / %2$d kişi kayıtlı — Canlı test aktif</string>
-    <string name="dms_face_no_profiles">Henüz kayıtlı kişi yok. Sağdaki alandan isim ve koltuk hafızası seçip yüzünüzü taratın.</string>
-    <string name="dms_face_no_profiles_no_memory">Henüz kayıtlı kişi yok. Sağdaki alandan isim girip yüzünüzü taratın.</string>
+    <string name="dms_face_no_profiles">Henüz kayıtlı kişi yok. Aşağıdaki profil alanından isim ve koltuk hafızası seçip yüzünüzü taratın.</string>
+    <string name="dms_face_no_profiles_no_memory">Henüz kayıtlı kişi yok. Aşağıdaki profil alanından isim girip yüzünüzü taratın.</string>
     <string name="dms_face_clear_confirm">Kayıtlı tüm yüz profilleri silinsin mi?</string>
     <string name="dms_face_camera_missing">Kamera bulunamadı.</string>
     <string name="dms_face_camera_disconnected">Kamera bağlantısı bekleniyor…</string>
@@ -1136,8 +1137,8 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_home_onboarding_body">Önce canlı araç verisini doğrula, sonra sürüşünü analiz et. Wi-Fi, konfor ve vale ayarları hazır olduğunda tek dokunuşla açılır.</string>
     <string name="ck_home_setup">Kurulum</string>
     <string name="ck_home_start">Başla</string>
-    <string name="ck_home_last_drive">Son Sürüş</string>
-    <string name="ck_home_no_drive">Henüz kayıtlı sürüş yok. İlk yolculuktan sonra puan ve yakıt analizi burada görünür.</string>
+    <string name="ck_home_last_drive">Son sürüş</string>
+    <string name="ck_home_no_drive">Henüz sürüş kaydı yok.</string>
     <string name="ck_home_in_progress">Devam ediyor</string>
     <string name="ck_home_completed">Tamamlandı</string>
     <string name="ck_home_no_record">Kayıt yok</string>
@@ -1184,9 +1185,10 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_drive_mud">Mud</string>
     <string name="ck_drive_offroad">Offroad</string>
     <string name="ck_drive_sand">Sand</string>
+    <string name="ck_drive_connection_missing">Araç bağlantısı yok — mod uygulanmadı.</string>
     <string name="ck_assist_cpd_note">CPD Notu</string>
     <string name="ck_assist_hardware_dep">Donanıma bağlı</string>
-    <string name="ck_theme_locked_desc">Cockpit koyu teması sabittir. Gece/gündüz yeniden kurma altyapısı korunur.</string>
+    <string name="ck_theme_locked_desc">Kokpit koyu tema kullanır; gündüz/gece otomatik değişmez.</string>
 
     <string name="ck_settings_cat_general">Genel</string>
     <string name="ck_settings_cat_system">Sistem</string>
@@ -1253,7 +1255,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="profiles_advanced_settings_link">Koltuk ve ek hafıza ayarları</string>
     <string name="profiles_face_add">Yüz Ekle</string>
     <string name="profiles_face_update">Yüzü Güncelle</string>
-    <string name="ck_profile_chip">PROFİL: %1$s</string>
+    <string name="ck_profile_chip">%1$s</string>
     <string name="ck_page_apps_sub">Uygulama kurulumunu ve yerel uygulamaları yönetin.</string>
     <string name="ck_page_wifi_sub">Wi-Fi ve kullanılabilir ağları yönetin.</string>
     <string name="ck_page_web_sub">Dosya yükleyin ve yerel web sunucusunu yönetin.</string>
@@ -1487,4 +1489,67 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_wake_engine_hint">Porcupine/openWakeWord için model/anahtar gerekir; yoksa Vosk kullanılır. Vosk sözlüğünde olmayan kelimeler (ör. Chery) exact tanınmaz.</string>
     <string name="assistant_command_vosk_on">Yerel Vosk komut grameri etkin.</string>
     <string name="assistant_command_gemini_on">Gemini komut yürütme etkin.</string>
+    <string name="ck_lyrics_title">Şarkı Sözleri</string>
+    <string name="ck_lyrics_fullscreen">Tam Ekran Sözler</string>
+    <string name="ck_lyrics_fullscreen_close">Tam ekrandan çık</string>
+    <string name="ck_lyrics_theme_dark">Karanlık</string>
+    <string name="ck_lyrics_theme_light">Aydınlık</string>
+    <string name="ck_lyrics_no_track">Parça çalmıyor</string>
+    <string name="ck_lyrics_empty_session">Şarkı sözleri için bir parça çal.</string>
+    <string name="ck_lyrics_no_access">Şarkı sözleri için bildirim erişimi gerekli.</string>
+    <string name="ck_lyrics_loading">Şarkı sözleri aranıyor…</string>
+    <string name="ck_lyrics_not_found">Bu parça için söz bulunamadı.</string>
+    <string name="ck_lyrics_instrumental">Enstrümantal parça.</string>
+    <string name="ck_lyrics_offline">Sözlere ulaşılamadı.</string>
+    <string name="ck_lyrics_badge_idle">Oturum yok</string>
+    <string name="ck_lyrics_badge_loading">Aranıyor</string>
+    <string name="ck_lyrics_badge_synced">Eşzamanlı sözler</string>
+    <string name="ck_lyrics_badge_plain">Düz metin</string>
+    <string name="ck_lyrics_badge_none">Söz yok</string>
+    <string name="ck_lyrics_badge_offline">Çevrimdışı</string>
+    <string name="ck_lyrics_badge_no_access">Erişim yok</string>
+    <string name="ck_media_card_title">Medya &amp; Çalma Listesi</string>
+    <string name="ck_lyrics_now_playing">Şu an çalınıyor</string>
+    <string name="ck_lyrics_prev">Önceki parça</string>
+    <string name="ck_lyrics_next">Sonraki parça</string>
+    <string name="ck_lyrics_play">Oynat / duraklat</string>
+    <string name="ck_lyrics_tap_jump">Dokunarak söze atla</string>
+    <string name="ck_lyrics_hires">Hi-Res 24b</string>
+    <string name="ck_lyrics_cabin_mode">Kabin Ses: Sahne Modu</string>
+    <string name="ck_lyrics_replay10">10 saniye geri</string>
+    <string name="ck_lyrics_forward10">10 saniye ileri</string>
+    <string name="ck_lyrics_spotify_live">Spotify Canlı</string>
+    <string name="ck_lyrics_phone_connected">Telefon Bağlı</string>
+    <string name="ck_lyrics_audio_system">Chery Sony Ses Sistemi (8 Hoparlör)</string>
+    <string name="ck_lyrics_equalizer">Ekolayzer</string>
+    <string name="ck_fs_back">Medya Kartına Dön</string>
+    <string name="ck_fs_live">Canlı Senkronizasyon</string>
+    <string name="ck_fs_quality">24-bit / 96kHz</string>
+    <string name="ck_fs_dolby">DOLBY ATMOS</string>
+    <string name="ck_fs_sync_label">Söz Senkronizasyonu: Akıllı Kokpit Modu</string>
+    <string name="ck_fs_vocal_off">Vokal Kapalı</string>
+    <string name="ck_fs_original">Orijinal</string>
+    <string name="ck_fs_audio_title">Chery Sony Ses Sistemi</string>
+    <string name="ck_fs_audio_sub">8 Hoparlör • Dinamik Sahne Modu</string>
+    <string name="ck_fs_bigger">Sözleri büyüt</string>
+    <string name="ck_fs_smaller">Sözleri küçült</string>
+    <string name="ck_fs_shuffle">Karışık çal</string>
+    <string name="ck_fs_repeat">Tekrarla</string>
+    <string name="ck_fs_equalizer">Ekolayzer</string>
+    <string name="ck_fs_seek">Şarkı ilerlemesi</string>
+    <string name="ck_media_now_playing">Şimdi çalıyor</string>
+    <string name="ck_body_panel_open">Kapı, bagaj veya cam açık</string>
+    <string name="ck_side_driver">SÜRÜCÜ</string>
+    <string name="ck_side_passenger">YOLCU</string>
+    <string name="ck_climate_threshold_below">%1$d°C altındayken aç</string>
+    <string name="ck_climate_threshold_below_equal">%1$d°C ve altındayken aç</string>
+    <string name="ck_climate_threshold_above">%1$d°C üzerindeyken aç</string>
+    <string name="ck_climate_threshold_above_equal">%1$d°C ve üzerindeyken aç</string>
+    <string name="ck_face_change_memory_type">Hafıza Tipini Değiştir</string>
+    <string name="web_instructions_title">Talimatlar</string>
+    <string name="ck_stepper_decrease">Azalt</string>
+    <string name="ck_stepper_increase">Artır</string>
+    <string name="ck_climate_delay_control">Gecikme süresi</string>
+    <string name="ck_climate_temp_control">Sıcaklık eşiği</string>
+    <string name="ck_climate_level_control">Koltuk seviyesi</string>
 </resources>

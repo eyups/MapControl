@@ -62,6 +62,7 @@
     <string name="topbar_apps">Apps</string>
     <string name="topbar_vehicle_home">Vehicle home screen</string>
     <string name="wifi_not_connected">Not connected</string>
+    <string name="wifi_connected_to">Connected to %1$s</string>
     <string name="wifi_turn_on">Turn Wi‑Fi on</string>
     <string name="wifi_refresh">Refresh</string>
     <string name="wifi_scanning">Scanning…</string>
@@ -175,8 +176,8 @@
     <string name="apps_cd_delete_file">Delete file</string>
     <string name="web_mgmt_title">Web management</string>
     <string name="web_mgmt_desc">Start the web server to upload files from devices on the same network and use map and keyboard control.</string>
-    <string name="web_server_start">▶ Start Web Server</string>
-    <string name="web_server_stop">■ Stop Web Server</string>
+    <string name="web_server_start">Start Web Server</string>
+    <string name="web_server_stop">Stop Web Server</string>
     <string name="web_server_stopped">Server stopped</string>
     <string name="web_text_sent">Text sent</string>
     <string name="assist_title">Vehicle and driver assists</string>
@@ -190,7 +191,7 @@
     <string name="camera_test_title">Camera test</string>
     <string name="floating_back_permission_settings">Could not open permission settings: %1$s</string>
     <string name="floating_back_show_failed">Could not show floating button: %1$s</string>
-    <string name="wifi_turn_off_label">■ Turn Wi‑Fi off</string>
+    <string name="wifi_turn_off_label">Turn Wi‑Fi off</string>
     <string name="wifi_off_label">Wi‑Fi off</string>
     <string name="wifi_manager_missing">Wi‑Fi manager not found</string>
     <string name="wifi_enable_first">Wi‑Fi is off; turn Wi‑Fi on first</string>
@@ -284,7 +285,7 @@
     <string name="side_rail_wifi">Wi‑Fi management</string>
     <string name="side_rail_apps">App management</string>
     <string name="side_rail_web">Web management</string>
-    <string name="camera360_menu_title">Choose a mode</string>
+    <string name="camera360_menu_title">Select camera mode</string>
     <string name="camera360_menu_live">Live Preview</string>
     <string name="camera360_menu_live_sub">Watch the 4 cameras live</string>
     <string name="camera360_menu_record">USB Recording</string>
@@ -692,8 +693,8 @@
     <string name="dms_face_match_name">✓ Detected: %1$s</string>
     <string name="dms_face_unknown">No match among saved profiles</string>
     <string name="dms_face_profile_count">%1$d / %2$d profiles saved — Live test active</string>
-    <string name="dms_face_no_profiles">No profiles saved yet. Enter a name and select seat memory on the right to scan.</string>
-    <string name="dms_face_no_profiles_no_memory">No profiles saved yet. Enter a name on the right and scan your face.</string>
+    <string name="dms_face_no_profiles">No profiles saved yet. Enter a name and select seat memory in the profile area below, then scan.</string>
+    <string name="dms_face_no_profiles_no_memory">No profiles saved yet. Enter a name in the profile area below and scan your face.</string>
     <string name="dms_face_clear_confirm">Delete all saved face profiles?</string>
     <string name="dms_face_camera_missing">Camera not found.</string>
     <string name="dms_face_camera_disconnected">Waiting for camera…</string>
@@ -1160,9 +1161,10 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_drive_mud">Mud</string>
     <string name="ck_drive_offroad">Offroad</string>
     <string name="ck_drive_sand">Sand</string>
+    <string name="ck_drive_connection_missing">No vehicle connection — mode was not applied.</string>
     <string name="ck_assist_cpd_note">CPD Note</string>
     <string name="ck_assist_hardware_dep">Hardware dependent</string>
-    <string name="ck_theme_locked_desc">Cockpit dark theme is fixed. Day/night rebuild hooks are preserved.</string>
+    <string name="ck_theme_locked_desc">Cockpit uses a dark theme; it does not switch with day/night.</string>
 
     <string name="ck_settings_cat_general">General</string>
     <string name="ck_settings_cat_system">System</string>
@@ -1453,4 +1455,18 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="assistant_wake_word_help">The small Turkish model only knows its own vocabulary; “deck” is not recognized. Prefer “dinle beni” or “hey merhaba”.</string>
     <string name="assistant_conversation_title">Conversation mode</string>
     <string name="assistant_conversation_desc">After each reply, asks \'Anything else?\' and listens without the wake word.</string>
+    <string name="ck_body_panel_open">Door, trunk or window open</string>
+    <string name="ck_side_driver">DRIVER</string>
+    <string name="ck_side_passenger">PASSENGER</string>
+    <string name="ck_climate_threshold_below">Turn on below %1$d°C</string>
+    <string name="ck_climate_threshold_below_equal">Turn on at or below %1$d°C</string>
+    <string name="ck_climate_threshold_above">Turn on above %1$d°C</string>
+    <string name="ck_climate_threshold_above_equal">Turn on at or above %1$d°C</string>
+    <string name="ck_face_change_memory_type">Change memory type</string>
+    <string name="web_instructions_title">Instructions</string>
+    <string name="ck_stepper_decrease">Decrease</string>
+    <string name="ck_stepper_increase">Increase</string>
+    <string name="ck_climate_delay_control">Delay</string>
+    <string name="ck_climate_temp_control">Temperature threshold</string>
+    <string name="ck_climate_level_control">Seat level</string>
 </resources>

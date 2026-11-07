@@ -19,6 +19,8 @@ public final class CockpitPageHeader extends LinearLayout {
         TextView titleView = new TextView(context);
         CockpitTokens.headlineMd(titleView);
         titleView.setText(title == null ? "" : title);
+        titleView.setVisibility(title == null || title.length() == 0
+                ? GONE : VISIBLE);
         addView(titleView);
 
         TextView subtitleView = new TextView(context);

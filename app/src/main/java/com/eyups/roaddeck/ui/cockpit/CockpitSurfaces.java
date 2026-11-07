@@ -64,7 +64,7 @@ public final class CockpitSurfaces {
     /** Level 3: modal alert surface, rim highlight + deep shadow. */
     public static void level3(View view) {
         Context c = view.getContext();
-        GradientDrawable d = rounded(c, color(c, R.color.ck_bg_recessed), 24f);
+        GradientDrawable d = rounded(c, color(c, R.color.ck_bg_recessed), CockpitTokens.RADIUS_CARD_DP);
         d.setStroke(CockpitTokens.dp(c, 1), color(c, R.color.ck_stroke_modal));
         view.setBackground(d);
         view.setElevation(CockpitTokens.dp(c, 16));
@@ -77,6 +77,14 @@ public final class CockpitSurfaces {
         RippleDrawable ripple = new RippleDrawable(
                 ColorStateList.valueOf(rippleColor), content, null);
         view.setBackground(ripple);
+    }
+
+    /** Ripple + outlined content; pressed feedback without losing the stroke. */
+    public static void rippleOutlined(View view, int fillColor, int strokeColor,
+            float radiusDp, int rippleColor) {
+        Context c = view.getContext();
+        GradientDrawable content = outlined(c, fillColor, strokeColor, radiusDp);
+        view.setBackground(new RippleDrawable(ColorStateList.valueOf(rippleColor), content, null));
     }
 
     /** Two-state filled button background. */

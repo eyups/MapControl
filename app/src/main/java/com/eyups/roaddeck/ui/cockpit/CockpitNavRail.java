@@ -33,6 +33,7 @@ public class CockpitNavRail extends LinearLayout {
     private final List<CockpitNavModel.Domain> domainModels = new ArrayList<>();
     private View settingsView;
     private TextView expandLabel;
+    private CockpitButton expandButton;
     private boolean expanded;
     private int selectedTab = CockpitNavModel.TAB_HOME;
 
@@ -69,7 +70,7 @@ public class CockpitNavRail extends LinearLayout {
             expandLabel.setVisibility(GONE);
             top.addView(expandLabel, new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
 
-            CockpitButton expandButton = CockpitButton.icon(context,
+            expandButton = CockpitButton.icon(context,
                     R.drawable.ic_mdi_chevron_double_left,
                     context.getString(R.string.ck_rail_expand));
             expandButton.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
@@ -112,6 +113,7 @@ public class CockpitNavRail extends LinearLayout {
             expandLabel.setVisibility(expanded ? VISIBLE : GONE);
         }
         refreshSelection();
+        applyExpandedLayout();
     }
 
     private LinearLayout.LayoutParams itemParams() {
@@ -131,6 +133,7 @@ public class CockpitNavRail extends LinearLayout {
         row.setGravity(Gravity.CENTER);
         row.setClickable(true);
         row.setFocusable(true);
+        row.setDefaultFocusHighlightEnabled(true);
         row.setContentDescription(context.getString(domain.titleRes));
 
         View bar = new View(context);
@@ -225,9 +228,10 @@ public class CockpitNavRail extends LinearLayout {
     }
 
     private void styleSelected(View row, boolean selected) {
-        row.setBackgroundColor(selected
-                ? CockpitTokens.color(context, R.color.ck_surface_2)
-                : 0x00000000);
+        row.setSelected(selected);
+        CockpitSurfaces.ripple(row,
+                selected ? CockpitTokens.color(context, R.color.ck_surface_2) : 0x00000000,
+                0f, 0x26FFFFFF);
         if (row instanceof LinearLayout) {
             View bar = ((LinearLayout) row).getChildAt(0);
             if (bar != null && !(bar instanceof LinearLayout)) {
@@ -235,7 +239,7 @@ public class CockpitNavRail extends LinearLayout {
             }
         }
         tintIcons(row, selected
-                ? CockpitTokens.color(context, R.color.ck_accent)
+                ? CockpitTokens.color(context, R.color.ck_text_high)
                 : CockpitTokens.color(context, R.color.ck_text_medium));
     }
 
@@ -246,6 +250,8 @@ public class CockpitNavRail extends LinearLayout {
                 View child = g.getChildAt(i);
                 if (child instanceof ImageView) {
                     ((ImageView) child).setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                } else if (child instanceof TextView) {
+                    ((TextView) child).setTextColor(color);
                 } else {
                     tintIcons(child, color);
                 }
@@ -258,6 +264,7 @@ public class CockpitNavRail extends LinearLayout {
         if (expandLabel != null) {
             expandLabel.setVisibility(value ? VISIBLE : GONE);
         }
+        applyExpandedLayout();
         prefs.edit().putBoolean(CockpitNavModel.PREF_RAIL_EXPANDED, value).apply();
         if (portrait) {
             return;
@@ -265,6 +272,80 @@ public class CockpitNavRail extends LinearLayout {
         if (notify) {
             listener.onRailWidthChanged(value);
         }
+    }
+
+    /**
+     * 96 dp collapsed: icon + altında etiket. 240 dp expanded: drawer satırı,
+     * icon solda + etiket sağda. Aynı view'lar yeniden düzenlenir.
+     */
+    private void applyExpandedLayout() {
+        if (portrait) {
+            return;
+        }
+        if (expandButton != null) {
+            expandButton.setStartIcon(expanded
+                            ? R.drawable.ic_mdi_chevron_double_left
+                            : R.drawable.ic_mdi_chevron_double_right,
+                    CockpitTokens.color(context, R.color.ck_text_high));
+        }
+        for (View row : domainViews) {
+            applyRowLayout(row);
+        }
+        if (settingsView != null) {
+            applyRowLayout(settingsView);
+        }
+    }
+
+    private void applyRowLayout(View row) {
+        if (!(row instanceof LinearLayout)) {
+            return;
+        }
+        LinearLayout r = (LinearLayout) row;
+        int startPad = CockpitTokens.dim(context, R.dimen.ck_space_md);
+        // Row her zaman yatay: solda 4 dp accent bar, sağda content.
+        // Yalnız content collapsed'da dikey (icon üstte), expanded'da yatay (icon solda).
+        r.setOrientation(HORIZONTAL);
+        r.setGravity(expanded
+                ? (Gravity.CENTER_VERTICAL | Gravity.START)
+                : Gravity.CENTER);
+        r.setPadding(expanded ? startPad : 0, 0, expanded ? startPad : 0, 0);
+        View contentView = r.getChildCount() > 1 ? r.getChildAt(1) : null;
+        if (!(contentView instanceof LinearLayout)) {
+            return;
+        }
+        LinearLayout content = (LinearLayout) contentView;
+        content.setOrientation(expanded ? HORIZONTAL : VERTICAL);
+        content.setGravity(expanded
+                ? (Gravity.CENTER_VERTICAL | Gravity.START)
+                : Gravity.CENTER);
+        content.setPadding(expanded ? startPad : 0, 0, 0, 0);
+        if (content.getChildCount() < 2) {
+            return;
+        }
+        View labelView = content.getChildAt(1);
+        if (!(labelView instanceof TextView)) {
+            return;
+        }
+        TextView label = (TextView) labelView;
+        LinearLayout.LayoutParams lp = label.getLayoutParams() instanceof LinearLayout.LayoutParams
+                ? (LinearLayout.LayoutParams) label.getLayoutParams()
+                : new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+                        LayoutParams.WRAP_CONTENT);
+        lp.leftMargin = expanded ? CockpitTokens.dim(context, R.dimen.ck_space_md) : 0;
+        lp.topMargin = expanded ? 0 : CockpitTokens.dp(context, 2);
+        if (expanded) {
+            lp.width = 0;
+            lp.weight = 1f;
+        } else {
+            lp.width = LayoutParams.MATCH_PARENT;
+            lp.weight = 0f;
+        }
+        label.setLayoutParams(lp);
+        label.setGravity(expanded
+                ? (Gravity.START | Gravity.CENTER_VERTICAL)
+                : Gravity.CENTER);
+        label.setMaxLines(expanded ? 1 : 2);
+        label.setEllipsize(android.text.TextUtils.TruncateAt.END);
     }
 
     public boolean isExpanded() {

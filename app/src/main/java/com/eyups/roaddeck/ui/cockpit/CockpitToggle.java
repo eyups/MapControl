@@ -20,18 +20,42 @@ public class CockpitToggle extends View {
     }
 
     private final Paint trackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint trackStroke = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint thumbPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final RectF trackRect = new RectF();
     private boolean checked;
     private float thumbProgress;
     private ValueAnimator animator;
     private OnCheckedChangeListener listener;
+    private CharSequence label;
 
     public CockpitToggle(Context context) {
         super(context);
         setClickable(true);
         setFocusable(true);
-        setContentDescription(context.getString(R.string.ck_common_off));
+        setDefaultFocusHighlightEnabled(true);
+        updateContentDescription();
+    }
+
+    /**
+     * TalkBack'in anahtarın neyi kontrol ettiğini söylemesi için görünür satır etiketi.
+     * Durum (açık/kapalı) ayrı stateDescription ile verilir.
+     */
+    public void setLabel(CharSequence value) {
+        label = value;
+        updateContentDescription();
+    }
+
+    private void updateContentDescription() {
+        String state = getContext().getString(checked ? R.string.ck_common_on : R.string.ck_common_off);
+        boolean hasLabel = label != null && label.length() > 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // API 30+ stateDescription ayrı okunur; cd'de durumu tekrarlama.
+            setContentDescription(hasLabel ? label : state);
+            setStateDescription(state);
+        } else {
+            setContentDescription(hasLabel ? label + ", " + state : state);
+        }
     }
 
     public void setOnCheckedChangeListener(OnCheckedChangeListener l) {
@@ -53,7 +77,7 @@ public class CockpitToggle extends View {
             return;
         }
         checked = value;
-        setContentDescription(getContext().getString(value ? R.string.ck_common_on : R.string.ck_common_off));
+        updateContentDescription();
         if (!animate) {
             thumbProgress = value ? 1f : 0f;
             invalidate();
@@ -84,18 +108,29 @@ public class CockpitToggle extends View {
         super.onDraw(canvas);
         Context c = getContext();
         float pad = CockpitTokens.dp(c, 2);
-        float radius = (getHeight() - 2 * pad) / 2f;
-        trackRect.set(pad, pad, getWidth() - pad, getHeight() - pad);
+        // Visual track stays 72x40 per DESIGN; the View itself is a 72x64 touch target.
+        float trackH = CockpitTokens.dim(c, R.dimen.ck_toggle_track_h);
+        float trackTop = (getHeight() - trackH) / 2f;
+        float radius = (trackH - 2 * pad) / 2f;
+        trackRect.set(pad, trackTop + pad, getWidth() - pad, trackTop + trackH - pad);
         int off = CockpitTokens.color(c, R.color.ck_surface_2);
         int on = CockpitTokens.color(c, R.color.ck_accent);
         trackPaint.setColor(blend(off, on, thumbProgress));
         canvas.drawRoundRect(trackRect, radius, radius, trackPaint);
+        if (thumbProgress < 0.5f) {
+            // Off track must keep 3:1 against the card; the thumb alone was not enough.
+            trackStroke.setStyle(Paint.Style.STROKE);
+            trackStroke.setStrokeWidth(CockpitTokens.dp(c, 1));
+            trackStroke.setColor(CockpitTokens.color(c, R.color.ck_text_medium));
+            canvas.drawRoundRect(trackRect, radius, radius, trackStroke);
+        }
 
         float thumbR = radius - CockpitTokens.dp(c, 2);
         float leftX = pad + CockpitTokens.dp(c, 2) + thumbR;
         float rightX = getWidth() - pad - CockpitTokens.dp(c, 2) - thumbR;
         float cx = leftX + (rightX - leftX) * thumbProgress;
-        thumbPaint.setColor(thumbProgress > 0.1f ? 0xFFFFFFFF
+        thumbPaint.setColor(thumbProgress > 0.1f
+                ? CockpitTokens.color(c, R.color.ck_on_critical)
                 : CockpitTokens.color(c, R.color.ck_text_medium));
         canvas.drawCircle(cx, getHeight() / 2f, thumbR, thumbPaint);
     }

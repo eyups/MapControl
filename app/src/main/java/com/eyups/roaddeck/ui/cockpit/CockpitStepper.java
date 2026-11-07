@@ -28,6 +28,7 @@ public class CockpitStepper extends LinearLayout {
         value = initial;
 
         minus = CockpitButton.secondary(context, "−");
+        minus.setContentDescription(context.getString(R.string.ck_stepper_decrease));
         minus.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 28);
         minus.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
         minus.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
@@ -41,6 +42,7 @@ public class CockpitStepper extends LinearLayout {
         addView(valueView, new LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f));
 
         plus = CockpitButton.secondary(context, "+");
+        plus.setContentDescription(context.getString(R.string.ck_stepper_increase));
         plus.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 28);
         plus.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_touch_primary));
         plus.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_primary));

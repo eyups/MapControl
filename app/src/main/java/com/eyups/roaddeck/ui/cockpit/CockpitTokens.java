@@ -20,6 +20,13 @@ public final class CockpitTokens {
     public static final int WEIGHT_SEMIBOLD = 600;
     public static final int WEIGHT_BOLD = 700;
 
+    /** DESIGN.md: cards and surfaces share one 16 dp radius. */
+    public static final float RADIUS_CARD_DP = 16f;
+    /** DESIGN.md: controls (buttons, inputs, segmented cells) share 16 dp. */
+    public static final float RADIUS_CONTROL_DP = 16f;
+    /** DESIGN.md: every interactive control resolves to at least 64 dp. */
+    public static final int TOUCH_MIN_DP = 64;
+
     private static final SparseArray<Typeface> INTER = new SparseArray<>();
     private static Typeface mono;
 

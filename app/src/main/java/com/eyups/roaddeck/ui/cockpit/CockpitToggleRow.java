@@ -11,6 +11,7 @@ public class CockpitToggleRow extends CockpitListRow {
             CharSequence subtitle, boolean checked) {
         super(context, iconRes, title, subtitle);
         toggle = new CockpitToggle(context);
+        toggle.setLabel(title);
         toggle.setChecked(checked, false);
         trailing(toggle);
     }

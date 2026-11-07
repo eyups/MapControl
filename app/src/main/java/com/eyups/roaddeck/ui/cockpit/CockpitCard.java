@@ -126,5 +126,9 @@ public class CockpitCard extends LinearLayout {
     public void setCardOnClickListener(OnClickListener listener) {
         setOnClickListener(listener);
         setFocusable(true);
+        setDefaultFocusHighlightEnabled(true);
+        if (getContentDescription() == null && titleView.getText().length() > 0) {
+            setContentDescription(titleView.getText());
+        }
     }
 }

@@ -191,10 +191,10 @@ public final class VehicleMetricsFormatter {
             return unknown();
         }
         if (combined <= 100) {
-            return String.format(Locale.getDefault(), "Depo yaklaşık %% %d dolu", combined);
+            return String.format(Locale.getDefault(), "Depo yaklaşık %%%d dolu", combined);
         }
         // Onda bir yüzde (348 → 34.8)
-        return String.format(Locale.getDefault(), "Depo yaklaşık %% %.1f dolu", combined / 10.0);
+        return String.format(Locale.getDefault(), "Depo yaklaşık %%%.1f dolu", combined / 10.0);
     }
 
     public String formatFuelUsedMl(int combined) {

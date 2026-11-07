@@ -31,7 +31,7 @@ public class CockpitInput extends AppCompatEditText {
     private GradientDrawable background(boolean focused) {
         Context c = getContext();
         GradientDrawable d = CockpitSurfaces.rounded(c,
-                CockpitTokens.color(c, R.color.ck_bg_recessed), 12f);
+                CockpitTokens.color(c, R.color.ck_bg_recessed), CockpitTokens.RADIUS_CONTROL_DP);
         d.setStroke(CockpitTokens.dp(c, focused ? 2 : 1),
                 CockpitTokens.color(c, focused ? R.color.ck_accent : R.color.ck_stroke));
         return d;

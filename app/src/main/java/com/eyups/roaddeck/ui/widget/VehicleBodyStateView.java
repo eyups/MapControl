@@ -179,8 +179,8 @@ public final class VehicleBodyStateView extends View {
         int accent = color(R.color.ck_accent);
         int muted = color(R.color.ck_text_muted);
         int surface = color(R.color.ck_surface_2);
-        int warning = WARNING_COLOR;
-        int closed = withAlpha(muted, 0.78f);
+        int warning = color(R.color.ck_caution);
+        int closed = color(R.color.ck_text_medium);
 
         // Tekerlekler — gövdenin hemen dışında.
         paint.setColor(withAlpha(muted, 0.55f));
@@ -227,8 +227,10 @@ public final class VehicleBodyStateView extends View {
                 car.right - car.width() * 0.035f, car.bottom - car.height() * 0.14f);
         trunk.set(car.left + car.width() * 0.035f, car.top + car.height() * 0.14f,
                 car.left + frontW, car.bottom - car.height() * 0.14f);
-        drawZone(canvas, hood, hasHood && hoodOpen, warning, closed, "KAPUT");
-        drawZone(canvas, trunk, hasTrunk && trunkOpen, warning, closed, "BAGAJ");
+        drawZone(canvas, hood, hasHood && hoodOpen, warning, closed,
+                getContext().getString(R.string.ck_body_hood_short));
+        drawZone(canvas, trunk, hasTrunk && trunkOpen, warning, closed,
+                getContext().getString(R.string.ck_body_trunk_short));
 
         // Kabin / tavan.
         float roofL = car.left + car.width() * 0.25f;
@@ -286,8 +288,8 @@ public final class VehicleBodyStateView extends View {
         float arrowX = car.right + dp(2);
         float arrowY = car.centerY();
         canvas.drawCircle(arrowX, arrowY, dp(2.2f), paint);
-        paint.setColor(withAlpha(muted, 0.6f));
-        paint.setTextSize(dp(8.5f));
+        paint.setColor(color(R.color.ck_text_medium));
+        paint.setTextSize(dp(10.5f));
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(getContext().getString(R.string.ck_body_front),
@@ -297,14 +299,14 @@ public final class VehicleBodyStateView extends View {
 
     private void drawZone(Canvas canvas, RectF zone, boolean open, int warning,
             int closed, String label) {
-        paint.setColor(open ? withAlpha(warning, pulse) : withAlpha(closed, 0.20f));
+        paint.setColor(open ? withAlpha(warning, pulse) : withAlpha(closed, 0.35f));
         canvas.drawRoundRect(zone, dp(4), dp(4), paint);
         if (open) {
             stroke.setColor(withAlpha(warning, 0.95f));
             canvas.drawRoundRect(zone, dp(4), dp(4), stroke);
         }
-        paint.setColor(open ? Color.WHITE : withAlpha(closed, 0.70f));
-        paint.setTextSize(dp(10.5f));
+        paint.setColor(open ? color(R.color.ck_text_high) : closed);
+        paint.setTextSize(dp(12f));
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(label, zone.centerX(), zone.centerY() + dp(3.2f), paint);
@@ -351,5 +353,4 @@ public final class VehicleBodyStateView extends View {
         return value * getResources().getDisplayMetrics().density;
     }
 
-    private static final int WARNING_COLOR = Color.parseColor("#F59E0B");
 }

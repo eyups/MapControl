@@ -270,7 +270,7 @@ public final class UiStyles {
             boolean on = state[0];
             if (on) {
                 setBackgroundRes(left, R.drawable.bg_segment_thumb);
-                left.setTextColor(color(context, R.color.textPrimary));
+                left.setTextColor(color(context, R.color.ck_on_accent));
                 left.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 right.setBackgroundColor(Color.TRANSPARENT);
                 right.setTextColor(color(context, R.color.textSecondary));
@@ -279,7 +279,7 @@ public final class UiStyles {
                         new String[]{leftHelp, rightHelp}, 0));
             } else {
                 setBackgroundRes(right, R.drawable.bg_segment_thumb);
-                right.setTextColor(color(context, R.color.textPrimary));
+                right.setTextColor(color(context, R.color.ck_on_accent));
                 right.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
                 left.setBackgroundColor(Color.TRANSPARENT);
                 left.setTextColor(color(context, R.color.textSecondary));

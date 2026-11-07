@@ -28,9 +28,15 @@ public class CockpitListRow extends LinearLayout {
         int v = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         setPadding(h, v, h, v);
         setBackground(CockpitSurfaces.rounded(context,
-                CockpitTokens.color(context, R.color.ck_surface_1), 12f));
+                CockpitTokens.color(context, R.color.ck_surface_1), CockpitTokens.RADIUS_CARD_DP));
         setClickable(true);
         setFocusable(true);
+        setDefaultFocusHighlightEnabled(true);
+        if (titleText != null && titleText.length() > 0) {
+            setContentDescription(subtitleText == null || subtitleText.length() == 0
+                    ? titleText
+                    : titleText + ", " + subtitleText);
+        }
 
         icon = new ImageView(context);
         if (iconRes != 0) {

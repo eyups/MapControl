@@ -24,11 +24,13 @@ public class CockpitChip extends AppCompatTextView {
         setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_MEDIUM));
         setClickable(true);
         setFocusable(true);
+        setDefaultFocusHighlightEnabled(true);
         applyState();
     }
 
     public void setSelectedState(boolean selected) {
         selectedState = selected;
+        setSelected(selected);
         applyState();
     }
 
@@ -39,15 +41,15 @@ public class CockpitChip extends AppCompatTextView {
     private void applyState() {
         Context c = getContext();
         if (selectedState) {
-            setBackground(CockpitSurfaces.outlined(c,
+            CockpitSurfaces.rippleOutlined(this,
                     CockpitTokens.color(c, R.color.ck_surface_2),
-                    CockpitTokens.color(c, R.color.ck_accent), 24f));
+                    CockpitTokens.color(c, R.color.ck_accent), 24f, 0x33FFFFFF);
             setTextColor(CockpitTokens.color(c, R.color.ck_text_high));
             setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_MEDIUM));
         } else {
-            setBackground(CockpitSurfaces.outlined(c,
+            CockpitSurfaces.rippleOutlined(this,
                     CockpitTokens.color(c, R.color.ck_surface_1),
-                    CockpitTokens.color(c, R.color.ck_stroke), 24f));
+                    CockpitTokens.color(c, R.color.ck_stroke), 24f, 0x33FFFFFF);
             setTextColor(CockpitTokens.color(c, R.color.ck_text_medium));
             setTypeface(CockpitTokens.inter(c, CockpitTokens.WEIGHT_MEDIUM));
         }

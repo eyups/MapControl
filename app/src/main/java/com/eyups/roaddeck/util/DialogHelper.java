@@ -1,5 +1,6 @@
 package com.eyups.roaddeck.util;
 import android.app.AlertDialog;
+import android.view.WindowManager;
 import android.content.Context;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -267,12 +268,18 @@ public class DialogHelper {
     private static void styleDialog(AlertDialog dialog) {
         if (dialog.getWindow() != null) {
             dialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(UiStyles.color(dialog.getContext(), R.color.surfaceColor)));
+            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            dialog.getWindow().setDimAmount(0.6f);
         }
         dialog.setOnShowListener(dialogInterface -> {
             android.widget.Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             if (positiveButton != null) {
-                positiveButton.setTextColor(UiStyles.color(dialog.getContext(), R.color.textPrimary));
+                positiveButton.setTextColor(UiStyles.color(dialog.getContext(), R.color.ck_on_accent));
                 positiveButton.setTextSize(16);
+                positiveButton.setMinHeight(dialog.getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.ck_touch_min));
+                positiveButton.setMinWidth(dialog.getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.ck_touch_min));
                 positiveButton.setTypeface(null, android.graphics.Typeface.BOLD);
                 android.graphics.drawable.GradientDrawable positiveBg = new android.graphics.drawable.GradientDrawable();
                 positiveBg.setColor(UiStyles.color(dialog.getContext(), R.color.buttonPrimary));
@@ -284,6 +291,10 @@ public class DialogHelper {
                 negativeButton.setTextColor(UiStyles.color(dialog.getContext(), R.color.textSecondary));
                 negativeButton.setBackgroundColor(UiStyles.color(dialog.getContext(), R.color.transparent));
                 negativeButton.setTextSize(16);
+                negativeButton.setMinHeight(dialog.getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.ck_touch_min));
+                negativeButton.setMinWidth(dialog.getContext().getResources()
+                        .getDimensionPixelSize(R.dimen.ck_touch_min));
                 negativeButton.setTypeface(null, android.graphics.Typeface.NORMAL);
             }
         });

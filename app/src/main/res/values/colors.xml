@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Light / not-night palette (same names as values-night/) -->
-    <color name="oemAccent">#00B4D8</color>
-    <color name="glassFill">#1D242C</color>
-    <color name="glassStroke">#2D3748</color>
-    <color name="segmentTrackFill">#161B22</color>
-    <color name="outlineSubtle">#2D3748</color>
+    <color name="oemAccent">@color/ck_accent</color>
+    <color name="glassFill">@color/ck_surface_1</color>
+    <color name="glassStroke">@color/ck_stroke</color>
+    <color name="segmentTrackFill">@color/ck_bg_recessed</color>
+    <color name="outlineSubtle">@color/ck_stroke</color>
 
     <!-- Ana ekran kök gradienti (bg_root_gradient) — light -->
-    <color name="root_gradient_start">#0F1216</color>
-    <color name="root_gradient_center">#0F1216</color>
-    <color name="root_gradient_end">#0F1216</color>
+    <color name="root_gradient_start">@color/ck_bg_base</color>
+    <color name="root_gradient_center">@color/ck_bg_base</color>
+    <color name="root_gradient_end">@color/ck_bg_base</color>
     <!-- Sol menü seçili satır (bg_nav_pill_selected) — light -->
-    <color name="primaryColor">#00B4D8</color>
-    <color name="primaryDarkColor">#00B4D8</color>
-    <color name="accentColor">#00B4D8</color>
-    <color name="accentHighlight">#4CD6FB</color>
+    <color name="primaryColor">@color/ck_accent</color>
+    <color name="primaryDarkColor">@color/ck_accent</color>
+    <color name="accentColor">@color/ck_accent</color>
+    <color name="accentHighlight">@color/ck_primary</color>
 
     <!-- Filament model clear — cam kart görünümüne opak eş (IVI şeffaf surface yok) -->
-    <color name="filament_scene_clear">#0F1216</color>
+    <color name="filament_scene_clear">@color/ck_bg_base</color>
 
-    <color name="backgroundPage">#0F1216</color>
-    <color name="surfaceColor">#1D242C</color>
-    <color name="surfaceBar">#161B22</color>
-    <color name="surfaceCard">#1D242C</color>
-    <color name="surfaceCardInner">#252E38</color>
-    <color name="surfaceCardElevated">#252E38</color>
-    <color name="cluster_nav_maneuver_text">#F8FAFC</color>
-    <color name="cluster_nav_maneuver_subtext">#94A3B8</color>
-    <color name="cardColor">#1D242C</color>
+    <color name="backgroundPage">@color/ck_bg_base</color>
+    <color name="surfaceColor">@color/ck_surface_1</color>
+    <color name="surfaceBar">@color/ck_bg_recessed</color>
+    <color name="surfaceCard">@color/ck_surface_1</color>
+    <color name="surfaceCardInner">@color/ck_surface_2</color>
+    <color name="surfaceCardElevated">@color/ck_surface_2</color>
+    <color name="cluster_nav_maneuver_text">@color/ck_text_high</color>
+    <color name="cluster_nav_maneuver_subtext">@color/ck_text_medium</color>
+    <color name="cardColor">@color/ck_surface_1</color>
 
-    <color name="textPrimary">#F8FAFC</color>
-    <color name="textSecondary">#94A3B8</color>
-    <color name="textSecondaryCool">#94A3B8</color>
-    <color name="textAccent">#4CD6FB</color>
-    <color name="textMuted">#475569</color>
-    <color name="textMessage">#E1E2E8</color>
-    <color name="textHint">#94A3B8</color>
+    <color name="textPrimary">@color/ck_text_high</color>
+    <color name="textSecondary">@color/ck_text_medium</color>
+    <color name="textSecondaryCool">@color/ck_text_medium</color>
+    <color name="textAccent">@color/ck_primary</color>
+    <color name="textMuted">@color/ck_text_muted</color>
+    <color name="textMessage">@color/ck_on_surface</color>
+    <color name="textHint">@color/ck_text_medium</color>
     <color name="textPrimary87">#DEF8FAFC</color>
     <color name="textPrimary80">#CCF8FAFC</color>
-    <color name="textDialogButtonSecondary">#94A3B8</color>
-    <color name="textDestructive">#F59E0B</color>
-    <color name="textLoading">#F59E0B</color>
+    <color name="textDialogButtonSecondary">@color/ck_text_medium</color>
+    <color name="textDestructive">@color/ck_caution</color>
+    <color name="textLoading">@color/ck_caution</color>
 
-    <color name="buttonPrimary">#00B4D8</color>
-    <color name="buttonSuccessBright">#10B981</color>
-    <color name="buttonDanger">#252E38</color>
-    <color name="buttonInactive">#252E38</color>
-    <color name="buttonDestructiveBg">#252E38</color>
+    <color name="buttonPrimary">@color/ck_accent</color>
+    <color name="buttonSuccessBright">@color/ck_nominal</color>
+    <color name="buttonDanger">@color/ck_surface_2</color>
+    <color name="buttonInactive">@color/ck_surface_2</color>
+    <color name="buttonDestructiveBg">@color/ck_surface_2</color>
     <!-- Dashboard 3D / ikon sürüş modu tonları -->
-    <color name="drive_mode_eco">#10B981</color>
-    <color name="drive_mode_normal">#00B4D8</color>
-    <color name="drive_mode_sport">#F59E0B</color>
+    <color name="drive_mode_eco">@color/ck_nominal</color>
+    <color name="drive_mode_normal">@color/ck_accent</color>
+    <color name="drive_mode_sport">@color/ck_caution</color>
 
-    <color name="automationPanel">#0F1216</color>
-    <color name="automationCardSurface">#1D242C</color>
-    <color name="automationCardStroke">#2D3748</color>
-    <color name="automationText">#F8FAFC</color>
-    <color name="automationTextMuted">#94A3B8</color>
+    <color name="automationPanel">@color/ck_bg_base</color>
+    <color name="automationCardSurface">@color/ck_surface_1</color>
+    <color name="automationCardStroke">@color/ck_stroke</color>
+    <color name="automationText">@color/ck_text_high</color>
+    <color name="automationTextMuted">@color/ck_text_medium</color>
 
-    <color name="outline">#2D3748</color>
-    <color name="outlineMuted">#3D494D</color>
-    <color name="dividerWhite12">#1FFFFFFF</color>
+    <color name="outline">@color/ck_stroke</color>
+    <color name="outlineMuted">@color/ck_outline_variant</color>
+    <color name="dividerWhite12">@color/ck_stroke_modal</color>
 
-    <color name="statusSuccess">#10B981</color>
-    <color name="statusWarning">#F59E0B</color>
-    <color name="statusError">#EF4444</color>
-    <color name="statusInfo">#00B4D8</color>
-    <color name="statusErrorBright">#EF4444</color>
-    <color name="statusNeutralGray">#94A3B8</color>
+    <color name="statusSuccess">@color/ck_nominal</color>
+    <color name="statusWarning">@color/ck_caution</color>
+    <color name="statusError">@color/ck_critical</color>
+    <color name="statusInfo">@color/ck_accent</color>
+    <color name="statusErrorBright">@color/ck_critical</color>
+    <color name="statusNeutralGray">@color/ck_text_medium</color>
 
     <color name="transparent">#00000000</color>
 
-    <color name="logFieldBg">#161B22</color>
-    <color name="outlineStrong">#2D3748</color>
-    <color name="buttonSecondaryMuted">#252E38</color>
-    <color name="textOnGold">#0F1216</color>
-    <color name="terminalDotRed">#EF4444</color>
-    <color name="terminalDotYellow">#F59E0B</color>
-    <color name="terminalDotGreen">#10B981</color>
+    <color name="logFieldBg">@color/ck_bg_recessed</color>
+    <color name="outlineStrong">@color/ck_stroke</color>
+    <color name="buttonSecondaryMuted">@color/ck_surface_2</color>
+    <color name="textOnGold">@color/ck_on_accent</color>
+    <color name="terminalDotRed">@color/ck_critical</color>
+    <color name="terminalDotYellow">@color/ck_caution</color>
+    <color name="terminalDotGreen">@color/ck_nominal</color>
     <!-- Wi-Fi global toast card + halo (bg_global_wifi_toast_*) — light -->
     <color name="wifi_toast_halo_preparing_grad_start">#88B8D8F0</color>
     <color name="wifi_toast_halo_preparing_grad_center">#5598B8D8</color>
@@ -131,6 +131,14 @@
     <color name="ck_text_muted">#475569</color>
     <color name="ck_on_accent">#0F1216</color>
     <color name="ck_scrim">#B3000000</color>
-    <color name="assistStrokeActive">#5A7FC0</color>
-    <color name="ck_body_warning">#F59E0B</color>
+    <color name="assistStrokeActive">@color/ck_accent</color>
+    <color name="ck_body_warning">@color/ck_caution</color>
+
+    <!-- DESIGN.md semantic roles not covered by the legacy aliases -->
+    <color name="ck_primary">#4CD6FB</color>
+    <color name="ck_on_surface">#E1E2E8</color>
+    <color name="ck_on_surface_variant">#BCC9CE</color>
+    <color name="ck_outline_variant">#3D494D</color>
+    <color name="ck_surface_lowest">#0B0E12</color>
+    <color name="ck_on_critical">#FFFFFF</color>
 </resources>
