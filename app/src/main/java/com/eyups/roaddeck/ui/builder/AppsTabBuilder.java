@@ -277,6 +277,7 @@ public class AppsTabBuilder {
         Button btnModeToggle = new Button(ctx);
         updateModeToggleButton(btnModeToggle);
         btnModeToggle.setTextSize(15);
+        btnModeToggle.setAllCaps(false);
         btnModeToggle.setTypeface(CockpitTokens.inter(ctx, CockpitTokens.WEIGHT_MEDIUM));
         btnModeToggle.setTextColor(CockpitTokens.color(ctx, R.color.ck_text_high));
         btnModeToggle.setBackgroundColor(UiStyles.color(ctx, R.color.transparent));

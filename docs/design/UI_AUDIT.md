@@ -75,7 +75,7 @@
   `sh ./gradlew :app:assembleTts30Debug :app:testTts30DebugUnitTest`
   → **BUILD SUCCESSFUL** (43 task), unit testler geçti.
 - APK emülatöre kuruldu; Home, Camera 360 ve Climate ekranları görsel olarak kontrol edildi. `FATAL EXCEPTION` / `ANR` yok.
-- Ekran görüntüleri: `docs/design/audit-round2/` (`home.png`, `camera-360.png`, `climate.png`, `assist.png`).
+- Ekran görüntüleri: `docs/design/audit-round2/` (`home.png`, `camera-360.png`, `climate.png`, `assist.png`, `apps-actions.png`).
 - Mevcut uyarılar: `minSdk 29 > targetSdk 28`, CMake SDK XML sürüm uyarıları (önceden var).
 
 ## Kalan işler
@@ -130,7 +130,7 @@
 | Ekolayzer | P1/P2 | Segment kontrastı; 64dp; token yüzeyler | Çözüldü |
 | Yansıtma | P2 | `İSO-HUD v2` pill'i kaldırıldı; 64dp; tokenlar | Çözüldü |
 | Bölünmüş Ekran | P2 | Gesture hücreleri ripple + 64dp; çakışan hücreler daha az soluk | Çözüldü |
-| Bağlantı / Apps | P2 | Tokenlar; alt sekme hizası; yıkıcı başlık eylemleri hâlâ açık | Kısmi |
+| Bağlantı / Apps | P2 | Chip şeridi tam genişlik; sayfa aksiyonları ayrı satıra alındı; yıkıcı eylem hiyerarşisi hâlâ açık | Kısmi |
 | Wi-Fi | P1 | Gerçek bağlantı durumu; kapalıyken tarama guard'ı; `■` glifi kaldırıldı | Çözüldü |
 | Web | P2 | `▶` yerine play/stop drawable; “Talimatlar” i18n; 64dp | Çözüldü |
 | Ayarlar | P1/P2 | Seçili segment kontrastı; tekrar başlık kaldırıldı; tema metni; 64dp | Çözüldü |

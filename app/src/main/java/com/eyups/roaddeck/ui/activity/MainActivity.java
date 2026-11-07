@@ -263,6 +263,8 @@ public class MainActivity extends AppCompatActivity {
     private TopBarBuilder topBarBuilder;
     private CockpitSubTabBar subTabBar;
     private View subTabHost;
+    private View pageActionHost;
+    private LinearLayout pageActionRow;
     private boolean railExpanded;
     /** Menü yumuşatması: içerik alfa’sı değil, tema renkli örtü. İptal edilen geçiş burada durur. */
     private final IdentityHashMap<View, ValueAnimator> transitionVeils = new IdentityHashMap<>();
@@ -589,8 +591,9 @@ public class MainActivity extends AppCompatActivity {
                 });
         LinearLayout topBar = topBarBuilder.build();
         topBarTitle = topBarBuilder.getTitleView();
-        topBarButtonsContainer = subTabBar != null ? subTabBar.getActionHost()
-                : topBarBuilder.getButtonsContainer();
+        topBarButtonsContainer = pageActionRow != null
+                ? pageActionRow : (subTabBar != null
+                        ? subTabBar.getActionHost() : topBarBuilder.getButtonsContainer());
         topBarBuilder.setLauncherBackButtonListener(v -> returnToLauncherHome());
         
         mainContent.addView(topBar, new LinearLayout.LayoutParams(
@@ -608,7 +611,26 @@ public class MainActivity extends AppCompatActivity {
                 CockpitTokens.dim(this, R.dimen.ck_subtab_h));
         subTabHostParams.gravity = android.view.Gravity.CENTER_HORIZONTAL;
         mainContent.addView(subTabHost, subTabHostParams);
-        topBarButtonsContainer = subTabBar.getActionHost();
+
+        // Sayfa aksiyonları chip şeridinden ayrı, sağa hizalı ikinci satırda.
+        pageActionRow = new LinearLayout(this);
+        pageActionRow.setOrientation(LinearLayout.HORIZONTAL);
+        pageActionRow.setGravity(android.view.Gravity.END | android.view.Gravity.CENTER_VERTICAL);
+        int actionPadH = CockpitTokens.dim(this, R.dimen.ck_margin);
+        int actionPadV = CockpitTokens.dim(this, R.dimen.ck_space_sm);
+        pageActionRow.setPadding(actionPadH, actionPadV, actionPadH, actionPadV);
+        pageActionHost = new MaxWidthFrameLayout(this);
+        ((MaxWidthFrameLayout) pageActionHost).addView(pageActionRow,
+                new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams pageActionLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        pageActionLp.gravity = android.view.Gravity.CENTER_HORIZONTAL;
+        mainContent.addView(pageActionHost, pageActionLp);
+        pageActionHost.setVisibility(View.GONE);
+        topBarButtonsContainer = pageActionRow;
 
         // Tab içerik alanı (FrameLayout: launcher park ederken SurfaceView GONE olmasın)
         tabContentArea = new FrameLayout(this);
@@ -1471,6 +1493,7 @@ public class MainActivity extends AppCompatActivity {
         CockpitLegacyStyler.apply(tabContentArea);
 
         applyTabChrome(tabIndex);
+        updatePageActionVisibility();
         ThemeManager.applyCyberTypeface(tabContentArea);
 
         if (tabIndex == 5 && appsTabBuilder != null) {
@@ -1664,6 +1687,14 @@ public class MainActivity extends AppCompatActivity {
         if (subTabHost != null) {
             subTabHost.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
+    }
+
+    private void updatePageActionVisibility() {
+        if (pageActionHost == null || pageActionRow == null) {
+            return;
+        }
+        pageActionHost.setVisibility(pageActionRow.getChildCount() > 0
+                ? View.VISIBLE : View.GONE);
     }
 
     private void applyTabChrome(int tabIndex) {
@@ -2278,8 +2309,9 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         topBarTitle = topBarBuilder.getTitleView();
-        topBarButtonsContainer = subTabBar != null ? subTabBar.getActionHost()
-                : topBarBuilder.getButtonsContainer();
+        topBarButtonsContainer = pageActionRow != null
+                ? pageActionRow : (subTabBar != null
+                        ? subTabBar.getActionHost() : topBarBuilder.getButtonsContainer());
         topBarBuilder.setLauncherBackButtonListener(v -> returnToLauncherHome());
         if (title != null && topBarTitle != null) {
             topBarTitle.setText(title);
