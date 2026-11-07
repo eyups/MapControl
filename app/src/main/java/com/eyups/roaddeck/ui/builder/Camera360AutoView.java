@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.eyups.roaddeck.R;
+import com.eyups.roaddeck.ui.cockpit.CockpitTokens;
 import com.eyups.roaddeck.dvr.DvrController;
 import com.eyups.roaddeck.ui.theme.UiStyles;
 
@@ -136,7 +137,7 @@ final class Camera360AutoView {
         pathView.setEllipsize(TextUtils.TruncateAt.MIDDLE);
         titles.addView(pathView);
         storageState = ui.statusPill();
-        storageStateDot = ui.attachDot(storageState, Camera360Ui.COLOR_IDLE, 8);
+        storageStateDot = ui.attachDot(storageState, ui.COLOR_IDLE, 8);
         head.addView(storageState);
 
         // Bos alan dagilimi: klipler | diger | rezerv | kayda acik
@@ -151,16 +152,16 @@ final class Camera360AutoView {
         int other = ui.themeColor(R.color.textMuted);
         barClips = barSegment(bar, accent);
         barOther = barSegment(bar, Camera360Ui.withAlpha(other, 0x99));
-        barReserve = barSegment(bar, Camera360Ui.withAlpha(Camera360Ui.COLOR_WAIT, 0xCC));
-        barFree = barSegment(bar, Camera360Ui.withAlpha(Camera360Ui.COLOR_LIVE, 0x99));
+        barReserve = barSegment(bar, Camera360Ui.withAlpha(ui.COLOR_WAIT, 0xCC));
+        barFree = barSegment(bar, Camera360Ui.withAlpha(ui.COLOR_LIVE, 0x99));
 
         LinearLayout legend = new LinearLayout(ui.context);
         legend.setOrientation(LinearLayout.HORIZONTAL);
         card.addView(legend, ui.matchWrapTop(8));
         legendItem(legend, accent, R.string.camera360_auto_legend_clips);
         legendItem(legend, Camera360Ui.withAlpha(other, 0x99), R.string.camera360_auto_legend_other);
-        reserveLegend = legendItem(legend, Camera360Ui.COLOR_WAIT, R.string.camera360_auto_legend_reserve);
-        legendItem(legend, Camera360Ui.COLOR_LIVE, R.string.camera360_auto_legend_free);
+        reserveLegend = legendItem(legend, ui.COLOR_WAIT, R.string.camera360_auto_legend_reserve);
+        legendItem(legend, ui.COLOR_LIVE, R.string.camera360_auto_legend_free);
 
         LinearLayout reserveRow = new LinearLayout(ui.context);
         reserveRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -263,7 +264,7 @@ final class Camera360AutoView {
         card.addView(row);
 
         pulseDot = new View(ui.context);
-        GradientDrawable dot = Camera360Ui.oval(Camera360Ui.COLOR_IDLE);
+        GradientDrawable dot = Camera360Ui.oval(ui.COLOR_IDLE);
         pulseDot.setBackground(dot);
         statusDot = dot;
         LinearLayout.LayoutParams dp = new LinearLayout.LayoutParams(ui.dp(12), ui.dp(12));
@@ -303,9 +304,9 @@ final class Camera360AutoView {
         viewer.setAllCaps(false);
         viewer.setTextSize(15);
         viewer.setTypeface(null, Typeface.BOLD);
-        viewer.setTextColor(0xFFFFFFFF);
+        viewer.setTextColor(CockpitTokens.color(ui.context, R.color.ck_text_high));
         UiStyles.styleOemButton(viewer, ui.themeColor(R.color.buttonPrimary));
-        UiStyles.setButtonStartIconTinted(viewer, R.drawable.ic_mdi_play, 0xFFFFFFFF, ui.dp(8));
+        UiStyles.setButtonStartIconTinted(viewer, R.drawable.ic_mdi_play, CockpitTokens.color(ui.context, R.color.ck_text_high), ui.dp(8));
         viewer.setStateListAnimator(null);
         viewer.setOnClickListener(v -> openViewer.run());
         card.addView(viewer, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ui.dp(52)) {{
@@ -335,7 +336,7 @@ final class Camera360AutoView {
 
         blockedNote = ui.text(13, R.color.textSecondaryCool, false);
         blockedNote.setText(R.string.camera360_auto_blocked_usb);
-        blockedNote.setTextColor(Camera360Ui.COLOR_WAIT);
+        blockedNote.setTextColor(ui.COLOR_WAIT);
         blockedNote.setVisibility(View.GONE);
         LinearLayout.LayoutParams bp = ui.matchWrapTop(8);
         bp.leftMargin = inset;
@@ -494,18 +495,18 @@ final class Camera360AutoView {
                 && s.freeBytes + s.clipsBytes < dvr.reserveBytes() + 10 * dvr.autoBytesPerMinute();
         if (!s.writable && dvr.getAutoStatus() == DvrController.AutoStatus.NOT_WRITABLE) {
             storageState.setText(R.string.camera360_auto_st_not_writable);
-            ui.tintPill(storageState, storageStateDot, Camera360Ui.COLOR_REC);
+            ui.tintPill(storageState, storageStateDot, ui.COLOR_REC);
         } else if (lowSpace) {
             storageState.setText(ui.context.getString(R.string.camera360_auto_st_low_space, reserveText));
-            ui.tintPill(storageState, storageStateDot, Camera360Ui.COLOR_REC);
+            ui.tintPill(storageState, storageStateDot, ui.COLOR_REC);
         } else {
             storageState.setText(R.string.camera360_auto_ready);
-            ui.tintPill(storageState, storageStateDot, Camera360Ui.COLOR_LIVE);
+            ui.tintPill(storageState, storageStateDot, ui.COLOR_LIVE);
         }
 
         DvrController.AutoStatus st = enabled ? dvr.getAutoStatus() : DvrController.AutoStatus.OFF;
         statusText.setText(statusLabel(ui, dvr, st));
-        statusDot.setColor(statusColor(st));
+        statusDot.setColor(statusColor(ui, st));
         boolean recording = enabled && dvr.isRecordingInternal();
         recLine.setVisibility(recording ? View.VISIBLE : View.GONE);
         if (recording) updateRecLine();
@@ -541,15 +542,15 @@ final class Camera360AutoView {
         }
     }
 
-    static int statusColor(DvrController.AutoStatus st) {
+    static int statusColor(Camera360Ui ui, DvrController.AutoStatus st) {
         switch (st) {
-            case RECORDING: return Camera360Ui.COLOR_REC;
+            case RECORDING: return ui.COLOR_REC;
             case WAITING_IGNITION:
             case STARTING:
             case NO_USB:
-            case SUSPENDED: return Camera360Ui.COLOR_WAIT;
-            case OFF: return Camera360Ui.COLOR_IDLE;
-            default: return Camera360Ui.COLOR_REC;
+            case SUSPENDED: return ui.COLOR_WAIT;
+            case OFF: return ui.COLOR_IDLE;
+            default: return ui.COLOR_REC;
         }
     }
 

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -313,6 +314,16 @@ public class AppsTabBuilder {
         btnDeleteSelf.setOnClickListener(v -> confirmDeleteSelf());
         container.addView(btnDeleteSelf, topBarActionParams());
 
+        int touch = CockpitTokens.dim(ctx, R.dimen.ck_touch_min);
+        for (int i = 0; i < container.getChildCount(); i++) {
+            View child = container.getChildAt(i);
+            if (child instanceof Button) {
+                child.setMinimumHeight(touch);
+                if (((Button) child).getText().length() == 0) {
+                    child.setMinimumWidth(touch);
+                }
+            }
+        }
         return container;
     }
 

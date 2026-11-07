@@ -32,6 +32,7 @@ import android.widget.Toast;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.eyups.roaddeck.R;
+import com.eyups.roaddeck.ui.cockpit.CockpitTokens;
 import com.eyups.roaddeck.dvr.CameraGlEngine;
 import com.eyups.roaddeck.dvr.CameraRecorder;
 import com.eyups.roaddeck.dvr.DvrClipStore;
@@ -438,7 +439,7 @@ final class Camera360ClipViewer {
         LinearLayout.LayoutParams ep = new LinearLayout.LayoutParams(0, ui.dp(44), 1f);
         ep.setMarginEnd(ui.dp(6));
         buttons.addView(selExportButton, ep);
-        selDeleteButton = actionButton(R.drawable.ic_mdi_delete, Camera360Ui.COLOR_REC);
+        selDeleteButton = actionButton(R.drawable.ic_mdi_delete, ui.COLOR_REC);
         selDeleteButton.setOnClickListener(v -> confirmDelete(selectedClips()));
         buttons.addView(selDeleteButton, new LinearLayout.LayoutParams(0, ui.dp(44), 1f));
         return bar;
@@ -446,7 +447,7 @@ final class Camera360ClipViewer {
 
     private FrameLayout buildCell(int cam) {
         FrameLayout cell = new FrameLayout(ui.context);
-        cell.setBackgroundColor(0xFF0B0E12);
+        cell.setBackgroundColor(CockpitTokens.color(ui.context, R.color.ck_surface_lowest));
         SurfaceView sv = new SurfaceView(ui.context);
         sv.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -482,7 +483,7 @@ final class Camera360ClipViewer {
 
         TextView missing = ui.text(14, R.color.textSecondaryCool, false);
         missing.setText(R.string.camera360_no_signal);
-        missing.setTextColor(Camera360Ui.COLOR_NO_SIGNAL);
+        missing.setTextColor(ui.COLOR_NO_SIGNAL);
         missing.setVisibility(View.GONE);
         cell.addView(missing, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
@@ -513,7 +514,7 @@ final class Camera360ClipViewer {
         clipMeta.setSingleLine(true);
         texts.addView(clipMeta);
 
-        deleteButton = actionButton(R.drawable.ic_mdi_delete, Camera360Ui.COLOR_REC);
+        deleteButton = actionButton(R.drawable.ic_mdi_delete, ui.COLOR_REC);
         deleteButton.setText(R.string.camera360_delete);
         deleteButton.setOnClickListener(v -> {
             if (current >= 0 && current < clips.size()) {

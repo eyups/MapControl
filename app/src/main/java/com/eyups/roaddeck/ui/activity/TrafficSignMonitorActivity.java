@@ -21,6 +21,7 @@ import com.desaysv.ivi.vdb.IVDBusNotify;
 import com.desaysv.ivi.vdb.event.VDEvent;
 import com.desaysv.ivi.vdb.event.id.carinfo.VDEventCarInfo;
 import com.eyups.roaddeck.R;
+import com.eyups.roaddeck.ui.theme.UiStyles;
 import com.eyups.roaddeck.ui.cockpit.CockpitLegacyStyler;
 import com.eyups.roaddeck.util.SystemLogBuffer;
 
@@ -140,7 +141,7 @@ public class TrafficSignMonitorActivity extends Activity {
         TextView subtitle = new TextView(this);
         subtitle.setText(R.string.tsr_monitor_subtitle);
         subtitle.setTextSize(12);
-        subtitle.setTextColor(0xFFB8C4D4);
+        subtitle.setTextColor(UiStyles.color(this, R.color.ck_on_surface_variant));
         subtitle.setPadding(0, dp(4), 0, dp(10));
         root.addView(subtitle);
 
@@ -152,13 +153,13 @@ public class TrafficSignMonitorActivity extends Activity {
 
         startButton = new Button(this);
         startButton.setText(R.string.tsr_monitor_start);
-        styleButton(startButton, 0xFF1565C0);
+        styleButton(startButton, UiStyles.color(this, R.color.ck_accent));
         startButton.setOnClickListener(v -> startMonitor());
         buttons.addView(startButton, weighted());
 
         stopButton = new Button(this);
         stopButton.setText(R.string.tsr_monitor_stop);
-        styleButton(stopButton, 0xFF37474F);
+        styleButton(stopButton, UiStyles.color(this, R.color.ck_surface_2));
         stopButton.setEnabled(false);
         stopButton.setOnClickListener(v -> stopMonitor());
         LinearLayout.LayoutParams stopLp = weighted();
@@ -167,7 +168,7 @@ public class TrafficSignMonitorActivity extends Activity {
 
         Button clearButton = new Button(this);
         clearButton.setText(R.string.tsr_monitor_clear);
-        styleButton(clearButton, 0xFF37474F);
+        styleButton(clearButton, UiStyles.color(this, R.color.ck_surface_2));
         clearButton.setOnClickListener(v -> {
             values.clear();
             lastChangeView.setText("Son değişim: —");
@@ -179,14 +180,14 @@ public class TrafficSignMonitorActivity extends Activity {
 
         statusView = new TextView(this);
         statusView.setTextSize(12);
-        statusView.setTextColor(0xFF8FA1B6);
+        statusView.setTextColor(UiStyles.color(this, R.color.ck_text_medium));
         statusView.setPadding(0, dp(8), 0, dp(4));
         statusView.setText(R.string.tsr_monitor_idle);
         root.addView(statusView);
 
         lastChangeView = new TextView(this);
         lastChangeView.setTextSize(12);
-        lastChangeView.setTextColor(0xFFFFD180);
+        lastChangeView.setTextColor(UiStyles.color(this, R.color.ck_caution));
         lastChangeView.setPadding(dp(8), dp(4), dp(8), dp(4));
         lastChangeView.setText("Son değişim: —");
         root.addView(lastChangeView);
@@ -194,7 +195,7 @@ public class TrafficSignMonitorActivity extends Activity {
         dataView = new TextView(this);
         dataView.setTextSize(14);
         dataView.setTypeface(Typeface.MONOSPACE);
-        dataView.setTextColor(0xFFE8EDF5);
+        dataView.setTextColor(UiStyles.color(this, R.color.ck_text_high));
         dataView.setPadding(dp(8), dp(8), dp(8), dp(8));
         dataView.setTextIsSelectable(true);
 

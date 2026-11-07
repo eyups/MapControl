@@ -3,6 +3,9 @@ package com.eyups.roaddeck.ui.builder;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -37,6 +40,10 @@ public class DriveModeTabBuilder {
     private final View[] modeIndicators = new View[8];
     private StatusBadge currentBadge;
     private int selectedIndex;
+    private HandlerThread vdbusThread;
+    private Handler vdbusHandler;
+    private Handler mainHandler;
+    private int requestSeq;
 
     private final String[] modeNames = new String[8];
     private static final int[] MODE_VALUES = {-1, 0, 1, 2, 3, 4, 5, 7};
@@ -106,7 +113,7 @@ public class DriveModeTabBuilder {
         }
         refreshSelection();
         if (currentBadge != null) {
-            currentBadge.setLevel(StatusBadge.NOMINAL);
+            currentBadge.setLevel(isCarInfoConnected() ? StatusBadge.NOMINAL : StatusBadge.NEUTRAL);
             currentBadge.setText(modeNames[selectedIndex]);
         }
 
@@ -172,20 +179,34 @@ public class DriveModeTabBuilder {
         if (index == selectedIndex) {
             return;
         }
+        final int mode = MODE_VALUES[index];
+        final String name = modeNames[index];
+        final int seq = ++requestSeq;
+        if (mode == -1) {
+            commitSelection(index, mode, name);
+            callback.log("Hafıza modu seçildi: Hiçbiri (Otomatik ayarlama yapılmayacak)");
+            return;
+        }
+        applyDriveMode(seq, index, mode, name);
+    }
+
+    private void commitSelection(int index, int mode, String name) {
         selectedIndex = index;
-        int mode = MODE_VALUES[index];
         prefs.edit().putInt("driveModeSetting", mode).apply();
         callback.onModeSelected(mode);
         refreshSelection();
         if (currentBadge != null) {
-            currentBadge.setText(modeNames[index]);
+            currentBadge.setLevel(StatusBadge.NOMINAL);
+            currentBadge.setText(name);
         }
-        if (mode == -1) {
-            callback.log("Hafıza modu seçildi: Hiçbiri (Otomatik ayarlama yapılmayacak)");
-        } else {
-            callback.log("Hafıza modu seçildi: " + modeNames[index] + " (Mode: " + mode + ")");
-            applyDriveMode(mode);
+    }
+
+    private void showModeFailure(String name) {
+        if (currentBadge != null) {
+            currentBadge.setLevel(StatusBadge.ADVISORY);
+            currentBadge.setText(R.string.ck_drive_connection_missing);
         }
+        callback.log("Hafıza modu uygulanamadı: araç bağlantısı yok (" + name + ")");
     }
 
     private void refreshSelection() {
@@ -194,14 +215,15 @@ public class DriveModeTabBuilder {
                 continue;
             }
             boolean selected = i == selectedIndex;
+            modeCards[i].setSelected(selected);
             if (selected) {
-                modeCards[i].setBackground(CockpitSurfaces.outlined(context,
+                CockpitSurfaces.rippleOutlined(modeCards[i],
                         CockpitTokens.color(context, R.color.ck_surface_2),
-                        CockpitTokens.color(context, R.color.ck_accent), 16f));
+                        CockpitTokens.color(context, R.color.ck_accent), 16f, 0x33FFFFFF);
             } else {
-                modeCards[i].setBackground(CockpitSurfaces.outlined(context,
+                CockpitSurfaces.rippleOutlined(modeCards[i],
                         CockpitTokens.color(context, R.color.ck_surface_1),
-                        CockpitTokens.color(context, R.color.ck_stroke), 16f));
+                        CockpitTokens.color(context, R.color.ck_stroke), 16f, 0x33FFFFFF);
             }
             int tint = selected
                     ? CockpitTokens.color(context, R.color.ck_accent)
@@ -223,27 +245,67 @@ public class DriveModeTabBuilder {
         return 0;
     }
 
-    private void applyDriveMode(int mode) {
+    private void applyDriveMode(int seq, int index, int mode, String name) {
+        ensureVdbusHandler();
+        vdbusHandler.post(() -> {
+            boolean success = false;
+            try {
+                CarInfoProxy carInfo = CarInfoProxy.getInstance();
+                // init/sleep ana thread'de yasak: bu HandlerThread'de, sinirli denemeyle.
+                for (int attempt = 0; attempt < 3; attempt++) {
+                    if (seq != requestSeq) {
+                        return;
+                    }
+                    if (carInfo.isServiceConnnected()) {
+                        success = true;
+                        break;
+                    }
+                    carInfo.init(context);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
+                if (success) {
+                    carInfo.sendItemValue(VDEventCarInfo.MODULE_NEW_ENERGY, 4, mode);
+                }
+            } catch (Exception e) {
+                callback.log("applyDriveMode hatası: " + e.getMessage());
+                success = false;
+            }
+            final boolean ok = success;
+            mainHandler.post(() -> {
+                if (seq != requestSeq) {
+                    return;
+                }
+                if (ok) {
+                    commitSelection(index, mode, name);
+                    callback.log("Hafıza modu gönderildi: " + mode + " (Mode: " + name + ")");
+                } else {
+                    showModeFailure(name);
+                }
+            });
+        });
+    }
+
+    private boolean isCarInfoConnected() {
         try {
-            CarInfoProxy carInfo = CarInfoProxy.getInstance();
-
-            if (!carInfo.isServiceConnnected()) {
-                carInfo.init(context);
-                new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(
-                        () -> applyDriveMode(mode), 500);
-                return;
-            }
-
-            int valueToSend = mode;
-            if (mode == 6 || mode == 7) {
-                valueToSend = 7; // SAND
-            }
-
-            carInfo.sendItemValue(VDEventCarInfo.MODULE_NEW_ENERGY, 4, valueToSend);
-            callback.log("Hafıza modu gönderildi: " + valueToSend + " (Mode: " + mode + ")");
-        } catch (Exception e) {
-            callback.log("applyDriveMode hatası: " + e.getMessage());
+            return CarInfoProxy.getInstance().isServiceConnnected();
+        } catch (Exception ignored) {
+            return false;
         }
+    }
+
+    private void ensureVdbusHandler() {
+        if (vdbusHandler != null) {
+            return;
+        }
+        vdbusThread = new HandlerThread("drive-mode-vdbus");
+        vdbusThread.start();
+        vdbusHandler = new Handler(vdbusThread.getLooper());
+        mainHandler = new Handler(Looper.getMainLooper());
     }
 
     public ScrollView getScrollView() {

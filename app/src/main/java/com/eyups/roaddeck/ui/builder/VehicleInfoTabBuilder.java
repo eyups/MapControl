@@ -24,6 +24,9 @@ import com.eyups.roaddeck.vehicle.VehicleMetricsFormatter;
 import com.eyups.roaddeck.vehicle.VehicleMetricsRepository;
 import com.eyups.roaddeck.vehicle.VehicleMetricsSnapshot;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Araç bilgisi — canlı VDBus verisi. Glanceable metrik kartları + uiContext.getString(R.string.ck_vi_advanced) ham veri kartı.
  */
@@ -61,6 +64,7 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
     private MetricView leftSignalMetric;
     private MetricView rightSignalMetric;
     private MetricView hazardMetric;
+    private static final Pattern NUMERIC_VALUE = Pattern.compile("^([-+]?\\d[\\d.,]*)\\s*(.*)$");
     private VehicleBodyStateView bodyStateView;
     private TextView bodyStateSummary;
     private volatile boolean tabVisible;
@@ -324,28 +328,57 @@ public class VehicleInfoTabBuilder implements VehicleMetricsRepository.Listener 
                     rangeMetric, consMetric, coolantMetric, batteryMetric, avgSpeedMetric,
                     odoMetric, tripMetric, sinceStartMetric, leftSignalMetric, rightSignalMetric,
                     hazardMetric}) {
-                v.value("—");
+                v.value("—").unit(null).caption(null);
             }
             return;
         }
-        speedMetric.value(formatter.formatSpeed(repository.getCombined(ReadOnlyID.ID_CAR_SPEED)));
-        gearMetric.value(formatter.formatGear(repository.getCombined(ReadOnlyID.ID_GEARBOX_STATE)));
-        rpmMetric.value(formatter.formatRpm(repository.getCombined(ReadOnlyID.ID_ENGINE_RPM)));
-        fuelMetric.value(formatter.formatFuelLevel(repository.getCombined(ReadOnlyID.ID_FUEL_PERCENT)));
-        rangeMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_ENDURANCE_KM)));
-        consMetric.value(formatter.formatConsumption(repository.getCombined(ReadOnlyID.ID_AVG_FUEL_CONS)));
-        coolantMetric.value(formatter.formatTemperature(repository.getCombined(ReadOnlyID.ID_WATER_TEMPERATURE)));
-        batteryMetric.value(formatter.formatVoltage(repository.getCombined(ReadOnlyID.ID_IBS_VOLTAGE)));
-        avgSpeedMetric.value(formatter.formatSpeed(repository.getCombined(ReadOnlyID.ID_AVG_SPEED)));
-        odoMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM)));
-        tripMetric.value(formatter.formatDeciKm(repository.getCombined(ReadOnlyID.ID_TRIP)));
-        sinceStartMetric.value(formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM_AFTER_RUNNING)));
+        setMetric(speedMetric, formatter.formatSpeed(repository.getCombined(ReadOnlyID.ID_CAR_SPEED)));
+        setMetric(gearMetric, formatter.formatGear(repository.getCombined(ReadOnlyID.ID_GEARBOX_STATE)));
+        setMetric(rpmMetric, formatter.formatRpm(repository.getCombined(ReadOnlyID.ID_ENGINE_RPM)));
+        setMetric(fuelMetric, formatter.formatFuelLevel(repository.getCombined(ReadOnlyID.ID_FUEL_PERCENT)));
+        setMetric(rangeMetric, formatter.formatKm(repository.getCombined(ReadOnlyID.ID_ENDURANCE_KM)));
+        setMetric(consMetric, formatter.formatConsumption(repository.getCombined(ReadOnlyID.ID_AVG_FUEL_CONS)));
+        setMetric(coolantMetric, formatter.formatTemperature(repository.getCombined(ReadOnlyID.ID_WATER_TEMPERATURE)));
+        setMetric(batteryMetric, formatter.formatVoltage(repository.getCombined(ReadOnlyID.ID_IBS_VOLTAGE)));
+        setMetric(avgSpeedMetric, formatter.formatSpeed(repository.getCombined(ReadOnlyID.ID_AVG_SPEED)));
+        setMetric(odoMetric, formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM)));
+        setMetric(tripMetric, formatter.formatDeciKm(repository.getCombined(ReadOnlyID.ID_TRIP)));
+        setMetric(sinceStartMetric, formatter.formatKm(repository.getCombined(ReadOnlyID.ID_GRAND_TOTAL_KM_AFTER_RUNNING)));
         int leftSignal = repository.getCombined(ReadOnlyID.ID_LH_TURN_LIGHT_STS);
         int rightSignal = repository.getCombined(ReadOnlyID.ID_RH_TURN_LIGHT_STS);
         int hazard = repository.getCombined(ReadOnlyID.ID_HAZARD_LIGHT);
         leftSignalMetric.value(signalLabel(leftSignal)).caption("ID 33: " + formatter.formatRawSignal(leftSignal));
         rightSignalMetric.value(signalLabel(rightSignal)).caption("ID 32: " + formatter.formatRawSignal(rightSignal));
         hazardMetric.value(signalLabel(hazard)).caption("ID 79: " + formatter.formatRawSignal(hazard));
+    }
+
+    /**
+     * 28 sp metrik alanina uzun cumle basma. Sayisal deger + kisa birim ayrilir;
+     * uzun/veri yok metni 15 sp caption'a tasinir. Boylece kart yuksekligi sabit kalir.
+     */
+    private void setMetric(MetricView view, String raw) {
+        String text = raw == null ? "" : raw.trim();
+        if (text.isEmpty()) {
+            view.value("—").unit(null).caption(null);
+            return;
+        }
+        Matcher m = NUMERIC_VALUE.matcher(text);
+        if (m.matches()) {
+            String value = m.group(1);
+            String unit = m.group(2) == null ? "" : m.group(2).trim();
+            view.value(value);
+            if (unit.length() <= 8) {
+                view.unit(unit).caption(null);
+            } else {
+                view.unit(null).caption(unit);
+            }
+            return;
+        }
+        if (text.length() <= 12) {
+            view.value(text).unit(null).caption(null);
+        } else {
+            view.value("—").unit(null).caption(text);
+        }
     }
 
     private void renderBodyState(VehicleMetricsSnapshot snapshot) {

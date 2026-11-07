@@ -1,5 +1,6 @@
 package com.eyups.roaddeck.ui.builder;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
@@ -72,7 +73,6 @@ public class FileUploadTabBuilder {
         control.addContent(desc);
 
         btnWebServerToggle = new Button(context);
-        btnWebServerToggle.setText(R.string.web_server_start);
         btnWebServerToggle.setAllCaps(false);
         btnWebServerToggle.setTextSize(16);
         btnWebServerToggle.setTypeface(CockpitTokens.inter(context,
@@ -95,6 +95,7 @@ public class FileUploadTabBuilder {
                 webServerManager.startServer();
             }
         });
+        setWebServerRunning(false);
 
         webServerStatusText = new TextView(context);
         CockpitTokens.mono(webServerStatusText);
@@ -133,7 +134,8 @@ public class FileUploadTabBuilder {
         placeholderLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
         qrCard.addContent(qrPlaceholder, placeholderLp);
 
-        CockpitCard hint = new CockpitCard(context, "Talimatlar").span(4);
+        CockpitCard hint = new CockpitCard(context,
+                context.getString(R.string.web_instructions_title)).span(4);
         TextView hintBody = new TextView(context);
         CockpitTokens.bodySm(hintBody);
         hintBody.setText(R.string.ck_web_hint);
@@ -182,6 +184,21 @@ public class FileUploadTabBuilder {
             return build();
         }
         return scrollView;
+    }
+
+    /** Sunucu durumuna göre metin + play/stop ikonunu birlikte günceller. */
+    public void setWebServerRunning(boolean running) {
+        if (btnWebServerToggle == null) {
+            return;
+        }
+        btnWebServerToggle.setText(running
+                ? R.string.web_server_stop : R.string.web_server_start);
+        btnWebServerToggle.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                running ? R.drawable.ic_mdi_stop : R.drawable.ic_mdi_play, 0, 0, 0);
+        btnWebServerToggle.setCompoundDrawablePadding(
+                CockpitTokens.dim(context, R.dimen.ck_space_sm));
+        btnWebServerToggle.setCompoundDrawableTintList(ColorStateList.valueOf(
+                CockpitTokens.color(context, R.color.ck_on_accent)));
     }
 
     public Button getToggleButton() {

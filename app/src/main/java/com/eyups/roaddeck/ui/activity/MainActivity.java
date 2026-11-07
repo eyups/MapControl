@@ -262,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
     private int screenWidthPx;
     private TopBarBuilder topBarBuilder;
     private CockpitSubTabBar subTabBar;
+    private View subTabHost;
     private boolean railExpanded;
     /** Menü yumuşatması: içerik alfa’sı değil, tema renkli örtü. İptal edilen geçiş burada durur. */
     private final IdentityHashMap<View, ValueAnimator> transitionVeils = new IdentityHashMap<>();
@@ -597,9 +598,16 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT));
 
         subTabBar = new CockpitSubTabBar(this, prefs, this::onSubTabSelected);
-        mainContent.addView(subTabBar, new LinearLayout.LayoutParams(
+        subTabHost = new MaxWidthFrameLayout(this);
+        ((MaxWidthFrameLayout) subTabHost).addView(subTabBar,
+                new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT,
+                        FrameLayout.LayoutParams.MATCH_PARENT));
+        LinearLayout.LayoutParams subTabHostParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                CockpitTokens.dim(this, R.dimen.ck_subtab_h)));
+                CockpitTokens.dim(this, R.dimen.ck_subtab_h));
+        subTabHostParams.gravity = android.view.Gravity.CENTER_HORIZONTAL;
+        mainContent.addView(subTabHost, subTabHostParams);
         topBarButtonsContainer = subTabBar.getActionHost();
 
         // Tab içerik alanı (FrameLayout: launcher park ederken SurfaceView GONE olmasın)
@@ -623,8 +631,8 @@ public class MainActivity extends AppCompatActivity {
                         webServerStatusText.setText(serverUrl);
                         webServerStatusText.setTextColor(UiStyles.color(MainActivity.this, R.color.accentHighlight));
                     }
-                    if (btnWebServerToggle != null) {
-                        btnWebServerToggle.setText(R.string.web_server_stop);
+                    if (fileUploadTabBuilder != null) {
+                        fileUploadTabBuilder.setWebServerRunning(true);
                     }
                     // QR kod oluştur
                     if (fileUploadTabBuilder != null) fileUploadTabBuilder.generateQRCode(serverUrl);
@@ -642,8 +650,8 @@ public class MainActivity extends AppCompatActivity {
                     if (fileUploadTabBuilder != null) {
                         fileUploadTabBuilder.setQrVisible(false);
                     }
-                    if (btnWebServerToggle != null) {
-                        btnWebServerToggle.setText(R.string.web_server_start);
+                    if (fileUploadTabBuilder != null) {
+                        fileUploadTabBuilder.setWebServerRunning(false);
                     }
                     log("Web Server durduruldu");
                 });
@@ -1446,7 +1454,7 @@ public class MainActivity extends AppCompatActivity {
         if (subTabBar != null) {
             CockpitNavModel.Domain domain = CockpitNavModel.domainForTab(tabIndex);
             subTabBar.setDomain(domain, tabIndex);
-            subTabBar.setVisibility(domain.items.size() <= 1 ? View.GONE : View.VISIBLE);
+            setSubTabBarVisible(domain.items.size() > 1);
         }
 
         // TopBar buton container'ını temizle
@@ -1565,7 +1573,14 @@ public class MainActivity extends AppCompatActivity {
         }
         LinearLayout shell = new LinearLayout(this);
         shell.setOrientation(LinearLayout.VERTICAL);
-        shell.addView(new CockpitPageHeader(this, pageTitle(tabIndex), pageSubtitle(tabIndex)),
+        CharSequence pageTitle = pageTitle(tabIndex);
+        CharSequence subTabTitle = CockpitNavModel.title(this, tabIndex);
+        if (pageTitle != null && subTabTitle != null
+                && pageTitle.toString().contentEquals(subTabTitle)) {
+            // Aynı ad top bar + chip + H1 olarak üç kez görünmesin; alt başlık kalsın.
+            pageTitle = null;
+        }
+        shell.addView(new CockpitPageHeader(this, pageTitle, pageSubtitle(tabIndex)),
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
         if (child.getParent() instanceof android.view.ViewGroup) {
@@ -1609,7 +1624,7 @@ public class MainActivity extends AppCompatActivity {
         if (child.getParent() instanceof android.view.ViewGroup) {
             ((android.view.ViewGroup) child.getParent()).removeView(child);
         }
-        if (child == launcherScrollView || child == homeScrollView) {
+        if (child == launcherScrollView) {
             parent.addView(child, lp);
             return;
         }
@@ -1639,6 +1654,15 @@ public class MainActivity extends AppCompatActivity {
             showAppManagementDisclaimer();
         } else {
             open.run();
+        }
+    }
+
+    private void setSubTabBarVisible(boolean visible) {
+        if (subTabBar != null) {
+            subTabBar.setVisibility(visible ? View.VISIBLE : View.GONE);
+        }
+        if (subTabHost != null) {
+            subTabHost.setVisibility(visible ? View.VISIBLE : View.GONE);
         }
     }
 
@@ -1760,9 +1784,9 @@ public class MainActivity extends AppCompatActivity {
                 mainContentParams.height = 0;
                 mainContentParams.weight = 1f;
             } else {
-                mainContentParams.width = railHidden ? screenWidthPx : (screenWidthPx - sidebarWidthPx);
+                mainContentParams.width = 0;
                 mainContentParams.height = LinearLayout.LayoutParams.MATCH_PARENT;
-                mainContentParams.weight = 0f;
+                mainContentParams.weight = 1f;
             }
             mainContent.setLayoutParams(mainContentParams);
         }
@@ -1772,8 +1796,7 @@ public class MainActivity extends AppCompatActivity {
             topBarBuilder.setLauncherBackButtonVisible(active && !onLauncherHome);
             if (subTabBar != null) {
                 boolean singleItemDomain = CockpitNavModel.domainForTab(currentTab).items.size() <= 1;
-                subTabBar.setVisibility(onLauncherHome || singleItemDomain
-                        ? android.view.View.GONE : android.view.View.VISIBLE);
+                setSubTabBarVisible(!(onLauncherHome || singleItemDomain));
             }
         }
         ImmersiveFullscreenHelper.setImmersiveFullscreen(this, active);
@@ -2216,8 +2239,9 @@ public class MainActivity extends AppCompatActivity {
                     1f);
         } else {
             mainContentParams = new LinearLayout.LayoutParams(
-                    screenWidthPx - sidebarWidthPx,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
+                    0,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1f);
         }
         shellHost.addView(mainContent, mainContentParams);
     }
@@ -2285,8 +2309,8 @@ public class MainActivity extends AppCompatActivity {
             webServerStatusText = fileUploadTabBuilder.getStatusText();
             qrCodeImageView = fileUploadTabBuilder.getQrImageView();
             if (webServerManager != null && webServerManager.isRunning()) {
-                if (btnWebServerToggle != null) {
-                    btnWebServerToggle.setText(R.string.web_server_stop);
+                if (fileUploadTabBuilder != null) {
+                    fileUploadTabBuilder.setWebServerRunning(true);
                 }
                 if (webServerStatusText != null) {
                     webServerStatusText.setTextColor(UiStyles.color(this, R.color.accentHighlight));

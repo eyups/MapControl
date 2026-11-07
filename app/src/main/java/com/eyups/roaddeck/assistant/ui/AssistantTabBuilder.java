@@ -874,6 +874,7 @@ public final class AssistantTabBuilder {
         LinearLayout enableRow = settingRow(body, R.string.assistant_enable_title,
                 R.string.assistant_enable_desc);
         CockpitToggle enable = new CockpitToggle(context);
+        enable.setLabel(context.getString(R.string.assistant_enable_title));
         enable.setChecked(AssistantPrefs.isEnabled(context), false);
         enable.setOnCheckedChangeListener((toggle, checked) -> {
             if (checked && ContextCompat.checkSelfPermission(context,
@@ -897,7 +898,7 @@ public final class AssistantTabBuilder {
             rebuildQuickActions();
             updateLiveMeta();
         });
-        enableRow.addView(enable, new LinearLayout.LayoutParams(dp(72), dp(40)));
+        enableRow.addView(enable, new LinearLayout.LayoutParams(dp(72), dp(48)));
 
         // Uyandırma kelimesi
         addLabel(body, R.string.assistant_wake_word);
@@ -1105,20 +1106,22 @@ public final class AssistantTabBuilder {
         LinearLayout voiceRow = settingRow(body, R.string.assistant_voice_reply,
                 R.string.assistant_voice_reply_desc);
         CockpitToggle voiceToggle = new CockpitToggle(context);
+        voiceToggle.setLabel(context.getString(R.string.assistant_voice_reply));
         voiceToggle.setChecked(AssistantPrefs.voiceReply(context), false);
         voiceToggle.setOnCheckedChangeListener((toggle, checked) ->
                 prefs.edit().putBoolean(AssistantPrefs.KEY_VOICE_REPLY, checked).apply());
-        voiceRow.addView(voiceToggle, new LinearLayout.LayoutParams(dp(72), dp(40)));
+        voiceRow.addView(voiceToggle, new LinearLayout.LayoutParams(dp(72), dp(48)));
 
         LinearLayout conversationRow = settingRow(body,
                 R.string.assistant_conversation_title,
                 R.string.assistant_conversation_desc);
         CockpitToggle conversationToggle = new CockpitToggle(context);
+        conversationToggle.setLabel(context.getString(R.string.assistant_conversation_title));
         conversationToggle.setChecked(AssistantPrefs.conversationMode(context), false);
         conversationToggle.setOnCheckedChangeListener((toggle, checked) ->
                 prefs.edit().putBoolean(AssistantPrefs.KEY_CONVERSATION, checked).apply());
         conversationRow.addView(conversationToggle,
-                new LinearLayout.LayoutParams(dp(72), dp(40)));
+                new LinearLayout.LayoutParams(dp(72), dp(48)));
 
         addLabel(body, R.string.assistant_wake_sound);
         List<String> sounds = new ArrayList<>();
@@ -1139,6 +1142,7 @@ public final class AssistantTabBuilder {
         LinearLayout overlayRow = settingRow(body, R.string.assistant_overlay_title,
                 R.string.assistant_overlay_desc);
         CockpitToggle overlayToggle = new CockpitToggle(context);
+        overlayToggle.setLabel(context.getString(R.string.assistant_overlay_title));
         overlayToggle.setChecked(prefs.getBoolean(AssistantPrefs.KEY_OVERLAY, false), false);
         overlayToggle.setOnCheckedChangeListener((toggle, checked) -> {
             if (checked && !android.provider.Settings.canDrawOverlays(context)) {
@@ -1150,18 +1154,19 @@ public final class AssistantTabBuilder {
             AssistantOverlayButton.sync(context);
             AssistantListeningPanel.sync(context);
         });
-        overlayRow.addView(overlayToggle, new LinearLayout.LayoutParams(dp(72), dp(40)));
+        overlayRow.addView(overlayToggle, new LinearLayout.LayoutParams(dp(72), dp(48)));
 
         // Onay
         LinearLayout confirmRow = settingRow(body, R.string.assistant_confirm_toggle,
                 R.string.assistant_confirm_toggle_desc);
         CockpitToggle confirmToggle = new CockpitToggle(context);
+        confirmToggle.setLabel(context.getString(R.string.assistant_confirm_toggle));
         confirmToggle.setChecked("strict".equals(prefs.getString(
                 AssistantPrefs.KEY_CONFIRM_POLICY, "layered")), false);
         confirmToggle.setOnCheckedChangeListener((toggle, checked) ->
                 prefs.edit().putString(AssistantPrefs.KEY_CONFIRM_POLICY,
                         checked ? "strict" : "layered").apply());
-        confirmRow.addView(confirmToggle, new LinearLayout.LayoutParams(dp(72), dp(40)));
+        confirmRow.addView(confirmToggle, new LinearLayout.LayoutParams(dp(72), dp(48)));
 
         // Model durumu
         addSectionTitle(body, R.string.assistant_settings_model);
@@ -1210,6 +1215,7 @@ public final class AssistantTabBuilder {
         LinearLayout unverifiedRow = settingRow(body,
                 R.string.assistant_unverified_title, R.string.assistant_unverified_desc);
         CockpitToggle unverified = new CockpitToggle(context);
+        unverified.setLabel(context.getString(R.string.assistant_unverified_title));
         unverified.setChecked(prefs.getBoolean(AssistantToolRegistry.KEY_UNVERIFIED, false), false);
         unverified.setOnCheckedChangeListener((toggle, checked) -> {
             prefs.edit().putBoolean(AssistantToolRegistry.KEY_UNVERIFIED, checked).apply();
@@ -1218,7 +1224,7 @@ public final class AssistantTabBuilder {
                 manager.refreshSettings();
             }
         });
-        unverifiedRow.addView(unverified, new LinearLayout.LayoutParams(dp(72), dp(40)));
+        unverifiedRow.addView(unverified, new LinearLayout.LayoutParams(dp(72), dp(48)));
 
         updateModelStatus();
     }

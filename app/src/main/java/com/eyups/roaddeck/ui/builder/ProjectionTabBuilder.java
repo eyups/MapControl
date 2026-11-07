@@ -148,7 +148,7 @@ public class ProjectionTabBuilder {
         hud.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         hud.setPadding(8, 5, 8, 5);
         GradientDrawable hudBg = new GradientDrawable();
-        hudBg.setColor(0xFF252E38);
+        hudBg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
         hudBg.setCornerRadius(4);
         hud.setBackground(hudBg);
         titleRow.addView(hud);
@@ -774,7 +774,7 @@ public class ProjectionTabBuilder {
         hudLink.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         hudLink.setPadding(8, 4, 8, 4);
         GradientDrawable hudBg = new GradientDrawable();
-        hudBg.setColor(0xFF252E38);
+        hudBg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
         hudBg.setCornerRadius(4);
         hudLink.setBackground(hudBg);
         statusRow.addView(hudLink);
@@ -2407,17 +2407,6 @@ public class ProjectionTabBuilder {
         title.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
         titleRow.addView(title, new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        TextView badge = new TextView(context);
-        badge.setText(R.string.projection_settings_badge);
-        badge.setTextSize(11);
-        badge.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
-        badge.setTextColor(CockpitTokens.color(context, R.color.ck_accent));
-        badge.setPadding(8, 4, 8, 4);
-        GradientDrawable badgeBg = new GradientDrawable();
-        badgeBg.setColor(0x3310B981);
-        badgeBg.setCornerRadius(6);
-        badge.setBackground(badgeBg);
-        titleRow.addView(badge);
         header.addView(titleRow);
         TextView desc = new TextView(context);
         desc.setText(descRes);

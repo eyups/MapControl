@@ -216,6 +216,7 @@ public class WifiTabBuilder {
 
             callback.log("Wi-Fi durumu güncellendi: " + (isWifiEnabled ? "AÇIK" : "KAPALI"));
             updateWifiStatusIcon();
+            updateWifiStatusLine(isWifiEnabled);
 
             if (!isWifiEnabled) {
                 showWifiOffState();
@@ -232,6 +233,38 @@ public class WifiTabBuilder {
             if (wifiStatusIcon != null) {
                 wifiStatusIcon.setTextColor(UiStyles.color(context, R.color.textLoading));
             }
+        }
+    }
+
+    private void updateWifiStatusLine(boolean enabled) {
+        if (wifiStatusLine == null) {
+            return;
+        }
+        if (!enabled) {
+            wifiStatusLine.setText(R.string.wifi_off_label);
+            return;
+        }
+        String ssid = connectedSsid();
+        wifiStatusLine.setText(ssid == null
+                ? context.getString(R.string.wifi_not_connected)
+                : context.getString(R.string.wifi_connected_to, ssid));
+    }
+
+    private String connectedSsid() {
+        try {
+            WifiInfo info = wifiManager == null ? null : wifiManager.getConnectionInfo();
+            String raw = info == null ? null : info.getSSID();
+            if (raw == null) {
+                return null;
+            }
+            String ssid = raw.replace("\"", "");
+            if (ssid.isEmpty() || ssid.equals("<unknown ssid>")
+                    || ssid.equals("0x") || ssid.equals("null")) {
+                return null;
+            }
+            return ssid;
+        } catch (Exception ignored) {
+            return null;
         }
     }
 
@@ -395,6 +428,12 @@ public class WifiTabBuilder {
         if (wifiManager == null || wifiListContainer == null) {
             return;
         }
+        if (!wifiManager.isWifiEnabled()) {
+            // Eski/gecikmeli tarama sonucu kapalı Wi-Fi listesini geri doldurmasın.
+            showWifiOffState();
+            updateWifiStatusLine(false);
+            return;
+        }
 
         try {
             List<ScanResult> scanResults = wifiManager.getScanResults();
@@ -432,6 +471,7 @@ public class WifiTabBuilder {
             }
 
             callback.log("" + scanResults.size() + " Wi-Fi ağı bulundu");
+            updateWifiStatusLine(true);
         } catch (Exception e) {
             callback.log("Wi-Fi listesi hatası: " + e.getMessage());
             Toast.makeText(context, context.getString(R.string.common_error_prefix, e.getMessage()), Toast.LENGTH_SHORT).show();

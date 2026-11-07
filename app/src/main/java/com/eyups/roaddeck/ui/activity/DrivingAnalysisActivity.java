@@ -151,14 +151,14 @@ public class DrivingAnalysisActivity extends Activity {
 
     private void initPalette() {
         // Redesign öncesi sıcak rapor paleti.
-        BG = 0xFF0F1216;
-        CARD = 0xFF1D242C;
-        BORDER = 0xFF2D3748;
-        AMBER = 0xFFF59E0B;
-        CYAN = 0xFF00B4D8;
-        TEXT = 0xFFF8FAFC;
-        MUTED = 0xFF94A3B8;
-        RED_EVENT = 0xFFEF4444;
+        BG = color(R.color.ck_bg_base);
+        CARD = color(R.color.ck_surface_1);
+        BORDER = color(R.color.ck_stroke);
+        AMBER = color(R.color.ck_caution);
+        CYAN = color(R.color.ck_accent);
+        TEXT = color(R.color.ck_text_high);
+        MUTED = color(R.color.ck_text_medium);
+        RED_EVENT = color(R.color.ck_critical);
     }
 
     private int color(int resId) {
@@ -169,7 +169,7 @@ public class DrivingAnalysisActivity extends Activity {
         FrameLayout root = new FrameLayout(this);
         GradientDrawable background = new GradientDrawable(
                 GradientDrawable.Orientation.TL_BR,
-                new int[]{0xFF0F1216, 0xFF161B22, 0xFF0F1216});
+                new int[]{color(R.color.ck_bg_base), color(R.color.ck_bg_recessed), color(R.color.ck_bg_base)});
         root.setBackground(background);
 
         LinearLayout shell = new LinearLayout(this);
@@ -236,7 +236,7 @@ public class DrivingAnalysisActivity extends Activity {
         scoreGrade.setLetterSpacing(0.16f);
         copy.addView(scoreGrade);
 
-        scoreSummary = text("", 16, 0xFFBCC9CE, false);
+        scoreSummary = text("", 16, color(R.color.ck_on_surface_variant), false);
         scoreSummary.setLineSpacing(dp(5), 1f);
         scoreSummary.setMaxWidth(dp(720));
         LinearLayout.LayoutParams summaryLp = new LinearLayout.LayoutParams(
@@ -326,7 +326,7 @@ public class DrivingAnalysisActivity extends Activity {
         TextView insightTitle = text("AKILLI ANALİZ", 13, TEXT, true);
         insightTitle.setLetterSpacing(0.12f);
         insightCard.addView(insightTitle);
-        insightText = text("", 15, 0xFFBCC9CE, false);
+        insightText = text("", 15, color(R.color.ck_on_surface_variant), false);
         insightText.setLineSpacing(dp(5), 1f);
         LinearLayout.LayoutParams insightLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -848,17 +848,17 @@ public class DrivingAnalysisActivity extends Activity {
         }
         switch (grade) {
             case "A":
-                return 0xFF10B981;
+                return color(R.color.ck_nominal);
             case "B":
-                return 0xFF00B4D8;
+                return color(R.color.ck_accent);
             case "C":
-                return 0xFFF59E0B;
+                return color(R.color.ck_caution);
             case "D":
-                return 0xFFF97316;
+                return color(R.color.ck_caution);
             case "E":
-                return 0xFFD84315;
+                return color(R.color.ck_critical);
             case "F":
-                return 0xFFEF4444;
+                return color(R.color.ck_critical);
             default:
                 return MUTED;
         }

@@ -569,16 +569,13 @@ public class SplitScreenTabBuilder {
         for (GestureCell cell : gestureCells) {
             boolean isSelected = cell.code == selected;
             boolean blocked = !isSelected && ownerOf(cell.code) != 0;
-            GradientDrawable bg = new GradientDrawable();
-            bg.setCornerRadius(12);
-            bg.setColor(com.eyups.roaddeck.ui.cockpit.CockpitTokens.color(context, R.color.ck_surface_2));
-            if (isSelected) {
-                bg.setStroke(Math.round(2 * density), accent);
-            } else {
-                bg.setStroke(Math.round(1 * density), UiStyles.color(context, R.color.outlineSubtle));
-            }
-            cell.view.setBackground(bg);
-            cell.view.setAlpha(blocked ? 0.4f : 1f);
+            com.eyups.roaddeck.ui.cockpit.CockpitSurfaces.rippleOutlined(cell.view,
+                    com.eyups.roaddeck.ui.cockpit.CockpitTokens.color(context, R.color.ck_surface_2),
+                    isSelected ? accent : UiStyles.color(context, R.color.outlineSubtle),
+                    12f, 0x33FFFFFF);
+            // Başka özellikte kullanılan hücre tıklanabilir kalır (çakışma diyaloğu açar);
+            // devre dışı gibi %40 soluklaştırmak yerine hafif geri çek.
+            cell.view.setAlpha(blocked ? 0.82f : 1f);
             int tint = isSelected ? accent : idle;
             cell.icon.setTint(tint);
             cell.label.setTextColor(tint);

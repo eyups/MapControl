@@ -160,6 +160,15 @@ public class ValetTabBuilder {
         endLp.setMarginStart(dp(8));
         timeRow.addView(end, endLp);
         right.addView(timeRow);
+        final Runnable updateCurfewFields = () -> {
+            boolean on = curfew.getToggle().isChecked();
+            start.setEnabled(on);
+            end.setEnabled(on);
+            start.setAlpha(on ? 1f : 0.55f);
+            end.setAlpha(on ? 1f : 0.55f);
+        };
+        curfew.getToggle().setOnCheckedChangeListener((toggle, checked) -> updateCurfewFields.run());
+        updateCurfewFields.run();
 
         CockpitToggleRow hidePersonal = switchRow("Kişisel menüleri gizle", session.hidePersonal);
         right.addView(hidePersonal);
@@ -227,7 +236,7 @@ public class ValetTabBuilder {
         TextView pinChevron = new TextView(context);
         CockpitTokens.headlineSm(pinChevron);
         pinChevron.setText("›");
-        pinChevron.setTextColor(CockpitTokens.color(context, R.color.ck_text_muted));
+        pinChevron.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
         pinRow.trailing(pinChevron);
         pinRow.clickRow(v -> showPinSetupDialog());
         pinGrid.add(pinRow, 4);
@@ -319,8 +328,8 @@ public class ValetTabBuilder {
         TextView type = smallText(alertLabel(alert.type));
         type.setTypeface(null, Typeface.BOLD);
         type.setTextColor(alert.type.equals(ValetAlert.TYPE_SPEED)
-                ? 0xFFFFB000 : (alert.type.equals(ValetAlert.TYPE_GEOFENCE)
-                ? 0xFFFF3B4D : 0xFFFF8A3D));
+                ? CockpitTokens.color(context, R.color.ck_caution) : (alert.type.equals(ValetAlert.TYPE_GEOFENCE)
+                ? CockpitTokens.color(context, R.color.ck_critical) : CockpitTokens.color(context, R.color.ck_caution)));
         row.addView(type, new LinearLayout.LayoutParams(dp(70),
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         TextView message = smallText(alert.message);
@@ -493,7 +502,7 @@ public class ValetTabBuilder {
         input.setPadding(dp(12), dp(8), dp(12), dp(8));
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(com.eyups.roaddeck.ui.cockpit.CockpitTokens.color(context, R.color.ck_surface_2));
-        bg.setCornerRadius(dp(8));
+        bg.setCornerRadius(dp((int) CockpitTokens.RADIUS_CARD_DP));
         bg.setStroke(Math.max(1, Math.round(dp(1))),
                 UiStyles.color(context, R.color.outline));
         input.setBackground(bg);

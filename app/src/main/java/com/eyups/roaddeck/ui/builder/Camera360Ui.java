@@ -25,14 +25,14 @@ import java.util.function.IntConsumer;
 
 /** Kamera 360 ekranlarinin ortak gorsel yapi taslari (kart, hap, baslik, secici). */
 final class Camera360Ui {
-    static final int COLOR_REC = 0xFFE53935;
-    static final int COLOR_REC_PRESSED = 0xFFC62828;
-    static final int COLOR_LIVE = 0xFF43A047;
-    static final int COLOR_WAIT = 0xFFFFB300;
-    static final int COLOR_IDLE = 0xFF9E9E9E;
-    static final int COLOR_FPS = 0xFF7CFC9A;
-    static final int COLOR_NO_SIGNAL = 0xFFFFD54F;
-    static final int OVERLAY_BG = 0xB3101418;
+    final int COLOR_REC;
+    final int COLOR_REC_PRESSED;
+    final int COLOR_LIVE;
+    final int COLOR_WAIT;
+    final int COLOR_IDLE;
+    final int COLOR_FPS;
+    final int COLOR_NO_SIGNAL;
+    final int OVERLAY_BG;
     /** Kayit ekranlari bu genislikten itibaren iki sutun. */
     static final int WIDE_LAYOUT_DP = 900;
 
@@ -40,6 +40,15 @@ final class Camera360Ui {
 
     Camera360Ui(Context context) {
         this.context = context;
+        COLOR_REC = CockpitTokens.color(context, R.color.ck_critical);
+        COLOR_REC_PRESSED = com.eyups.roaddeck.ui.cockpit.CockpitSurfaces.alpha(COLOR_REC, 0.82f);
+        COLOR_LIVE = CockpitTokens.color(context, R.color.ck_nominal);
+        COLOR_WAIT = CockpitTokens.color(context, R.color.ck_caution);
+        COLOR_IDLE = CockpitTokens.color(context, R.color.ck_text_medium);
+        COLOR_FPS = CockpitTokens.color(context, R.color.ck_nominal);
+        COLOR_NO_SIGNAL = CockpitTokens.color(context, R.color.ck_caution);
+        OVERLAY_BG = com.eyups.roaddeck.ui.cockpit.CockpitSurfaces.alpha(
+                CockpitTokens.color(context, R.color.ck_bg_base), 0.70f);
     }
 
     boolean isWide() {

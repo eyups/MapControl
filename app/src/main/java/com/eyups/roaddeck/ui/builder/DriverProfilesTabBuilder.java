@@ -210,7 +210,7 @@ public class DriverProfilesTabBuilder {
         actions.setOrientation(LinearLayout.HORIZONTAL);
         actions.setGravity(Gravity.CENTER_VERTICAL);
         if (active) {
-            CockpitButton apply = CockpitButton.primary(context,
+            CockpitButton apply = CockpitButton.secondary(context,
                     context.getString(R.string.profiles_sync_apply_short));
             apply.setOnClickListener(v -> executor.execute(() -> {
                 DriverProfileApplier.applyNow(context, log);
@@ -872,13 +872,16 @@ public class DriverProfilesTabBuilder {
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setClickable(true);
         row.setFocusable(true);
+        row.setDefaultFocusHighlightEnabled(true);
+        row.setContentDescription(profile.name == null ? "" : profile.name);
         row.setPadding(CockpitTokens.dim(context, R.dimen.ck_space_md),
                 CockpitTokens.dim(context, R.dimen.ck_space_sm),
                 CockpitTokens.dim(context, R.dimen.ck_space_md),
                 CockpitTokens.dim(context, R.dimen.ck_space_sm));
         row.setBackground(CockpitSurfaces.outlined(context,
                 CockpitTokens.color(context, isActive ? R.color.ck_surface_2 : R.color.ck_surface_1),
-                CockpitTokens.color(context, isActive ? R.color.ck_accent : R.color.ck_stroke), 12f));
+                CockpitTokens.color(context, isActive ? R.color.ck_accent : R.color.ck_stroke),
+                CockpitTokens.RADIUS_CARD_DP));
 
         FrameLayout avatar = createAvatar(profile.avatar, 40, false);
         LinearLayout.LayoutParams avatarLp = new LinearLayout.LayoutParams(

@@ -185,7 +185,7 @@ public final class DmsFaceRecognitionTabBuilder {
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         CockpitButton changeModeBtn = CockpitButton.secondary(activity,
-                "Hafıza Tipini Değiştir");
+                activity.getString(R.string.ck_face_change_memory_type));
         changeModeBtn.setOnClickListener(v -> {
             normalContentContainer.setVisibility(View.GONE);
             selectionScreenView.setVisibility(View.VISIBLE);
@@ -226,6 +226,7 @@ public final class DmsFaceRecognitionTabBuilder {
         applySeatMemoryCopy();
 
         enabledSwitch = new CockpitToggle(activity);
+        enabledSwitch.setLabel(toggleLabel.getText());
         enabledSwitch.setChecked(DmsFaceRecognitionManager.isEnabled(activity), false);
         toggleRow.addView(enabledSwitch);
         enabledSwitch.setOnCheckedChangeListener((button, enabled) -> {

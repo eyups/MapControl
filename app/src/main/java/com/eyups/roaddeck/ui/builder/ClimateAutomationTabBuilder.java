@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageView;
@@ -40,6 +41,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
     private final SharedPreferences prefs;
     private final Callback callback;
     private final ClimateAutomationEngine engine;
+    private final java.util.List<View> dependentSections = new java.util.ArrayList<>();
 
     private TextView liveStatusView;
     private View liveStatusIndicator;
@@ -104,7 +106,8 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         statusCard.setPadding(dp(18, density), dp(16, density), dp(18, density), dp(16, density));
         statusCard.setBackground(createCardBackground(
                 UiStyles.color(context, R.color.automationCardSurface),
-                UiStyles.color(context, R.color.automationCardStroke), density, 20));
+                UiStyles.color(context, R.color.automationCardStroke), density,
+                (int) CockpitTokens.RADIUS_CARD_DP));
         statusCard.setElevation(dp(2, density));
         LinearLayout.LayoutParams statusCardLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -152,7 +155,8 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         masterCard.setPadding(dp(18, density), dp(14, density), dp(18, density), dp(14, density));
         masterCard.setBackground(createCardBackground(
                 UiStyles.color(context, R.color.automationCardSurface),
-                UiStyles.color(context, R.color.automationCardStroke), density, 20));
+                UiStyles.color(context, R.color.automationCardStroke), density,
+                (int) CockpitTokens.RADIUS_CARD_DP));
         masterCard.setElevation(dp(2, density));
         LinearLayout.LayoutParams masterCardLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -175,6 +179,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         masterTitle.setTextColor(UiStyles.color(context, R.color.automationText));
         masterText.addView(masterTitle);
         CockpitToggle masterSwitch = new CockpitToggle(context);
+        masterSwitch.setLabel(context.getString(R.string.climate_auto_master));
         masterSwitch.setChecked(ClimateAutomationStore.isMasterEnabled(prefs), false);
         masterRow.addView(masterSwitch, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -185,27 +190,36 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
             } else {
                 engine.disableAllRules();
             }
+            applyMasterEnabled(enabled);
             callback.log(enabled
                     ? context.getString(R.string.climate_auto_log_on)
                     : context.getString(R.string.climate_auto_log_off));
         });
 
-        root.addView(buildDualSeatCard(
+        View driverSection = buildDualSeatCard(
                 R.string.climate_auto_driver_section,
                 ClimateAutomationStore.DRIVER_HEAT, R.string.climate_auto_driver_heat, R.drawable.ic_climate_seat_heat,
                 ClimateAutomationStore.DRIVER_VENT, R.string.climate_auto_driver_vent, R.drawable.ic_climate_seat_cooling,
-                density, compactLayout));
+                density, compactLayout);
+        dependentSections.add(driverSection);
+        root.addView(driverSection);
 
-        root.addView(buildDualSeatCard(
+        View passengerSection = buildDualSeatCard(
                 R.string.climate_auto_passenger_section,
                 ClimateAutomationStore.PASSENGER_HEAT, R.string.climate_auto_passenger_heat, R.drawable.ic_climate_seat_heat,
                 ClimateAutomationStore.PASSENGER_VENT, R.string.climate_auto_passenger_vent, R.drawable.ic_climate_seat_cooling,
-                density, compactLayout));
+                density, compactLayout);
+        dependentSections.add(passengerSection);
+        root.addView(passengerSection);
 
-        root.addView(buildRearSeatCard(density, compactLayout));
+        View rearSection = buildRearSeatCard(density, compactLayout);
+        dependentSections.add(rearSection);
+        root.addView(rearSection);
 
         // SECTION 3: OTHER CONTROLS (CAM & DİREKSİYON) - Direksiyon, Ön Cam, Arka Cam
-        root.addView(buildOtherControlsCard(density, compactLayout));
+        View otherSection = buildOtherControlsCard(density, compactLayout);
+        dependentSections.add(otherSection);
+        root.addView(otherSection);
 
         CockpitGrid bottomGrid = new CockpitGrid(context);
         CockpitCard recircCard = new CockpitCard(context,
@@ -238,8 +252,32 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         gridLp.topMargin = dp(16, density);
         root.addView(bottomGrid, gridLp);
 
+        applyMasterEnabled(masterSwitch.isChecked());
         engine.addListener(this);
         return root;
+    }
+
+    /** Master kapalıyken alt otomasyon kontrolleri devre dışı ve soluk görünür. */
+    private void applyMasterEnabled(boolean enabled) {
+        for (View section : dependentSections) {
+            section.setEnabled(enabled);
+            // Alfa yalnızca en üst kapta: her çocuğa uygulanınca metin okunmaz hale geliyor.
+            section.setAlpha(enabled ? 1f : 0.72f);
+            setEnabledRecursive(section, enabled);
+        }
+    }
+
+    private void setEnabledRecursive(View view, boolean enabled) {
+        if (view == null) {
+            return;
+        }
+        view.setEnabled(enabled);
+        if (view instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) view;
+            for (int i = 0; i < group.getChildCount(); i++) {
+                setEnabledRecursive(group.getChildAt(i), enabled);
+            }
+        }
     }
 
     /**
@@ -250,20 +288,15 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
                                           String heatId, int heatTitleRes, int heatIconRes,
                                           String ventId, int ventTitleRes, int ventIconRes,
                                           float density, boolean compactLayout) {
+        // Sarmalayici kart yok: baslik + iki bagimsiz kural karti.
         LinearLayout outerCard = new LinearLayout(context);
         outerCard.setOrientation(LinearLayout.VERTICAL);
-        outerCard.setPadding(dp(16, density), dp(16, density), dp(16, density), dp(16, density));
-        
-        GradientDrawable outerBg = new GradientDrawable();
-        outerBg.setColor(UiStyles.color(context, R.color.automationPanel));
-        outerBg.setCornerRadius(dp(22, density));
-        outerBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
-        outerCard.setBackground(outerBg);
-        outerCard.setElevation(dp(2, density));
+        outerCard.setBackground(null);
+        outerCard.setElevation(0);
 
         LinearLayout.LayoutParams outerLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        outerLp.topMargin = dp(16, density);
+        outerLp.topMargin = dp(18, density);
         outerCard.setLayoutParams(outerLp);
 
         // Bölüm Başlığı (Örn: Sürücü Tarafı)
@@ -278,18 +311,6 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         sectionTitle.setTypeface(null, Typeface.BOLD);
         sectionTitle.setTextColor(UiStyles.color(context, R.color.automationText));
         headerRow.addView(sectionTitle, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-
-        TextView seatBadge = new TextView(context);
-        seatBadge.setText(heatId.contains("driver") ? "SÜRÜCÜ" : "YOLCU");
-        seatBadge.setTextSize(10);
-        seatBadge.setTypeface(null, Typeface.BOLD);
-        seatBadge.setTextColor(UiStyles.color(context, R.color.oemAccent));
-        seatBadge.setPadding(dp(8, density), dp(3, density), dp(8, density), dp(3, density));
-        GradientDrawable badgeBg = new GradientDrawable();
-        badgeBg.setColor((UiStyles.color(context, R.color.oemAccent) & 0x00FFFFFF) | 0x22000000);
-        badgeBg.setCornerRadius(dp(8, density));
-        seatBadge.setBackground(badgeBg);
-        headerRow.addView(seatBadge);
 
         outerCard.addView(headerRow);
 
@@ -322,7 +343,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
 
         GradientDrawable outerBg = new GradientDrawable();
         outerBg.setColor(UiStyles.color(context, R.color.automationPanel));
-        outerBg.setCornerRadius(dp(22, density));
+        outerBg.setCornerRadius(dp((int) CockpitTokens.RADIUS_CARD_DP, density));
         outerBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
         outerCard.setBackground(outerBg);
         outerCard.setElevation(dp(2, density));
@@ -372,7 +393,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
 
         GradientDrawable outerBg = new GradientDrawable();
         outerBg.setColor(UiStyles.color(context, R.color.automationPanel));
-        outerBg.setCornerRadius(dp(22, density));
+        outerBg.setCornerRadius(dp((int) CockpitTokens.RADIUS_CARD_DP, density));
         outerBg.setStroke(dp(1, density), UiStyles.color(context, R.color.automationCardStroke));
         outerCard.setBackground(outerBg);
         outerCard.setElevation(dp(2, density));
@@ -462,16 +483,12 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         AppCompatImageView icon = new AppCompatImageView(context);
         icon.setImageResource(getRuleIconResource(id, rule.tempC, iconRes));
         icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        int iconPx = dp(compactLayout ? 24 : 28, density);
-        int badgePx = dp(compactLayout ? 40 : 44, density);
-        FrameLayout iconBadge = new FrameLayout(context);
-        iconBadge.setBackground(com.eyups.roaddeck.ui.cockpit.CockpitSurfaces.rounded(context,
-                CockpitTokens.color(context, R.color.ck_surface_2), 12f));
         icon.setImageTintList(null);
-        iconBadge.addView(icon, new FrameLayout.LayoutParams(iconPx, iconPx, Gravity.CENTER));
-        LinearLayout.LayoutParams iconBadgeLp = new LinearLayout.LayoutParams(badgePx, badgePx);
-        iconBadgeLp.rightMargin = dp(10, density);
-        header.addView(iconBadge, iconBadgeLp);
+        LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(
+                dp(compactLayout ? 24 : 28, density),
+                dp(compactLayout ? 24 : 28, density));
+        iconLp.rightMargin = dp(10, density);
+        header.addView(icon, iconLp);
 
         TextView name = new TextView(context);
         name.setText(titleRes);
@@ -483,6 +500,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         CockpitToggle ruleSwitch = new CockpitToggle(context);
+        ruleSwitch.setLabel(name.getText());
         ruleSwitch.setChecked(rule.enabled, false);
         header.addView(ruleSwitch, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -495,11 +513,13 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         delayLabel.setPadding(0, dp(8, density), 0, 0);
         delayLabel.setText(formatDelay(rule.delayMinutes));
         card.addView(delayLabel);
-        card.addView(buildSeekBar(0, ClimateAutomationStore.DELAY_MAX_MINUTES, rule.delayMinutes, progress -> {
+        SeekBar delaySeek = buildSeekBar(0, ClimateAutomationStore.DELAY_MAX_MINUTES, rule.delayMinutes, progress -> {
             rule.delayMinutes = progress;
             delayLabel.setText(formatDelay(progress));
             saveRuleSilently(id, rule);
-        }));
+        });
+        delaySeek.setContentDescription(context.getString(R.string.ck_climate_delay_control));
+        card.addView(delaySeek);
 
         LinearLayout compareRow = new LinearLayout(context);
         compareRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -533,13 +553,14 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         int tempProgress = rule.tempC - ClimateAutomationStore.TEMP_MIN;
         int tempMax = ClimateAutomationStore.TEMP_MAX - ClimateAutomationStore.TEMP_MIN;
         final SeekBar tempSeek = buildSeekBar(0, tempMax, tempProgress, null);
+        tempSeek.setContentDescription(context.getString(R.string.ck_climate_temp_control));
         card.addView(tempSeek);
 
         // Çakışma Bilgilendirme Uyarı Metni (Kullanıcı çakışan derece seçerse görünür)
         TextView conflictNote = new TextView(context);
         conflictNote.setTextSize(11);
         conflictNote.setTypeface(null, Typeface.BOLD);
-        conflictNote.setTextColor(0xFFFF4D4F); // Belirgin kırmızı/turuncu uyarı
+        conflictNote.setTextColor(CockpitTokens.color(context, R.color.ck_critical)); // Belirgin kırmızı/turuncu uyarı
         conflictNote.setPadding(0, dp(6, density), 0, 0);
         conflictNote.setVisibility(View.GONE);
         card.addView(conflictNote);
@@ -629,6 +650,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
                 levelLabelRef.setText(context.getString(R.string.climate_auto_level, progress));
                 saveRuleSilently(id, rule);
             });
+            levelSeek.setContentDescription(context.getString(R.string.ck_climate_level_control));
             levelSeek.setVisibility(rule.enabled ? View.VISIBLE : View.GONE);
             card.addView(levelSeek);
         }
@@ -695,7 +717,7 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
         int vertical = dp(12, density);
         bar.setPadding(side, vertical, side, vertical);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dp(52, density));
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(64, density));
         bar.setLayoutParams(lp);
         if (consumer != null) {
             bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -788,13 +810,13 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
     private String formatConditionDesc(int tempC, int compare) {
         switch (compare) {
             case ClimateAutomationStore.CMP_LT:
-                return tempC + "°C altındayken aç";
+                return context.getString(R.string.ck_climate_threshold_below, tempC);
             case ClimateAutomationStore.CMP_LTE:
-                return tempC + "°C ve altındayken aç";
+                return context.getString(R.string.ck_climate_threshold_below_equal, tempC);
             case ClimateAutomationStore.CMP_GT:
-                return tempC + "°C üzerindeyken aç";
+                return context.getString(R.string.ck_climate_threshold_above, tempC);
             case ClimateAutomationStore.CMP_GTE:
-                return tempC + "°C ve üzerindeyken aç";
+                return context.getString(R.string.ck_climate_threshold_above_equal, tempC);
             default:
                 return tempC + "°C";
         }
@@ -857,11 +879,11 @@ public class ClimateAutomationTabBuilder implements ClimateAutomationEngine.List
                 || ClimateAutomationStore.STEER_HEAT.equals(id)
                 || ClimateAutomationStore.WINDSHIELD.equals(id)
                 || ClimateAutomationStore.REAR_DEFROST.equals(id)) {
-            return 0xFFEF4444; // Modern canlı kırmızı
+            return CockpitTokens.color(context, R.color.ck_critical); // Modern canlı kırmızı
         }
         if (ClimateAutomationStore.DRIVER_VENT.equals(id)
                 || ClimateAutomationStore.PASSENGER_VENT.equals(id)) {
-            return 0xFF38BDF8; // Modern canlı açık mavi / cyan
+            return CockpitTokens.color(context, R.color.ck_primary); // Modern canlı açık mavi / cyan
         }
         return UiStyles.color(context, R.color.oemAccent);
     }

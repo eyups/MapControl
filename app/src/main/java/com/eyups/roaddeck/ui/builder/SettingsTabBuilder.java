@@ -177,7 +177,7 @@ public class SettingsTabBuilder {
                 TextView chevron = new TextView(context);
                 CockpitTokens.headlineSm(chevron);
                 chevron.setText("›");
-                chevron.setTextColor(CockpitTokens.color(context, R.color.ck_text_muted));
+                chevron.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
                 row.trailing(chevron);
                 categoryRows.add(row);
                 row.setFocusableInTouchMode(false);
@@ -346,7 +346,7 @@ public class SettingsTabBuilder {
 
         boolean enabled = prefs.getBoolean(TurnSignalCameraController.PREF_ENABLED, false);
         UiStyles.addBinarySegmentedControl(context, parentContainer,
-                context.getString(R.string.settings_turn_signal_camera_title),
+                null,
                 context.getString(R.string.common_on), context.getString(R.string.common_off),
                 context.getString(R.string.settings_turn_signal_camera_help_on),
                 context.getString(R.string.settings_turn_signal_camera_help_off),

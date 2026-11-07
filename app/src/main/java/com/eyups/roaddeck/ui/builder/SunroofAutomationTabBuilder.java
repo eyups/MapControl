@@ -456,6 +456,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         masterRow.addView(automationBadge, autoBadgeLp);
 
         switchMaster = new CockpitToggle(context);
+        switchMaster.setLabel(masterTitle.getText());
         switchMaster.setChecked(autoEnabled, false);
         switchMaster.setOnCheckedChangeListener((btn, isChecked) -> {
             prefs.edit().putBoolean(SunroofAutomationEngine.KEY_ENABLED, isChecked).apply();
@@ -547,7 +548,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         TextView tvInfo = new TextView(context);
         tvInfo.setText("Bir kaydırma yalnızca tek özelliğe atanabilir. Bölünmüş ekran veya harita kaydırmada kullanılan bir hareketi seçerseniz uyarı alırsınız.");
         tvInfo.setTextSize(10);
-        tvInfo.setTextColor(0xFF38BDF8);
+        tvInfo.setTextColor(CockpitTokens.color(context, R.color.ck_primary));
         tvInfo.setPadding(dp(2, density), dp(6, density), 0, 0);
         card.addView(tvInfo);
 
@@ -601,7 +602,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         change.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_ck_edit, 0, 0, 0);
         change.setCompoundDrawablePadding(dp(4, density));
         change.setTextSize(11);
-        change.setTextColor(0xFF38BDF8);
+        change.setTextColor(CockpitTokens.color(context, R.color.ck_primary));
         change.setClickable(true);
         change.setFocusable(true);
         change.setPadding(dp(4, density), dp(6, density), dp(4, density), dp(2, density));
@@ -717,17 +718,17 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         }
     }
 
-    private static int actionColor(GestureAction action) {
+    private int actionColor(GestureAction action) {
         switch (action) {
             case SWIPE_LEFT:
-                return 0xFFEF4444;
+                return CockpitTokens.color(context, R.color.ck_critical);
             case SWIPE_RIGHT:
-                return 0xFF22C55E;
+                return CockpitTokens.color(context, R.color.ck_nominal);
             case SWIPE_UP:
-                return 0xFF8B5CF6;
+                return CockpitTokens.color(context, R.color.ck_accent);
             case SWIPE_DOWN:
             default:
-                return 0xFFEAB308;
+                return CockpitTokens.color(context, R.color.ck_caution);
         }
     }
 
@@ -766,7 +767,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         tvTitle.setText(actionTitle);
         tvTitle.setTextSize(12);
         tvTitle.setTypeface(null, Typeface.BOLD);
-        tvTitle.setTextColor(0xFFFFFFFF);
+        tvTitle.setTextColor(CockpitTokens.color(context, R.color.ck_on_critical));
         textCol.addView(tvTitle);
 
         pill.addView(textCol, new LinearLayout.LayoutParams(
@@ -962,13 +963,13 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             if (tvSunroofState != null) {
                 if (status.sunroofOpen == null) {
                     tvSunroofState.setText(status.connected ? "Hareketli / Bilinmiyor" : "Bağlı Değil");
-                    tvSunroofState.setTextColor(0xFFFBBF24); // Sarı
+                    tvSunroofState.setTextColor(CockpitTokens.color(context, R.color.ck_caution)); // Sarı
                 } else if (status.sunroofOpen) {
                     tvSunroofState.setText("Açık");
-                    tvSunroofState.setTextColor(0xFF22C55E); // Yeşil
+                    tvSunroofState.setTextColor(CockpitTokens.color(context, R.color.ck_nominal)); // Yeşil
                 } else {
                     tvSunroofState.setText("Kapalı");
-                    tvSunroofState.setTextColor(0xFF38BDF8); // Cyan
+                    tvSunroofState.setTextColor(CockpitTokens.color(context, R.color.ck_primary)); // Cyan
                 }
             }
 
@@ -976,10 +977,10 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
             if (tvRainState != null) {
                 if (status.isRaining) {
                     tvRainState.setText("Yağmur algılandı");
-                    tvRainState.setTextColor(0xFFEF4444); // Kırmızı
+                    tvRainState.setTextColor(CockpitTokens.color(context, R.color.ck_critical)); // Kırmızı
                 } else {
                     tvRainState.setText("Kuru");
-                    tvRainState.setTextColor(0xFF22C55E); // Yeşil
+                    tvRainState.setTextColor(CockpitTokens.color(context, R.color.ck_nominal)); // Yeşil
                 }
             }
 
@@ -1060,6 +1061,9 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         btn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, iconRes, 0, 0);
         btn.setCompoundDrawablePadding(dp(2, density));
         btn.setPadding(dp(4, density), dp(6, density), dp(4, density), dp(6, density));
+        btn.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        btn.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        btn.setGravity(android.view.Gravity.CENTER);
         updateSensitivityButtonStyle(btn, sensLevel == currentSens, density);
 
         btn.setOnClickListener(v -> {
@@ -1079,7 +1083,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         if (selected) {
             bg.setColor(UiStyles.color(context, R.color.oemAccent));
             bg.setStroke(0, Color.TRANSPARENT);
-            btn.setTextColor(Color.WHITE);
+            btn.setTextColor(CockpitTokens.color(context, R.color.ck_on_accent));
             btn.setTypeface(null, Typeface.BOLD);
         } else {
             bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
@@ -1095,6 +1099,9 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         btn.setText(text);
         btn.setTextColor(Color.WHITE);
         btn.setTextSize(12);
+        btn.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        btn.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        btn.setGravity(android.view.Gravity.CENTER);
         btn.setTypeface(null, Typeface.BOLD);
 
         GradientDrawable bg = new GradientDrawable();
@@ -1132,6 +1139,7 @@ public final class SunroofAutomationTabBuilder implements SunroofAutomationEngin
         row.addView(textCol, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
         CockpitToggle sw = new CockpitToggle(context);
+        sw.setLabel(title);
         sw.setChecked(prefs.getBoolean(prefKey, defaultVal), false);
         sw.setOnCheckedChangeListener((btn, isChecked) -> {
             prefs.edit().putBoolean(prefKey, isChecked).apply();

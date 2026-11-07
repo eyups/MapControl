@@ -170,6 +170,7 @@ public class DrivingHistoryTabBuilder {
         coachLabel.setPadding(0, 0, dp(8), 0);
         coachGroup.addView(coachLabel);
         CockpitToggle coachToggle = new CockpitToggle(context);
+        coachToggle.setLabel(coachLabel.getText());
         coachToggle.setChecked(DrivingCoach.isEnabled(context), false);
         coachToggle.setOnCheckedChangeListener((button, checked) ->
                 DrivingCoach.setEnabled(context, checked));
@@ -295,7 +296,7 @@ public class DrivingHistoryTabBuilder {
         card.setPadding(dp(12), dp(10), dp(12), dp(10));
         GradientDrawable background = new GradientDrawable();
         background.setColor(UiStyles.color(context, R.color.surfaceCardInner));
-        background.setCornerRadius(dp(10));
+        background.setCornerRadius(dp(CockpitTokens.RADIUS_CARD_DP));
         card.setBackground(background);
 
         TextView eyebrow = new TextView(context);
@@ -334,7 +335,7 @@ public class DrivingHistoryTabBuilder {
         column.setPadding(dp(12), dp(10), dp(12), dp(10));
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(UiStyles.color(context, R.color.surfaceCardInner));
-        bg.setCornerRadius(dp(10));
+        bg.setCornerRadius(dp(CockpitTokens.RADIUS_CARD_DP));
         column.setBackground(bg);
 
         LinearLayout body = new LinearLayout(context);
@@ -432,7 +433,7 @@ public class DrivingHistoryTabBuilder {
         boolean better = lowerIsBetter ? delta < 0 : delta > 0;
         int color = Math.abs(delta) < 0.05
                 ? UiStyles.color(context, R.color.textHint)
-                : (better ? 0xFF2E7D32 : 0xFFC62828);
+                : (better ? CockpitTokens.color(context, R.color.ck_nominal) : CockpitTokens.color(context, R.color.ck_critical));
         String arrow = Math.abs(delta) < 0.05 ? "±" : (delta > 0 ? "▲" : "▼");
         TextView view = text(String.format(appLocale(), "%s %.1f %s", arrow,
                 Math.abs(delta), unit), 15, color, true);
@@ -603,7 +604,7 @@ public class DrivingHistoryTabBuilder {
         panel.setPadding(dp(10), dp(8), dp(10), dp(8));
         GradientDrawable background = new GradientDrawable();
         background.setColor((color & 0x00FFFFFF) | 0x16000000);
-        background.setCornerRadius(dp(12));
+        background.setCornerRadius(dp(CockpitTokens.RADIUS_CARD_DP));
         background.setStroke(Math.max(1, Math.round(dp(1))),
                 (color & 0x00FFFFFF) | 0x66000000);
         panel.setBackground(background);
@@ -678,17 +679,17 @@ public class DrivingHistoryTabBuilder {
         }
         switch (grade) {
             case "A":
-                return 0xFF2E7D32;
+                return CockpitTokens.color(context, R.color.ck_nominal);
             case "B":
-                return 0xFF558B2F;
+                return CockpitTokens.color(context, R.color.ck_nominal);
             case "C":
-                return 0xFFF9A825;
+                return CockpitTokens.color(context, R.color.ck_caution);
             case "D":
-                return 0xFFEF6C00;
+                return CockpitTokens.color(context, R.color.ck_caution);
             case "E":
-                return 0xFFD84315;
+                return CockpitTokens.color(context, R.color.ck_critical);
             case "F":
-                return 0xFFC62828;
+                return CockpitTokens.color(context, R.color.ck_critical);
             default:
                 return UiStyles.color(context, R.color.textHint);
         }

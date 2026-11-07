@@ -19,7 +19,6 @@ import com.eyups.roaddeck.ui.cockpit.CockpitCard;
 import com.eyups.roaddeck.ui.cockpit.CockpitGrid;
 import com.eyups.roaddeck.ui.cockpit.CockpitTokens;
 import com.eyups.roaddeck.ui.cockpit.CockpitToggle;
-import com.eyups.roaddeck.ui.cockpit.StatusBadge;
 
 public class AssistTabBuilder {
     public interface AssistCallback {
@@ -112,11 +111,6 @@ public class AssistTabBuilder {
         final String logPrefix = (String) ASSIST_CARDS[index][5];
 
         CockpitCard card = new CockpitCard(context, context.getString(titleRes)).span(2);
-        StatusBadge badge = active[index]
-                ? StatusBadge.nominal(context, getStatusText(settingKey))
-                : StatusBadge.neutral(context, context.getString(R.string.assist_status_not_set));
-        card.status(badge);
-
         LinearLayout body = new LinearLayout(context);
         body.setOrientation(LinearLayout.HORIZONTAL);
         body.setGravity(Gravity.CENTER_VERTICAL);
@@ -132,6 +126,7 @@ public class AssistTabBuilder {
         body.addView(spacer, new LinearLayout.LayoutParams(0, 1, 1f));
 
         CockpitToggle toggle = new CockpitToggle(context);
+        toggle.setLabel(context.getString(titleRes));
         toggle.setChecked(active[index], false);
         LinearLayout.LayoutParams toggleLp = new LinearLayout.LayoutParams(
                 CockpitTokens.dim(context, R.dimen.ck_toggle_w),
@@ -154,7 +149,7 @@ public class AssistTabBuilder {
             card.addContent(note);
         }
 
-        holders[index] = new CardHolder(card, badge, toggle);
+        holders[index] = new CardHolder(card, toggle);
 
         toggle.setOnCheckedChangeListener((t, checked) -> {
             boolean newActive = checked;
@@ -221,15 +216,6 @@ public class AssistTabBuilder {
             return;
         }
         holder.toggle.setChecked(isActive, true);
-        if (isActive) {
-            holder.badge.setLevel(StatusBadge.NOMINAL);
-            holder.badge.setText(getStatusText(settingKey));
-        } else {
-            holder.badge.setLevel(StatusBadge.NEUTRAL);
-            holder.badge.setText(context.getString(R.string.assist_status_not_set));
-        }
-        // İkon rengi: kart başlığının yanındaki ikon body içinde; yeniden boyamak için
-        // toggle/rozet yeterli, ikon durumu bir sonraki kurulumda güncellenir.
     }
 
     private String getStatusText(String settingKey) {
@@ -301,12 +287,10 @@ public class AssistTabBuilder {
 
     private static final class CardHolder {
         final CockpitCard card;
-        final StatusBadge badge;
         final CockpitToggle toggle;
 
-        CardHolder(CockpitCard card, StatusBadge badge, CockpitToggle toggle) {
+        CardHolder(CockpitCard card, CockpitToggle toggle) {
             this.card = card;
-            this.badge = badge;
             this.toggle = toggle;
         }
     }

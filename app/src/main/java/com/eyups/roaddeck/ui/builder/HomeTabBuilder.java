@@ -1,9 +1,11 @@
 package com.eyups.roaddeck.ui.builder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
@@ -12,7 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+
 import com.eyups.roaddeck.R;
+import com.eyups.roaddeck.lyrics.LyricsEngine;
+import com.eyups.roaddeck.lyrics.LyricsFullscreenActivity;
+import com.eyups.roaddeck.lyrics.LyricsState;
+import com.eyups.roaddeck.lyrics.LyricsMediaCardView;
 import com.eyups.roaddeck.driving.DrivingScoreRingView;
 import com.eyups.roaddeck.driving.DrivingSessionRecorder;
 import com.eyups.roaddeck.driving.DrivingTrip;
@@ -52,6 +61,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private static final int TAB_VEHICLE_INFO = 9;
     private static final int TAB_VALET = 16;
     private static final int TAB_DRIVING_HISTORY = 14;
+    private static final int TAB_EQUALIZER = 11;
     private static final String PREFS = "RoadDeckPrefs";
     private static final String KEY_ONBOARDING_DONE = "homeOnboardingDismissed";
 
@@ -72,11 +82,12 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private CockpitGrid grid;
     private VehicleBodyStateView bodyStateView;
     private TextView bodySummaryView;
-    private android.graphics.drawable.GradientDrawable statusDot;
-    private StatusBadge statusBadge;
     private CockpitCard onboardingCard;
     private View lastDriveCard;
-    private android.widget.ImageView vehicleView;
+    private CockpitCard lyricsCard;
+    private TextView lyricsBadge;
+    private LyricsMediaCardView lyricsMedia;
+    private LyricsEngine lyricsEngine;
     private volatile boolean tabVisible;
 
     public HomeTabBuilder(Context context, VehicleMetricsRepository repository, HomeCallback callback) {
@@ -98,11 +109,17 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         repository.removeListener(this);
         repository.addListener(this);
         repository.refresh();
+        if (lyricsEngine != null) {
+            lyricsEngine.start();
+        }
     }
 
     public void stopListening() {
         tabVisible = false;
         repository.removeListener(this);
+        if (lyricsEngine != null) {
+            lyricsEngine.stop();
+        }
     }
 
     public void release() {
@@ -136,8 +153,6 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 fillHeight ? LinearLayout.LayoutParams.MATCH_PARENT
                         : LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        content.addView(buildHero());
-
         grid = new CockpitGrid(context);
         grid.setFillHeight(fillHeight);
         content.addView(grid, new LinearLayout.LayoutParams(
@@ -147,22 +162,24 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
 
         LinearLayout leftColumn = new LinearLayout(context);
         leftColumn.setOrientation(LinearLayout.VERTICAL);
-        leftColumn.addView(buildVehicleVisual(), columnCardParams(fillHeight, 0.92f));
+        leftColumn.addView(buildLyricsCard(), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         View leftGap = new View(context);
         leftColumn.addView(leftGap, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 CockpitTokens.dim(context, R.dimen.ck_gutter)));
-        leftColumn.addView(buildLastDriveCard(), columnCardParams(fillHeight, 1.08f));
+        leftColumn.addView(buildLastDriveCard(), new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         LinearLayout rightColumn = new LinearLayout(context);
         rightColumn.setOrientation(LinearLayout.VERTICAL);
         rightColumn.addView(buildVehicleCard(), new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                fillHeight ? LinearLayout.LayoutParams.MATCH_PARENT
-                        : LinearLayout.LayoutParams.WRAP_CONTENT));
+                LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        grid.add(leftColumn, 4);
-        grid.add(rightColumn, 4);
+        // 5/3: medya birincil, araç durumu ikincil.
+        grid.add(leftColumn, 5);
+        grid.add(rightColumn, 3);
         View valet = buildValetCard();
         if (valet instanceof CockpitCard) {
             grid.addFullWidth(valet);
@@ -177,74 +194,166 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 fillHeight ? weight : 0f);
     }
 
-    private View buildHero() {
-        LinearLayout hero = new LinearLayout(context);
-        hero.setOrientation(LinearLayout.VERTICAL);
-        TextView greeting = new TextView(context);
-        CockpitTokens.headlineLg(greeting);
-        greeting.setText(greeting());
-        hero.addView(greeting);
+    private CockpitCard buildLyricsCard() {
+        lyricsCard = new CockpitCard(context, "").span(4);
+        lyricsCard.setMinimumHeight(dp(dense ? 300 : 320));
 
-        TextView subtitle = new TextView(context);
-        CockpitTokens.bodySm(subtitle);
-        subtitle.setText(context.getString(R.string.ck_home_subtitle));
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        lp.bottomMargin = CockpitTokens.dim(context,
-                dense ? R.dimen.ck_space_sm : R.dimen.ck_space_lg);
-        hero.addView(subtitle, lp);
-        return hero;
+        buildLyricsHeader();
+        lyricsEngine = new LyricsEngine(context);
+        lyricsMedia = new LyricsMediaCardView(context, lyricsEngine,
+                this::openLyricsFullscreen);
+        lyricsCard.addContent(lyricsMedia, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(dense ? 220 : 230)));
+
+        int pad = CockpitTokens.dim(context, R.dimen.ck_card_padding);
+        View headerDivider = new View(context);
+        headerDivider.setBackgroundColor(CockpitTokens.color(context, R.color.ck_stroke));
+        LinearLayout.LayoutParams headerDividerLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(1));
+        headerDividerLp.leftMargin = -pad;
+        headerDividerLp.rightMargin = -pad;
+        headerDividerLp.topMargin = dp(8);
+        lyricsCard.addView(headerDivider, 1, headerDividerLp);
+
+        LinearLayout footer = lyricsCard.getFooter();
+        footer.removeAllViews();
+        footer.setGravity(Gravity.CENTER_VERTICAL);
+
+        TextView fullscreenLink = new TextView(context);
+        fullscreenLink.setText(R.string.ck_lyrics_fullscreen);
+        styleFooterLink(fullscreenLink);
+        fullscreenLink.setOnClickListener(v -> openLyricsFullscreen());
+        footer.addView(fullscreenLink);
+
+        TextView separator = new TextView(context);
+        separator.setText("|");
+        separator.setTextColor(CockpitTokens.color(context, R.color.ck_text_muted));
+        separator.setPadding(dp(8), 0, dp(8), 0);
+        footer.addView(separator);
+
+        TextView equalizerLink = new TextView(context);
+        equalizerLink.setText(R.string.ck_lyrics_equalizer);
+        styleFooterLink(equalizerLink);
+        equalizerLink.setOnClickListener(v -> callback.onNavigate(TAB_EQUALIZER,
+                context.getString(R.string.ck_lyrics_equalizer)));
+        footer.addView(equalizerLink);
+
+        View footerDivider = new View(context);
+        footerDivider.setBackgroundColor(CockpitTokens.color(context, R.color.ck_stroke));
+        LinearLayout.LayoutParams footerDividerLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(1));
+        footerDividerLp.leftMargin = -pad;
+        footerDividerLp.rightMargin = -pad;
+        footerDividerLp.topMargin = dp(10);
+        lyricsCard.addView(footerDivider, lyricsCard.getChildCount() - 1, footerDividerLp);
+
+        lyricsEngine.addListener(this::onLyricsState);
+        return lyricsCard;
     }
 
-    private CockpitCard buildVehicleVisual() {
-        CockpitCard card = new CockpitCard(context,
-                context.getString(R.string.ck_home_vehicle_visual)).span(4);
-        card.setMinimumHeight(dp(dense ? 280 : 300));
-        card.status(StatusBadge.nominal(context, context.getString(R.string.ck_home_vehicle_visual_hint)));
-        vehicleView = new android.widget.ImageView(context);
-        vehicleView.setImageResource(R.drawable.t18_vehicle);
-        vehicleView.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
-        vehicleView.setContentDescription(context.getString(R.string.ck_home_vehicle_visual_hint));
-        vehicleView.setAlpha(0f);
-        vehicleView.setScaleX(0.96f);
-        vehicleView.setScaleY(0.96f);
-        vehicleView.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(320)
-                .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
-        card.addContent(vehicleView, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, CockpitTokens.dp(context, dense ? 180 : 210)));
-        return card;
+    private void buildLyricsHeader() {
+        LinearLayout header = lyricsCard.getHeaderRow();
+        TextView title = lyricsCard.getTitleView();
+        header.removeAllViews();
+
+        title.setText(R.string.ck_media_now_playing);
+        title.setAllCaps(false);
+        title.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18f);
+        title.setLetterSpacing(0f);
+        title.setTextColor(CockpitTokens.color(context, R.color.ck_on_surface));
+        title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        header.addView(title, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        header.addView(new View(context), new LinearLayout.LayoutParams(0, 1, 1f));
+
+        lyricsBadge = new TextView(context);
+        lyricsBadge.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 12f);
+        lyricsBadge.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_BOLD));
+        lyricsBadge.setAllCaps(false);
+        lyricsBadge.setLetterSpacing(0f);
+        lyricsBadge.setGravity(Gravity.CENTER);
+        lyricsBadge.setPadding(dp(14), dp(6), dp(14), dp(6));
+        header.addView(lyricsBadge, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        updateLyricsBadge(R.string.ck_lyrics_badge_idle,
+                CockpitTokens.color(context, R.color.ck_text_medium), CockpitTokens.color(context, R.color.ck_surface_2), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_text_high), 0.20f));
+    }
+
+    private void styleFooterLink(TextView view) {
+        view.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 15f);
+        view.setTextColor(CockpitTokens.color(context, R.color.ck_text_high));
+        view.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        view.setGravity(android.view.Gravity.CENTER);
+        view.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        view.setMinWidth(CockpitTokens.dim(context, R.dimen.ck_touch_min));
+        view.setPadding(dp(8), dp(8), dp(8), dp(8));
+        view.setOnClickListener(v -> { });
+    }
+
+    private void updateLyricsBadge(int textRes, int color, int background, int stroke) {
+        if (lyricsBadge == null) {
+            return;
+        }
+        lyricsBadge.setText(textRes);
+        lyricsBadge.setTextColor(color);
+        android.graphics.drawable.GradientDrawable bg = CockpitSurfaces.rounded(
+                context, background, 999f);
+        bg.setStroke(dp(1), stroke);
+        lyricsBadge.setBackground(bg);
+    }
+
+    private void openLyricsFullscreen() {
+        context.startActivity(new Intent(context, LyricsFullscreenActivity.class));
+    }
+
+    private void onLyricsState(LyricsState state) {
+        if (lyricsMedia == null || lyricsBadge == null) {
+            return;
+        }
+        lyricsMedia.render(state);
+        switch (state.status) {
+            case SYNCED:
+                updateLyricsBadge(R.string.ck_lyrics_badge_synced,
+                        CockpitTokens.color(context, R.color.ck_nominal), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_nominal), 0.15f), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_nominal), 0.40f));
+                break;
+            case PLAIN:
+                updateLyricsBadge(R.string.ck_lyrics_badge_plain,
+                        CockpitTokens.color(context, R.color.ck_caution), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_caution), 0.15f), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_caution), 0.40f));
+                break;
+            case LOADING:
+                updateLyricsBadge(R.string.ck_lyrics_badge_loading,
+                        CockpitTokens.color(context, R.color.ck_text_medium), CockpitTokens.color(context, R.color.ck_surface_2), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_text_high), 0.20f));
+                break;
+            case NO_ACCESS:
+                updateLyricsBadge(R.string.ck_lyrics_badge_no_access,
+                        CockpitTokens.color(context, R.color.ck_critical), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_critical), 0.15f), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_critical), 0.40f));
+                break;
+            case NO_SESSION:
+                updateLyricsBadge(R.string.ck_lyrics_badge_idle,
+                        CockpitTokens.color(context, R.color.ck_text_medium), CockpitTokens.color(context, R.color.ck_surface_2), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_text_high), 0.20f));
+                break;
+            case ERROR:
+                updateLyricsBadge(R.string.ck_lyrics_badge_offline,
+                        CockpitTokens.color(context, R.color.ck_caution), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_caution), 0.15f), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_caution), 0.40f));
+                break;
+            default:
+                updateLyricsBadge(R.string.ck_lyrics_badge_none,
+                        CockpitTokens.color(context, R.color.ck_text_medium), CockpitTokens.color(context, R.color.ck_surface_2), CockpitSurfaces.alpha(CockpitTokens.color(context, R.color.ck_text_high), 0.20f));
+                break;
+        }
     }
 
     private CockpitCard buildVehicleCard() {
-        CockpitCard card = new CockpitCard(context, "ARAÇ DURUMU").span(4);
-        card.setMinimumHeight(dp(dense ? 280 : 300));
-        card.getTitleView().setText("ARAÇ DURUMU");
-
-        statusDot = new android.graphics.drawable.GradientDrawable();
-        statusDot.setShape(android.graphics.drawable.GradientDrawable.OVAL);
-        statusDot.setColor(CockpitTokens.color(context, R.color.ck_nominal));
-        View dot = new View(context);
-        dot.setBackground(statusDot);
-        LinearLayout.LayoutParams dotLp = new LinearLayout.LayoutParams(dp(10), dp(10));
-        dotLp.rightMargin = dp(8);
-        card.getHeaderRow().addView(dot, 0, dotLp);
-
-        android.widget.ImageView carIcon = new android.widget.ImageView(context);
-        carIcon.setImageResource(R.drawable.ic_mdi_car);
-        carIcon.setColorFilter(CockpitTokens.color(context, R.color.ck_accent));
-        card.getHeaderRow().addView(carIcon, 1,
-                new LinearLayout.LayoutParams(dp(20), dp(20)));
-
-        statusBadge = StatusBadge.nominal(context, "TÜM KİLİTLER AKTİF");
-        card.status(statusBadge);
+        CockpitCard card = new CockpitCard(context, context.getString(R.string.ck_body_title)).span(4);
 
         bodyStateView = new VehicleBodyStateView(context);
         LinearLayout.LayoutParams bodyLp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f);
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(240));
         card.addContent(bodyStateView, bodyLp);
         LinearLayout.LayoutParams bodyParams = (LinearLayout.LayoutParams) card.getBody().getLayoutParams();
-        bodyParams.height = 0;
-        bodyParams.weight = 1f;
+        bodyParams.height = dp(240);
+        bodyParams.weight = 0f;
         card.getBody().setLayoutParams(bodyParams);
 
         bodySummaryView = new TextView(context);
@@ -253,16 +362,6 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         LinearLayout.LayoutParams summaryLp = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         card.getFooter().addView(bodySummaryView, summaryLp);
-
-        CockpitButton unlock = CockpitButton.secondary(context, "Tüm Kilitleri Aç");
-        unlock.setMinHeight(dp(dense ? 36 : 42));
-        unlock.setOnClickListener(v -> callback.log("Kilit kontrolü bu sürümde yok"));
-        card.addAction(unlock);
-
-        CockpitButton locked = CockpitButton.primary(context, "Araç Kilitli");
-        locked.setMinHeight(dp(dense ? 36 : 42));
-        locked.setOnClickListener(v -> callback.log("Araç kilitli"));
-        card.addAction(locked);
 
         return card;
     }
@@ -335,8 +434,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
     private CockpitCard buildLastDriveCard() {
         CockpitCard card = new CockpitCard(context,
                 context.getString(R.string.ck_home_last_drive)).span(4);
-        card.setMinimumHeight(dp(dense ? 280 : 300));
-        card.getTitleView().setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, dense ? 22 : 24);
+        card.getTitleView().setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, 18);
         if (dense) {
             int pad = dp(16);
             card.setPadding(pad, pad, pad, pad);
@@ -350,13 +448,12 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             }
         }
         if (trip == null) {
-            card.status(StatusBadge.neutral(context,
-                    context.getString(R.string.ck_home_no_record)));
             TextView empty = new TextView(context);
             CockpitTokens.bodyMd(empty);
             empty.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
             empty.setText(context.getString(R.string.ck_home_no_drive));
             card.addContent(empty);
+            card.getFooter().setVisibility(View.GONE);
             return card;
         }
 
@@ -397,7 +494,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         hero.setPadding(heroPad, heroPad, heroPad, heroPad);
         GradientDrawable heroBg = new GradientDrawable();
         heroBg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
-        heroBg.setCornerRadius(dp(14));
+        heroBg.setCornerRadius(dp((int) CockpitTokens.RADIUS_CARD_DP));
         hero.setBackground(heroBg);
 
         DrivingScoreRingView scoreRing = new DrivingScoreRingView(context);
@@ -529,7 +626,7 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
                 dp(dense ? 6 : 8), dp(dense ? 5 : 6));
         GradientDrawable bg = new GradientDrawable();
         bg.setColor(CockpitTokens.color(context, R.color.ck_surface_2));
-        bg.setCornerRadius(dp(12));
+        bg.setCornerRadius(dp((int) CockpitTokens.RADIUS_CARD_DP));
         box.setBackground(bg);
 
         LinearLayout labelRow = new LinearLayout(context);
@@ -601,10 +698,6 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             bodyStateView.update(snapshot);
         }
         if (!snapshot.connected) {
-            if (statusBadge != null) {
-                statusBadge.setLevel(StatusBadge.ADVISORY);
-                statusBadge.setText(context.getString(R.string.ck_home_connecting));
-            }
             if (bodySummaryView != null) {
                 bodySummaryView.setText(context.getString(R.string.ck_home_connecting));
                 bodySummaryView.setTextColor(CockpitTokens.color(context, R.color.ck_text_medium));
@@ -612,18 +705,10 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
             return;
         }
         boolean open = bodyStateView != null && bodyStateView.hasOpenBody();
-        if (statusDot != null) {
-            statusDot.setColor(CockpitTokens.color(context,
-                    open ? R.color.ck_caution : R.color.ck_nominal));
-        }
-        if (statusBadge != null) {
-            statusBadge.setLevel(open ? StatusBadge.ADVISORY : StatusBadge.NOMINAL);
-            statusBadge.setText(open ? "İKAZ: AÇIK" : "TÜM KİLİTLER AKTİF");
-        }
         if (bodySummaryView != null) {
             bodySummaryView.setText(open
-                    ? "İkaz: Kapı, bagaj veya cam açık"
-                    : "Kapalı / Kilitli: 6/6 Bölge (Tümü Güvenli)");
+                    ? context.getString(R.string.ck_body_panel_open)
+                    : context.getString(R.string.ck_body_all_closed));
             bodySummaryView.setTextColor(CockpitTokens.color(context,
                     open ? R.color.ck_body_warning : R.color.ck_nominal));
         }
@@ -640,11 +725,4 @@ public class HomeTabBuilder implements VehicleMetricsRepository.Listener {
         return CockpitTokens.dp(context, value);
     }
 
-    private String greeting() {
-        int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        if (hour < 6) return context.getString(R.string.ck_home_greeting_night);
-        if (hour < 12) return context.getString(R.string.ck_home_greeting_morning);
-        if (hour < 18) return context.getString(R.string.ck_home_greeting_day);
-        return context.getString(R.string.ck_home_greeting_evening);
-    }
 }

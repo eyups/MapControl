@@ -660,7 +660,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
             delBtn.setTextColor(UiStyles.color(this, R.color.ck_text_high));
             delBtn.setTextSize(12);
             delBtn.setPadding(dp(12), dp(4), dp(12), dp(4));
-            UiStyles.applySolidRoundedBackgroundDp(delBtn, 0xFFB91C1C, 8f);
+            UiStyles.applySolidRoundedBackgroundDp(delBtn, UiStyles.color(this, R.color.ck_critical), 8f);
             delBtn.setOnClickListener(v -> deleteSingleProfile(index));
             row.addView(delBtn, new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, dp(34)));
@@ -721,7 +721,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
         if (modeButton == null) return;
         boolean door = CarSeatMemoryManager.getInstance(this).isDoorMode();
         modeButton.setText(door ? "Araç Kapısı Üzerinde" : "Multimedya Ekranı Üzerinde");
-        UiStyles.applySolidRoundedBackgroundDp(modeButton, door ? 0xFF0D9488 : UiStyles.color(this, R.color.ck_accent), 10f);
+        UiStyles.applySolidRoundedBackgroundDp(modeButton, door ? UiStyles.color(this, R.color.ck_accent_active) : UiStyles.color(this, R.color.ck_accent), 10f);
     }
 
     private void showModeSelectionDialog() {
@@ -776,7 +776,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
 
             TextView slotSummaryTv = new TextView(this);
             slotSummaryTv.setText(mgr.getCachedSlotSummary(slot));
-            slotSummaryTv.setTextColor(mgr.isSlotCalibrated(slot) ? 0xFF34D399 : 0xFF94A3B8);
+            slotSummaryTv.setTextColor(mgr.isSlotCalibrated(slot) ? UiStyles.color(this, R.color.ck_nominal) : UiStyles.color(this, R.color.ck_text_medium));
             slotSummaryTv.setTextSize(12);
             textCol.addView(slotSummaryTv);
 
@@ -807,14 +807,14 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
         TextView promptTv = new TextView(this);
         promptTv.setText("Lütfen aracınızın kapısındaki (veya koltuğundaki) " + targetSlot
                 + " numaralı hafıza tuşuna basın.\n\nKoltuk durduğunda milimetrik koordinatlar otomatik kaydedilecektir.");
-        promptTv.setTextColor(0xFFE2E8F0);
+        promptTv.setTextColor(UiStyles.color(this, R.color.ck_on_surface));
         promptTv.setTextSize(14);
         promptTv.setLineSpacing(dp(2), 1f);
         dialogView.addView(promptTv);
 
         TextView statusTv = new TextView(this);
         statusTv.setText("⏳ Durum: Kapıdaki tuşa basılması bekleniyor...");
-        statusTv.setTextColor(0xFF38BDF8);
+        statusTv.setTextColor(UiStyles.color(this, R.color.ck_primary));
         statusTv.setTextSize(13);
         statusTv.setTypeface(null, Typeface.BOLD);
         LinearLayout.LayoutParams statusLp = new LinearLayout.LayoutParams(
@@ -824,7 +824,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
 
         TextView coordsTv = new TextView(this);
         coordsTv.setText(memoryMgr.getCachedSlotSummary(targetSlot));
-        coordsTv.setTextColor(0xFF94A3B8);
+        coordsTv.setTextColor(UiStyles.color(this, R.color.ck_text_medium));
         coordsTv.setTextSize(12);
         LinearLayout.LayoutParams coordsLp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -864,7 +864,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
                 runOnUiThread(() -> {
                     if (isMoving) {
                         statusTv.setText("🔄 Koltuk hareket ediyor... Konum okunuyor...");
-                        statusTv.setTextColor(0xFFFBBF24);
+                        statusTv.setTextColor(UiStyles.color(DmsFaceProfileActivity.this, R.color.ck_caution));
                     }
                     coordsTv.setText("Canlı Konum -> Ön/Arka: " + frPosi + ", Yükseklik: " + height + ", Sırtlık: " + backRest);
                 });
@@ -875,7 +875,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
                 runOnUiThread(() -> {
                     spinner.setVisibility(View.GONE);
                     statusTv.setText("✅ Konum başarıyla kaydedildi!");
-                    statusTv.setTextColor(0xFF34D399);
+                    statusTv.setTextColor(UiStyles.color(DmsFaceProfileActivity.this, R.color.ck_nominal));
                     coordsTv.setText("Kaydedilen -> Ön/Arka: " + frPosi + ", Yükseklik: " + height + ", Sırtlık: " + backRest);
                     uiHandler.postDelayed(() -> {
                         try {
@@ -896,7 +896,7 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
                 runOnUiThread(() -> {
                     spinner.setVisibility(View.GONE);
                     statusTv.setText("⚠️ " + reason);
-                    statusTv.setTextColor(0xFFF87171);
+                    statusTv.setTextColor(UiStyles.color(DmsFaceProfileActivity.this, R.color.ck_critical));
                     uiHandler.postDelayed(() -> {
                         try {
                             if (dialog.isShowing()) {
@@ -973,13 +973,13 @@ public final class DmsFaceProfileActivity extends AppCompatActivity
         if (enrollmentName != null) {
             enrollButton.setText(R.string.dms_face_cancel_enroll);
             enrollButton.setEnabled(true);
-            UiStyles.applySolidRoundedBackgroundDp(enrollButton, 0xFFB91C1C, 12f);
+            UiStyles.applySolidRoundedBackgroundDp(enrollButton, UiStyles.color(this, R.color.ck_critical), 12f);
         } else {
             enrollButton.setText(R.string.dms_face_enroll);
             boolean canEnroll = cameraReady && !profileStoreError;
             enrollButton.setEnabled(canEnroll);
             UiStyles.applySolidRoundedBackgroundDp(
-                    enrollButton, canEnroll ? UiStyles.color(this, R.color.ck_accent) : 0xFF475569, 12f);
+                    enrollButton, canEnroll ? UiStyles.color(this, R.color.ck_accent) : UiStyles.color(this, R.color.ck_text_muted), 12f);
         }
     }
 
