@@ -46,6 +46,12 @@ android {
         buildConfigField "String", "ELEVENLABS_VOICE_ID", "\"${elevenLabsVoiceIdEscaped}\""
         buildConfigField "String", "OTA_SIGNER_SHA256", "\"${otaSignerSha256}\""
         buildConfigField "String", "GEMINI_API_KEY", "\"${geminiApiKeyEscaped}\""
+        // TTS flavor varsayılanları; tts30/tts40 flavor'ları ezer.
+        buildConfigField "boolean", "TTS_DIRECT", "false"
+        buildConfigField "boolean", "TTS_IS_40", "false"
+        buildConfigField "String", "TTS_FLAVOR", "\"none\""
+        buildConfigField "String", "TTS_LIB_NAME", "\"\""
+        buildConfigField "String", "TTS_RES_PATH", "\"\""
         ndk {
             abiFilters 'arm64-v8a'
         }
@@ -60,6 +66,47 @@ android {
         cmake {
             path "src/main/cpp/CMakeLists.txt"
             version "3.22.1"
+        }
+    }
+
+    flavorDimensions "tts"
+    productFlavors {
+        tts30 {
+            dimension "tts"
+            versionNameSuffix "-tts30"
+            buildConfigField "boolean", "TTS_DIRECT", "true"
+            buildConfigField "boolean", "TTS_IS_40", "false"
+            buildConfigField "String", "TTS_FLAVOR", "\"tts30\""
+            buildConfigField "String", "TTS_LIB_NAME", "\"issxtts30\""
+            buildConfigField "String", "TTS_RES_PATH", "\"/vr/iflytek/res/xTTSRes\""
+        }
+        tts40 {
+            dimension "tts"
+            versionNameSuffix "-tts40"
+            buildConfigField "boolean", "TTS_DIRECT", "true"
+            buildConfigField "boolean", "TTS_IS_40", "true"
+            buildConfigField "String", "TTS_FLAVOR", "\"tts40\""
+            buildConfigField "String", "TTS_LIB_NAME", "\"issxtts40\""
+            buildConfigField "String", "TTS_RES_PATH", "\"/vr/iflytek/resvr/xTTS40Res\""
+        }
+        ttsService {
+            dimension "tts"
+            versionNameSuffix "-tts-service"
+            // Eski davranış: iFlytek AIDL servisi. Native lib paketlenmez.
+            buildConfigField "boolean", "TTS_DIRECT", "false"
+            buildConfigField "boolean", "TTS_IS_40", "false"
+            buildConfigField "String", "TTS_FLAVOR", "\"ttsService\""
+            buildConfigField "String", "TTS_LIB_NAME", "\"\""
+            buildConfigField "String", "TTS_RES_PATH", "\"\""
+        }
+    }
+
+    sourceSets {
+        tts30 {
+            jniLibs.srcDirs = ['src/tts30/jniLibs']
+        }
+        tts40 {
+            jniLibs.srcDirs = ['src/tts40/jniLibs']
         }
     }
 
@@ -118,6 +165,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.zxing:core:3.5.2'
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    implementation 'com.google.mlkit:face-detection:16.1.7'
     implementation 'io.sentry:sentry-android:8.+'
 
     // Sesli asistan uyandırma kelimesi (opsiyonel motor; reflection ile kullanılır).

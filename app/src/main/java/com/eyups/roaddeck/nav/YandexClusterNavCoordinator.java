@@ -43,10 +43,8 @@ public final class YandexClusterNavCoordinator {
         if (!YandexClusterNavOverlay.isEnabled(app)) {
             return ActivateResult.YANDEX_OPEN_NO_NAV;
         }
-        if (!YandexMapsPresence.isLikelyRunning(app)) {
-            YandexClusterNavOverlay.getInstance(app).hide();
-            return ActivateResult.YANDEX_NOT_RUNNING;
-        }
+        // Android 11'de getRunningAppProcesses başka uygulamayı göstermeyebilir.
+        // Süreç kontrolü yerine önce erişilebilirlik penceresini okumayı dene.
         GlobalBackService.YandexSyncResult result = GlobalBackService.syncYandexClusterNav(app);
         switch (result) {
             case OK:

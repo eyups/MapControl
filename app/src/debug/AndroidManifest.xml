@@ -7,6 +7,15 @@
             android:name=".ui.cockpit.CockpitGalleryActivity"
             android:exported="true"
             tools:replace="android:exported" />
+
+        <!-- Debug-only: adb ile flavor TTS testi. -->
+        <receiver
+            android:name=".tts.TtsTestReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.eyups.roaddeck.TEST_TTS" />
+            </intent-filter>
+        </receiver>
     </application>
     <queries>
         <package android:name="com.desaysv.ivi.vds.carinfo" />

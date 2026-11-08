@@ -271,6 +271,12 @@
             android:name=".ui.cockpit.CockpitGalleryActivity"
             android:exported="false"
             android:theme="@style/Theme.RoadDeck" />
+
+        <activity
+            android:name=".lyrics.LyricsFullscreenActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/Theme.RoadDeck.Fullscreen" />
     </application>
 
 </manifest>

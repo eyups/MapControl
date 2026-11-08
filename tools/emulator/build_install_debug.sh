@@ -6,7 +6,23 @@ JAVA_HOME="${JAVA_HOME:-/Applications/Android Studio.app/Contents/jbr/Contents/H
 export JAVA_HOME
 export PATH="$JAVA_HOME/bin:$PATH"
 SERIAL="${ANDROID_SERIAL:-emulator-5554}"
-APK="$ROOT/app/build/outputs/apk/debug/app-debug.apk"
+FLAVOR="${TTS_FLAVOR:-tts30}"
+NO_BUILD=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --no-build) NO_BUILD=1; shift ;;
+    --flavor) FLAVOR="$2"; shift 2 ;;
+    tts30|tts40|ttsService) FLAVOR="$1"; shift ;;
+    *) echo "bilinmeyen argüman: $1 (--flavor tts30|tts40|ttsService)" >&2; exit 2 ;;
+  esac
+done
+case "$FLAVOR" in
+  tts30) TASK=Tts30 ;;
+  tts40) TASK=Tts40 ;;
+  ttsService) TASK=TtsService ;;
+  *) echo "geçersiz flavor: $FLAVOR"; exit 2 ;;
+esac
+APK="$ROOT/app/build/outputs/apk/$FLAVOR/debug/app-$FLAVOR-debug.apk"
 PKG="com.eyups.roaddeck"
 
 # EMULATOR GUARD: debug test APK'ları araca kurulmamalı.
@@ -16,8 +32,8 @@ if [[ "$MODEL" != *"sdk"* && "$MODEL" != *"Emulator"* && "$MODEL" != *"Android S
   exit 1
 fi
 
-if [[ "${1:-}" != "--no-build" ]]; then
-  "$ROOT/gradlew" -p "$ROOT" :app:assembleDebug
+if [[ "$NO_BUILD" = 0 ]]; then
+  "$ROOT/gradlew" -p "$ROOT" ":app:assemble${TASK}Debug"
 fi
 
 if [[ ! -f "$APK" ]]; then

@@ -68,6 +68,7 @@ public final class GoogleMapsClusterNavOverlay {
     private static final float CARD_OUTWARD_SHIFT_RATIO = 0.15f;
 
     private static GoogleMapsClusterNavOverlay instance;
+    private static volatile boolean powerOff;
 
     private final Context appContext;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -168,6 +169,7 @@ public final class GoogleMapsClusterNavOverlay {
                 context, ClusterNavOverlayOffsets.Provider.GOOGLE);
         getInstance(context).forceRebuild();
         getInstance(context).invalidateCache();
+        YandexClusterNavOverlay.getInstance(context).onStyleChanged();
     }
 
     public static int getOpacity(Context context) {
@@ -179,6 +181,7 @@ public final class GoogleMapsClusterNavOverlay {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 .edit().putInt(PREF_OPACITY, Math.max(20, Math.min(100, opacity))).apply();
         getInstance(context).applyStoredOpacity();
+        YandexClusterNavOverlay.getInstance(context).onStyleChanged();
     }
 
     public static int getCardOpacity(Context context, boolean eta) {
@@ -191,6 +194,7 @@ public final class GoogleMapsClusterNavOverlay {
                 .edit().putInt(eta ? PREF_OPACITY_ETA : PREF_OPACITY_MANEUVER,
                         Math.max(10, Math.min(100, opacity))).apply();
         getInstance(context).applyStoredOpacity();
+        YandexClusterNavOverlay.getInstance(context).onStyleChanged();
     }
 
     private void applyStoredOpacity() {
@@ -256,6 +260,18 @@ public final class GoogleMapsClusterNavOverlay {
         }
     }
 
+    /** Araç OFF iken kartları kapatır ve yeniden açılmalarını engeller. */
+    public static void setPowerOff(Context context, boolean off) {
+        if (powerOff == off) return;
+        powerOff = off;
+        GoogleMapsClusterNavOverlay overlay = getInstance(context);
+        if (off) {
+            overlay.hide();
+        } else {
+            overlay.invalidateCache();
+        }
+    }
+
     /** Aynı snapshot tekrar uygulanmasın diye önbelleği temizler (ayar açılınca). */
     public void invalidateCache() {
         mainHandler.post(() -> lastApplied = null);
@@ -282,7 +298,7 @@ public final class GoogleMapsClusterNavOverlay {
     }
 
     private void applyOnMain(@Nullable GoogleMapsNavSnapshot snapshot) {
-        if (!isEnabled(appContext)) {
+        if (powerOff || !isEnabled(appContext)) {
             hideInternal();
             return;
         }

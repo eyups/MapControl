@@ -11,4 +11,10 @@ public final class ClusterNavZOrder {
         GoogleMapsClusterNavOverlay.getInstance(context).raiseToTopIfShowing();
         YandexClusterNavOverlay.getInstance(context).raiseToTopIfShowing();
     }
+
+    /** Araç OFF iken tüm cluster navigasyon kartlarını kapatır. */
+    public static void setPowerOff(Context context, boolean off) {
+        GoogleMapsClusterNavOverlay.setPowerOff(context, off);
+        YandexClusterNavOverlay.setPowerOff(context, off);
+    }
 }

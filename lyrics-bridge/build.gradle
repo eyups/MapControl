@@ -1,0 +1,49 @@
+plugins {
+    id 'com.android.application'
+}
+
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+
+android {
+    namespace 'com.eyups.roaddeck.lyricsbridge'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.eyups.roaddeck.lyricsbridge"
+        minSdk 29
+        targetSdk 28
+        versionCode 1
+        versionName "1.0"
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file('app/roaddeck-release.keystore')
+            storePassword localProps.getProperty('RELEASE_STORE_PASSWORD', '')
+            keyAlias 'mapcontrol'
+            keyPassword localProps.getProperty('RELEASE_KEY_PASSWORD', '')
+        }
+    }
+
+    buildTypes {
+        debug { debuggable true }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}

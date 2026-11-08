@@ -178,6 +178,37 @@ public final class LauncherMediaController {
         }
     }
 
+    public void seekTo(long positionMs) {
+        if (activeController == null) {
+            return;
+        }
+        MediaMetadata metadata = activeController.getMetadata();
+        long duration = metadata != null
+                ? metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) : 0L;
+        long target = Math.max(0L, positionMs);
+        if (duration > 0L) {
+            target = Math.min(target, duration);
+        }
+        activeController.getTransportControls().seekTo(target);
+    }
+
+    /** Pozisyonu delta kadar ileri/geri sar (ms). */
+    public void seekBy(long deltaMs) {
+        if (activeController == null) {
+            return;
+        }
+        PlaybackState state = activeController.getPlaybackState();
+        MediaMetadata metadata = activeController.getMetadata();
+        long position = state != null ? state.getPosition() : 0L;
+        long duration = metadata != null
+                ? metadata.getLong(MediaMetadata.METADATA_KEY_DURATION) : 0L;
+        long target = Math.max(0L, position + deltaMs);
+        if (duration > 0L) {
+            target = Math.min(target, duration);
+        }
+        activeController.getTransportControls().seekTo(target);
+    }
+
     public void volumeDown() {
         adjustMusicVolume(android.media.AudioManager.ADJUST_LOWER);
     }

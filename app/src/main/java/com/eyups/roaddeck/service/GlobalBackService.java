@@ -223,13 +223,12 @@ public class GlobalBackService extends AccessibilityService {
             if (wasActive != stable.guidanceActive) {
                 yandexHandler.post(this::kickPollRate);
             }
+            YandexClusterNavOverlay.getInstance(this).apply(stable);
             if (!stable.guidanceActive) {
-                YandexClusterNavOverlay.getInstance(this).hide();
                 return read.windowFound
                         ? YandexSyncResult.NAV_INACTIVE
                         : YandexSyncResult.YANDEX_NOT_OPEN;
             }
-            YandexClusterNavOverlay.getInstance(this).apply(stable);
             return YandexSyncResult.OK;
         }
     }

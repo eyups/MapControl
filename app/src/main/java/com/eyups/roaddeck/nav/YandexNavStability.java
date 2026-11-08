@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 public final class YandexNavStability {
 
     /** Alan bir kez doluysa, ardışık boş okumalarda bu kadar yaşar. */
-    static final long FIELD_HOLD_MS = 3000L;
+    static final long FIELD_HOLD_MS = 5000L;
 
     private final Slot maneuverDistance = new Slot();
     private final Slot maneuverUnit = new Slot();

@@ -89,6 +89,11 @@ if ! printf '%s' "$INSTALL_OUTPUT" | grep -q 'INSTALL_SUCCEEDED'; then
     exit 1
 fi
 
+if [[ "$APP_ID" == "com.eyups.roaddeck.lyricsbridge" ]]; then
+    echo "✅ RoadDeck Sözler kuruldu; RoadDeck'e özel izin/accessibility/device-owner adımları atlandı."
+    exit 0
+fi
+
 echo "🔑 İzinler veriliyor..."
 
 # İzin verme fonksiyonu (hata durumunda kısa log)

@@ -92,8 +92,8 @@ fi
 
 if [ "$SKIP_APP" = "0" ]; then
   echo "== RoadDeck debug =="
-  "$ROOT/gradlew" -p "$ROOT" :app:assembleDebug --console=plain >/dev/null
-  adb install -r "$ROOT/app/build/outputs/apk/debug/app-debug.apk" >/dev/null
+  "$ROOT/gradlew" -p "$ROOT" :app:assembleTts30Debug --console=plain >/dev/null
+  adb install -r "$ROOT/app/build/outputs/apk/tts30/debug/app-tts30-debug.apk" >/dev/null
 fi
 
 if [ "$SKIP_MODEL" = "0" ]; then

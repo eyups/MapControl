@@ -91,6 +91,8 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
         return getNavDelaySec(context) * 1000L;
     }
     private static final long OFF_HOLD_MS = 750L;
+    /** Hazard/çift sinyal ilk olayda yakalanabilsin diye kamerayı hemen açma. */
+    private static final long SHOW_DEBOUNCE_MS = 180L;
     private static final int CAM_RIGHT = 1;
     private static final int CAM_LEFT = 2;
 
@@ -100,11 +102,14 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
     private final TurnSignalCameraOverlay overlay;
     private final Handler main = new Handler(Looper.getMainLooper());
     private final Runnable hideTask;
+    private final Runnable showTask = this::showPendingCamera;
 
     private boolean started;
     private boolean enabled;
+    private boolean powerOff;
     private boolean hideScheduled;
     private int shownCam = -1;
+    private int pendingCam = -1;
 
     public TurnSignalCameraController(Context context) {
         appContext = context.getApplicationContext();
@@ -116,6 +121,17 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
             overlay.hide();
             shownCam = -1;
         };
+    }
+
+    /** Araç OFF iken sinyal kamerasını tamamen susturur. */
+    public void setPowerOff(boolean off) {
+        if (powerOff == off) return;
+        powerOff = off;
+        if (off) {
+            hideNow();
+        } else {
+            evaluate();
+        }
     }
 
     public void start() {
@@ -130,11 +146,13 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
         started = false;
         prefs.unregisterOnSharedPreferenceChangeListener(this);
         repository.removeListener(this);
+        cancelPendingShow();
         main.removeCallbacks(hideTask);
         hideScheduled = false;
         overlay.hide();
         shownCam = -1;
         enabled = false;
+        powerOff = false;
     }
 
     private void updateEnabled() {
@@ -146,6 +164,7 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
             evaluate();
         } else {
             repository.removeListener(this);
+            cancelPendingShow();
             main.removeCallbacks(hideTask);
             hideScheduled = false;
             overlay.hide();
@@ -159,14 +178,20 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
     }
 
     private void evaluate() {
-        if (!enabled) return;
+        if (!enabled || powerOff) return;
         boolean left = isOn(ReadOnlyID.ID_DIRECTION_IND_LEFT)
                 || isOn(ReadOnlyID.ID_LH_TURN_LIGHT_STS);
         boolean right = isOn(ReadOnlyID.ID_DIRECTION_IND_RIGHT)
                 || isOn(ReadOnlyID.ID_RH_TURN_LIGHT_STS);
         boolean hazard = isOn(ReadOnlyID.ID_HAZARD_LIGHT);
 
-        if (hazard || left == right) {
+        // Hazard veya iki sinyal birden: kamera acilmaz, aciksa hemen kapanir.
+        if (hazard || (left && right)) {
+            hideNow();
+            return;
+        }
+        if (!left && !right) {
+            cancelPendingShow();
             scheduleHide();
             return;
         }
@@ -174,15 +199,70 @@ public final class TurnSignalCameraController implements VehicleMetricsRepositor
         main.removeCallbacks(hideTask);
         int cam = left ? CAM_LEFT : CAM_RIGHT;
         // Sinyal suresince her CarInfo olayinda ayni kamera icin overlay'e gitme.
-        if (cam == shownCam && TurnSignalCameraOverlay.isShowing()) return;
-        shownCam = cam;
-        overlay.show(cam, appContext.getString(
-                left ? R.string.turn_signal_camera_left : R.string.turn_signal_camera_right));
+        if (cam == shownCam && TurnSignalCameraOverlay.isShowing()) {
+            cancelPendingShow();
+            return;
+        }
+        scheduleShow(cam);
     }
 
     private boolean isOn(int readOnlyId) {
         int raw = repository.getCombined(readOnlyId);
         return VehicleMetricsSnapshot.isValid(raw) && raw != 0;
+    }
+
+    private void scheduleShow(int cam) {
+        if (pendingCam == cam) {
+            return;
+        }
+        pendingCam = cam;
+        main.removeCallbacks(showTask);
+        main.postDelayed(showTask, SHOW_DEBOUNCE_MS);
+    }
+
+    private void cancelPendingShow() {
+        pendingCam = -1;
+        main.removeCallbacks(showTask);
+    }
+
+    private void showPendingCamera() {
+        int cam = pendingCam;
+        pendingCam = -1;
+        if (!enabled || powerOff || cam < 0) {
+            return;
+        }
+        boolean left = isOn(ReadOnlyID.ID_DIRECTION_IND_LEFT)
+                || isOn(ReadOnlyID.ID_LH_TURN_LIGHT_STS);
+        boolean right = isOn(ReadOnlyID.ID_DIRECTION_IND_RIGHT)
+                || isOn(ReadOnlyID.ID_RH_TURN_LIGHT_STS);
+        boolean hazard = isOn(ReadOnlyID.ID_HAZARD_LIGHT);
+        if (hazard || (left && right)) {
+            hideNow();
+            return;
+        }
+        if (!left && !right) {
+            scheduleHide();
+            return;
+        }
+        int current = left ? CAM_LEFT : CAM_RIGHT;
+        if (current != cam) {
+            scheduleShow(current);
+            return;
+        }
+        if (cam == shownCam && TurnSignalCameraOverlay.isShowing()) {
+            return;
+        }
+        shownCam = cam;
+        overlay.show(cam, appContext.getString(
+                left ? R.string.turn_signal_camera_left : R.string.turn_signal_camera_right));
+    }
+
+    private void hideNow() {
+        cancelPendingShow();
+        main.removeCallbacks(hideTask);
+        hideScheduled = false;
+        overlay.hide();
+        shownCam = -1;
     }
 
     private void scheduleHide() {

@@ -40,6 +40,19 @@
         <item name="colorAccent">@color/ck_accent</item>
     </style>
 
+    <!-- Şarkı sözü tam ekran: siyah zemin, sistem çubukları gizli -->
+    <style name="Theme.RoadDeck.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="colorAccent">@color/ck_accent</item>
+    </style>
+
     <!-- Cold start: process window siyah olmasın; MainActivity sonra Theme.RoadDeck'e geçer -->
     <style name="Theme.RoadDeck.Splash" parent="Theme.RoadDeck">
         <item name="android:windowBackground">@drawable/bg_launch_splash</item>

@@ -13,6 +13,7 @@ import android.util.Log;
 import com.iflytek.autofly.voicecore.aidl.ITtsStateListener;
 import com.iflytek.autofly.voicecore.aidl.ITtsSvc;
 import com.iflytek.autofly.voicecore.aidl.VoiceServiceId;
+import com.eyups.roaddeck.BuildConfig;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +29,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class IflytekTts {
 
     private static final String TAG = "IflytekTts";
+    private static final String BENCH = "TtsBench";
+    private static volatile long REQUEST_AT;
+    private static volatile long BIND_AT;
     public static final String PACKAGE = "com.iflytek.cutefly.speechclient.hmi";
     public static final String SERVICE =
             "com.iflytek.autofly.voicecoreservice.tts.TtsService";
@@ -79,6 +83,9 @@ public final class IflytekTts {
                 finished = pendingFinished;
                 generation = activeGeneration;
             }
+            Log.i(BENCH, "flavor=" + BuildConfig.TTS_FLAVOR
+                    + " phase=service_connected ms="
+                    + (SystemClock.elapsedRealtime() - BIND_AT));
             if (svc == null || text == null) {
                 report(listener, false, "iFlytek TTS servisi bağlanamadı.");
                 runFinished(finished);
@@ -113,6 +120,12 @@ public final class IflytekTts {
         }
 
         String clean = text.trim();
+        if (BuildConfig.TTS_DIRECT) {
+            DirectIflytekTts.speak(context, clean, listener, onFinished);
+            return;
+        }
+        REQUEST_AT = SystemClock.elapsedRealtime();
+        Log.i(BENCH, "flavor=" + BuildConfig.TTS_FLAVOR + " phase=request");
         final int generation = GENERATION.incrementAndGet();
         synchronized (LOCK) {
             appContext = context.getApplicationContext();
@@ -167,6 +180,7 @@ public final class IflytekTts {
         } catch (Throwable t) {
             Log.w(TAG, "iFlytek TTS startService başarısız", t);
         }
+        BIND_AT = SystemClock.elapsedRealtime();
         try {
             boolean ok = appContext.bindService(intent, CONNECTION, Context.BIND_AUTO_CREATE);
             if (!ok) {
@@ -199,11 +213,15 @@ public final class IflytekTts {
         @Override
         public void onTTSPlayBegin(boolean innerSpeak) {
             Log.i(TAG, "iFlytek TTS başladı (inner=" + innerSpeak + ")");
+            Log.i(BENCH, "flavor=" + BuildConfig.TTS_FLAVOR
+                    + " phase=play_begin ms=" + (SystemClock.elapsedRealtime() - REQUEST_AT));
         }
 
         @Override
         public void onTTSPlayCompleted(boolean innerSpeak) {
             Log.i(TAG, "iFlytek TTS tamamlandı (inner=" + innerSpeak + ")");
+            Log.i(BENCH, "flavor=" + BuildConfig.TTS_FLAVOR
+                    + " phase=play_completed ms=" + (SystemClock.elapsedRealtime() - REQUEST_AT));
             notifyFinished(false);
         }
 
@@ -249,6 +267,9 @@ public final class IflytekTts {
             try {
                 ITtsStateListener stateListener = new SessionListener(id, onFinished);
                 int created = svc.createTtsSession(id, ASSISTANT_STREAM_TYPE, stateListener, true);
+                Log.i(BENCH, "flavor=" + BuildConfig.TTS_FLAVOR
+                        + " phase=session ms=" + (SystemClock.elapsedRealtime() - REQUEST_AT)
+                        + " ret=" + created);
                 if (created != 0) {
                     runFinished(onFinished);
                     report(listener, false, "iFlytek TTS oturumu açılamadı (" + created + ").");
@@ -275,6 +296,9 @@ public final class IflytekTts {
                     activeFinished = onFinished;
                 }
                 int started = svc.startSpeak(id, text);
+                Log.i(BENCH, "flavor=" + BuildConfig.TTS_FLAVOR
+                        + " phase=start ms=" + (SystemClock.elapsedRealtime() - REQUEST_AT)
+                        + " ret=" + started);
                 if (started != 0) {
                     synchronized (LOCK) {
                         if (id.getId().equals(sessionId != null ? sessionId.getId() : null)) {
@@ -301,6 +325,10 @@ public final class IflytekTts {
     }
 
     public static void stop(Context context, ResultListener listener) {
+        if (BuildConfig.TTS_DIRECT) {
+            DirectIflytekTts.stop(context, listener);
+            return;
+        }
         GENERATION.incrementAndGet();
         finishCurrent(true);
         report(listener, true, "iFlytek TTS durduruldu.");

@@ -179,14 +179,18 @@ public final class RoadDeckSpeech {
     }
 
     /**
-     * Kayıtlı motor yoksa: gömülü API anahtarı varsa ElevenLabs, yoksa Sherpa.
-     * Araçta ayarlar sıfırlansa bile anahtar BuildConfig'ten gelir.
+     * Kayıtlı motor yoksa:
+     * - tts30/tts40 doğrudan-native flavor'larında iFlytek,
+     * - diğer build'lerde gömülü API anahtarı varsa ElevenLabs, yoksa Sherpa.
+     * Kullanıcı menüden açıkça seçtiyse (KEY_ENGINE_CONFIGURED) o seçim korunur.
      */
     public static String engine(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
         boolean configured = prefs.getBoolean(KEY_ENGINE_CONFIGURED, false);
         String stored = prefs.getString(KEY_ENGINE, null);
-        String fallback = hasApiKey(context) ? ENGINE_ELEVENLABS : ENGINE_SHERPA;
+        String fallback = BuildConfig.TTS_DIRECT
+                ? ENGINE_IFLYTEK
+                : (hasApiKey(context) ? ENGINE_ELEVENLABS : ENGINE_SHERPA);
         if (!configured) {
             // İlk kurulum/ayar sıfırlanması: gömülü anahtar varsa ElevenLabs'a sabitle.
             // Kullanıcı Ayarlar'dan seçim yapınca KEY_ENGINE_CONFIGURED=true olur.

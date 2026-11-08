@@ -401,12 +401,23 @@ public class RoadDeckService extends Service {
                         }
                     }
                     
+                    boolean vehicleOff = currentPowerMode <= 0;
+                    if (turnSignalCameraController != null) {
+                        turnSignalCameraController.setPowerOff(vehicleOff);
+                    }
+                    com.eyups.roaddeck.nav.ClusterNavZOrder.setPowerOff(this, vehicleOff);
+
                     // Power mode değişti mi kontrol et
                     if (lastPowerMode != currentPowerMode) {
                         int previousPowerMode = lastPowerMode;
                         lastPowerMode = currentPowerMode;
                         com.eyups.roaddeck.dvr.DvrController.get(RoadDeckService.this)
                                 .onPowerMode(currentPowerMode);
+
+                        if (!vehicleOff) {
+                            com.eyups.roaddeck.nav.GoogleMapsClusterNavOverlay.getInstance(this).apply(
+                                    com.eyups.roaddeck.nav.GoogleMapsNavNotificationCoordinator.getLastSnapshot());
+                        }
                         
                         // Power mode 2 = Araç çalışıyor (ON)
                         // Power mode 1 = Araç power aldı (STANDBY)
