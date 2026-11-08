@@ -1,5 +1,7 @@
 package com.eyups.roaddeck.ui.builder;
 
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -30,6 +32,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.eyups.roaddeck.R;
+import com.eyups.roaddeck.ui.cockpit.CockpitSurfaces;
 import com.eyups.roaddeck.ui.cockpit.CockpitTokens;
 import com.eyups.roaddeck.dvr.CameraGlEngine;
 import com.eyups.roaddeck.dvr.CameraHub;
@@ -64,7 +67,7 @@ public class Camera360TabBuilder {
     private final int COLOR_NO_SIGNAL;
     private static final int OVERLAY_BG = 0xB3101418;
 
-    private enum Mode { MENU, PREVIEW, RECORD, AUTO, VIEWER }
+    private enum Mode { MENU, PREVIEW, RECORD, AUTO, VIEWER, SIGNAL_SETTINGS }
 
     private final Context context;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -78,6 +81,7 @@ public class Camera360TabBuilder {
     private Camera360ClipViewer clipViewer;
     private View autoRoot;
     private View viewerRoot;
+    private View signalSettingsView;
     private TextView menuUsbSub;
     private TextView menuAutoSub;
     private View menuUsbCard;
@@ -251,6 +255,11 @@ public class Camera360TabBuilder {
         root.addView(viewerRoot, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
 
+        signalSettingsView = buildSignalSettingsView();
+        signalSettingsView.setVisibility(View.GONE);
+        root.addView(signalSettingsView, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+
         rootView = root;
         return root;
     }
@@ -298,6 +307,9 @@ public class Camera360TabBuilder {
             case VIEWER:
                 showOnly(viewerRoot);
                 break;
+            case SIGNAL_SETTINGS:
+                showOnly(signalSettingsView);
+                break;
             default:
                 showOnly(menuView);
                 break;
@@ -310,7 +322,7 @@ public class Camera360TabBuilder {
     }
 
     private void showOnly(View visible) {
-        View[] all = {menuView, previewView, recordView, autoRoot, viewerRoot};
+        View[] all = {menuView, previewView, recordView, autoRoot, viewerRoot, signalSettingsView};
         for (View v : all) {
             if (v != null) v.setVisibility(v == visible ? View.VISIBLE : View.GONE);
         }
@@ -510,7 +522,7 @@ public class Camera360TabBuilder {
                         themeColor(R.color.ck_text_medium), 26),
                 R.string.settings_turn_signal_camera_title,
                 R.string.camera360_signal_settings_sub,
-                false, v -> context.startActivity(new android.content.Intent(context, com.eyups.roaddeck.ui.activity.TurnSignalCameraSettingsActivity.class))));
+                false, v -> enterSignalSettings()));
 
         menuRecBanner = new TextView(context);
         menuRecBanner.setText(R.string.camera360_rec_banner);
@@ -1440,6 +1452,63 @@ public class Camera360TabBuilder {
     }
 
     // ---------- Gorunum gecisleri ----------
+
+    private void enterSignalSettings() {
+        leaveCurrentMode();
+        mode = Mode.SIGNAL_SETTINGS;
+        showOnly(signalSettingsView);
+    }
+
+    private View buildSignalSettingsView() {
+        ScrollView scroll = new ScrollView(context);
+        scroll.setFillViewport(true);
+        LinearLayout container = new LinearLayout(context);
+        container.setOrientation(LinearLayout.VERTICAL);
+        int pad = dp(24);
+        container.setPadding(pad, dp(8), pad, pad);
+
+        LinearLayout header = new LinearLayout(context);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+        header.setGravity(Gravity.CENTER_VERTICAL);
+        TextView back = new TextView(context);
+        back.setText("‹");
+        back.setTextSize(32);
+        back.setGravity(Gravity.CENTER);
+        back.setPadding(dp(8), 0, dp(16), 0);
+        back.setTextColor(themeColor(R.color.textPrimary));
+        back.setOnClickListener(v -> enterMenu());
+        header.addView(back, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        TextView title = new TextView(context);
+        title.setText(R.string.settings_turn_signal_camera_title);
+        title.setTextSize(20);
+        title.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        title.setTextColor(themeColor(R.color.textPrimary));
+        header.addView(title, new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        container.addView(header, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout card = new LinearLayout(context);
+        card.setOrientation(LinearLayout.VERTICAL);
+        int inner = dp(16);
+        card.setPadding(inner, inner, inner, inner);
+        CockpitSurfaces.level1(card);
+        SharedPreferences prefs = context.getSharedPreferences("RoadDeckPrefs", Context.MODE_PRIVATE);
+        TurnSignalCameraSettingsSection.attach(context, card, prefs,
+                message -> Log.i("TurnSignalSettings", message));
+        LinearLayout.LayoutParams cardP = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        cardP.topMargin = dp(8);
+        container.addView(card, cardP);
+        scroll.addView(container, new ScrollView.LayoutParams(
+                ScrollView.LayoutParams.MATCH_PARENT,
+                ScrollView.LayoutParams.WRAP_CONTENT));
+        return scroll;
+    }
 
     private void enterMenu() {
         leaveCurrentMode();
