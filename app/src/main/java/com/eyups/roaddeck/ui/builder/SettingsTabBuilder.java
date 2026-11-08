@@ -48,6 +48,7 @@ import com.eyups.roaddeck.manager.TurnSignalCameraController;
 import com.eyups.roaddeck.service.BootReceiver;
 import com.eyups.roaddeck.util.AdbSettings;
 import com.eyups.roaddeck.util.AppLocaleManager;
+import com.eyups.roaddeck.launcher.HomeLauncherActivity;
 import com.eyups.roaddeck.util.LauncherModeManager;
 import com.eyups.roaddeck.util.PermissionProbeDialog;
 import com.eyups.roaddeck.vehicle.material.MaterialVehiclePreferences;
@@ -86,6 +87,7 @@ public class SettingsTabBuilder {
     private UiStyles.BinarySegmentHandle launcherModeSegmentHandle;
     private UiStyles.BinarySegmentHandle languageSegmentHandle;
     private TextView launcherHomeSettingsLink;
+    private TextView launcherOpenLink;
 
     public SettingsTabBuilder(Context context, SharedPreferences prefs, SettingsCallback callback) {
         this.context = context;
@@ -1170,6 +1172,21 @@ public class SettingsTabBuilder {
         parentContainer.addView(launcherHomeSettingsLink, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        launcherOpenLink = new TextView(context);
+        launcherOpenLink.setText(R.string.settings_launcher_open_new);
+        launcherOpenLink.setTextSize(14);
+        launcherOpenLink.setTypeface(null, android.graphics.Typeface.BOLD);
+        launcherOpenLink.setTextColor(UiStyles.color(context, R.color.accentHighlight));
+        launcherOpenLink.setPadding(16, 8, 16, 16);
+        launcherOpenLink.setOnClickListener(v -> {
+            Intent intent = new Intent(context, HomeLauncherActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        });
+        parentContainer.addView(launcherOpenLink, new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
         updateLauncherHomeSettingsLinkVisibility(launcherModeOn);
     }
 
@@ -1261,6 +1278,9 @@ public class SettingsTabBuilder {
     private void updateLauncherHomeSettingsLinkVisibility(boolean enabled) {
         if (launcherHomeSettingsLink != null) {
             launcherHomeSettingsLink.setVisibility(enabled ? View.VISIBLE : View.GONE);
+        }
+        if (launcherOpenLink != null) {
+            launcherOpenLink.setVisibility(enabled ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -3,4 +3,5 @@
     <string name="launcher_fn_web_unavailable">Web panel is disabled in this build</string>
     <string name="launcher_fn_minidash_unavailable">Mini dash split screen is disabled in this build</string>
     <string name="launcher_fn_drive_unavailable">Drive screen is disabled in this build</string>
+    <string name="settings_launcher_open_new">Open the new home screen</string>
 </resources>

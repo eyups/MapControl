@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_OPEN_PROJECTION_TARGET_PICKER = "com.eyups.roaddeck.extra.OPEN_PROJECTION_TARGET_PICKER";
     public static final String EXTRA_OPEN_LOG_TAB = "com.eyups.roaddeck.extra.OPEN_LOG_TAB";
     private static final String EXTRA_OPEN_SETTINGS_AFTER_THEME = "com.eyups.roaddeck.extra.OPEN_SETTINGS_AFTER_THEME";
+    /** Yeni launcher'dan Ayarlar'a doğrudan giriş. */
+    public static final String EXTRA_OPEN_SETTINGS = "com.eyups.roaddeck.extra.OPEN_SETTINGS";
     /** Araç Launcher Modu "Ana Ekran" karşılama sekmesinin {@code switchTab} indeksi. */
     private static final int TAB_LAUNCHER = 10;
     private static final int TAB_EQUALIZER = 11;
@@ -1142,6 +1144,10 @@ public class MainActivity extends AppCompatActivity {
             applyLauncherChrome(false);
             switchTab(TAB_HOME);
         }
+        if (getIntent().getBooleanExtra(EXTRA_OPEN_SETTINGS, false)) {
+            getIntent().removeExtra(EXTRA_OPEN_SETTINGS);
+            switchTab(CockpitNavModel.TAB_SETTINGS);
+        }
         if (getIntent().getBooleanExtra(EXTRA_OPEN_LOG_TAB, false)) {
             getIntent().removeExtra(EXTRA_OPEN_LOG_TAB);
             switchTab(4);
@@ -1958,8 +1964,9 @@ public class MainActivity extends AppCompatActivity {
         LauncherModeManager.setEnabled(this, true);
         launchedAsHome = true;
         applyLauncherChrome(true);
-        switchTab(TAB_LAUNCHER);
         syncLauncherModeSettingsUi();
+        startActivity(new android.content.Intent(this,
+                com.eyups.roaddeck.launcher.HomeLauncherActivity.class));
     }
 
     /**

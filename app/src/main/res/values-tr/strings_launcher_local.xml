@@ -3,4 +3,5 @@
     <string name="launcher_fn_web_unavailable">Web paneli bu sürümde kapalı</string>
     <string name="launcher_fn_minidash_unavailable">Mini gösterge bölünmüş ekranı bu sürümde kapalı</string>
     <string name="launcher_fn_drive_unavailable">Sürüş ekranı bu sürümde kapalı</string>
+    <string name="settings_launcher_open_new">Yeni ana ekranı aç</string>
 </resources>
