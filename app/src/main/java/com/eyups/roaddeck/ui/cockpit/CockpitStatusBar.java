@@ -24,7 +24,6 @@ public class CockpitStatusBar extends LinearLayout {
     private final TextView clockView;
     private final TextView profileChip;
     private final LinearLayout actions;
-    private final CockpitButton backButton;
     private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private boolean receiverRegistered;
 
@@ -49,15 +48,6 @@ public class CockpitStatusBar extends LinearLayout {
         left.setGravity(Gravity.CENTER_VERTICAL);
         addView(left, new LayoutParams(0, LayoutParams.MATCH_PARENT, 1f));
 
-        backButton = CockpitButton.icon(context, R.drawable.ic_mdi_chevron_double_left,
-                context.getString(R.string.ck_rail_collapse));
-        backButton.setVisibility(GONE);
-        backButton.setMinHeight(CockpitTokens.dim(context, R.dimen.ck_touch_min));
-        LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(
-                CockpitTokens.dim(context, R.dimen.ck_touch_min),
-                CockpitTokens.dim(context, R.dimen.ck_touch_min));
-        backLp.rightMargin = CockpitTokens.dim(context, R.dimen.ck_space_md);
-        left.addView(backButton, backLp);
 
         TextView brand = new TextView(context);
         CockpitTokens.labelCaps(brand);
@@ -173,14 +163,6 @@ public class CockpitStatusBar extends LinearLayout {
 
     public LinearLayout getActionsContainer() {
         return actions;
-    }
-
-    public void setBackVisible(boolean visible) {
-        backButton.setVisibility(visible ? VISIBLE : GONE);
-    }
-
-    public void setBackListener(OnClickListener listener) {
-        backButton.setOnClickListener(listener);
     }
 
     public void setBarVisible(boolean visible) {

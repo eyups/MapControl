@@ -12,7 +12,6 @@ import com.eyups.roaddeck.ui.theme.UiStyles;
 import com.eyups.roaddeck.profile.DriverProfileManager;
 import com.eyups.roaddeck.util.AppLocaleManager;
 import com.eyups.roaddeck.util.DisplayHelper;
-import com.eyups.roaddeck.util.LauncherLegacyPrefs;
 import com.eyups.roaddeck.util.LegacyPrefsMigration;
 
 public final class RoadDeckApplication extends Application {
@@ -35,7 +34,6 @@ public final class RoadDeckApplication extends Application {
             }
         }
         AppLocaleManager.applyStoredLocale(this);
-        LauncherLegacyPrefs.applyMigrations(this);
         DriverProfileManager.get(this);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         lastNightModeUiBits = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;

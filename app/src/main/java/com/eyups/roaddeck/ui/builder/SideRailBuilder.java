@@ -27,7 +27,6 @@ public class SideRailBuilder {
     private final SharedPreferences prefs;
     private final SideRailCallback callback;
     private CockpitNavRail rail;
-    private boolean launcherModeActive;
     private boolean contentWide;
     private int currentTab = CockpitNavModel.TAB_HOME;
 
@@ -113,22 +112,13 @@ public class SideRailBuilder {
         return domain.items.get(0).tabId;
     }
 
-    public void setLauncherModeActive(boolean active) {
-        launcherModeActive = active;
-        applyRailVisibility();
-    }
-
     public void setContentWide(boolean wide) {
         contentWide = wide;
         applyRailVisibility();
     }
 
     public boolean isRailHidden() {
-        return launcherModeActive || contentWide;
-    }
-
-    public boolean isLauncherModeActive() {
-        return launcherModeActive;
+        return contentWide;
     }
 
     private void applyRailVisibility() {

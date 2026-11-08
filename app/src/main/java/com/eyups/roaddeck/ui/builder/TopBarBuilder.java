@@ -57,21 +57,9 @@ public class TopBarBuilder {
         return statusBar;
     }
 
-    public void setLauncherBackButtonVisible(boolean visible) {
-        if (statusBar != null) {
-            statusBar.setBackVisible(visible);
-        }
-    }
-
     public void setTopBarVisible(boolean visible) {
         if (statusBar != null) {
             statusBar.setBarVisible(visible);
-        }
-    }
-
-    public void setLauncherBackButtonListener(View.OnClickListener listener) {
-        if (statusBar != null) {
-            statusBar.setBackListener(listener);
         }
     }
 
