@@ -347,6 +347,8 @@
     <string name="camera360_menu_auto_sub_off">Automatic dashcam with ignition</string>
     <string name="camera360_menu_auto_sub_on">On · %1$s</string>
     <string name="camera360_menu_viewer">Viewer</string>
+    <string name="camera360_menu_dashboard_section">Dashboard</string>
+    <string name="camera360_signal_settings_sub">Turn signal camera settings</string>
     <string name="camera360_menu_viewer_sub">Watch in-car clips, copy to USB</string>
     <string name="camera360_menu_blocked_usb_auto">Disabled · USB auto-recording is on</string>
     <string name="camera360_menu_blocked_internal">Disabled · In-car recording is on</string>

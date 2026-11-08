@@ -363,6 +363,8 @@
     <string name="camera360_menu_auto_sub_off">Kontakla otomatik araç kamerası</string>
     <string name="camera360_menu_auto_sub_on">Açık · %1$s</string>
     <string name="camera360_menu_viewer">İzleme Ekranı</string>
+    <string name="camera360_menu_dashboard_section">Kadran</string>
+    <string name="camera360_signal_settings_sub">Sinyal kamerası ayarları</string>
     <string name="camera360_menu_viewer_sub">Araç içi klipleri izle, USB\'ye aktar</string>
     <string name="camera360_menu_blocked_usb_auto">Devre dışı · USB otomatik kayıt açık</string>
     <string name="camera360_menu_blocked_internal">Devre dışı · Araç içi kayıt açık</string>

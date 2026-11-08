@@ -488,6 +488,30 @@ public class Camera360TabBuilder {
                 R.string.camera360_menu_viewer, R.string.camera360_menu_viewer_sub,
                 false, v -> enterViewer()));
 
+        TextView dashboardHeading = new TextView(context);
+        dashboardHeading.setText(R.string.camera360_menu_dashboard_section);
+        dashboardHeading.setTextSize(18);
+        dashboardHeading.setTypeface(CockpitTokens.inter(context, CockpitTokens.WEIGHT_SEMIBOLD));
+        dashboardHeading.setTextColor(themeColor(R.color.textPrimary));
+        LinearLayout.LayoutParams dh = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dh.topMargin = dp(20);
+        menu.addView(dashboardHeading, dh);
+
+        LinearLayout signalRow = new LinearLayout(context);
+        signalRow.setOrientation(LinearLayout.HORIZONTAL);
+        signalRow.setGravity(Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams signalP = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        signalP.topMargin = dp(4);
+        menu.addView(signalRow, signalP);
+        signalRow.addView(makeMenuCard(
+                plainIcon(R.drawable.ic_mdi_camera,
+                        themeColor(R.color.ck_text_medium), 26),
+                R.string.settings_turn_signal_camera_title,
+                R.string.camera360_signal_settings_sub,
+                false, v -> context.startActivity(new android.content.Intent(context, com.eyups.roaddeck.ui.activity.TurnSignalCameraSettingsActivity.class))));
+
         menuRecBanner = new TextView(context);
         menuRecBanner.setText(R.string.camera360_rec_banner);
         menuRecBanner.setTextSize(15);
