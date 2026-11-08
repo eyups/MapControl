@@ -53,6 +53,7 @@ public class FloatingBackButtonManager {
     private static final String KEY_FLOATING_BACK_POS_Y = "floatingBackPosY";
 
     private static volatile FloatingBackButtonManager sInstance;
+    private static volatile boolean sSuppressed;
     private static final int PENDING_LOG_MAX = 32;
     private static final ArrayList<String> sPendingForUi = new ArrayList<>();
 
@@ -524,6 +525,20 @@ public class FloatingBackButtonManager {
         }
     }
 
+    /** Launcher öndeyken yüzen hub'ı gizler; başka uygulama öne geçince geri gelir. */
+    public static void setSuppressed(boolean suppressed) {
+        sSuppressed = suppressed;
+        FloatingBackButtonManager m = sInstance;
+        if (m == null) return;
+        View root = m.floatingButton;
+        if (root == null) return;
+        if (suppressed && m.menuOpen && m.menuContainer != null) {
+            m.menuContainer.setVisibility(View.GONE);
+            m.menuOpen = false;
+        }
+        root.setVisibility(suppressed ? View.GONE : View.VISIBLE);
+    }
+
     public synchronized void show() {
         log("[INFO] Floating Back hub show() çağrıldı");
 
@@ -743,6 +758,7 @@ public class FloatingBackButtonManager {
 
         try {
             if (windowManager != null && floatingButton != null && params != null) {
+                floatingButton.setVisibility(sSuppressed ? View.GONE : View.VISIBLE);
                 windowManager.addView(floatingButton, params);
                 isShowing = true;
                 registerThemeConfigCallback();

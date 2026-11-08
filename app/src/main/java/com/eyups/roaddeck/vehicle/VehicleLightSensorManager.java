@@ -55,6 +55,7 @@ public final class VehicleLightSensorManager implements SensorEventListener {
     private volatile long lastUpdateTimestampMs = 0L;
     private volatile boolean parkingLampActive = false;
     private volatile boolean headLampActive = false;
+    private volatile boolean vehicleDataSeen = false;
     private volatile int lastRawLightValue = 1;
 
     // Simülasyon modu
@@ -151,6 +152,16 @@ public final class VehicleLightSensorManager implements SensorEventListener {
      * Araç otomatik far / park lambası durumu (VDBus ReadOnlyID.ID_PARKING_LAMP_STATE).
      * 1 = Farlar / Park Lambaları Açık, 0 = Kapalı
      */
+    /** Salt okunur: park lambası açık mı (VDBus). */
+    public boolean isParkingLampActive() {
+        return parkingLampActive;
+    }
+
+    /** Araçtan en az bir kez gerçek far/park lambası değeri okunduysa true. */
+    public boolean hasVehicleLampData() {
+        return vehicleDataSeen;
+    }
+
     public void onParkingLampSignal(int value) {
         this.parkingLampActive = (value == 1);
         evaluateVehicleLighting();
@@ -240,10 +251,12 @@ public final class VehicleLightSensorManager implements SensorEventListener {
                 int[] lampVals = proxy.getItemValues(VDEventCarInfo.MODULE_READONLY_INFO, ReadOnlyID.ID_PARKING_LAMP_STATE);
                 if (lampVals != null && lampVals.length > 0) {
                     this.parkingLampActive = (lampVals[0] == 1);
+                    this.vehicleDataSeen = true;
                 }
                 int[] headVals = proxy.getItemValues(VDEventCarInfo.MODULE_CAR_SETTING, CarSettingID.ID_CAR_HEAD_LAMP);
                 if (headVals != null && headVals.length > 0) {
                     this.headLampActive = (headVals[0] == 1);
+                    this.vehicleDataSeen = true;
                 }
 
                 // 2. IHU Işık Durumunu Sorgula

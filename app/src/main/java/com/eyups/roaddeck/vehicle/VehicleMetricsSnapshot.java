@@ -132,6 +132,43 @@ public final class VehicleMetricsSnapshot {
         this.driveMode = driveMode;
     }
 
+    /** Upstream launcher uyumu: kaput/cam alanları olmadan kısa kurucu. */
+    public VehicleMetricsSnapshot(
+            boolean connected,
+            int displaySpeed,
+            int actualSpeed,
+            int odoKm,
+            int fuelPercent,
+            int rangeKm,
+            int gearSignal,
+            int powerMode,
+            int batteryRaw,
+            int doorLf,
+            int doorRf,
+            int doorLr,
+            int doorRr,
+            int trunk,
+            int sunroofOperate,
+            int sunroofPosi,
+            int sunshade,
+            int rainfall,
+            int rainDetected,
+            int lightDetectedIhu,
+            int driveMode) {
+        this(connected, displaySpeed, actualSpeed, odoKm, fuelPercent, rangeKm, gearSignal,
+                powerMode, batteryRaw, VehicleMetricsCache.INVALID, doorLf, doorRf, doorLr, doorRr,
+                trunk, VehicleMetricsCache.INVALID, VehicleMetricsCache.INVALID, VehicleMetricsCache.INVALID,
+                VehicleMetricsCache.INVALID, VehicleMetricsCache.INVALID, sunroofOperate, sunroofPosi,
+                sunshade, rainfall, rainDetected, lightDetectedIhu, driveMode);
+    }
+
+    /** Tiggo 7 araç testinde ölçüldü: motor devri = ham birleşik değer x 4. */
+    public static final int RPM_FACTOR = 4;
+
+    public static int rpmFromCombined(int combined) {
+        return combined * RPM_FACTOR;
+    }
+
     public int preferredSpeed() {
         if (isValid(displaySpeed) && displaySpeed > 0) {
             return displaySpeed;
@@ -144,6 +181,18 @@ public final class VehicleMetricsSnapshot {
 
     public static boolean isValid(int value) {
         return value != VehicleMetricsCache.INVALID;
+    }
+
+    /** Yakıt onda bir birimine çevirir; geçersizse -1. */
+    public static int fuelTenths(int raw) {
+        if (!isValid(raw) || raw < 0) return -1;
+        return Math.min(raw, 1000);
+    }
+
+    /** Yakıtın en yakın tam yüzdesi (0-100); geçersizse -1. */
+    public static int fuelPercentRounded(int raw) {
+        int tenths = fuelTenths(raw);
+        return tenths < 0 ? -1 : (tenths + 5) / 10;
     }
 
     /** OEM kapı/bagaj: 1 = açık. */

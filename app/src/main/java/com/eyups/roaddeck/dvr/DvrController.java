@@ -602,17 +602,35 @@ public final class DvrController {
     }
 
     private void checkUsbWhileRecording() {
+        enforceUsbSpace();
+    }
+
+    /**
+     * USB kaydinda bir klip + 1 dk kadar bos alan tutar; gerekirse en eski id'li
+     * klipleri siler (id'siz kullanici dosyalarina dokunmaz). Yer acilamazsa durdurur.
+     */
+    private void enforceUsbSpace() {
         File usb = findUsbRoot(app);
         if (usb == null) {
-            return; // yazma hatasi kaydi zaten bitirir
+            return; // MEDIA_EJECT kaydi zaten durdurur
         }
-        long free = DvrClipStore.freeBytes(usb);
+        final File dir = new File(usb, USB_DIR_NAME);
         int[] wh = CameraRecorder.RESOLUTIONS[getUsbResIndex()];
-        if (free >= 0 && CameraRecorder.estimateFitMinutes(free, wh[0], wh[1], getUsbSeparate()) < 1) {
-            Log.w(TAG, "USB doldu, otomatik kayit durduruluyor");
-            stopRecording(false);
-            setFailure(AutoStatus.USB_FULL, null);
-        }
+        final long headroom = HEADROOM_MINUTES * CameraRecorder.bytesPerMinute(
+                wh[0], wh[1], getUsbSeparate());
+        final Set<String> active = activeBases();
+        final Source src = source;
+        io.execute(() -> {
+            long free = DvrClipStore.freeUpTo(dir, headroom, active, true);
+            if (free >= 0 && free < headroom / 2) {
+                main.post(() -> {
+                    if (source != src || !isRecordingUsb()) return;
+                    Log.w(TAG, "USB doldu ve silinecek klip yok, kayit durduruluyor: " + src);
+                    stopRecording(false);
+                    if (src == Source.AUTO_USB) setFailure(AutoStatus.USB_FULL, null);
+                });
+            }
+        });
     }
 
     // ---------- dvr-io ----------
@@ -870,6 +888,7 @@ public final class DvrController {
         public void onStarted(File file) {
             starting = false;
             setRecordingService(true);
+            if (src == Source.MANUAL_USB || src == Source.AUTO_USB) enforceUsbSpace();
             updateAutoStatus();
             for (Listener l : listeners) l.onStarted(src, file);
             notifyState();

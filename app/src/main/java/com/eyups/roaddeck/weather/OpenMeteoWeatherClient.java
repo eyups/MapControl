@@ -69,6 +69,11 @@ public final class OpenMeteoWeatherClient {
         }
     }
 
+    /** Son başarılı verinin zamanı (ms); veri yoksa 0. */
+    public long getLastUpdatedMs() {
+        return prefs().getLong(KEY_CACHED_AT, 0L);
+    }
+
     public void start() {
         active = true;
         mainHandler.removeCallbacks(refreshRunnable);

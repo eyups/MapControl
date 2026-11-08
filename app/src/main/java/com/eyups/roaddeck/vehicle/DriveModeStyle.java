@@ -20,6 +20,10 @@ public final class DriveModeStyle {
     public static final int ECO = 0;
     public static final int NORMAL = 1;
     public static final int SPORT = 2;
+    public static final int SNOW = 3;
+    public static final int MUD = 4;
+    public static final int OFFROAD = 5;
+    public static final int SAND = 7;
 
     private DriveModeStyle() {
     }

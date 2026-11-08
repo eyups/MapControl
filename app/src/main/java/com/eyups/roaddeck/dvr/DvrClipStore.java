@@ -225,18 +225,41 @@ public final class DvrClipStore {
      * @return islem sonrasi bos alan
      */
     public static long freeUpTo(File dir, long minFreeBytes, Set<String> excludeBases) {
+        return freeUpTo(dir, minFreeBytes, excludeBases, false);
+    }
+
+    /**
+     * @param idOnly true ise yalnizca id'li (_id_N) klipler silinir; USB'de kullanici
+     *               dosyalarina ve id'siz eski kayitlara dokunulmaz.
+     */
+    public static long freeUpTo(File dir, long minFreeBytes, Set<String> excludeBases, boolean idOnly) {
         long free = freeBytes(dir);
         if (free < 0 || free >= minFreeBytes) {
             return free;
         }
-        List<Clip> clips = list(dir, excludeBases);
+        List<Clip> order = deletionOrder(list(dir, excludeBases), idOnly);
         int deleted = 0;
-        for (int i = clips.size() - 1; i >= 0 && free < minFreeBytes; i--) {
-            delete(clips.get(i));
+        for (int i = 0; i < order.size() && free < minFreeBytes; i++) {
+            delete(order.get(i));
             deleted++;
             free = freeBytes(dir);
         }
         if (deleted > 0) Log.i(TAG, deleted + " eski klip alan icin silindi, bos=" + free);
         return free;
+    }
+
+    /** Silme sirasi: en kucuk id (en eski) once. */
+    static List<Clip> deletionOrder(List<Clip> newestFirst, boolean idOnly) {
+        List<Clip> out = new ArrayList<>();
+        for (int i = newestFirst.size() - 1; i >= 0; i--) {
+            Clip c = newestFirst.get(i);
+            if (!idOnly || c.id > 0) out.add(c);
+        }
+        return out;
+    }
+
+    /** Dongusel silmeyle geri kazanilabilecek alan: id'li kliplerin toplam boyutu. */
+    public static long reclaimableBytes(File dir, Set<String> excludeBases) {
+        return totalBytes(deletionOrder(list(dir, excludeBases), true));
     }
 }

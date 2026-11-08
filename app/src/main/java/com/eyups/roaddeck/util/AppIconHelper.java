@@ -12,6 +12,7 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.AdaptiveIconDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -362,4 +363,77 @@ public final class AppIconHelper {
         return d != null ? d : new BitmapDrawable(context.getResources(),
                 Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
     }
+
+    /** Dock gibi sabit boyutlu yerler için ikonu tam boyutta bitmap'e çizer. */
+    @NonNull
+    public static Drawable loadSized(
+            @NonNull Context context, @Nullable String packageName, int sizePx, int nightPlate) {
+        Drawable raw = loadRaw(context, packageName, null);
+        int size = Math.max(1, sizePx);
+        Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        if (raw instanceof AdaptiveIconDrawable) {
+            AdaptiveIconDrawable adaptive = (AdaptiveIconDrawable) raw;
+            if (nightPlate != 0 && isBright(adaptive.getBackground())) {
+                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint.setColor(nightPlate);
+                canvas.drawRoundRect(0, 0, size, size, size * 0.28f, size * 0.28f, paint);
+                Drawable fg = adaptive.getForeground();
+                if (fg != null) {
+                    int big = Math.round(size * 1.5f);
+                    int off = (big - size) / 2;
+                    fg.setBounds(-off, -off, size + off, size + off);
+                    fg.draw(canvas);
+                }
+                return new BitmapDrawable(context.getResources(), bitmap);
+            }
+        }
+        raw.setBounds(0, 0, size, size);
+        raw.draw(canvas);
+        return new BitmapDrawable(context.getResources(), bitmap);
+    }
+
+    private static boolean isBright(@Nullable Drawable layer) {
+        if (layer == null) return false;
+        Bitmap bitmap = Bitmap.createBitmap(32, 32, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        layer.setBounds(0, 0, 32, 32);
+        layer.draw(canvas);
+        long sum = 0;
+        int count = 0;
+        for (int y = 0; y < 32; y += 4) {
+            for (int x = 0; x < 32; x += 4) {
+                int c = bitmap.getPixel(x, y);
+                if (android.graphics.Color.alpha(c) < 32) continue;
+                sum += (android.graphics.Color.red(c) + android.graphics.Color.green(c) + android.graphics.Color.blue(c)) / 3;
+                count++;
+            }
+        }
+        return count > 0 && sum / count > 200;
+    }
+
+    @NonNull
+    private static Drawable loadRaw(@NonNull Context context, @Nullable String packageName, @Nullable String activityName) {
+        PackageManager pm = context.getPackageManager();
+        Drawable fallback = pm.getDefaultActivityIcon();
+        if (packageName == null || packageName.isEmpty()) {
+            return fallback != null ? fallback : loadSymDef(context);
+        }
+        int density = context.getResources().getDisplayMetrics().densityDpi;
+        Drawable icon = loadFromLauncherApps(context, pm, packageName, activityName, density);
+        if (isRealIcon(context, pm, icon)) return icon;
+        icon = loadFromComponentResources(context, pm, packageName, activityName, density);
+        if (isRealIcon(context, pm, icon)) return icon;
+        icon = loadFromResolvedLauncher(context, pm, packageName, density);
+        if (isRealIcon(context, pm, icon)) return icon;
+        icon = loadFromLaunchIntent(pm, packageName);
+        if (isRealIcon(context, pm, icon)) return icon;
+        try {
+            icon = pm.getApplicationIcon(packageName);
+            if (isRealIcon(context, pm, icon)) return icon;
+        } catch (Exception ignored) {
+        }
+        return fallback != null ? fallback : loadSymDef(context);
+    }
+
 }

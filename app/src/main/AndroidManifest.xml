@@ -20,6 +20,7 @@
     <!-- Foreground Service -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_LOGS"/>
+    <uses-permission android:name="android.permission.REORDER_TASKS"/>
     
     <!-- Location permissions -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -49,6 +50,7 @@
     
     <!-- System Alert Window (for SYSTEM_ALERT_WINDOW appops) -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.car.permission.CAR_SPEED" />
     
     <!-- Query all packages permission (Android 11+) - Required to see all installed apps -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" 
@@ -64,6 +66,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_UPDATES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -138,7 +145,7 @@
              hedefler; ayrı bir Activity sınıfı gerekmez, mevcut ekran akışı değişmez. -->
         <activity-alias
             android:name=".ui.activity.MainActivityHomeAlias"
-            android:targetActivity=".ui.activity.MainActivity"
+            android:targetActivity=".launcher.HomeLauncherActivity"
             android:enabled="false"
             android:exported="true"
             android:label="RoadDeck (Ana Ekran)"
@@ -197,6 +204,51 @@
             android:label="ID discovery"
             android:screenOrientation="landscape" />
         
+        <!-- Yeni launcher (Kotlin). HOME rolü yalnızca MainActivityHomeAlias üzerinden. -->
+        <activity
+            android:name=".launcher.HomeLauncherActivity"
+            android:exported="true"
+            android:label="Ana Ekran"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.eyups.roaddeck.home"
+            android:stateNotNeeded="true"
+            android:excludeFromRecents="true"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
+
+        <activity
+            android:name=".launcher.ScreenOffActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+        <activity
+            android:name="com.eyups.roaddeck.launcher.MiniDashActivity"
+            android:exported="true"
+            android:label="Mini gösterge"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.eyups.roaddeck.minidash"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="false"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
+            android:theme="@style/Theme.Sahne.DriveHalf" />
+
+        <activity-alias
+            android:name="com.eyups.roaddeck.launcher.MiniDashLauncherAlias"
+            android:targetActivity="com.eyups.roaddeck.launcher.MiniDashActivity"
+            android:enabled="false"
+            android:exported="true"
+            android:label="Mini gösterge">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
         <!-- FileProvider for APK installation -->
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -230,6 +282,15 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
                 <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".service.PackageReplacedReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
 

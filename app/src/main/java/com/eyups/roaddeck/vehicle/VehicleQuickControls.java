@@ -266,4 +266,9 @@ public final class VehicleQuickControls {
         }
         connectListenerRegistered = false;
     }
+
+    /** Kilit komutu değeri: kilitli=2, açık=1. */
+    public static int centralLockValue(boolean locked) {
+        return locked ? 2 : 1;
+    }
 }

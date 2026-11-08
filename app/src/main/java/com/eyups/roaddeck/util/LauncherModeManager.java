@@ -59,6 +59,27 @@ public final class LauncherModeManager {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 .edit().putBoolean(KEY_LAUNCHER_MODE_ENABLED, enabled).apply();
         setHomeAliasEnabled(context, enabled);
+        syncMiniDashEntry(context, enabled);
+    }
+
+    /** APK güncellemesinden sonra alias durumunu kayıtlı tercihle eşitler. */
+    public static void restoreIfEnabled(Context context) {
+        setEnabled(context, isEnabled(context));
+    }
+
+    /** "Mini gösterge" uygulama listesi simgesini launcher moduyla eşitler. */
+    private static void syncMiniDashEntry(Context context, boolean launcherMode) {
+        try {
+            ComponentName alias = new ComponentName(context.getPackageName(),
+                    com.eyups.roaddeck.launcher.MiniDashEntry.ALIAS_CLASS);
+            PackageManager pm = context.getPackageManager();
+            Integer next = com.eyups.roaddeck.launcher.MiniDashEntry.stateToWrite(
+                    pm.getComponentEnabledSetting(alias), launcherMode);
+            if (next != null) {
+                pm.setComponentEnabledSetting(alias, next, PackageManager.DONT_KILL_APP);
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     private static void setHomeAliasEnabled(Context context, boolean enabled) {
