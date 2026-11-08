@@ -118,7 +118,7 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
     };
 
     private FrameLayout root;
-    private LinearLayout topBar;
+    private FrameLayout topBar;
     private LinearLayout footer;
     private View topDivider;
     private View headerPillDivider;
@@ -464,11 +464,20 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
         return trimmed.substring(0, 1).toUpperCase(new Locale("tr", "TR"));
     }
 
-    private LinearLayout buildTopBar() {
-        LinearLayout bar = new LinearLayout(this);
-        bar.setOrientation(LinearLayout.HORIZONTAL);
-        bar.setGravity(Gravity.CENTER_VERTICAL);
-        bar.setPadding(dp(24), 0, dp(24), 0);
+    private FrameLayout buildTopBar() {
+        FrameLayout bar = new FrameLayout(this);
+        bar.setPadding(0, 0, 0, 0);
+
+        // Sol ve sağ eşit ağırlık: şarkı künyesi gerçekten ekran merkezinde kalır.
+        LinearLayout left = new LinearLayout(this);
+        left.setOrientation(LinearLayout.HORIZONTAL);
+        left.setGravity(Gravity.CENTER_VERTICAL);
+        FrameLayout.LayoutParams leftLp = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.START | Gravity.CENTER_VERTICAL);
+        leftLp.leftMargin = dp(24);
+        bar.addView(left, leftLp);
 
         backPill = new LinearLayout(this);
         backPill.setOrientation(LinearLayout.HORIZONTAL);
@@ -477,7 +486,7 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
         backPill.setClickable(true);
         backPill.setFocusable(true);
         backPill.setOnClickListener(v -> finish());
-        bar.addView(backPill, new LinearLayout.LayoutParams(
+        left.addView(backPill, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, dp(48)));
 
         backIcon = new ImageView(this);
@@ -497,14 +506,14 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
         LinearLayout.LayoutParams dividerLp = new LinearLayout.LayoutParams(dp(1), dp(24));
         dividerLp.leftMargin = dp(16);
         dividerLp.rightMargin = dp(16);
-        bar.addView(divider, dividerLp);
+        left.addView(divider, dividerLp);
         headerPillDivider = divider;
 
         livePill = new LinearLayout(this);
         livePill.setOrientation(LinearLayout.HORIZONTAL);
         livePill.setGravity(Gravity.CENTER_VERTICAL);
         livePill.setPadding(dp(12), dp(5), dp(14), dp(5));
-        bar.addView(livePill, new LinearLayout.LayoutParams(
+        left.addView(livePill, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         liveDot = new View(this);
@@ -526,8 +535,10 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
         LinearLayout center = new LinearLayout(this);
         center.setOrientation(LinearLayout.HORIZONTAL);
         center.setGravity(Gravity.CENTER);
-        bar.addView(center, new LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+        bar.addView(center, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL));
 
         artView = new ImageView(this);
         artView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -556,7 +567,7 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
         titleRow.addView(titleView);
 
         artistView = new TextView(this);
-        artistView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+        artistView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f);
         artistView.setSingleLine(true);
         artistView.setEllipsize(TextUtils.TruncateAt.END);
         artistView.setMaxWidth(dp(320));
@@ -564,9 +575,13 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
 
         LinearLayout right = new LinearLayout(this);
         right.setOrientation(LinearLayout.HORIZONTAL);
-        right.setGravity(Gravity.CENTER_VERTICAL);
-        bar.addView(right, new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        right.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
+        FrameLayout.LayoutParams rightLp = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.END | Gravity.CENTER_VERTICAL);
+        rightLp.rightMargin = dp(24);
+        bar.addView(right, rightLp);
 
         LinearLayout clock = new LinearLayout(this);
         clock.setOrientation(LinearLayout.HORIZONTAL);
@@ -1180,6 +1195,7 @@ public final class LyricsFullscreenActivity extends AppCompatActivity {
         liveText.setTextColor(colorSecondary);
 
         titleView.setTextColor(colorText);
+        artistView.setTextColor(colorMuted);
         clockIcon.setColorFilter(colorAccent);
         clockText.setTextColor(colorText);
 
