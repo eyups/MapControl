@@ -980,7 +980,9 @@ public class MainActivity extends AppCompatActivity {
                         ScrollView.LayoutParams.MATCH_PARENT,
                         ScrollView.LayoutParams.WRAP_CONTENT));
 
-        vehicleMetricsRepository = new VehicleMetricsRepository(getApplicationContext());
+        // Servis ve arayüz aynı VDBus aboneliğini paylaşsın; ikinci bir
+        // vdbus-carinfo iş parçacığı ve çift callback oluşmasın.
+        vehicleMetricsRepository = VehicleMetricsRepository.getBackground(getApplicationContext());
         // Onbellek yalnizca dinleyici varken doluyordu; hiz overlay'i (ve launcher)
         // icin izlemeyi bastan acik tut (VDBus olay gudumlu, hafif).
         vehicleMetricsRepository.startMonitoring();
@@ -2584,9 +2586,8 @@ public class MainActivity extends AppCompatActivity {
             systemStatsOverlay.release();
             systemStatsOverlay = null;
         }
-        if (vehicleMetricsRepository != null) {
-            vehicleMetricsRepository.release();
-        }
+        // Paylaşılan repository servise aittir; burada release edilmez.
+        vehicleMetricsRepository = null;
         if (systemTts != null) {
             systemTts.stop();
             systemTts.shutdown();

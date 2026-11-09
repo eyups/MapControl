@@ -17,6 +17,7 @@ public final class BootSession {
     private static final String KEY_WELCOME = "welcomeGeneration";
     private static final String KEY_UI = "uiGeneration";
     private static final String KEY_UI_PENDING = "uiLaunchRequested";
+    private static volatile String cachedBootId;
 
     private BootSession() {
     }
@@ -45,7 +46,7 @@ public final class BootSession {
     }
 
     public static void setUiPending(Context context, boolean pending) {
-        prefs(context).edit().putBoolean(KEY_UI_PENDING, pending).commit();
+        prefs(context).edit().putBoolean(KEY_UI_PENDING, pending).apply();
     }
 
     public static boolean isUiPending(Context context) {
@@ -61,16 +62,22 @@ public final class BootSession {
     }
 
     private static String currentId(Context context) {
+        String cached = cachedBootId;
+        if (cached != null) {
+            return cached;
+        }
+        String value;
         try {
             int count = Settings.Global.getInt(
                     context.getContentResolver(), Settings.Global.BOOT_COUNT, -1);
-            if (count >= 0) {
-                return "boot-" + count;
-            }
+            value = count >= 0
+                    ? "boot-" + count
+                    : "wall-" + (System.currentTimeMillis() - SystemClock.elapsedRealtime());
         } catch (Exception ignored) {
+            value = "wall-" + (System.currentTimeMillis() - SystemClock.elapsedRealtime());
         }
-        long wallAtBoot = System.currentTimeMillis() - SystemClock.elapsedRealtime();
-        return "wall-" + wallAtBoot;
+        cachedBootId = value;
+        return value;
     }
 
     private static SharedPreferences prefs(Context context) {
