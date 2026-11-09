@@ -297,6 +297,10 @@ public final class CloudManager {
             if (immediateFinal != null) {
                 sendFinal(immediateFinal);
             }
+            ParkingPhotoCapture photo = parkPhotoCapture;
+            if (photo != null) {
+                photo.onVehicleState(telemetry.powerMode(), telemetry.latestSnapshot());
+            }
         }
         long now = SystemClock.elapsedRealtime();
         if (now >= nextHeartbeatAt && now >= nextAttemptAt) {
@@ -310,6 +314,10 @@ public final class CloudManager {
                     nextTripsAt = now;
                 }
                 ensurePollersStarted();
+                ParkingPhotoCapture photo = parkPhotoCapture;
+                if (photo != null) {
+                    photo.onNetworkAvailable();
+                }
             }
         }
         now = SystemClock.elapsedRealtime();
@@ -401,7 +409,7 @@ public final class CloudManager {
         }
         ParkingPhotoCapture capture = parkPhotoCapture;
         if (capture != null) {
-            capture.captureOnce();
+            capture.onIgnitionOff();
         }
         try {
             http.postJson("/api/v1/car/telemetry", config.token(),

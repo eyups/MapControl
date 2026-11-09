@@ -16,6 +16,15 @@
                 <action android:name="com.eyups.roaddeck.TEST_TTS" />
             </intent-filter>
         </receiver>
+
+        <!-- Debug-only: adb ile park fotoğrafı yakalama/ses testi (ağa çıkmaz). -->
+        <receiver
+            android:name=".cloud.ParkPhotoTestReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.eyups.roaddeck.TEST_PARK_PHOTO" />
+            </intent-filter>
+        </receiver>
     </application>
     <queries>
         <package android:name="com.desaysv.ivi.vds.carinfo" />

@@ -1020,7 +1020,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_backup_face_data_sub">Face templates are included in the backup.</string>
     <string name="settings_cloud_share_location">Share location</string>
     <string name="settings_cloud_park_photo">Parking photos</string>
-    <string name="settings_cloud_park_photo_sub">On ignition off, take four camera photos and upload them. JPEGs may be analyzed by a vision model for the parking spot.</string>
+    <string name="settings_cloud_park_photo_sub">On P (stopped), takes full-resolution photos from four cameras and uploads them before ignition off; ignition off only confirms. JPEGs may be analyzed by a vision model for the parking spot.</string>
     <string name="settings_cloud_invalid_code">Enter the 8-character code.</string>
     <string name="settings_cloud_pair_failed">Pairing failed.</string>
     <string name="settings_cloud_error">Cloud error.</string>
@@ -1540,4 +1540,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_climate_level_control">Seat level</string>
     <string name="settings_cloud_auto_start">Start automatically on boot</string>
     <string name="settings_cloud_auto_start_sub">Starts telemetry sharing 10 seconds after the device boots. If off, the cloud must be started manually.</string>
+    <string name="settings_cloud_park_photo_chime">Chime when upload completes</string>
+    <string name="settings_cloud_park_photo_chime_sub">Plays a short chime once the full-quality park photo is uploaded and confirmed. When you hear it, you can leave the car.</string>
 </resources>

@@ -134,6 +134,14 @@ final class CloudHttp {
     Response postParkingPhotos(String path, String deviceToken, long tsMs,
             String appVersion, Double lat, Double lon, byte[][] images,
             int maxRequestBytes) throws IOException {
+        return postParkingPhotos(path, deviceToken, tsMs, appVersion, lat, lon, images,
+                maxRequestBytes, null, null);
+    }
+
+    /** captureId + tier verilirse sunucu kaydı taslak (staged) açar/günceller. */
+    Response postParkingPhotos(String path, String deviceToken, long tsMs,
+            String appVersion, Double lat, Double lon, byte[][] images,
+            int maxRequestBytes, String captureId, String tier) throws IOException {
         if (path == null || !path.startsWith("/api/v1/") || path.contains("..")) {
             throw new IOException("invalid_path");
         }
@@ -150,6 +158,11 @@ final class CloudHttp {
         if (lat != null && lon != null) {
             writeFormField(multipart, boundary, "lat", Double.toString(lat));
             writeFormField(multipart, boundary, "lon", Double.toString(lon));
+        }
+        if (captureId != null && tier != null) {
+            writeFormField(multipart, boundary, "capture_id",
+                    captureId.replaceAll("[^0-9a-fA-F-]", ""));
+            writeFormField(multipart, boundary, "tier", tier.replaceAll("[^a-z]", ""));
         }
         int total = 0;
         int index = 0;

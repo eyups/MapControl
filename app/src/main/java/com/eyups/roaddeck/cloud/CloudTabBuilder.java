@@ -50,6 +50,7 @@ public final class CloudTabBuilder {
     private final CockpitToggleRow shareLocationRow;
     private final CockpitToggleRow faceBackupRow;
     private final CockpitToggleRow parkPhotoRow;
+    private final CockpitToggleRow parkChimeRow;
     private final CockpitToggleRow autoStartRow;
     private final CockpitGrid actionsGrid;
     private final LinearLayout logUploadButton;
@@ -189,6 +190,13 @@ public final class CloudTabBuilder {
         LinearLayout.LayoutParams parkPhotoLp = matchWidth();
         parkPhotoLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         pairedRow.addView(parkPhotoRow, parkPhotoLp);
+        parkChimeRow = new CockpitToggleRow(context, R.drawable.ic_mdi_volume_high,
+                context.getString(R.string.settings_cloud_park_photo_chime),
+                context.getString(R.string.settings_cloud_park_photo_chime_sub),
+                config.parkPhotoChimeEnabled());
+        LinearLayout.LayoutParams parkChimeLp = matchWidth();
+        parkChimeLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        pairedRow.addView(parkChimeRow, parkChimeLp);
         autoStartRow = new CockpitToggleRow(context, R.drawable.ic_mdi_restart,
                 context.getString(R.string.settings_cloud_auto_start),
                 context.getString(R.string.settings_cloud_auto_start_sub),
@@ -338,6 +346,10 @@ public final class CloudTabBuilder {
         parkPhotoRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
             config.setParkPhotoEnabled(checked);
             logger.accept("Park fotoğrafı: " + (checked ? "açık" : "kapalı"));
+        });
+        parkChimeRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
+            config.setParkPhotoChimeEnabled(checked);
+            logger.accept("Park fotoğrafı sesi: " + (checked ? "açık" : "kapalı"));
         });
         autoStartRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
             config.setAutoStartEnabled(checked);
@@ -677,6 +689,10 @@ public final class CloudTabBuilder {
         parkPhotoRow.getToggle().setEnabled(paired);
         if (parkPhotoRow.getToggle().isChecked() != config.parkPhotoEnabled()) {
             parkPhotoRow.setCheckedSilently(config.parkPhotoEnabled());
+        }
+        parkChimeRow.getToggle().setEnabled(paired);
+        if (parkChimeRow.getToggle().isChecked() != config.parkPhotoChimeEnabled()) {
+            parkChimeRow.setCheckedSilently(config.parkPhotoChimeEnabled());
         }
         autoStartRow.getToggle().setEnabled(paired);
         if (autoStartRow.getToggle().isChecked() != config.autoStartEnabled()) {

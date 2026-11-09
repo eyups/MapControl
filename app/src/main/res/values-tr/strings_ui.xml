@@ -1036,7 +1036,7 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_backup_face_data_sub">Yüz şablonları yedeğe eklenir.</string>
     <string name="settings_cloud_share_location">Konum paylaş</string>
     <string name="settings_cloud_park_photo">Park fotoğrafı</string>
-    <string name="settings_cloud_park_photo_sub">Kontak kapanınca dört kameradan fotoğraf çekip buluta gönderir. JPEG görüntüler park yeri için görsel modelle analiz edilebilir.</string>
+    <string name="settings_cloud_park_photo_sub">Vites P\'de ve araç dururken dört kameradan tam çözünürlüklü fotoğraf çeker, kontak kapanmadan buluta gönderir; kontak kapanınca yalnız onay gider. JPEG görüntüler park yeri için görsel modelle analiz edilebilir.</string>
     <string name="settings_cloud_invalid_code">8 karakterlik kodu girin.</string>
     <string name="settings_cloud_pair_failed">Eşleştirme başarısız.</string>
     <string name="settings_cloud_error">Bulut hatası.</string>
@@ -1556,4 +1556,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_climate_level_control">Koltuk seviyesi</string>
     <string name="settings_cloud_auto_start">Açılışta otomatik başlat</string>
     <string name="settings_cloud_auto_start_sub">Cihaz açıldıktan 10 saniye sonra telemetri paylaşımı başlar. Kapalıysa bulutu elle başlatman gerekir.</string>
+    <string name="settings_cloud_park_photo_chime">Gönderim bitince ses çal</string>
+    <string name="settings_cloud_park_photo_chime_sub">Park fotoğrafı tam kalitede gönderilip onaylanınca kısa bir ses çalar. Sesi duyunca araçtan inebilirsin.</string>
 </resources>

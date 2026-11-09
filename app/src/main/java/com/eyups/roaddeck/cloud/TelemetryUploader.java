@@ -70,6 +70,10 @@ final class TelemetryUploader implements VehicleMetricsRepository.Listener {
         return mode;
     }
 
+    VehicleMetricsSnapshot latestSnapshot() {
+        return latest;
+    }
+
     int speedKmh() {
         VehicleMetricsSnapshot snapshot = latest;
         return snapshot == null ? 0 : snapshot.preferredSpeed();
