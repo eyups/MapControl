@@ -11,7 +11,11 @@ import android.util.Log;
 
 /**
  * Park fotoğrafı tamamlandı sesi: yükselen iki nota (C6 → G6), yumuşak çan tınısı, ~0,55 sn.
- * Ses dosyası yok; PCM koda gömülü sentezlenir. Araçta duyulduğu doğrulanmış USAGE_MEDIA yolu kullanılır.
+ * Ses dosyası yok; PCM koda gömülü sentezlenir.
+ *
+ * <p><b>Neden USAGE_ALARM:</b> araçta kontak kapanınca `STREAM_MUSIC` seviyesi 0'a iniyor;
+ * AudioFlinger "write muted data to hw" yazıyor ve medya akışı duyulmuyor. Alarm akışı
+ * kontak kapalıyken de açık kalıyor. Track sesi 0,4 ile ölçeklenir; çok yüksek çalmaz.
  */
 final class ParkChime {
 
@@ -68,15 +72,19 @@ final class ParkChime {
             AudioTrack track = null;
             AudioManager audio = (AudioManager) app.getSystemService(Context.AUDIO_SERVICE);
             AudioAttributes attrs = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .build();
             AudioFocusRequest focus = null;
             try {
                 short[] pcm = synthesize(SAMPLE_RATE);
+                if (audio != null) {
+                    Log.i(TAG, "alarmVol=" + audio.getStreamVolume(AudioManager.STREAM_ALARM)
+                            + " musicVol=" + audio.getStreamVolume(AudioManager.STREAM_MUSIC));
+                }
                 if (audio != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     focus = new AudioFocusRequest.Builder(
-                            AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
+                            AudioManager.AUDIOFOCUS_GAIN_TRANSIENT)
                             .setAudioAttributes(attrs)
                             .build();
                     audio.requestAudioFocus(focus);
@@ -92,6 +100,7 @@ final class ParkChime {
                         .setBufferSizeInBytes(pcm.length * 2)
                         .build();
                 track.write(pcm, 0, pcm.length);
+                track.setVolume(0.4f);
                 track.play();
                 Thread.sleep(pcm.length * 1000L / SAMPLE_RATE + 120L);
             } catch (Throwable error) {
