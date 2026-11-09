@@ -778,76 +778,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Web Yönetimi tab içeriği
-        fileUploadTabBuilder = new FileUploadTabBuilder(this, webServerManager);
-        fileUploadScrollView = fileUploadTabBuilder.getScrollView();
-        btnWebServerToggle = fileUploadTabBuilder.getToggleButton();
-        webServerStatusText = fileUploadTabBuilder.getStatusText();
-        qrCodeImageView = fileUploadTabBuilder.getQrImageView();
-        fileUploadTabContent = fileUploadTabBuilder.getFileUploadTabContent();
-
-        // Yansıtma tab içeriği (Builder)
-        projectionTabBuilder = new ProjectionTabBuilder(this, prefs,
-                new ProjectionTabBuilder.ProjectionCallback() {
-                    @Override
-                    public void onOpenCluster() {
-                        clusterDisplayManager.openClusterDisplay();
-                    }
-
-                    @Override
-                    public void onCloseCluster() {
-                        clusterDisplayManager.closeClusterDisplay(true);
-                    }
-
-                    @Override
-                    public void onSavePowerMode(int mode) {
-                        savePrefInt("powerModeSetting", mode);
-                    }
-
-                    @Override
-                    public void onStartKeyEventListener() {
-                        RoadDeckVDBusKeyBridge.start();
-                    }
-
-                    @Override
-                    public void onStopKeyEventListener() {
-                        RoadDeckVDBusKeyBridge.stop();
-                    }
-
-                    @Override
-                    public String getTargetPackage() {
-                        return targetPackage;
-                    }
-
-                    @Override
-                    public void onTargetPackageSelected(String packageName) {
-                        saveTargetPackage(packageName);
-                        updateTargetLabel();
-                        log("Seçilen uygulama: " + targetPackage);
-                    }
-
-                    @Override
-                    public boolean isSystemOrPrivApp(ApplicationInfo appInfo) {
-                        return MainActivity.this.isSystemOrPrivApp(appInfo);
-                    }
-
-                    @Override
-                    public void log(String msg) {
-                        MainActivity.this.log(msg);
-                    }
-
-                    @Override
-                    public void onBringToMainDisplayCheckClusterSplash() {
-                        if (clusterDisplayManager != null) {
-                            clusterDisplayManager.showBootSplashOnClusterIfNoForegroundApp();
-                        }
-                    }
-                });
-        projectionScrollView = projectionTabBuilder.getScrollView();
-        projectionTabContent = projectionTabBuilder.getProjectionTabContent();
-        targetAppLabel = projectionTabBuilder.getTargetAppLabel();
-        tryConsumeDeferredProjectionTargetPicker();
-
+        // Web/Yansıtma sekmeleri ilk açılışta ensureTab() ile kurulur.
         // === HAFIZA MODU TAB İÇERİĞİ ===
         driveModeTabBuilder = new DriveModeTabBuilder(this, prefs,
                 new DriveModeTabBuilder.DriveModeCallback() {
@@ -884,8 +815,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-        wifiTabBuilder = new WifiTabBuilder(this, msg -> MainActivity.this.log(msg));
-        wifiTabContent = wifiTabBuilder.getTabContent();
 
         logTabBuilder = new LogTabBuilder(this, new LogTabBuilder.LogCallback() {
             @Override
@@ -918,7 +847,6 @@ public class MainActivity extends AppCompatActivity {
         renderSystemLogs(SystemLogBuffer.snapshot());
         scrollView = logTabBuilder.getScrollView();
 
-        welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
         equalizerTabBuilder = new EqualizerTabBuilder(this);
         voiceTalkTabBuilder = new VoiceTalkTabBuilder(this);
         // AssistantTabBuilder yalnız sekme ilk açıldığında kurulur (asistan
@@ -927,58 +855,13 @@ public class MainActivity extends AppCompatActivity {
                 this::onValetStateChanged);
         driverProfilesTabBuilder = new DriverProfilesTabBuilder(this, msg -> MainActivity.this.log(msg),
                 this::onDriverProfileChanged);
-        camera360TabBuilder = new Camera360TabBuilder(this, () -> {
-            try {
-                if (vehicleMetricsRepository == null) return 0;
-                // Alinacak hiz: DisVehSpd (gosterge hizi); yedek ActVehSpd.
-                int g = vehicleMetricsRepository.getCombined(
-                        com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_SPEED_GAUGE_DISPLAY);
-                if (com.eyups.roaddeck.vehicle.VehicleMetricsSnapshot.isValid(g)) {
-                    return Math.max(g, 0);
-                }
-                int c = vehicleMetricsRepository.getCombined(
-                        com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_CAR_SPEED);
-                return com.eyups.roaddeck.vehicle.VehicleMetricsSnapshot.isValid(c) ? Math.max(c, 0) : 0;
-            } catch (Throwable t) {
-                return 0;
-            }
-        }, () -> {
-            // Vites: ID_GEARBOX_STATE (1=P 2=R 3=N, 4.. = ileri vites 1.. -> D1..)
-            try {
-                if (vehicleMetricsRepository == null) return "";
-                int g = vehicleMetricsRepository.getCombined(
-                        com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_GEARBOX_STATE);
-                if (!com.eyups.roaddeck.vehicle.VehicleMetricsSnapshot.isValid(g) || g <= 0) return "";
-                switch (g) {
-                    case 1: return "P";
-                    case 2: return "R";
-                    case 3: return "N";
-                    default: return "D" + (g - 3);
-                }
-            } catch (Throwable t) {
-                return "";
-            }
-        });
-        camera360TabContent = camera360TabBuilder.getTabContent();
-        camera360TabBuilder.setWideListener(this::setContentWide);
 
         splitScreenTabBuilder = new SplitScreenTabBuilder(this,
                 msg -> MainActivity.this.log(msg));
         roadmateTabBuilder = new CloudTabBuilder(this, msg -> MainActivity.this.log("[Roadmate] " + msg),
                 this::onProfileDataRestored);
 
-        climateAutomationTabBuilder = new ClimateAutomationTabBuilder(this, prefs,
-                msg -> MainActivity.this.log(msg));
-        rebuildClimateAutomationTab();
 
-        dmsFaceRecognitionTabBuilder = new DmsFaceRecognitionTabBuilder(this, prefs,
-                msg -> MainActivity.this.log(msg));
-        faceRecognitionScrollView = new ScrollView(this);
-        faceRecognitionScrollView.setFillViewport(true);
-        faceRecognitionScrollView.addView(dmsFaceRecognitionTabBuilder.build(),
-                new ScrollView.LayoutParams(
-                        ScrollView.LayoutParams.MATCH_PARENT,
-                        ScrollView.LayoutParams.WRAP_CONTENT));
 
         // Servis ve arayüz aynı VDBus aboneliğini paylaşsın; ikinci bir
         // vdbus-carinfo iş parçacığı ve çift callback oluşmasın.
@@ -1006,81 +889,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         homeScrollView = homeTabBuilder.getScrollView();
-        vehicleInfoTabBuilder = new VehicleInfoTabBuilder(this, vehicleMetricsRepository,
-                msg -> MainActivity.this.log(msg));
-        vehicleInfoScrollView = vehicleInfoTabBuilder.getScrollView();
         drivingHistoryTabBuilder = new DrivingHistoryTabBuilder(this);
         drivingHistoryScrollView = drivingHistoryTabBuilder.getScrollView();
 
-        appsTabBuilder = new AppsTabBuilder(this, new AppsTabBuilder.AppsCallback() {
-            @Override
-            public boolean isSystemOrPrivApp(ApplicationInfo appInfo) {
-                return MainActivity.this.isSystemOrPrivApp(appInfo);
-            }
-
-            @Override
-            public boolean isSystemOrPrivApp(String packageName) {
-                return MainActivity.this.isSystemOrPrivApp(packageName);
-            }
-
-            @Override
-            public void log(String msg) {
-                MainActivity.this.log(msg);
-            }
-        });
-        appsTabContent = MainActivity.this.appsTabBuilder.getTabContent();
         apkSessionListener = (status, message) -> handler.post(() -> onApkSessionStatus(status, message));
         ApkSessionInstaller.setListener(apkSessionListener);
 
-        // Ayarlar tab içeriği (Builder) — initializeApp içinde bir kez oluşturulur
-        settingsTabBuilder = new SettingsTabBuilder(this, prefs,
-                new SettingsTabBuilder.SettingsCallback() {
-                    @Override
-                    public void log(String msg) {
-                        MainActivity.this.log(msg);
-                    }
-
-                    @Override
-                    public String getCarToken() {
-                        return prefs.getString("cloudDeviceToken", null);
-                    }
-
-                    @Override
-                    public void onLauncherModeChanged(boolean enabled) {
-                        crossfadeLauncherTransition(() -> {
-                            if (enabled) {
-                                enterLauncherMode();
-                            } else {
-                                exitLauncherMode();
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onLocaleChanged() {
-                        MainActivity.this.recreate();
-                    }
-
-                    @Override
-                    public void onThemeChanged() {
-                        try {
-                            com.eyups.roaddeck.manager.FloatingBackButtonManager
-                                    .getInstance(MainActivity.this).refreshTheme();
-                        } catch (RuntimeException ignored) {
-                        }
-                        getIntent().putExtra(EXTRA_OPEN_SETTINGS_AFTER_THEME, true);
-                        MainActivity.this.recreate();
-                    }
-
-                    @Override
-                    public void onSystemStatsChanged(boolean enabled) {
-                        if (systemStatsOverlay != null) {
-                            systemStatsOverlay.setEnabled(enabled);
-                        }
-                    }
-                });
-        settingsScrollView = settingsTabBuilder.getScrollView();
-        settingsTabContent = settingsTabBuilder.getSettingsTabContent();
 
 
         presentMainUi(mainRootContainer);
@@ -1110,7 +924,6 @@ public class MainActivity extends AppCompatActivity {
         }
         
         // Uygulamaları yükle
-        if (appsTabBuilder != null) appsTabBuilder.loadAppsFromServer();
 
         if (!vdbusBridgeAcquired) {
             vdbusBridgeAcquired = true;
@@ -1391,13 +1204,292 @@ public class MainActivity extends AppCompatActivity {
      * Tab değiştirme metodu
      * 0=Wi-Fi, 1=Web, 2=Profil, 3=Yansıtma, 4=LOG, 5=Uygulamalar, 6=Hafıza, 7=Ayarlar, 8=Açılış Sesi, 9=Araç Bilgi, 11=Ekolayzer, 12=Otomasyon
      */
-    private void switchTab(int tabIndex) {
-        Log.i("MainActivityTab", "switchTab=" + tabIndex + " current=" + currentTab);
-        if (tabContentArea == null || projectionTabContent == null || wifiTabContent == null || logTabContent == null || appsTabContent == null || driveModeTabContent == null || fileUploadTabContent == null || welcomeSoundTabBuilder == null || equalizerTabBuilder == null || vehicleInfoScrollView == null || camera360TabContent == null) {
+    /** Yalnız ilk açılışta kurulacak, görece ağır sekmeler. */
+    private void ensureTab(int tabIndex) {
+        if (tabIndex == 0) {
+            ensureWifiTab();
+        } else if (tabIndex == 1) {
+            ensureFileUploadTab();
+        } else if (tabIndex == 3) {
+            ensureProjectionTab();
+        } else if (tabIndex == 5) {
+            ensureAppsTab();
+        } else if (tabIndex == 7) {
+            ensureSettingsTab();
+        } else if (tabIndex == 8) {
+            ensureWelcomeSoundTab();
+        } else if (tabIndex == 9) {
+            ensureVehicleInfoTab();
+        } else if (tabIndex == TAB_CAMERA_360) {
+            ensureCamera360Tab();
+        } else if (tabIndex == TAB_CLIMATE_AUTOMATION) {
+            ensureClimateAutomationTab();
+        } else if (tabIndex == TAB_FACE_RECOGNITION) {
+            ensureDmsFaceRecognitionTab();
+        }
+    }
+
+    private void ensureWifiTab() {
+        if (wifiTabBuilder != null) {
             return;
         }
+        wifiTabBuilder = new WifiTabBuilder(this, msg -> MainActivity.this.log(msg));
+        wifiTabContent = wifiTabBuilder.getTabContent();
+    }
 
-        welcomeSoundTabBuilder.onHostPause();
+    private void ensureFileUploadTab() {
+        if (fileUploadTabBuilder != null) {
+            return;
+        }
+        // Web Yönetimi tab içeriği
+        fileUploadTabBuilder = new FileUploadTabBuilder(this, webServerManager);
+        fileUploadScrollView = fileUploadTabBuilder.getScrollView();
+        btnWebServerToggle = fileUploadTabBuilder.getToggleButton();
+        webServerStatusText = fileUploadTabBuilder.getStatusText();
+        qrCodeImageView = fileUploadTabBuilder.getQrImageView();
+        fileUploadTabContent = fileUploadTabBuilder.getFileUploadTabContent();
+
+    }
+
+    private void ensureProjectionTab() {
+        if (projectionTabBuilder != null) {
+            return;
+        }
+        final SharedPreferences prefs = getSharedPreferences("RoadDeckPrefs", MODE_PRIVATE);
+        projectionTabBuilder = new ProjectionTabBuilder(this, prefs,
+                new ProjectionTabBuilder.ProjectionCallback() {
+                    @Override
+                    public void onOpenCluster() {
+                        clusterDisplayManager.openClusterDisplay();
+                    }
+
+                    @Override
+                    public void onCloseCluster() {
+                        clusterDisplayManager.closeClusterDisplay(true);
+                    }
+
+                    @Override
+                    public void onSavePowerMode(int mode) {
+                        savePrefInt("powerModeSetting", mode);
+                    }
+
+                    @Override
+                    public void onStartKeyEventListener() {
+                        RoadDeckVDBusKeyBridge.start();
+                    }
+
+                    @Override
+                    public void onStopKeyEventListener() {
+                        RoadDeckVDBusKeyBridge.stop();
+                    }
+
+                    @Override
+                    public String getTargetPackage() {
+                        return targetPackage;
+                    }
+
+                    @Override
+                    public void onTargetPackageSelected(String packageName) {
+                        saveTargetPackage(packageName);
+                        updateTargetLabel();
+                        log("Seçilen uygulama: " + targetPackage);
+                    }
+
+                    @Override
+                    public boolean isSystemOrPrivApp(ApplicationInfo appInfo) {
+                        return MainActivity.this.isSystemOrPrivApp(appInfo);
+                    }
+
+                    @Override
+                    public void log(String msg) {
+                        MainActivity.this.log(msg);
+                    }
+
+                    @Override
+                    public void onBringToMainDisplayCheckClusterSplash() {
+                        if (clusterDisplayManager != null) {
+                            clusterDisplayManager.showBootSplashOnClusterIfNoForegroundApp();
+                        }
+                    }
+                });
+        projectionScrollView = projectionTabBuilder.getScrollView();
+        projectionTabContent = projectionTabBuilder.getProjectionTabContent();
+        targetAppLabel = projectionTabBuilder.getTargetAppLabel();
+        tryConsumeDeferredProjectionTargetPicker();
+
+    }
+
+    private void ensureWelcomeSoundTab() {
+        if (welcomeSoundTabBuilder != null) {
+            return;
+        }
+        final SharedPreferences prefs = getSharedPreferences("RoadDeckPrefs", MODE_PRIVATE);
+        welcomeSoundTabBuilder = new WelcomeSoundTabBuilder(this, prefs, welcomeAudioPicker);
+    }
+
+    private void ensureCamera360Tab() {
+        if (camera360TabBuilder != null) {
+            return;
+        }
+        camera360TabBuilder = new Camera360TabBuilder(this, () -> {
+            try {
+                if (vehicleMetricsRepository == null) return 0;
+                // Alinacak hiz: DisVehSpd (gosterge hizi); yedek ActVehSpd.
+                int g = vehicleMetricsRepository.getCombined(
+                        com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_SPEED_GAUGE_DISPLAY);
+                if (com.eyups.roaddeck.vehicle.VehicleMetricsSnapshot.isValid(g)) {
+                    return Math.max(g, 0);
+                }
+                int c = vehicleMetricsRepository.getCombined(
+                        com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_CAR_SPEED);
+                return com.eyups.roaddeck.vehicle.VehicleMetricsSnapshot.isValid(c) ? Math.max(c, 0) : 0;
+            } catch (Throwable t) {
+                return 0;
+            }
+        }, () -> {
+            // Vites: ID_GEARBOX_STATE (1=P 2=R 3=N, 4.. = ileri vites 1.. -> D1..)
+            try {
+                if (vehicleMetricsRepository == null) return "";
+                int g = vehicleMetricsRepository.getCombined(
+                        com.desaysv.ivi.extra.project.carinfo.ReadOnlyID.ID_GEARBOX_STATE);
+                if (!com.eyups.roaddeck.vehicle.VehicleMetricsSnapshot.isValid(g) || g <= 0) return "";
+                switch (g) {
+                    case 1: return "P";
+                    case 2: return "R";
+                    case 3: return "N";
+                    default: return "D" + (g - 3);
+                }
+            } catch (Throwable t) {
+                return "";
+            }
+        });
+        camera360TabContent = camera360TabBuilder.getTabContent();
+        camera360TabBuilder.setWideListener(this::setContentWide);
+    }
+
+    private void ensureClimateAutomationTab() {
+        if (climateAutomationTabBuilder != null) {
+            return;
+        }
+        final SharedPreferences prefs = getSharedPreferences("RoadDeckPrefs", MODE_PRIVATE);
+        climateAutomationTabBuilder = new ClimateAutomationTabBuilder(this, prefs,
+                msg -> MainActivity.this.log(msg));
+        rebuildClimateAutomationTab();
+    }
+
+    private void ensureDmsFaceRecognitionTab() {
+        if (dmsFaceRecognitionTabBuilder != null) {
+            return;
+        }
+        final SharedPreferences prefs = getSharedPreferences("RoadDeckPrefs", MODE_PRIVATE);
+        dmsFaceRecognitionTabBuilder = new DmsFaceRecognitionTabBuilder(this, prefs,
+                msg -> MainActivity.this.log(msg));
+        faceRecognitionScrollView = new ScrollView(this);
+        faceRecognitionScrollView.setFillViewport(true);
+        faceRecognitionScrollView.addView(dmsFaceRecognitionTabBuilder.build(),
+                new ScrollView.LayoutParams(
+                        ScrollView.LayoutParams.MATCH_PARENT,
+                        ScrollView.LayoutParams.WRAP_CONTENT));
+    }
+
+    private void ensureVehicleInfoTab() {
+        if (vehicleInfoTabBuilder != null) {
+            return;
+        }
+        vehicleInfoTabBuilder = new VehicleInfoTabBuilder(this, vehicleMetricsRepository,
+                msg -> MainActivity.this.log(msg));
+        vehicleInfoScrollView = vehicleInfoTabBuilder.getScrollView();
+    }
+
+    private void ensureAppsTab() {
+        if (appsTabBuilder != null) {
+            return;
+        }
+        appsTabBuilder = new AppsTabBuilder(this, new AppsTabBuilder.AppsCallback() {
+            @Override
+            public boolean isSystemOrPrivApp(ApplicationInfo appInfo) {
+                return MainActivity.this.isSystemOrPrivApp(appInfo);
+            }
+
+            @Override
+            public boolean isSystemOrPrivApp(String packageName) {
+                return MainActivity.this.isSystemOrPrivApp(packageName);
+            }
+
+            @Override
+            public void log(String msg) {
+                MainActivity.this.log(msg);
+            }
+        });
+        appsTabContent = appsTabBuilder.getTabContent();
+    }
+
+    private void ensureSettingsTab() {
+        if (settingsTabBuilder != null) {
+            return;
+        }
+        final SharedPreferences prefs = getSharedPreferences("RoadDeckPrefs", MODE_PRIVATE);
+        // Ayarlar sekmesi ilk açılışta kurulur.
+        settingsTabBuilder = new SettingsTabBuilder(this, prefs,
+                new SettingsTabBuilder.SettingsCallback() {
+                    @Override
+                    public void log(String msg) {
+                        MainActivity.this.log(msg);
+                    }
+
+                    @Override
+                    public String getCarToken() {
+                        return prefs.getString("cloudDeviceToken", null);
+                    }
+
+                    @Override
+                    public void onLauncherModeChanged(boolean enabled) {
+                        crossfadeLauncherTransition(() -> {
+                            if (enabled) {
+                                enterLauncherMode();
+                            } else {
+                                exitLauncherMode();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLocaleChanged() {
+                        MainActivity.this.recreate();
+                    }
+
+                    @Override
+                    public void onThemeChanged() {
+                        try {
+                            com.eyups.roaddeck.manager.FloatingBackButtonManager
+                                    .getInstance(MainActivity.this).refreshTheme();
+                        } catch (RuntimeException ignored) {
+                        }
+                        getIntent().putExtra(EXTRA_OPEN_SETTINGS_AFTER_THEME, true);
+                        MainActivity.this.recreate();
+                    }
+
+                    @Override
+                    public void onSystemStatsChanged(boolean enabled) {
+                        if (systemStatsOverlay != null) {
+                            systemStatsOverlay.setEnabled(enabled);
+                        }
+                    }
+                });
+        settingsScrollView = settingsTabBuilder.getScrollView();
+        settingsTabContent = settingsTabBuilder.getSettingsTabContent();
+    }
+
+    private void switchTab(int tabIndex) {
+        Log.i("MainActivityTab", "switchTab=" + tabIndex + " current=" + currentTab);
+        if (tabContentArea == null) {
+            return;
+        }
+        ensureTab(tabIndex);
+
+        if (welcomeSoundTabBuilder != null) {
+            welcomeSoundTabBuilder.onHostPause();
+        }
 
         if (currentTab == 9 && tabIndex != 9 && vehicleInfoTabBuilder != null) {
             vehicleInfoTabBuilder.stopListening();
@@ -1466,6 +1558,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void attachTabContent(FrameLayout parent, int tabIndex) {
         Log.i("MainActivityTab", "attachTabContent=" + tabIndex);
+        ensureTab(tabIndex);
         FrameLayout.LayoutParams matchParent = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
