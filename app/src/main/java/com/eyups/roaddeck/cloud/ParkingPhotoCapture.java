@@ -45,16 +45,20 @@ final class ParkingPhotoCapture {
         this.http = http;
     }
 
-    void start() {
-        if (thread != null) {
-            return;
-        }
-        thread = new HandlerThread("RoadDeckParkPhoto");
-        thread.start();
-        handler = new Handler(thread.getLooper());
+    synchronized void start() {
+        // İş parçacığı yalnız kontak kapanışında park fotoğrafı çekilirken açılır.
     }
 
-    void stop() {
+    private synchronized Handler ensureHandler() {
+        if (handler == null) {
+            thread = new HandlerThread("RoadDeckParkPhoto");
+            thread.start();
+            handler = new Handler(thread.getLooper());
+        }
+        return handler;
+    }
+
+    synchronized void stop() {
         HandlerThread active = thread;
         thread = null;
         handler = null;
@@ -64,10 +68,10 @@ final class ParkingPhotoCapture {
     }
 
     void captureOnce() {
-        Handler target = handler;
-        if (target == null || capturing || !config.parkPhotoEnabled()) {
+        if (capturing || !config.parkPhotoEnabled()) {
             return;
         }
+        Handler target = ensureHandler();
         long now = SystemClock.elapsedRealtime();
         if (now - lastCaptureAt < MIN_INTERVAL_MS) {
             return;

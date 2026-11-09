@@ -36,6 +36,10 @@ public final class CloudManager {
     private static final long DVR_INDEX_INTERVAL_MS = 5 * 60_000L;
     private static final long VALET_INTERVAL_MS = 30_000L;
     private static final long LOOP_INTERVAL_MS = 1_000L;
+    static final long INITIAL_VALET_DELAY_MS = 15_000L;
+    static final long INITIAL_TRIPS_DELAY_MS = 30_000L;
+    static final long INITIAL_HEALTH_DELAY_MS = 60_000L;
+    static final long INITIAL_DVR_INDEX_DELAY_MS = 3 * 60_000L;
 
     private static volatile CloudManager instance;
 
@@ -50,6 +54,7 @@ public final class CloudManager {
     private Handler worker;
     private volatile boolean running;
     private volatile boolean heartbeatOk;
+    private volatile boolean pollersStarted;
     private volatile int uploadIntervalSec = 15;
     private volatile boolean serverShareLocation;
     private volatile long nextHeartbeatAt;
@@ -192,47 +197,57 @@ public final class CloudManager {
         }
         running = true;
         heartbeatOk = false;
+        pollersStarted = false;
         backoff.reset();
+        long startNow = SystemClock.elapsedRealtime();
         nextAttemptAt = 0L;
         nextHeartbeatAt = 0L;
         nextTelemetryAt = 0L;
         nextTelemetrySendAt = 0L;
-        nextTripsAt = 0L;
-        telemetry = new TelemetryUploader(appContext, config);
-        tripUploader = new TripUploader(appContext, config, http);
-        commandExecutor = new CommandExecutor(appContext, config, http, telemetry);
-        commandPoller = new CommandPoller(config, http, commandExecutor, this::onCommandAuthRevoked);
-        dvrClipPoller = new DvrClipPoller(appContext, config, http, this::onCommandAuthRevoked);
-        healthUploader = new HealthUploader(appContext, config, http);
-        nextHealthAt = 0L;
-        nextDvrIndexAt = 0L;
-        valetUploader = new ValetUploader(appContext, config, http);
-        parkPhotoCapture = new ParkingPhotoCapture(appContext, config, http);
-        parkPhotoCapture.start();
-        nextValetAt = 0L;
+        nextValetAt = startNow + INITIAL_VALET_DELAY_MS;
+        nextTripsAt = startNow + INITIAL_TRIPS_DELAY_MS;
+        nextHealthAt = startNow + INITIAL_HEALTH_DELAY_MS;
+        nextDvrIndexAt = startNow + INITIAL_DVR_INDEX_DELAY_MS;
         setState(State.RUNNING, "Başlatılıyor");
         Handler target = ensureWorker();
         target.post(() -> {
             if (!running) {
                 return;
             }
+            telemetry = new TelemetryUploader(appContext, config);
+            tripUploader = new TripUploader(appContext, config, http);
+            commandExecutor = new CommandExecutor(appContext, config, http, telemetry);
+            commandPoller = new CommandPoller(config, http, commandExecutor, this::onCommandAuthRevoked);
+            dvrClipPoller = new DvrClipPoller(appContext, config, http, this::onCommandAuthRevoked);
+            healthUploader = new HealthUploader(appContext, config, http);
+            valetUploader = new ValetUploader(appContext, config, http);
+            parkPhotoCapture = new ParkingPhotoCapture(appContext, config, http);
+            parkPhotoCapture.start();
             ApkUpdater.reportInstalledIfNeeded(appContext, config, http);
             if (telemetry != null) {
                 telemetry.start();
-            }
-            if (commandPoller != null) {
-                commandPoller.start();
-            }
-            if (dvrClipPoller != null) {
-                dvrClipPoller.start();
             }
             loop();
         });
     }
 
+    private void ensurePollersStarted() {
+        if (pollersStarted || !running) {
+            return;
+        }
+        pollersStarted = true;
+        if (commandPoller != null) {
+            commandPoller.start();
+        }
+        if (dvrClipPoller != null) {
+            dvrClipPoller.start();
+        }
+    }
+
     public void stop() {
         running = false;
         heartbeatOk = false;
+        pollersStarted = false;
         if (worker != null) {
             worker.removeCallbacksAndMessages(null);
         }
@@ -285,12 +300,16 @@ public final class CloudManager {
         }
         long now = SystemClock.elapsedRealtime();
         if (now >= nextHeartbeatAt && now >= nextAttemptAt) {
+            boolean hadFailedAttempt = nextAttemptAt > 0L;
             if (sendHeartbeat()) {
                 now = SystemClock.elapsedRealtime();
                 nextHeartbeatAt = now + HEARTBEAT_INTERVAL_MS;
                 nextTelemetryAt = now;
                 nextTelemetrySendAt = now;
-                nextTripsAt = now;
+                if (hadFailedAttempt) {
+                    nextTripsAt = now;
+                }
+                ensurePollersStarted();
             }
         }
         now = SystemClock.elapsedRealtime();

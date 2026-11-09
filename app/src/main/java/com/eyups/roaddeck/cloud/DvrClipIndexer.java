@@ -5,87 +5,112 @@ import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.eyups.roaddeck.dvr.DvrClipStore;
 import com.eyups.roaddeck.dvr.DvrController;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Locale;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
 /** Mevcut DVR kliplerinin metadata ve thumbnail'larını buluta yükler. */
 final class DvrClipIndexer {
 
     private static final String TAG = "DvrClipIndexer";
+    private static final String CACHE_DIR_NAME = "dvr_index_cache";
     private static final int MAX_CLIPS = 100;
     private static final int MAX_INDEX_BYTES = 50 * 1024 * 1024;
     private static final int THUMB_WIDTH = 320;
     private static final int THUMB_HEIGHT = 180;
 
-    private static final Object SIGNATURE_LOCK = new Object();
-    private static String lastSignature = "";
-    private static final int THUMB_CACHE_MAX = 100;
-    private static final Map<String, ThumbCacheEntry> THUMB_CACHE =
-            new LinkedHashMap<String, ThumbCacheEntry>(16, 0.75f, true) {
-                @Override
-                protected boolean removeEldestEntry(
-                        Map.Entry<String, ThumbCacheEntry> eldest) {
-                    return size() > THUMB_CACHE_MAX;
-                }
-            };
+    private static final Object CACHE_LOCK = new Object();
+    private static final AtomicBoolean SYNC_IN_PROGRESS = new AtomicBoolean(false);
+    private static DvrIndexCache diskCache;
+    private static File diskCacheDir;
 
-    private static final class ThumbCacheEntry {
-        final long durationMs;
-        final byte[] jpeg;
+    private DvrClipIndexer() {
+    }
 
-        ThumbCacheEntry(long durationMs, byte[] jpeg) {
-            this.durationMs = durationMs;
-            this.jpeg = jpeg;
+    private static DvrIndexCache getCache(Context context) {
+        File targetDir = new File(context.getApplicationContext().getCacheDir(), CACHE_DIR_NAME);
+        synchronized (CACHE_LOCK) {
+            if (diskCache == null || !targetDir.equals(diskCacheDir)) {
+                diskCacheDir = targetDir;
+                diskCache = new DvrIndexCache(targetDir);
+            }
+            return diskCache;
         }
     }
 
-    private DvrClipIndexer() {
+    /** Kaydı süren klipleri listeden çıkarır; yalnızca tamamlanmış klipler indekslenir. */
+    static List<DvrClipStore.Clip> filterCompletedClips(
+            List<DvrClipStore.Clip> clips, Set<String> activeBases) {
+        List<DvrClipStore.Clip> out = new ArrayList<>();
+        if (clips == null) {
+            return out;
+        }
+        for (DvrClipStore.Clip clip : clips) {
+            if (clip == null || clip.base == null) {
+                continue;
+            }
+            if (activeBases != null && activeBases.contains(clip.base)) {
+                continue;
+            }
+            out.add(clip);
+        }
+        return out;
     }
 
     /** CloudManager tarafından periyodik çağrılır; klip listesi değişmediyse ağa çıkmaz. */
     static void syncIfChanged(Context context, CloudConfig config, CloudHttp http,
             Consumer<String> log, Consumer<Boolean> done) {
-        DvrController.get(context).loadClips(clips -> {
-            String signature = signature(clips);
-            synchronized (SIGNATURE_LOCK) {
-                if (signature.equals(lastSignature)) {
-                    if (done != null) {
-                        done.accept(true);
-                    }
+        if (!SYNC_IN_PROGRESS.compareAndSet(false, true)) {
+            if (done != null) {
+                done.accept(false);
+            }
+            return;
+        }
+        final Context appContext = context.getApplicationContext();
+        DvrController.get(appContext).loadClips(rawClips -> new Thread(() -> {
+            boolean ok = false;
+            try {
+                Set<String> active = DvrController.get(appContext).activeBases();
+                List<DvrClipStore.Clip> clips = filterCompletedClips(rawClips, active);
+                String signature = signature(clips);
+                DvrIndexCache cache = getCache(appContext);
+                if (signature.equals(cache.getLastSignature())) {
+                    ok = true;
                     return;
                 }
-            }
-            sync(context, config, http, log, ok -> {
-                if (Boolean.TRUE.equals(ok)) {
-                    synchronized (SIGNATURE_LOCK) {
-                        lastSignature = signature;
-                    }
-                }
+                ok = upload(appContext, config, http, clips, cache, signature, true, log);
+            } catch (Exception error) {
+                Log.w(TAG, "DVR indeksi yüklenemedi", error);
+                log.accept("DVR indeksi: " + error.getClass().getSimpleName());
+            } finally {
+                SYNC_IN_PROGRESS.set(false);
                 if (done != null) {
                     done.accept(ok);
                 }
-            });
-        });
+            }
+        }, "RoadDeckDvrIndex").start());
     }
 
     private static String signature(List<DvrClipStore.Clip> clips) {
         StringBuilder value = new StringBuilder();
-        for (DvrClipStore.Clip clip : clips) {
+        int count = Math.min(clips.size(), MAX_CLIPS);
+        for (int i = 0; i < count; i++) {
+            DvrClipStore.Clip clip = clips.get(i);
             value.append(clip.base).append(':').append(clip.bytes).append(':');
             if (clip.mosaic != null) {
                 value.append('m').append(clip.mosaic.length());
@@ -100,10 +125,15 @@ final class DvrClipIndexer {
 
     static void sync(Context context, CloudConfig config, CloudHttp http,
             Consumer<String> log, Consumer<Boolean> done) {
-        DvrController.get(context).loadClips(clips -> new Thread(() -> {
+        final Context appContext = context.getApplicationContext();
+        DvrController.get(appContext).loadClips(rawClips -> new Thread(() -> {
             boolean ok = false;
             try {
-                ok = upload(config, http, clips, log);
+                Set<String> active = DvrController.get(appContext).activeBases();
+                List<DvrClipStore.Clip> clips = filterCompletedClips(rawClips, active);
+                String signature = signature(clips);
+                DvrIndexCache cache = getCache(appContext);
+                ok = upload(appContext, config, http, clips, cache, signature, false, log);
             } catch (Exception error) {
                 Log.w(TAG, "DVR indeksi yüklenemedi", error);
                 log.accept("DVR indeksi: " + error.getClass().getSimpleName());
@@ -115,12 +145,17 @@ final class DvrClipIndexer {
         }, "RoadDeckDvrIndex").start());
     }
 
-    private static boolean upload(CloudConfig config, CloudHttp http,
-            List<DvrClipStore.Clip> clips, Consumer<String> log) throws Exception {
+    private static boolean upload(Context context, CloudConfig config, CloudHttp http,
+            List<DvrClipStore.Clip> clips, DvrIndexCache cache, String signature,
+            boolean incremental, Consumer<String> log) throws Exception {
         JSONArray manifest = new JSONArray();
         List<byte[]> thumbnails = new ArrayList<>();
+        Set<String> seenThumbKeys = new HashSet<>();
+        List<String> sentThumbKeys = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX", Locale.US);
         format.setTimeZone(TimeZone.getDefault());
+        long nowMs = System.currentTimeMillis();
+        boolean fullRefresh = !incremental || cache.isFullUploadDue(nowMs);
         int count = Math.min(clips.size(), MAX_CLIPS);
         for (int index = 0; index < count; index++) {
             DvrClipStore.Clip clip = clips.get(index);
@@ -130,15 +165,16 @@ final class DvrClipIndexer {
             }
             String thumbKey = clip.base + ':' + primary.length() + ':'
                     + primary.lastModified();
-            ThumbCacheEntry cached;
-            synchronized (THUMB_CACHE) {
-                cached = THUMB_CACHE.get(thumbKey);
-            }
+            seenThumbKeys.add(thumbKey);
+            DvrIndexCache.Entry cached = cache.get(thumbKey);
             long durationMs = 0L;
             byte[] thumbnail = null;
             if (cached != null) {
                 durationMs = cached.durationMs;
-                thumbnail = cached.jpeg;
+                if (fullRefresh || !cached.uploaded) {
+                    thumbnail = cached.jpeg;
+                }
+                sentThumbKeys.add(thumbKey);
             } else {
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                 try {
@@ -170,9 +206,8 @@ final class DvrClipIndexer {
                     } catch (Exception ignored) {
                     }
                 }
-                synchronized (THUMB_CACHE) {
-                    THUMB_CACHE.put(thumbKey, new ThumbCacheEntry(durationMs, thumbnail));
-                }
+                cache.put(thumbKey, durationMs, thumbnail, false);
+                sentThumbKeys.add(thumbKey);
             }
             JSONObject item = new JSONObject();
             item.put("clip_key", clip.base);
@@ -192,6 +227,8 @@ final class DvrClipIndexer {
             thumbnails.add(thumbnail);
         }
         if (manifest.length() == 0) {
+            cache.retainOnly(seenThumbKeys);
+            cache.save();
             log.accept("DVR indeksi: klip yok");
             return false;
         }
@@ -202,6 +239,15 @@ final class DvrClipIndexer {
                 thumbnails,
                 MAX_INDEX_BYTES);
         boolean ok = response.code == 201;
+        if (ok) {
+            cache.markUploaded(sentThumbKeys);
+            if (fullRefresh) {
+                cache.markFullUpload(nowMs);
+            }
+            cache.setLastSignature(signature);
+        }
+        cache.retainOnly(seenThumbKeys);
+        cache.save();
         String message = "DVR indeksi: " + (ok ? "ok" : "HTTP " + response.code)
                 + " (" + manifest.length() + " klip)";
         Log.i(TAG, message);

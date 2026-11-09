@@ -685,6 +685,7 @@ public final class DvrController {
     public void loadClips(ClipsCallback cb) {
         final Set<String> active = activeBases();
         io.execute(() -> {
+            active.addAll(activeBases());
             List<DvrClipStore.Clip> clips = DvrClipStore.list(internalDir, active);
             main.post(() -> cb.onClips(clips));
         });

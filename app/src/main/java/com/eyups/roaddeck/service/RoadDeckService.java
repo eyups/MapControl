@@ -101,6 +101,8 @@ public class RoadDeckService extends Service {
     private com.eyups.roaddeck.manager.TurnSignalCameraController turnSignalCameraController;
     private SharedPreferences.OnSharedPreferenceChangeListener gesturePrefListener;
     private boolean cloudAutoStartScheduled;
+    private boolean vdbusBridgeAcquired;
+    private volatile boolean destroyed;
     
     /**
      * Log mesajını MainActivity'ye gönder (sistem kayıtlarına)
@@ -118,32 +120,46 @@ public class RoadDeckService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        destroyed = false;
+        vdbusBridgeAcquired = false;
         createNotificationChannel();
+        startForegroundImmediately();
         BootSession.noteServiceStart(this);
-        // Önceki çökmeden kalan OEM VR bırakma durumunu temizle; asistan
-        // başladığında mikrofonu yeniden ödünç alır.
-        OemMicArbiter.restoreIfStale(this);
         handler = new Handler(Looper.getMainLooper());
         scheduler = Executors.newSingleThreadScheduledExecutor();
+        // Önceki çökmeden kalan OEM VR bırakma durumunu arka planda temizle.
+        scheduler.execute(() -> OemMicArbiter.restoreIfStale(RoadDeckService.this));
         scheduleClusterBootSplash();
         scheduleEqualizerKeeper();
+        scheduleCloudAutoStart();
 
         // Power mode kontrolünü başlat
         com.eyups.roaddeck.dvr.DvrController.get(this).start();
         startPowerModeMonitor();
         ClimateAutomationEngine.getInstance(this).start();
-        // Cam tavan otomasyonu yalnız kullanıcı ilgili sekmeyi açınca başlatılır;
-        // boot/servis açılışında VDBus/sensör aboneliği kurulmaz.
-        if (DmsFaceRecognitionManager.isEnabled(this)
-                && checkSelfPermission(android.Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            try {
-                DmsFaceRecognitionManager.start(this);
-            } catch (RuntimeException e) {
-                log("Yuz tanima arka planda yeniden baslatilamadi: " + e.getMessage());
+        // VDBus tuş köprüsü ve yüz tanımayı onCreate dönüşünden sonraya ertele;
+        // startForeground ve ilk aktivite açılışı bekletilmez.
+        handler.post(() -> {
+            if (destroyed) {
+                return;
             }
-        }
-        RoadDeckVDBusKeyBridge.acquire(this);
+            RoadDeckVDBusKeyBridge.acquire(RoadDeckService.this);
+            vdbusBridgeAcquired = true;
+        });
+        handler.postDelayed(() -> {
+            if (destroyed) {
+                return;
+            }
+            if (DmsFaceRecognitionManager.isEnabled(RoadDeckService.this)
+                    && checkSelfPermission(android.Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    DmsFaceRecognitionManager.start(RoadDeckService.this);
+                } catch (RuntimeException e) {
+                    log("Yuz tanima arka planda yeniden baslatilamadi: " + e.getMessage());
+                }
+            }
+        }, 2_000L);
         scheduler.scheduleAtFixedRate(
                 () -> RoadDeckVDBusKeyBridge.refreshSubscription(false, false),
                 30, 30, TimeUnit.SECONDS);
@@ -228,12 +244,10 @@ public class RoadDeckService extends Service {
         }
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        // Foreground service için notification oluştur
+    private void startForegroundImmediately() {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, notificationIntent, 
+                this, 0, notificationIntent,
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
@@ -245,7 +259,15 @@ public class RoadDeckService extends Service {
                 .build();
 
         startForeground(NOTIFICATION_ID, notification);
-        applySavedEqualizer();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startForegroundImmediately();
+        if (scheduler != null) {
+            scheduler.execute(this::applySavedEqualizer);
+        }
+        scheduleCloudAutoStart();
         noteBootLaunch(intent);
 
         // Yüzen geri tuşu + yan menü (birleşik hub)
@@ -303,6 +325,11 @@ public class RoadDeckService extends Service {
 
     @Override
     public void onDestroy() {
+        destroyed = true;
+        cloudAutoStartScheduled = false;
+        if (handler != null) {
+            handler.removeCallbacksAndMessages(null);
+        }
         if (gesturePrefListener != null) {
             TargetPackageStore.prefs(this).unregisterOnSharedPreferenceChangeListener(gesturePrefListener);
             gesturePrefListener = null;
@@ -329,7 +356,10 @@ public class RoadDeckService extends Service {
         if (scheduler != null) {
             scheduler.shutdown();
         }
-        RoadDeckVDBusKeyBridge.release(this);
+        if (vdbusBridgeAcquired) {
+            vdbusBridgeAcquired = false;
+            RoadDeckVDBusKeyBridge.release(this);
+        }
     }
 
     @Override
@@ -360,13 +390,15 @@ public class RoadDeckService extends Service {
             return;
         }
 
-        // CarInfoProxy'yi başlat
-        try {
-            CarInfoProxy.getInstance().init(getApplicationContext());
-        } catch (Exception e) {
-            log("❌ CarInfoProxy init hatası: " + e.getMessage());
-        }
         recirculationAutomation = new RecirculationAutomation(this, this::log);
+        // CarInfoProxy'yi arka planda başlat; ana iş parçacığında binder beklemesi yapılmaz.
+        scheduler.execute(() -> {
+            try {
+                CarInfoProxy.getInstance().init(getApplicationContext());
+            } catch (Exception e) {
+                log("❌ CarInfoProxy init hatası: " + e.getMessage());
+            }
+        });
 
         // Her 2 saniyede bir power mode kontrol et
         scheduler.scheduleAtFixedRate(() -> {
@@ -569,21 +601,22 @@ public class RoadDeckService extends Service {
         }
     }
 
-    /** Boot sonrası 10 sn bekleyip, tercih açıksa bulut telemetrisini başlatır. */
+    /** Servis/boot açılışından 10 sn sonra, tercih açıksa bulut telemetrisini başlatır. */
     private void scheduleCloudAutoStart() {
-        if (cloudAutoStartScheduled) {
-            return;
-        }
-        cloudAutoStartScheduled = true;
         Handler target = handler;
-        if (target == null) {
+        if (target == null || cloudAutoStartScheduled) {
             return;
         }
         if (!CloudManager.isAutoStartEnabled(this)) {
             log("Bulut otomatik başlatma kapalı");
             return;
         }
+        cloudAutoStartScheduled = true;
         target.postDelayed(() -> {
+            cloudAutoStartScheduled = false;
+            if (destroyed) {
+                return;
+            }
             try {
                 CloudManager.autoStartIfConfigured(RoadDeckService.this);
                 log("Bulut otomatik başlatma denendi");

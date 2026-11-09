@@ -3,13 +3,14 @@ package com.eyups.roaddeck.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 
 import com.eyups.roaddeck.util.LauncherModeManager;
 
 /**
- * Uygulama güncellendikten hemen sonra ({@code MY_PACKAGE_REPLACED}) Launcher Modu'nu geri kurar.
- * Kullanıcının FrostNav'ı elle açmasına gerek kalmadan HOME tuşu launcher'a gitsin diye. Arayüz
- * başlatmaz (Android 10+ arka plan kısıtı); yalnızca alias + cihaz sahibi HOME sabitlemesi.
+ * Uygulama güncellendikten hemen sonra ({@code MY_PACKAGE_REPLACED}) Launcher Modu'nu geri kurar
+ * ve otomatik başlatma açıksa {@link RoadDeckService}'i yeniden başlatır.
  */
 public class PackageReplacedReceiver extends BroadcastReceiver {
     @Override
@@ -17,6 +18,22 @@ public class PackageReplacedReceiver extends BroadcastReceiver {
         if (intent == null || !Intent.ACTION_MY_PACKAGE_REPLACED.equals(intent.getAction())) {
             return;
         }
-        LauncherModeManager.restoreIfEnabled(context.getApplicationContext());
+        Context app = context.getApplicationContext();
+        LauncherModeManager.restoreIfEnabled(app);
+
+        SharedPreferences prefs = app.getSharedPreferences(
+                BootReceiver.PREFS_NAME, Context.MODE_PRIVATE);
+        if (!prefs.getBoolean(BootReceiver.KEY_BOOT_AUTO_START, true)) {
+            return;
+        }
+        Intent serviceIntent = new Intent(app, RoadDeckService.class);
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                app.startForegroundService(serviceIntent);
+            } else {
+                app.startService(serviceIntent);
+            }
+        } catch (Exception ignored) {
+        }
     }
 }
