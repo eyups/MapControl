@@ -168,6 +168,20 @@ public final class CloudManager {
         });
     }
 
+    /** Cihaz açılışında otomatik başlatma tercihi. */
+    public static boolean isAutoStartEnabled(Context context) {
+        return new CloudConfig(context).autoStartEnabled();
+    }
+
+    /** Boot sonrası: eşleşmiş ve tercih açıksa bulut telemetrisini başlatır. */
+    public static void autoStartIfConfigured(Context context) {
+        CloudConfig config = new CloudConfig(context);
+        if (!config.autoStartEnabled() || !config.isPaired()) {
+            return;
+        }
+        get(context).start();
+    }
+
     public void start() {
         if (!config.isPaired()) {
             setState(State.ERROR, "unpaired");

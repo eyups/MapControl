@@ -484,13 +484,21 @@ public class VDConnector {
         Intent intent = new Intent();
         intent.setAction(this.mServiceInfo.getServiceAction());
         intent.setPackage(this.mServiceInfo.getPackageName());
-        if (Build.VERSION.SDK_INT >= 26) {
-            ComponentName unused = this.mContext.startForegroundService(intent);
-        } else {
-            this.mContext.startService(intent);
+        try {
+            if (Build.VERSION.SDK_INT >= 26) {
+                this.mContext.startForegroundService(intent);
+            } else {
+                this.mContext.startService(intent);
+            }
+        } catch (Throwable t) {
+            Log.w(TAG, "startForegroundService atlandı (" + this.mServiceInfo.getServiceName() + "): " + t.getMessage());
         }
-        this.mContext.bindService(intent, this.mServiceConn, 1);
-        return true;
+        try {
+            return this.mContext.bindService(intent, this.mServiceConn, 1);
+        } catch (Throwable t) {
+            Log.e(TAG, "bindService hatası (" + this.mServiceInfo.getServiceName() + ")", t);
+            return false;
+        }
     }
 
     public void dispatchEvent(VDEvent vDEvent, int i9) {

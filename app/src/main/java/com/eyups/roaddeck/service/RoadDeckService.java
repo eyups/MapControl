@@ -34,6 +34,7 @@ import java.io.IOException;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import com.eyups.roaddeck.audio.AudioEqualizerController;
+import com.eyups.roaddeck.cloud.CloudManager;
 import com.eyups.roaddeck.driving.DrivingSessionRecorder;
 import com.eyups.roaddeck.valet.ValetMonitor;
 import com.eyups.roaddeck.ui.activity.MainActivity;
@@ -99,6 +100,7 @@ public class RoadDeckService extends Service {
     private DrivingSessionRecorder drivingSessionRecorder;
     private com.eyups.roaddeck.manager.TurnSignalCameraController turnSignalCameraController;
     private SharedPreferences.OnSharedPreferenceChangeListener gesturePrefListener;
+    private boolean cloudAutoStartScheduled;
     
     /**
      * Log mesajını MainActivity'ye gönder (sistem kayıtlarına)
@@ -567,6 +569,30 @@ public class RoadDeckService extends Service {
         }
     }
 
+    /** Boot sonrası 10 sn bekleyip, tercih açıksa bulut telemetrisini başlatır. */
+    private void scheduleCloudAutoStart() {
+        if (cloudAutoStartScheduled) {
+            return;
+        }
+        cloudAutoStartScheduled = true;
+        Handler target = handler;
+        if (target == null) {
+            return;
+        }
+        if (!CloudManager.isAutoStartEnabled(this)) {
+            log("Bulut otomatik başlatma kapalı");
+            return;
+        }
+        target.postDelayed(() -> {
+            try {
+                CloudManager.autoStartIfConfigured(RoadDeckService.this);
+                log("Bulut otomatik başlatma denendi");
+            } catch (Throwable error) {
+                log("Bulut otomatik başlatma hatası: " + error.getMessage());
+            }
+        }, 10_000L);
+    }
+
     private void noteBootLaunch(Intent intent) {
         if (intent == null || !intent.getBooleanExtra(BootReceiver.EXTRA_BOOT, false)) {
             return;
@@ -574,6 +600,7 @@ public class RoadDeckService extends Service {
         SharedPreferences prefs = getSharedPreferences(BootReceiver.PREFS_NAME, MODE_PRIVATE);
         boolean ui = prefs.getBoolean(BootReceiver.KEY_BOOT_AUTO_LAUNCH_UI, true);
         BootSession.setUiPending(this, ui);
+        scheduleCloudAutoStart();
         if (!ui) {
             return;
         }

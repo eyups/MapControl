@@ -50,6 +50,7 @@ public final class CloudTabBuilder {
     private final CockpitToggleRow shareLocationRow;
     private final CockpitToggleRow faceBackupRow;
     private final CockpitToggleRow parkPhotoRow;
+    private final CockpitToggleRow autoStartRow;
     private final CockpitGrid actionsGrid;
     private final LinearLayout logUploadButton;
     private final LinearLayout vdbusButton;
@@ -188,6 +189,13 @@ public final class CloudTabBuilder {
         LinearLayout.LayoutParams parkPhotoLp = matchWidth();
         parkPhotoLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
         pairedRow.addView(parkPhotoRow, parkPhotoLp);
+        autoStartRow = new CockpitToggleRow(context, R.drawable.ic_mdi_restart,
+                context.getString(R.string.settings_cloud_auto_start),
+                context.getString(R.string.settings_cloud_auto_start_sub),
+                config.autoStartEnabled());
+        LinearLayout.LayoutParams autoStartLp = matchWidth();
+        autoStartLp.topMargin = CockpitTokens.dim(context, R.dimen.ck_space_sm);
+        pairedRow.addView(autoStartRow, autoStartLp);
         pairCard.addView(pairedRow, matchWidth());
 
         identityLine = new TextView(context);
@@ -330,6 +338,11 @@ public final class CloudTabBuilder {
         parkPhotoRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
             config.setParkPhotoEnabled(checked);
             logger.accept("Park fotoğrafı: " + (checked ? "açık" : "kapalı"));
+        });
+        autoStartRow.getToggle().setOnCheckedChangeListener((toggle, checked) -> {
+            config.setAutoStartEnabled(checked);
+            logger.accept("Otomatik başlatma: " + (checked ? "açık" : "kapalı")
+                    + " (sonraki açılışta geçerli)");
         });
 
         manager.addListener(managerListener);
@@ -664,6 +677,10 @@ public final class CloudTabBuilder {
         parkPhotoRow.getToggle().setEnabled(paired);
         if (parkPhotoRow.getToggle().isChecked() != config.parkPhotoEnabled()) {
             parkPhotoRow.setCheckedSilently(config.parkPhotoEnabled());
+        }
+        autoStartRow.getToggle().setEnabled(paired);
+        if (autoStartRow.getToggle().isChecked() != config.autoStartEnabled()) {
+            autoStartRow.setCheckedSilently(config.autoStartEnabled());
         }
     }
 

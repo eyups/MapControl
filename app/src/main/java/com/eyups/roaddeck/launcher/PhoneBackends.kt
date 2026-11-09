@@ -732,8 +732,10 @@ internal class VdbusCallBackend(private val io: Executor, private val onAvailabi
             runCatching { b.registerVDBindListener(bindListener) }
             bindRegistered = true
         }
-        if (!available()) runCatching { b.bindService(VDServiceDef.ServiceType.BT) }
-            .onFailure { Log.w(TAG, "vdbus BT bind: ${it.javaClass.simpleName}") }
+        // BT servisi sistem UID'sine ait ve export edilmediği için üçüncü parti UID'den
+        // bindService çağrısı ana iş parçacığında SecurityException ile süreci düşürüyor.
+        // Bu araçta VDBus BT bağlanması devre dışı; HFP/Telecom arka uçları kullanılır.
+        Log.i(TAG, "vdbus BT bind atlandı: servis üçüncü parti UID'e açık değil")
     }
 
     /** io: bağlanma dinleyicisini bırakır (servis bağı paylaşıldığı için açık kalır). */

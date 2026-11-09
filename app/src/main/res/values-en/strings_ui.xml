@@ -1471,4 +1471,6 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="ck_climate_delay_control">Delay</string>
     <string name="ck_climate_temp_control">Temperature threshold</string>
     <string name="ck_climate_level_control">Seat level</string>
+    <string name="settings_cloud_auto_start">Start automatically on boot</string>
+    <string name="settings_cloud_auto_start_sub">Starts telemetry sharing 10 seconds after the device boots. If off, the cloud must be started manually.</string>
 </resources>

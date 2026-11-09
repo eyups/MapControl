@@ -609,6 +609,10 @@ internal object OemAudioSource {
 
     /** io: [type] servisi bağlı değilse bağlanmayı başlatır, beklemez. */
     private fun startBind(type: VDServiceDef.ServiceType) {
+        if (type == VDServiceDef.ServiceType.BT) {
+            Log.i(TAG, "BT bind atlandı: servis üçüncü parti UID'e açık değil")
+            return
+        }
         val b = bus ?: return
         try {
             if (!b.isServiceConnected(type)) b.bindService(type)
@@ -619,6 +623,7 @@ internal object OemAudioSource {
 
     /** io: [startBind] sonrası [type] servisinin bağlanmasını bekler (en çok [BIND_WAIT_MS]); bağlanamazsa null. */
     private fun connect(type: VDServiceDef.ServiceType): VDBus? {
+        if (type == VDServiceDef.ServiceType.BT) return null
         val b = bus ?: return null
         return try {
             // Bağlanma [startBind] ile başladı; burada yalnızca beklenir (bindService iki kez çağrılmaz).

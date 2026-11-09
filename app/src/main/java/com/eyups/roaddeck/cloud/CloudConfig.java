@@ -18,6 +18,7 @@ final class CloudConfig {
     private static final String KEY_TOKEN_EXPIRES_AT = "cloudTokenExpiresAt";
     private static final String KEY_SHARE_LOCATION = "cloudShareLocation";
     private static final String KEY_PARK_PHOTO = "cloudParkPhoto";
+    private static final String KEY_AUTO_START = "cloudAutoStart";
     private static final String KEY_BACKUP_FACE_DATA = "cloudBackupFaceData";
     private static final String KEY_UPLOADED_TRIPS = "cloudUploadedTripIds";
     private static final int MAX_UPLOADED_TRIPS = 500;
@@ -72,6 +73,14 @@ final class CloudConfig {
 
     boolean parkPhotoEnabled() {
         return prefs.getBoolean(KEY_PARK_PHOTO, false);
+    }
+
+    boolean autoStartEnabled() {
+        return prefs.getBoolean(KEY_AUTO_START, true);
+    }
+
+    void setAutoStartEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_AUTO_START, enabled).apply();
     }
 
     void setParkPhotoEnabled(boolean enabled) {
