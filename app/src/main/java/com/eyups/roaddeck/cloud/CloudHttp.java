@@ -22,6 +22,8 @@ final class CloudHttp {
 
     static final int CONNECT_TIMEOUT_MS = 10_000;
     static final int READ_TIMEOUT_MS = 30_000;
+    /** DVR klipleri onlarca MB; yükleme + sunucu yanıtı 30 sn'ye sığmayabilir. */
+    static final int VIDEO_READ_TIMEOUT_MS = 10 * 60_000;
     static final int MAX_RESPONSE_BYTES = 64 * 1024;
 
     static final class Response {
@@ -276,7 +278,7 @@ final class CloudHttp {
         byte[] footer = ("\r\n--" + boundary + "--\r\n").getBytes(StandardCharsets.UTF_8);
         long length = header.length + file.length() + footer.length;
         return streamFile(CloudConfig.BASE_URL + path, deviceToken, file, header, footer, length,
-                "multipart/form-data; boundary=" + boundary, null);
+                "multipart/form-data; boundary=" + boundary, null, VIDEO_READ_TIMEOUT_MS);
     }
 
     /** Video dosyasını telefonun yerel alıcısına ham gövde olarak akıtır. */
@@ -289,12 +291,13 @@ final class CloudHttp {
         byte[] footer = new byte[0];
         return streamFile(url, null, file, header, footer, file.length(),
                 "video/mp4", new String[][]{{"X-Dvr-Request", requestId},
-                        {"X-Dvr-Token", localToken == null ? "" : localToken}});
+                        {"X-Dvr-Token", localToken == null ? "" : localToken}},
+                VIDEO_READ_TIMEOUT_MS);
     }
 
     private Response streamFile(String absoluteUrl, String deviceToken, File file,
             byte[] header, byte[] footer, long totalLength, String contentType,
-            String[][] extraHeaders) throws IOException {
+            String[][] extraHeaders, int readTimeoutMs) throws IOException {
         URL url = new URL(absoluteUrl);
         String protocol = url.getProtocol();
         if (!"https".equalsIgnoreCase(protocol) && !"http".equalsIgnoreCase(protocol)) {
@@ -308,7 +311,7 @@ final class CloudHttp {
         try {
             connection.setRequestMethod("POST");
             connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
-            connection.setReadTimeout(READ_TIMEOUT_MS);
+            connection.setReadTimeout(readTimeoutMs);
             connection.setUseCaches(false);
             connection.setInstanceFollowRedirects(false);
             connection.setDoOutput(true);
