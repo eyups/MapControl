@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * Park fotoğrafı: vites P + hız 0'da dört kameradan tam çözünürlüklü kare alır, önizleme ve
@@ -68,6 +69,9 @@ final class ParkingPhotoCapture {
     private volatile long parkAtMs = -1L;
     private volatile long ignitionOffAtMs = -1L;
     private boolean lastDoorOpen;
+    private Consumer<Boolean> manualCallback;
+    private Runnable manualTimeout;
+    private static final long MANUAL_TIMEOUT_MS = 90_000L;
 
     /** Bellekte bekleyen tek park yakalaması. */
     static final class Pending {
@@ -240,6 +244,52 @@ final class ParkingPhotoCapture {
         }
     }
 
+    /** Send menüsünden manuel park fotoğrafı isteği; çekim + yükleme + onay sonucu döner. */
+    void captureNow(Consumer<Boolean> done) {
+        if (done == null) {
+            return;
+        }
+        synchronized (this) {
+            if (manualCallback != null) {
+                done.accept(false);
+                return;
+            }
+            manualCallback = done;
+            manualTimeout = () -> finishManual(false);
+        }
+        captureHandler().postDelayed(manualTimeout, MANUAL_TIMEOUT_MS);
+        Pending current = latest();
+        if (current != null && !current.discarded) {
+            if (current.complete()) {
+                finishManual(true);
+                return;
+            }
+            current.commitRequested = true;
+            scheduleCommit(current, 0, 0L);
+            scheduleUpload(current, 0, 0L);
+            return;
+        }
+        commitAfterCapture = true;
+        requestCapture();
+    }
+
+    private void finishManual(boolean ok) {
+        Consumer<Boolean> callback;
+        Runnable timeout;
+        synchronized (this) {
+            callback = manualCallback;
+            manualCallback = null;
+            timeout = manualTimeout;
+            manualTimeout = null;
+        }
+        if (timeout != null && captureHandler != null) {
+            captureHandler.removeCallbacks(timeout);
+        }
+        if (callback != null) {
+            callback.accept(ok);
+        }
+    }
+
     // ---------------- Yakalama ----------------
 
     private void requestCapture() {
@@ -252,6 +302,7 @@ final class ParkingPhotoCapture {
                 Pending pending = captureAndEncode();
                 if (pending == null) {
                     commitAfterCapture = false;
+                    finishManual(false);
                     return;
                 }
                 if (discardNextCapture && !commitAfterCapture) {
@@ -271,6 +322,7 @@ final class ParkingPhotoCapture {
             } catch (Throwable error) {
                 Log.w(TAG, "park fotoğrafı alınamadı: " + error.getClass().getSimpleName());
                 timing("capture_error", error.getClass().getSimpleName());
+                finishManual(false);
             } finally {
                 capturing = false;
             }
@@ -508,13 +560,16 @@ final class ParkingPhotoCapture {
             if (response.code == 200) {
                 p.commitDone = true;
                 maybeChime(p);
+                finishManual(true);
                 return;
             }
             if (response.code == 401) {
                 authRevoked = true;
+                finishManual(false);
                 return;
             }
             if (response.code >= 400 && response.code < 500 && response.code != 429) {
+                finishManual(false);
                 return;
             }
         } catch (Exception error) {
@@ -530,6 +585,7 @@ final class ParkingPhotoCapture {
         if (!ParkPhotoPolicy.inRetryWindow(lastPowerMode, ignitionOffAtMs, now)) {
             // Kapı açıldı, ağ yok: bir sonraki kontakta onNetworkAvailable tamamlar.
             timing("deferred", "capture=" + shortId(p) + (upload ? " upload" : " commit"));
+            finishManual(false);
             return;
         }
         long delay = ParkPhotoPolicy.retryDelayMs(attempt);

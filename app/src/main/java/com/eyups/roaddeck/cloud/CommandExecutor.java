@@ -61,7 +61,8 @@ final class CommandExecutor {
             return;
         }
         if (!"ping".equals(type) && !"nav.navigate".equals(type)
-                && !"tts.say".equals(type) && !"comfort.scene".equals(type)) {
+                && !"tts.say".equals(type) && !"comfort.scene".equals(type)
+                && !"park.photo".equals(type)) {
             sendResult(commandId, "rejected", reason("unsupported_type"));
             return;
         }
@@ -82,13 +83,19 @@ final class CommandExecutor {
             sendResult(commandId, "rejected", reason("moving"));
             return;
         }
+        if ("park.photo".equals(type) && ComfortCommands.readGear() != 1) {
+            sendResult(commandId, "rejected", reason("not_park"));
+            return;
+        }
         JSONObject payload = command.optJSONObject("payload");
         if (payload == null) {
             sendResult(commandId, "failed", reason("missing_payload"));
             return;
         }
         String message;
-        if ("tts.say".equals(type)) {
+        if ("park.photo".equals(type)) {
+            message = "Park fotoğrafı çek";
+        } else if ("tts.say".equals(type)) {
             message = payload.optString("text", "").trim();
             if (message.isEmpty() || message.length() > 200) {
                 sendResult(commandId, "failed", reason("invalid_text"));
@@ -156,6 +163,17 @@ final class CommandExecutor {
             return;
         }
         try {
+            if ("park.photo".equals(active.type)) {
+                CloudManager.get(appContext).captureParkPhotoNow(ok -> {
+                    JSONObject detail = new JSONObject();
+                    try {
+                        detail.put("ok", ok);
+                    } catch (Exception ignored) {
+                    }
+                    sendResult(active.commandId, ok ? "done" : "failed", detail);
+                });
+                return;
+            }
             if ("tts.say".equals(active.type)) {
                 RoadDeckSpeech.speak(appContext, active.message);
                 JSONObject detail = new JSONObject();

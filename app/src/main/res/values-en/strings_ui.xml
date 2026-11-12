@@ -180,7 +180,7 @@
     <string name="web_server_stop">Stop Web Server</string>
     <string name="web_server_stopped">Server stopped</string>
     <string name="web_text_sent">Text sent</string>
-    <string name="assist_title">Vehicle and driver assists</string>
+<string name="assist_title">Vehicle and driver assists</string>
     <string name="assist_subtitle">Driving safety and comfort settings</string>
     <string name="drive_modes_title">Drive modes</string>
     <string name="splash_preparing_title">Preparing app</string>
@@ -841,6 +841,16 @@
 <string name="profiles_name_required">Enter a name</string>
 <string name="profiles_delete_last">The last profile cannot be deleted</string>
 <string name="profiles_delete_confirm">Delete profile %1$s?</string>
+<string name="profiles_key_title">Key assignment</string>
+<string name="profiles_key_desc">Assign the key currently used in the vehicle to this profile; the profile is selected automatically at ignition.</string>
+<string name="profiles_key_n">Key %1$d</string>
+<string name="profiles_key_none">No key assigned</string>
+<string name="profiles_key_assign">Assign current key</string>
+<string name="profiles_key_clear">Remove</string>
+<string name="profiles_key_no_vehicle">Vehicle connection unavailable</string>
+<string name="profiles_key_reading">Reading current key…</string>
+<string name="profiles_key_not_found">No recognised key. Unlock and start the car with the key you want to assign.</string>
+<string name="profiles_key_saved">%1$s ↔ key %2$d</string>
 <string name="profiles_seat_title">Seat and mirror memory</string>
 <string name="profiles_slot_none">None</string>
 <string name="profiles_slot_n">Slot %1$d</string>
@@ -856,6 +866,30 @@
 <string name="profiles_items_empty">None. Add changed values from the Log tab, ID discovery. Added items start disabled.</string>
 <string name="profiles_items_refresh">Update values from the vehicle</string>
 <string name="profiles_item_remove">Remove</string>
+    <string name="log_eol_test">EOL test (TSR/TL)</string>
+    <string name="eol_test_title">EOL variant test</string>
+    <string name="eol_test_help">Writes factory variant coding (DOANOSE cmd 130, byte 1). TSR = bit 2, traffic light = bit 3. A snapshot is taken before each write; restore is on this screen. The MCU may reject it and OEM settings may need a reboot.</string>
+        <string name="eol_prop_write">Persist TL=1 (property)</string>
+    <string name="eol_prop_clear">Persist TL=0 (property)</string>
+    <string name="eol_prop_title">Property write</string>
+    <string name="eol_prop_body">Writes vehicle.persist.project.ext.configs4: 0x%1$s → 0x%2$s. This survives reboot but the MCU may still own the value.</string>
+<string name="eol_refresh">Refresh</string>
+    <string name="eol_tl_on">TL on (82=1)</string>
+    <string name="eol_tl_off">TL off (82=0)</string>
+    <string name="eol_tsr_on">TSR on (81=1)</string>
+    <string name="eol_tsr_off">TSR off (81=0)</string>
+    <string name="eol_restore">Restore</string>
+    <string name="eol_confirm_title">EOL write</string>
+    <string name="eol_confirm_body">config4 byte1: 0x%1$s → 0x%2$s. This is factory variant coding; the MCU may reject it and OEM settings may not update before a reboot. Continue?</string>
+    <string name="eol_confirm_write">Write</string>
+    <string name="eol_not_connected">CarInfo not connected</string>
+    <string name="eol_no_data">config4 could not be read</string>
+    <string name="eol_ready_park">Ready (P/N, speed 0)</string>
+    <string name="eol_need_park">Vehicle must be in P/N at 0 km/h</string>
+    <string name="eol_write_ok">Written and verified</string>
+    <string name="eol_write_rejected">MCU rejected / value unchanged</string>
+    <string name="eol_no_snapshot">No snapshot</string>
+    <string name="eol_restore_confirm">Write the snapshot config4 back?</string>
 <string name="log_id_discovery">ID discovery</string>
 <string name="discovery_title">ID discovery</string>
 <string name="discovery_help">Take a Before snapshot, change something on the vehicle screen, then tap After to see which IDs changed. Writable values can be added to the active driver profile. Recording saves every change to a CSV file.</string>
@@ -1475,4 +1509,85 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_auto_start_sub">Starts telemetry sharing 10 seconds after the device boots. If off, the cloud must be started manually.</string>
     <string name="settings_cloud_park_photo_chime">Chime when upload completes</string>
     <string name="settings_cloud_park_photo_chime_sub">Plays a short chime once the full-quality park photo is uploaded and confirmed. When you hear it, you can leave the car.</string>
+
+    <!-- Wi-Fi automation -->
+    <string name="settings_wifi_section_title">Wi-Fi automation</string>
+    <string name="settings_wifi_section_desc">Turns on the head unit\'s Wi-Fi once at ignition. Wireless Android Auto/CarPlay may disconnect because the radio cannot always run both.</string>
+    <string name="settings_wifi_auto_title">Turn on Wi-Fi at ignition</string>
+    <string name="settings_wifi_auto_help_on">Try to enable Wi-Fi once per ignition.</string>
+    <string name="settings_wifi_auto_help_off">Leave Wi-Fi state unchanged at ignition.</string>
+    <string name="settings_wifi_engmode_title">Force via engineering menu (experimental)</string>
+    <string name="settings_wifi_engmode_help_on">If direct enable fails, open the desaySV engineering menu and click the Wi-Fi switch via accessibility.</string>
+    <string name="settings_wifi_engmode_help_off">Never open the engineering menu automatically.</string>
+
+    <string name="wifi_auto_failed_title">Wi-Fi could not be turned on</string>
+    <string name="wifi_auto_failed_text">Wireless Android Auto/CarPlay may be connected. Try the Wi-Fi tab.</string>
+    <string name="settings_wifi_test_now">Try now</string>
+
+    <!-- Wi-Fi redesign -->
+    <string name="wifi_signal_excellent">Excellent</string>
+    <string name="wifi_badge_connected">CONNECTED</string>
+    <string name="wifi_networks_found">%1$d Networks Found</string>
+    <string name="wifi_add_network">Add network (manual SSID)</string>
+    <string name="wifi_manual_title">Add network</string>
+    <string name="wifi_manual_ssid_hint">SSID</string>
+    <string name="wifi_manual_password_hint">Password (leave empty for open network)</string>
+    <string name="wifi_manual_connect">Connect</string>
+    <string name="wifi_manual_ssid_empty">SSID cannot be empty</string>
+    <string name="wifi_ap_short_on">On</string>
+    <string name="wifi_ap_short_off">Off</string>
+    <string name="wifi_ap_short_unknown">—</string>
+    <string name="wifi_security_personal">Personal</string>
+    <string name="wifi_security_enterprise">Enterprise</string>
+    <string name="wifi_dhcp_active">Active</string>
+
+    <!-- Wi-Fi projection / AP -->
+    <string name="wifi_ap_off_button">Stop projection and access point</string>
+    <string name="wifi_ap_off_confirm_title">Stop projection and access point?</string>
+    <string name="wifi_ap_off_confirm_message">The wireless Android Auto/CarPlay session is stopped, then the vehicle access point turns off. The Wi-Fi radio stays on, so other networks remain usable.</string>
+    <string name="wifi_ap_off_confirm_action">Stop</string>
+    <string name="wifi_ap_off_done">Projection stopped, access point off</string>
+    <string name="wifi_ap_off_failed">Could not turn off the access point; turn Wi-Fi off and retry</string>
+    <string name="wifi_ap_off_none">Access point is already off</string>
+    <string name="wifi_ap_off_help">To stop wireless Android Auto/CarPlay from reopening the hotspot, the phone session is disconnected first, then the access point is turned off.</string>
+    <string name="wifi_ap_off_working">Stopping projection…</string>
+    <string name="wifi_ap_state_line">Access point: %1$s</string>
+    <string name="wifi_ap_state_on">On (wireless projection)</string>
+    <string name="wifi_ap_state_off">Off</string>
+    <string name="wifi_ap_state_unknown">Unknown</string>
+    <string name="wifi_ap_link_released">phone session closed</string>
+    <string name="wifi_ap_link_unreachable">phone service unreachable</string>
+    <string name="wifi_ap_link_still_active">phone session still active</string>
+    <string name="wifi_open_system_button">Turn on from system Wi-Fi settings</string>
+    <string name="wifi_open_system_opened">System Wi-Fi dialog opened</string>
+    <string name="wifi_open_system_failed">Could not open the system Wi-Fi dialog</string>
+
+    <!-- Vignette test -->
+
+    <string name="ck_sub_gestures">Gestures</string>
+    <string name="ck_page_gestures_sub">Manage swipe areas and two-finger gestures.</string>
+    <string name="gestures_areas_card">Swipe areas</string>
+    <string name="gestures_areas_desc">When off, finger swipes are not captured in these areas. List and page scrolling are unaffected.</string>
+    <string name="gestures_media_title">Media card</string>
+    <string name="gestures_media_on">Swipe left/right to open the phone page.</string>
+    <string name="gestures_media_off">Swipe off. Use the flip button on the card to change pages.</string>
+    <string name="gestures_dock_title">Bottom bar</string>
+    <string name="gestures_dock_on">Swipe up to open the OEM climate panel.</string>
+    <string name="gestures_dock_off">Swipe off. Open the climate panel with the button below.</string>
+    <string name="gestures_system_card">System gestures</string>
+    <string name="gestures_map_title">Two-finger map swipe</string>
+    <string name="gestures_map_on">Two fingers left/right moves the map to the cluster.</string>
+    <string name="gestures_map_off">Two-finger swipe is off.</string>
+    <string name="gestures_split_title">Split-screen gesture</string>
+    <string name="gestures_split_none">No gesture selected.</string>
+    <string name="gestures_split_value">Selected: %1$s</string>
+    <string name="gestures_split_settings">Split-screen settings</string>
+    <string name="gestures_actions_card">Actions without swiping</string>
+    <string name="gestures_actions_desc">Run the same functions here without a swipe.</string>
+    <string name="gestures_open_climate">Open climate panel</string>
+    <string name="gestures_cluster_open">Open cluster</string>
+    <string name="gestures_cluster_close">Close cluster</string>
+
+    <string name="cloud_command_photo_message">Take a park photo now?</string>
+    <string name="cloud_command_photo_accept">Take</string>
 </resources>

@@ -190,8 +190,7 @@
     <string name="web_server_stop">Web Sunucusu Durdur</string>
     <string name="web_server_stopped">Sunucu durduruldu</string>
     <string name="web_text_sent">Metin gönderildi</string>
-
-    <string name="assist_title">Araç ve Sürücü Yardımları</string>
+<string name="assist_title">Araç ve Sürücü Yardımları</string>
     <string name="assist_subtitle">Sürüş güvenliği ve konfor ayarları</string>
     <string name="drive_modes_title">Sürüş Modları</string>
 
@@ -864,6 +863,16 @@
 <string name="profiles_name_required">Bir ad gir</string>
 <string name="profiles_delete_last">Son profil silinemez</string>
 <string name="profiles_delete_confirm">%1$s profili silinsin mi?</string>
+<string name="profiles_key_title">Anahtar eşleme</string>
+<string name="profiles_key_desc">Araçta kullanılan anahtarı bu profile bağlar; kontakta profil otomatik seçilir.</string>
+<string name="profiles_key_n">Anahtar %1$d</string>
+<string name="profiles_key_none">Anahtar atanmadı</string>
+<string name="profiles_key_assign">Anahtarı profile tanımla</string>
+<string name="profiles_key_clear">Kaldır</string>
+<string name="profiles_key_no_vehicle">Araç bağlantısı yok</string>
+<string name="profiles_key_reading">Mevcut anahtar okunuyor…</string>
+<string name="profiles_key_not_found">Tanınan anahtar yok. Atamak istediğiniz anahtarla aracı açıp çalıştırın.</string>
+<string name="profiles_key_saved">%1$s ↔ anahtar %2$d</string>
 <string name="profiles_seat_title">Koltuk ve ayna hafızası</string>
 <string name="profiles_slot_none">Yok</string>
 <string name="profiles_slot_n">Slot %1$d</string>
@@ -879,6 +888,30 @@
 <string name="profiles_items_empty">Yok. Değişen değerleri Log sekmesindeki ID keşfinden ekle. Eklenen maddeler kapalı başlar.</string>
 <string name="profiles_items_refresh">Değerleri araçtan güncelle</string>
 <string name="profiles_item_remove">Kaldır</string>
+    <string name="log_eol_test">EOL testi (TSR/TL)</string>
+    <string name="eol_test_title">EOL varyant testi</string>
+    <string name="eol_test_help">Fabrika varyant kodlamasını yazar (DOANOSE cmd 130, bayt 1). TSR = bit 2, trafik ışığı = bit 3. Her yazmadan önce yedek alınır; geri yükleme bu ekranda. MCU reddedebilir, OEM ayarları reboot istemeyebilir.</string>
+        <string name="eol_prop_write">Kalıcı TL=1 (property)</string>
+    <string name="eol_prop_clear">Kalıcı TL=0 (property)</string>
+    <string name="eol_prop_title">Property yazımı</string>
+    <string name="eol_prop_body">vehicle.persist.project.ext.configs4: 0x%1$s → 0x%2$s. Reboot sonrası korunabilir; MCU yine de kendi değerini dayatabilir.</string>
+<string name="eol_refresh">Yenile</string>
+    <string name="eol_tl_on">TL aç (82=1)</string>
+    <string name="eol_tl_off">TL kapat (82=0)</string>
+    <string name="eol_tsr_on">TSR aç (81=1)</string>
+    <string name="eol_tsr_off">TSR kapat (81=0)</string>
+    <string name="eol_restore">Yedeğe dön</string>
+    <string name="eol_confirm_title">EOL yazımı</string>
+    <string name="eol_confirm_body">config4 bayt1: 0x%1$s → 0x%2$s. Bu fabrika varyant kodlamasıdır; MCU reddedebilir, OEM ayarları reboot olmadan güncellenmeyebilir. Devam?</string>
+    <string name="eol_confirm_write">Yaz</string>
+    <string name="eol_not_connected">CarInfo bağlı değil</string>
+    <string name="eol_no_data">config4 okunamadı</string>
+    <string name="eol_ready_park">Hazır (P/N, hız 0)</string>
+    <string name="eol_need_park">Araç P/N ve hız 0 olmalı</string>
+    <string name="eol_write_ok">Yazıldı ve doğrulandı</string>
+    <string name="eol_write_rejected">MCU kabul etmedi / değer değişmedi</string>
+    <string name="eol_no_snapshot">Yedek yok</string>
+    <string name="eol_restore_confirm">Yedekteki config4 geri yazılsın mı?</string>
 <string name="log_id_discovery">ID keşfi</string>
 <string name="discovery_title">ID keşfi</string>
 <string name="discovery_help">Önce anlık görüntü al, araç ekranından bir şeyi değiştir, sonra Sonra düğmesiyle hangi ID değerlerinden hangilerinin değiştiğini gör. Yazılabilir değerler aktif sürücü profiline eklenebilir. Kayıt, her değişikliği CSV dosyasına yazar.</string>
@@ -1558,4 +1591,85 @@ IDCU=%5$s   5GTBox=%6$s</string>
     <string name="settings_cloud_auto_start_sub">Cihaz açıldıktan 10 saniye sonra telemetri paylaşımı başlar. Kapalıysa bulutu elle başlatman gerekir.</string>
     <string name="settings_cloud_park_photo_chime">Gönderim bitince ses çal</string>
     <string name="settings_cloud_park_photo_chime_sub">Park fotoğrafı tam kalitede gönderilip onaylanınca kısa bir ses çalar. Sesi duyunca araçtan inebilirsin.</string>
+
+    <!-- Wi-Fi otomasyonu -->
+    <string name="settings_wifi_section_title">Wi-Fi otomasyonu</string>
+    <string name="settings_wifi_section_desc">Kontakta kafa ünitesinin Wi-Fi\'sini bir kez açar. Kablosuz Android Auto/CarPlay bağlantısı kesilebilir; radyo her zaman ikisini birlikte çalıştıramaz.</string>
+    <string name="settings_wifi_auto_title">Kontakta Wi-Fi\'yi aç</string>
+    <string name="settings_wifi_auto_help_on">Kontak başına bir kez Wi-Fi\'yi açmayı dener.</string>
+    <string name="settings_wifi_auto_help_off">Kontakta Wi-Fi durumuna dokunmaz.</string>
+    <string name="settings_wifi_engmode_title">Mühendislik menüsü ile zorla (deneysel)</string>
+    <string name="settings_wifi_engmode_help_on">Doğrudan açma başarısızsa desaySV mühendislik menüsünü açıp Wi-Fi anahtarını erişilebilirlik ile tıklar.</string>
+    <string name="settings_wifi_engmode_help_off">Mühendislik menüsünü otomatik açmaz.</string>
+
+    <string name="wifi_auto_failed_title">Wi-Fi açılamadı</string>
+    <string name="wifi_auto_failed_text">Kablosuz Android Auto/CarPlay bağlı olabilir. Wi-Fi sekmesinden deneyin.</string>
+    <string name="settings_wifi_test_now">Şimdi dene</string>
+
+    <!-- Wi-Fi redesign -->
+    <string name="wifi_signal_excellent">Mükemmel</string>
+    <string name="wifi_badge_connected">BAĞLI</string>
+    <string name="wifi_networks_found">%1$d Ağ Bulundu</string>
+    <string name="wifi_add_network">Ağ Ekle (SSID Manuel Giriş)</string>
+    <string name="wifi_manual_title">Ağ Ekle</string>
+    <string name="wifi_manual_ssid_hint">SSID</string>
+    <string name="wifi_manual_password_hint">Şifre (açık ağ için boş bırakın)</string>
+    <string name="wifi_manual_connect">Bağlan</string>
+    <string name="wifi_manual_ssid_empty">SSID boş olamaz</string>
+    <string name="wifi_ap_short_on">Açık</string>
+    <string name="wifi_ap_short_off">Kapalı</string>
+    <string name="wifi_ap_short_unknown">—</string>
+    <string name="wifi_security_personal">Kişisel</string>
+    <string name="wifi_security_enterprise">Kurumsal</string>
+    <string name="wifi_dhcp_active">Aktif</string>
+
+    <!-- Wi-Fi projeksiyon / AP -->
+    <string name="wifi_ap_off_button">Projeksiyonu durdur ve erişim noktasını kapat</string>
+    <string name="wifi_ap_off_confirm_title">Projeksiyon ve erişim noktası kapatılsın mı?</string>
+    <string name="wifi_ap_off_confirm_message">Kablosuz Android Auto/CarPlay oturumu kesilecek ve araç erişim noktası kapanacak. Wi-Fi radyosu açık kalır; diğer ağlara bağlı kalabilirsiniz.</string>
+    <string name="wifi_ap_off_confirm_action">Kapat</string>
+    <string name="wifi_ap_off_done">Projeksiyon durduruldu, erişim noktası kapandı</string>
+    <string name="wifi_ap_off_failed">Erişim noktası kapatılamadı; Wi-Fi\'yi kapatıp yeniden deneyin</string>
+    <string name="wifi_ap_off_none">Erişim noktası zaten kapalı</string>
+    <string name="wifi_ap_off_help">Kablosuz Android Auto/CarPlay\'in erişim noktasını yeniden açmasını önlemek için önce telefon oturumu kesilir, sonra erişim noktası kapatılır.</string>
+    <string name="wifi_ap_off_working">Projeksiyon kapatılıyor…</string>
+    <string name="wifi_ap_state_line">Erişim noktası: %1$s</string>
+    <string name="wifi_ap_state_on">Açık (kablosuz projeksiyon)</string>
+    <string name="wifi_ap_state_off">Kapalı</string>
+    <string name="wifi_ap_state_unknown">Bilinmiyor</string>
+    <string name="wifi_ap_link_released">telefon oturumu kapandı</string>
+    <string name="wifi_ap_link_unreachable">telefon servisine ulaşılamadı</string>
+    <string name="wifi_ap_link_still_active">telefon oturumu kapanmadı</string>
+    <string name="wifi_open_system_button">Sistem Wi-Fi ayarlarından aç</string>
+    <string name="wifi_open_system_opened">Sistem Wi-Fi penceresi açıldı</string>
+    <string name="wifi_open_system_failed">Sistem Wi-Fi penceresi açılamadı</string>
+
+    <!-- Vignette testi -->
+
+    <string name="ck_sub_gestures">Hareketler</string>
+    <string name="ck_page_gestures_sub">Kaydırma alanlarını ve iki parmak hareketlerini yönetin.</string>
+    <string name="gestures_areas_card">Kaydırma alanları</string>
+    <string name="gestures_areas_desc">Kapalıyken bu alanlarda parmak kaydırma yakalanmaz. Liste ve sayfa kaydırma etkilenmez.</string>
+    <string name="gestures_media_title">Medya kartı</string>
+    <string name="gestures_media_on">Sola/sağa kaydırınca telefon sayfası açılır.</string>
+    <string name="gestures_media_off">Kaydırma kapalı. Sayfa geçişi karttaki çevirme düğmesiyle yapılır.</string>
+    <string name="gestures_dock_title">Alt çubuk</string>
+    <string name="gestures_dock_on">Yukarı kaydırınca OEM klima paneli açılır.</string>
+    <string name="gestures_dock_off">Kaydırma kapalı. Klima paneli aşağıdaki düğmeyle açılır.</string>
+    <string name="gestures_system_card">Sistem hareketleri</string>
+    <string name="gestures_map_title">İki parmak harita kaydırması</string>
+    <string name="gestures_map_on">İki parmak sola/sağa haritayı göstergeye taşır.</string>
+    <string name="gestures_map_off">İki parmak kaydırması kapalı.</string>
+    <string name="gestures_split_title">Bölünmüş ekran hareketi</string>
+    <string name="gestures_split_none">Hareket seçilmedi.</string>
+    <string name="gestures_split_value">Seçili: %1$s</string>
+    <string name="gestures_split_settings">Bölünmüş ekran ayarları</string>
+    <string name="gestures_actions_card">Kaydırmasız işlemler</string>
+    <string name="gestures_actions_desc">Aynı işlevleri kaydırma yapmadan buradan çalıştırın.</string>
+    <string name="gestures_open_climate">Klima panelini aç</string>
+    <string name="gestures_cluster_open">Göstergeyi aç</string>
+    <string name="gestures_cluster_close">Göstergeyi kapat</string>
+
+    <string name="cloud_command_photo_message">Şimdi park fotoğrafı çekilsin mi?</string>
+    <string name="cloud_command_photo_accept">Çek</string>
 </resources>

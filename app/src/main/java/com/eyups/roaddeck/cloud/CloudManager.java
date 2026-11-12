@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -185,6 +186,16 @@ public final class CloudManager {
             return;
         }
         get(context).start();
+    }
+
+    /** Send menüsünden gelen manuel park fotoğrafı isteğini çalışan yakalayıcıya iletir. */
+    void captureParkPhotoNow(Consumer<Boolean> done) {
+        ParkingPhotoCapture capture = parkPhotoCapture;
+        if (capture == null) {
+            done.accept(false);
+            return;
+        }
+        capture.captureNow(done);
     }
 
     public void start() {
